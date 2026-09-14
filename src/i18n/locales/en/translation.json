@@ -1,0 +1,354 @@
+{
+  "app": {
+    "title": "Mathematico",
+    "subtitle": "Pick your grade and start playing with math!"
+  },
+  "common": {
+    "comingSoon": "Coming soon",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off"
+  },
+  "nav": {
+    "allGrades": "All grades",
+    "grade7Topics": "Grade 7 topics",
+    "accountNavLabel": "Account navigation"
+  },
+  "auth": {
+    "title": "Account",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "account": "Account",
+    "email": "Email",
+    "password": "Password",
+    "guestNote": "You can keep playing as a guest — signing in just saves your activity across devices.",
+    "signUpSuccess": "Account created. You can sign in now.",
+    "unavailable": "Accounts aren't available right now, but you can keep playing as a guest."
+  },
+  "activity": {
+    "title": "My Activity",
+    "navLabel": "Activity",
+    "empty": "No completed games yet — go play something!"
+  },
+  "grades": {
+    "1": "Grade 1",
+    "2": "Grade 2",
+    "3": "Grade 3",
+    "4": "Grade 4",
+    "5": "Grade 5",
+    "6": "Grade 6",
+    "7": "Grade 7"
+  },
+  "gradePage": {
+    "subtitle": "Choose a topic to explore"
+  },
+  "topics": {
+    "coordinateSystem": {
+      "name": "Coordinate System",
+      "description": "Plot points, find locations, and play with the grid."
+    },
+    "fractions": {
+      "name": "Fractions",
+      "description": "Coming soon"
+    },
+    "geometry": {
+      "name": "Geometry",
+      "description": "Coming soon"
+    },
+    "algebraBasics": {
+      "name": "Algebra Basics",
+      "description": "Coming soon"
+    }
+  },
+  "coordinateSystemPage": {
+    "title": "Coordinate System",
+    "subtitle": "Choose an exercise to practice"
+  },
+  "exercises": {
+    "meetTheAxes": {
+      "name": "Meet the Axes",
+      "description": "Learn the X and Y axes",
+      "questions": {
+        "horizontalAxis": {
+          "prompt": "Which axis is horizontal?",
+          "explanation": "X-axis is the horizontal one"
+        },
+        "verticalAxis": {
+          "prompt": "Which axis is vertical?",
+          "explanation": "Y-axis is the vertical one"
+        },
+        "xIncrease": {
+          "prompt": "Which way does X grow?",
+          "explanation": "X grows to the right"
+        },
+        "yIncrease": {
+          "prompt": "Which way does Y grow?",
+          "explanation": "Y grows upward"
+        },
+        "xNegative": {
+          "prompt": "Where's negative X?",
+          "explanation": "Negative is left of 0"
+        },
+        "yNegative": {
+          "prompt": "Where's negative Y?",
+          "explanation": "Negative is below 0"
+        }
+      },
+      "options": {
+        "left": "←",
+        "right": "→",
+        "up": "↑",
+        "down": "↓"
+      }
+    }
+  },
+  "vocabulary": {
+    "gameName": "Coordinate Vocabulary",
+    "gameDescription": "Learn the key words, fast",
+    "newTerm": "New term",
+    "terms": {
+      "coordinateSystem": {
+        "term": "Coordinate system",
+        "definition": "Two axes that meet to show location",
+        "riddle": "I'm two number lines that cross. What am I?",
+        "recallPrompt": "What's a coordinate system?"
+      },
+      "xAxis": {
+        "term": "X-axis",
+        "definition": "The horizontal axis",
+        "riddle": "I run left and right. Which axis am I?",
+        "recallPrompt": "Where's the X-axis?"
+      },
+      "yAxis": {
+        "term": "Y-axis",
+        "definition": "The vertical axis",
+        "riddle": "I run up and down. Which axis am I?",
+        "recallPrompt": "Where's the Y-axis?"
+      },
+      "horizontal": {
+        "term": "Horizontal",
+        "definition": "Side to side",
+        "riddle": "I go side to side. What am I?",
+        "recallPrompt": "What's horizontal?"
+      },
+      "vertical": {
+        "term": "Vertical",
+        "definition": "Up and down",
+        "riddle": "I go up and down. What am I?",
+        "recallPrompt": "What's vertical?"
+      },
+      "origin": {
+        "term": "Origin",
+        "definition": "Where the axes meet",
+        "riddle": "I'm where the two axes meet. Who am I?",
+        "recallPrompt": "Where's the origin?"
+      },
+      "point": {
+        "term": "Point",
+        "definition": "A location on the plane",
+        "riddle": "I'm a location on the plane. What am I?",
+        "recallPrompt": "What's a point?"
+      },
+      "pointCoordinates": {
+        "term": "Coordinates of a point",
+        "definition": "The numbers that locate a point",
+        "riddle": "I'm the numbers that say where a point is. What am I?",
+        "recallPrompt": "What are a point's coordinates?"
+      },
+      "xCoordinate": {
+        "term": "X-coordinate",
+        "definition": "The first number in the pair",
+        "riddle": "I'm the first number in the pair. What am I?",
+        "recallPrompt": "What's the X-coordinate?"
+      },
+      "yCoordinate": {
+        "term": "Y-coordinate",
+        "definition": "The second number in the pair",
+        "riddle": "I'm the second number in the pair. What am I?",
+        "recallPrompt": "What's the Y-coordinate?"
+      },
+      "orderedPair": {
+        "term": "Ordered pair",
+        "definition": "Two numbers written (x, y)",
+        "riddle": "I'm two numbers written in order. What am I?",
+        "recallPrompt": "What's an ordered pair?"
+      },
+      "quadrant": {
+        "term": "Quadrant",
+        "definition": "One of 4 regions made by the axes",
+        "riddle": "I'm one of 4 regions on the plane. What am I?",
+        "recallPrompt": "What's a quadrant?"
+      }
+    },
+    "prompts": {
+      "clickXAxis": "Where's the X-axis?",
+      "clickYAxis": "Where's the Y-axis?",
+      "clickOrigin": "Where's the origin?",
+      "whichAxisHorizontal": "Which axis is horizontal?",
+      "whichAxisVertical": "Which axis is vertical?",
+      "xCoordinateOfPoint": "What's the X-coordinate?",
+      "yCoordinateOfPoint": "What's the Y-coordinate?"
+    },
+    "targets": {
+      "xAxis": "X-axis",
+      "yAxis": "Y-axis",
+      "origin": "Origin"
+    },
+    "letters": {
+      "x": "X",
+      "y": "Y"
+    },
+    "explanations": {
+      "xAxis": "X-axis is the horizontal one",
+      "yAxis": "Y-axis is the vertical one",
+      "origin": "That's (0, 0)",
+      "xThenY": "X comes first, then Y"
+    }
+  },
+  "hitTheTarget": {
+    "prompt": "What are the target's coordinates?",
+    "progress": "Target {{current}} of {{total}}",
+    "inputs": {
+      "x": "X",
+      "y": "Y"
+    },
+    "actions": {
+      "fire": "🎯 Hit!",
+      "playAgain": "Play again",
+      "backToTopic": "Back to Coordinate System"
+    },
+    "stages": {
+      "stage1": {
+        "name": "Stage 1 — Start Easy",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "Stage 2 — All Directions",
+        "intro": "Great! Now let's add negative numbers."
+      },
+      "stage3": {
+        "name": "Stage 3 — On the Axes",
+        "intro": "Nice! Now let's meet points sitting right on an axis."
+      }
+    },
+    "feedback": {
+      "correctMessages": ["Bullseye! 🎯", "Hit! 🎯", "Nice shot! 🎯"],
+      "xSign": "Almost! The target is {{direction}} of 0, so X is {{sign}}.",
+      "ySign": "Almost! The target is {{direction}} 0, so Y is {{sign}}.",
+      "swapped": "Almost — X first, then Y.",
+      "other": "Check again: X first, then Y."
+    },
+    "words": {
+      "left": "left",
+      "right": "right",
+      "above": "above",
+      "below": "below",
+      "negative": "negative",
+      "positive": "positive"
+    },
+    "completion": {
+      "title": "🎯 You finished Hit the Target!",
+      "summary": "{{total}} targets completed",
+      "firstTry": "{{count}} hit on the first try",
+      "retried": "{{count}} needed another try"
+    }
+  },
+  "launchSpaceship": {
+    "destinationLabel": "Your destination:",
+    "progress": "Destination {{current}} of {{total}}",
+    "stages": {
+      "stage1": {
+        "name": "Stage 1 — Start Easy",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "Stage 2 — All Directions",
+        "intro": "Great! Now let's fly to negative numbers too 🚀"
+      },
+      "stage3": {
+        "name": "Stage 3 — On the Axes",
+        "intro": "Nice! Now let's meet destinations sitting right on an axis."
+      },
+      "stage4": {
+        "name": "Stage 4 — Direct Flight",
+        "intro": "Your turn — no arrows this time. Tap where to land."
+      }
+    },
+    "feedback": {
+      "xDone": "X done! Now Y",
+      "correctMessages": ["Made it! 🚀", "Perfect!", "Nailed it! 🚀"],
+      "directMistake": "Almost! {{axis}} is {{sign}} — fly {{direction}}.",
+      "swapped": "X first, then Y.",
+      "other": "Almost! Try again."
+    },
+    "hints": {
+      "direction": "{{axis}} is {{sign}} — try going {{direction}}."
+    },
+    "words": {
+      "left": "left",
+      "right": "right",
+      "up": "up",
+      "down": "down",
+      "leftward": "left",
+      "rightward": "right",
+      "upward": "up",
+      "downward": "down",
+      "negative": "negative",
+      "positive": "positive"
+    },
+    "actions": {
+      "playAgain": "Play Again",
+      "backToTopic": "Back to Coordinate System"
+    },
+    "completion": {
+      "title": "🚀 Mission Complete!",
+      "summary": "{{total}} destinations completed",
+      "firstTry": "{{count}} on the first try"
+    }
+  },
+  "quiz": {
+    "progress": "{{current}} / {{total}}",
+    "progressLabel": "Question {{current}} of {{total}}",
+    "learnLabel": "Learning {{current}} of {{total}}",
+    "feedback": {
+      "correctTitle": "Correct! 🎉",
+      "incorrectTitle": "Almost!"
+    },
+    "actions": {
+      "next": "Next",
+      "finish": "Finish",
+      "tryAgain": "Try again",
+      "gotIt": "Got it"
+    },
+    "completion": {
+      "title": "Nice work!",
+      "score": "You scored {{score}} out of {{total}}"
+    }
+  },
+  "games": {
+    "hitTheTarget": {
+      "name": "Hit the Target",
+      "description": "Aim and fire by naming the right coordinates."
+    },
+    "launchTheSpaceship": {
+      "name": "Launch the Spaceship",
+      "description": "Plot a course through space using the grid."
+    },
+    "findThePoint": {
+      "name": "Find the Point",
+      "description": "Spot the exact point described by its coordinates."
+    },
+    "findTheMistake": {
+      "name": "Find the Mistake",
+      "description": "Catch the point that was plotted incorrectly."
+    },
+    "drawByCoordinates": {
+      "name": "Draw by Coordinates",
+      "description": "Connect the dots to reveal a picture."
+    }
+  },
+  "language": {
+    "label": "Language",
+    "switchTo": "עברית"
+  }
+}

@@ -1,0 +1,354 @@
+{
+  "app": {
+    "title": "מתמטיקו",
+    "subtitle": "בחרו כיתה והתחילו לשחק עם מתמטיקה!"
+  },
+  "common": {
+    "comingSoon": "בקרוב",
+    "soundOn": "צלילים פועלים",
+    "soundOff": "צלילים כבויים"
+  },
+  "nav": {
+    "allGrades": "כל הכיתות",
+    "grade7Topics": "נושאי כיתה ז'",
+    "accountNavLabel": "ניווט חשבון"
+  },
+  "auth": {
+    "title": "חשבון",
+    "signIn": "התחברות",
+    "signUp": "הרשמה",
+    "signOut": "התנתקות",
+    "account": "חשבון",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "guestNote": "אפשר להמשיך לשחק כאורח/ת — התחברות רק שומרת את הפעילות שלך בין מכשירים.",
+    "signUpSuccess": "החשבון נוצר. אפשר להתחבר עכשיו.",
+    "unavailable": "חשבונות לא זמינים כרגע, אבל אפשר להמשיך לשחק כאורח/ת."
+  },
+  "activity": {
+    "title": "הפעילות שלי",
+    "navLabel": "פעילות",
+    "empty": "עדיין אין משחקים שהושלמו — קדימה לשחק!"
+  },
+  "grades": {
+    "1": "כיתה א'",
+    "2": "כיתה ב'",
+    "3": "כיתה ג'",
+    "4": "כיתה ד'",
+    "5": "כיתה ה'",
+    "6": "כיתה ו'",
+    "7": "כיתה ז'"
+  },
+  "gradePage": {
+    "subtitle": "בחרו נושא לחקור"
+  },
+  "topics": {
+    "coordinateSystem": {
+      "name": "מערכת צירים",
+      "description": "סמנו נקודות, מצאו מיקומים ושחקו עם הצירים."
+    },
+    "fractions": {
+      "name": "שברים",
+      "description": "בקרוב"
+    },
+    "geometry": {
+      "name": "גיאומטריה",
+      "description": "בקרוב"
+    },
+    "algebraBasics": {
+      "name": "יסודות באלגברה",
+      "description": "בקרוב"
+    }
+  },
+  "coordinateSystemPage": {
+    "title": "מערכת צירים",
+    "subtitle": "בחרו תרגיל כדי להתאמן"
+  },
+  "exercises": {
+    "meetTheAxes": {
+      "name": "מכירים את הצירים",
+      "description": "לומדים על ציר X וציר Y",
+      "questions": {
+        "horizontalAxis": {
+          "prompt": "איזה ציר הוא אופקי?",
+          "explanation": "ציר X הוא האופקי"
+        },
+        "verticalAxis": {
+          "prompt": "איזה ציר הוא אנכי?",
+          "explanation": "ציר Y הוא האנכי"
+        },
+        "xIncrease": {
+          "prompt": "לאיזה כיוון X גדל?",
+          "explanation": "X גדל ימינה"
+        },
+        "yIncrease": {
+          "prompt": "לאיזה כיוון Y גדל?",
+          "explanation": "Y גדל למעלה"
+        },
+        "xNegative": {
+          "prompt": "איפה X שלילי?",
+          "explanation": "שלילי משמאל ל-0"
+        },
+        "yNegative": {
+          "prompt": "איפה Y שלילי?",
+          "explanation": "שלילי מתחת ל-0"
+        }
+      },
+      "options": {
+        "left": "←",
+        "right": "→",
+        "up": "↑",
+        "down": "↓"
+      }
+    }
+  },
+  "vocabulary": {
+    "gameName": "מילון הצירים",
+    "gameDescription": "לומדים את המילים החשובות, מהר",
+    "newTerm": "מונח חדש",
+    "terms": {
+      "coordinateSystem": {
+        "term": "מערכת צירים",
+        "definition": "שני צירים שנפגשים ומתארים מיקום",
+        "riddle": "אני שני צירים שנפגשים. מי אני?",
+        "recallPrompt": "מהי מערכת צירים?"
+      },
+      "xAxis": {
+        "term": "ציר X",
+        "definition": "הציר האופקי",
+        "riddle": "אני הולך שמאלה וימינה. איזה ציר אני?",
+        "recallPrompt": "איפה ציר X?"
+      },
+      "yAxis": {
+        "term": "ציר Y",
+        "definition": "הציר האנכי",
+        "riddle": "אני הולך למעלה ולמטה. איזה ציר אני?",
+        "recallPrompt": "איפה ציר Y?"
+      },
+      "horizontal": {
+        "term": "אופקי",
+        "definition": "הולך מצד לצד",
+        "riddle": "אני הכיוון שהולך מצד לצד. מה אני?",
+        "recallPrompt": "מה זה אופקי?"
+      },
+      "vertical": {
+        "term": "אנכי",
+        "definition": "הולך למעלה ולמטה",
+        "riddle": "אני הכיוון שהולך למעלה ולמטה. מה אני?",
+        "recallPrompt": "מה זה אנכי?"
+      },
+      "origin": {
+        "term": "ראשית הצירים",
+        "definition": "הנקודה שבה הצירים נפגשים",
+        "riddle": "אני הנקודה שבה שני הצירים נפגשים. מי אני?",
+        "recallPrompt": "איפה ראשית הצירים?"
+      },
+      "point": {
+        "term": "נקודה",
+        "definition": "מיקום על מערכת הצירים",
+        "riddle": "אני מיקום על מערכת הצירים. מה אני?",
+        "recallPrompt": "מה זו נקודה?"
+      },
+      "pointCoordinates": {
+        "term": "שיעורי נקודה",
+        "definition": "המספרים שמתארים מיקום נקודה",
+        "riddle": "אני המספרים שאומרים איפה הנקודה. מה אני?",
+        "recallPrompt": "מהם שיעורי נקודה?"
+      },
+      "xCoordinate": {
+        "term": "שיעור X",
+        "definition": "המספר הראשון בזוג",
+        "riddle": "אני המספר הראשון בזוג הסדור. מה אני?",
+        "recallPrompt": "מהו שיעור X?"
+      },
+      "yCoordinate": {
+        "term": "שיעור Y",
+        "definition": "המספר השני בזוג",
+        "riddle": "אני המספר השני בזוג הסדור. מה אני?",
+        "recallPrompt": "מהו שיעור Y?"
+      },
+      "orderedPair": {
+        "term": "זוג סדור",
+        "definition": "זוג מספרים שנכתב (x,y)",
+        "riddle": "אני זוג מספרים שנכתב בסדר קבוע. מה אני?",
+        "recallPrompt": "מהו זוג סדור?"
+      },
+      "quadrant": {
+        "term": "רביע",
+        "definition": "אחד מארבעת האזורים שיוצרים הצירים",
+        "riddle": "אני אחד מארבעת האזורים של מערכת הצירים. מה אני?",
+        "recallPrompt": "מהו רביע?"
+      }
+    },
+    "prompts": {
+      "clickXAxis": "איפה ציר X?",
+      "clickYAxis": "איפה ציר Y?",
+      "clickOrigin": "איפה ראשית הצירים?",
+      "whichAxisHorizontal": "איזה ציר הוא אופקי?",
+      "whichAxisVertical": "איזה ציר הוא אנכי?",
+      "xCoordinateOfPoint": "מהו שיעור ה-X?",
+      "yCoordinateOfPoint": "מהו שיעור ה-Y?"
+    },
+    "targets": {
+      "xAxis": "ציר X",
+      "yAxis": "ציר Y",
+      "origin": "ראשית הצירים"
+    },
+    "letters": {
+      "x": "X",
+      "y": "Y"
+    },
+    "explanations": {
+      "xAxis": "ציר X הוא האופקי",
+      "yAxis": "ציר Y הוא האנכי",
+      "origin": "זו הנקודה (0,0)",
+      "xThenY": "X קודם, Y אחריו"
+    }
+  },
+  "hitTheTarget": {
+    "prompt": "מהם שיעורי המטרה?",
+    "progress": "מטרה {{current}} מתוך {{total}}",
+    "inputs": {
+      "x": "X",
+      "y": "Y"
+    },
+    "actions": {
+      "fire": "🎯 פגיעה!",
+      "playAgain": "לשחק שוב",
+      "backToTopic": "חזרה למערכת הצירים"
+    },
+    "stages": {
+      "stage1": {
+        "name": "שלב 1 — מתחילים בקלות",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "שלב 2 — כל הכיוונים",
+        "intro": "מעולה! עכשיו נוסיף מספרים שליליים."
+      },
+      "stage3": {
+        "name": "שלב 3 — על הצירים",
+        "intro": "יופי! עכשיו נכיר נקודות שנמצאות בדיוק על הצירים."
+      }
+    },
+    "feedback": {
+      "correctMessages": ["בול! 🎯", "פגיעה! 🎯", "יש! 🎯"],
+      "xSign": "כמעט! המטרה {{direction}} ל-0, לכן X {{sign}}.",
+      "ySign": "כמעט! המטרה {{direction}} ל-0, לכן Y {{sign}}.",
+      "swapped": "כמעט — קודם X, אחר כך Y.",
+      "other": "בדקו שוב: קודם X, ואז Y."
+    },
+    "words": {
+      "left": "משמאל",
+      "right": "מימין",
+      "above": "מעל",
+      "below": "מתחת",
+      "negative": "שלילי",
+      "positive": "חיובי"
+    },
+    "completion": {
+      "title": "🎯 סיימת את פגיעה במטרה!",
+      "summary": "{{total}} מטרות הושלמו",
+      "firstTry": "{{count}} פגיעות בניסיון ראשון",
+      "retried": "{{count}} דרשו ניסיון נוסף"
+    }
+  },
+  "launchSpaceship": {
+    "destinationLabel": "היעד שלך:",
+    "progress": "יעד {{current}} מתוך {{total}}",
+    "stages": {
+      "stage1": {
+        "name": "שלב 1 — מתחילים בקלות",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "שלב 2 — לכל הכיוונים",
+        "intro": "מעולה! עכשיו טסים גם למספרים שליליים 🚀"
+      },
+      "stage3": {
+        "name": "שלב 3 — על הצירים",
+        "intro": "יופי! עכשיו נכיר יעדים שנמצאים בדיוק על הצירים."
+      },
+      "stage4": {
+        "name": "שלב 4 — טיסה ישירה",
+        "intro": "עכשיו טסים לבד — בלי חצים. לחצו לאן לטוס."
+      }
+    },
+    "feedback": {
+      "xDone": "X מוכן! עכשיו Y",
+      "correctMessages": ["יש! 🚀", "הגענו!", "בדיוק!"],
+      "directMistake": "כמעט! {{axis}} {{sign}} — טסים {{direction}}.",
+      "swapped": "קודם X, אחר כך Y.",
+      "other": "כמעט! ננסה שוב."
+    },
+    "hints": {
+      "direction": "{{axis}} {{sign}} — נסו לכיוון {{direction}}."
+    },
+    "words": {
+      "left": "שמאל",
+      "right": "ימין",
+      "up": "מעלה",
+      "down": "מטה",
+      "leftward": "שמאלה",
+      "rightward": "ימינה",
+      "upward": "למעלה",
+      "downward": "למטה",
+      "negative": "שלילי",
+      "positive": "חיובי"
+    },
+    "actions": {
+      "playAgain": "לשחק שוב",
+      "backToTopic": "חזרה למערכת הצירים"
+    },
+    "completion": {
+      "title": "🚀 המשימה הושלמה!",
+      "summary": "{{total}} יעדים הושלמו",
+      "firstTry": "{{count}} בניסיון ראשון"
+    }
+  },
+  "quiz": {
+    "progress": "{{current}} / {{total}}",
+    "progressLabel": "שאלה {{current}} מתוך {{total}}",
+    "learnLabel": "לומדים {{current}} מתוך {{total}}",
+    "feedback": {
+      "correctTitle": "נכון! 🎉",
+      "incorrectTitle": "כמעט!"
+    },
+    "actions": {
+      "next": "הבא",
+      "finish": "סיום",
+      "tryAgain": "לנסות שוב",
+      "gotIt": "הבנתי"
+    },
+    "completion": {
+      "title": "כל הכבוד!",
+      "score": "הציון שלך: {{score}} מתוך {{total}}"
+    }
+  },
+  "games": {
+    "hitTheTarget": {
+      "name": "פגיעה במטרה",
+      "description": "כוונו וירו על ידי ציון הקואורדינטות הנכונות."
+    },
+    "launchTheSpaceship": {
+      "name": "שיגור החללית",
+      "description": "תכננו מסלול בחלל באמצעות הצירים."
+    },
+    "findThePoint": {
+      "name": "מצאו את הנקודה",
+      "description": "אתרו את הנקודה המדויקת לפי הקואורדינטות שלה."
+    },
+    "findTheMistake": {
+      "name": "מצאו את הטעות",
+      "description": "אתרו את הנקודה שסומנה בטעות."
+    },
+    "drawByCoordinates": {
+      "name": "ציור לפי קואורדינטות",
+      "description": "חברו את הנקודות כדי לגלות תמונה."
+    }
+  },
+  "language": {
+    "label": "שפה",
+    "switchTo": "English"
+  }
+}

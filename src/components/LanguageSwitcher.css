@@ -1,0 +1,15 @@
+.language-switcher {
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--primary);
+  background: var(--primary-bg);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.language-switcher:hover {
+  background: var(--primary-tint);
+}

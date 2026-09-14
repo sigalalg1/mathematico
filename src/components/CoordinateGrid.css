@@ -1,0 +1,249 @@
+.coordinate-grid {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.coordinate-grid-lg {
+  max-width: 460px;
+  padding: var(--space-5);
+}
+
+.coordinate-grid-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.grid-line {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.axis-line {
+  stroke: var(--text-h);
+  stroke-width: 2.75;
+}
+
+.tick-mark {
+  stroke: var(--text-h);
+  stroke-width: 1.5;
+}
+
+.tick-label {
+  font-size: 11px;
+  fill: var(--text);
+  font-family: var(--sans);
+}
+
+.axis-label {
+  font-size: 20px;
+  font-weight: 800;
+  fill: var(--primary);
+  font-family: var(--sans);
+}
+
+.arrow-head {
+  fill: var(--text-h);
+}
+
+.axis-highlight {
+  stroke: var(--primary);
+  stroke-width: 6;
+  stroke-linecap: round;
+  opacity: 0.85;
+  animation: axis-pulse 700ms ease-out;
+}
+
+@keyframes axis-pulse {
+  0% {
+    stroke-width: 13;
+    opacity: 1;
+  }
+  100% {
+    stroke-width: 6;
+    opacity: 0.85;
+  }
+}
+
+.origin-dot {
+  fill: var(--text-h);
+}
+
+.grid-target {
+  cursor: pointer;
+}
+
+.grid-target.is-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.grid-target-line {
+  stroke: transparent;
+  stroke-width: 22;
+  stroke-linecap: round;
+  transition: stroke 0.15s ease;
+}
+
+.grid-target-line:hover {
+  stroke: rgba(124, 58, 237, 0.15);
+}
+
+.grid-target-line.is-correct {
+  stroke: rgba(52, 195, 143, 0.75);
+  animation: grid-target-pulse 700ms ease-out;
+}
+
+.grid-target-line.is-incorrect {
+  stroke: rgba(239, 98, 89, 0.75);
+}
+
+.grid-target-circle {
+  fill: transparent;
+  transition: fill 0.15s ease;
+}
+
+.grid-target-circle:hover {
+  fill: rgba(124, 58, 237, 0.18);
+}
+
+.grid-target-circle.is-correct {
+  fill: rgba(52, 195, 143, 0.8);
+  animation: grid-target-pulse 700ms ease-out;
+}
+
+.grid-target-circle.is-incorrect {
+  fill: rgba(239, 98, 89, 0.8);
+}
+
+@keyframes grid-target-pulse {
+  0% {
+    stroke-width: 28;
+    opacity: 0.6;
+  }
+  100% {
+    stroke-width: 22;
+    opacity: 1;
+  }
+}
+
+.quadrant-highlight {
+  fill: var(--primary-tint);
+  opacity: 0.45;
+}
+
+.origin-highlight {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 4;
+  animation: origin-pulse 900ms ease-out infinite;
+}
+
+@keyframes origin-pulse {
+  0% {
+    r: 6;
+    opacity: 1;
+  }
+  70% {
+    r: 18;
+    opacity: 0;
+  }
+  100% {
+    r: 18;
+    opacity: 0;
+  }
+}
+
+.point-guide {
+  stroke: var(--primary);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  opacity: 0.6;
+}
+
+.point-marker {
+  fill: var(--primary);
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+
+.target-marker {
+  font-size: 26px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.target-hit-ring {
+  fill: none;
+  stroke: var(--success-border);
+  stroke-width: 4;
+  animation: target-hit-pulse 650ms ease-out;
+}
+
+@keyframes target-hit-pulse {
+  0% {
+    r: 12;
+    opacity: 1;
+  }
+  100% {
+    r: 34;
+    opacity: 0;
+  }
+}
+
+.attempt-marker {
+  animation: attempt-marker-in 250ms ease-out;
+}
+
+.attempt-marker-ring {
+  fill: rgba(232, 84, 74, 0.12);
+  stroke: var(--error-border);
+  stroke-width: 2;
+}
+
+.attempt-marker-cross {
+  stroke: var(--error-border);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+@keyframes attempt-marker-in {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.ship-trail {
+  fill: none;
+  stroke: var(--primary-tint);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 2 7;
+}
+
+.ship-marker {
+  transition: transform 350ms ease;
+}
+
+.ship-emoji {
+  font-size: 22px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.grid-click-catcher {
+  fill: transparent;
+  cursor: pointer;
+}
+

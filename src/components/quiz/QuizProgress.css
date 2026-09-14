@@ -1,0 +1,29 @@
+.quiz-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.quiz-progress-track {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-alt);
+  overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  transition: width 0.35s ease;
+}
+
+.quiz-progress-label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}

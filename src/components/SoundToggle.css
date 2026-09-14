@@ -1,0 +1,17 @@
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--bg-alt);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.sound-toggle:hover {
+  background: var(--border);
+}

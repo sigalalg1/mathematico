@@ -1,0 +1,11 @@
+.coordinate-vocabulary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.coordinate-vocabulary-controls {
+  display: flex;
+  justify-content: center;
+}

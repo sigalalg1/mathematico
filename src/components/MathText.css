@@ -1,0 +1,4 @@
+.math-text {
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+}

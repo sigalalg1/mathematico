@@ -1,0 +1,33 @@
+.quiz-completion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  padding: var(--space-10) var(--space-5);
+  max-width: var(--container-narrow);
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.quiz-completion-icon {
+  font-size: 52px;
+  line-height: 1;
+}
+
+.quiz-completion-title {
+  font-size: var(--text-2xl);
+}
+
+.quiz-completion-score {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.quiz-completion .btn {
+  margin-top: var(--space-3);
+}
