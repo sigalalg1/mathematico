@@ -90,3 +90,25 @@ export const coordinateSystemGames: Game[] = [
     icon: '🎨',
   },
 ];
+
+export const divisionWithRemainderGames: Game[] = [
+  {
+    id: 'cargoStation',
+    enabled: true,
+    path: '/grade/4/division-with-remainder/cargo-station',
+    nameKey: 'cargoStation.gameName',
+    descriptionKey: 'cargoStation.gameDescription',
+    icon: '📦',
+  },
+];
+
+export const simpleFractionsGames: Game[] = [
+  {
+    id: 'fractionFactory',
+    enabled: true,
+    path: '/grade/4/simple-fractions/fraction-factory',
+    nameKey: 'fractionFactory.gameName',
+    descriptionKey: 'fractionFactory.gameDescription',
+    icon: '🍕',
+  },
+];
