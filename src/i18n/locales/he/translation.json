@@ -50,6 +50,10 @@
       "name": "חילוק עם שארית",
       "description": "חלקו שווה בשווה וגלו מה נשאר."
     },
+    "simpleFractions": {
+      "name": "שברים פשוטים",
+      "description": "חתכו שלם לחלקים שווים ובנו שברים."
+    },
     "multiplication": {
       "name": "כפל",
       "description": "בונים מבנים צבעוניים ומגלים איך הכפל מתחבר."
@@ -780,6 +784,56 @@
     "completion": {
       "title": "התחנה התרוקנה!",
       "summary": "{{total}} משימות הושלמו",
+      "firstTry": "{{first}} בניסיון הראשון"
+    }
+  },
+  "simpleFractionsPage": {
+    "title": "שברים פשוטים",
+    "subtitle": "חתכו, בחרו חלקים וגלו מהו מונה ומהו מכנה.",
+    "completedBadge": "הושלם"
+  },
+  "fractionFactory": {
+    "gameName": "מפעל השברים",
+    "gameDescription": "חתכו את השלם לחלקים שווים, קחו את החלקים שההזמנה מבקשת ושלחו",
+    "progress": "הזמנה {{current}} מתוך {{total}}",
+    "ticket": {
+      "label": "הזמנה",
+      "unknown": "איזה שבר זה?"
+    },
+    "prompt": {
+      "cut": "לכמה חלקים שווים לחתוך?",
+      "pattern": "איזו חתיכה נכונה?",
+      "cutting": "המכונה חותכת…",
+      "reverse": "איזה שבר יצא כאן?"
+    },
+    "lesson": {
+      "denominator": "מכנה {{count}} — לכמה חלקים שווים חילקנו את השלם",
+      "numerator": "מונה {{count}} — כמה חלקים לקחנו"
+    },
+    "feedback": {
+      "shipped": "ההזמנה יצאה!",
+      "wrongCut": "חתכתם ל-{{got}} חלקים, וההזמנה צריכה {{want}} חלקים שווים.",
+      "unequal": "החלקים האלה לא שווים בגודלם, אז אף אחד מהם הוא לא",
+      "wrongPick": "בניתם שבר אחר מההזמנה.",
+      "wrongReverse": "זה לא מתאים לצורה. ספרו שוב: כמה חלקים בסך הכל, וכמה מהם צבועים?"
+    },
+    "actions": {
+      "playAgain": "משמרת נוספת",
+      "backToTopic": "חזרה לנושא"
+    },
+    "a11y": {
+      "cut": "לחתוך ל-{{count}} חלקים שווים",
+      "piece": "חלק {{index}} מתוך {{total}}",
+      "patternEqual": "חיתוך ל-{{count}} חלקים שווים",
+      "patternUnequal": "חיתוך ל-{{count}} חלקים לא שווים",
+      "numeratorUp": "מונה גדול יותר",
+      "numeratorDown": "מונה קטן יותר",
+      "denominatorUp": "מכנה גדול יותר",
+      "denominatorDown": "מכנה קטן יותר"
+    },
+    "completion": {
+      "title": "המפעל עובד!",
+      "summary": "{{total}} הזמנות יצאו לדרך",
       "firstTry": "{{first}} בניסיון הראשון"
     }
   }

@@ -8,6 +8,12 @@ export const topics: Topic[] = [
     path: '/grade/4/division-with-remainder',
   },
   {
+    id: 'simpleFractions',
+    gradeId: 4,
+    enabled: true,
+    path: '/grade/4/simple-fractions',
+  },
+  {
     id: 'multiplication',
     gradeId: 4,
     enabled: true,

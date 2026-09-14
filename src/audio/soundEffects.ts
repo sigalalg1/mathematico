@@ -1,4 +1,4 @@
-export type SoundName = 'fire' | 'hit' | 'miss' | 'stageComplete' | 'gameComplete' | 'move' | 'phaseChange';
+export type SoundName = 'fire' | 'hit' | 'miss' | 'stageComplete' | 'gameComplete' | 'move' | 'phaseChange' | 'cut' | 'select';
 
 let sharedContext: AudioContext | null = null;
 
@@ -85,6 +85,15 @@ export function playSoundEffect(name: SoundName): void {
       case 'phaseChange':
         tone(ctx, { freq: 587.33, start: now, duration: 0.08, type: 'sine', gain: 0.12 });
         tone(ctx, { freq: 880, start: now + 0.07, duration: 0.1, type: 'sine', gain: 0.1 });
+        break;
+      // A short mechanical "shhk" for a blade coming down through a whole.
+      case 'cut':
+        tone(ctx, { freq: 1200, freqEnd: 240, start: now, duration: 0.14, type: 'sawtooth', gain: 0.06 });
+        tone(ctx, { freq: 180, start: now + 0.1, duration: 0.09, type: 'triangle', gain: 0.09 });
+        break;
+      // A soft click for picking a piece up or putting it back.
+      case 'select':
+        tone(ctx, { freq: 760, start: now, duration: 0.06, type: 'sine', gain: 0.08 });
         break;
     }
   } catch {

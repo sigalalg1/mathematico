@@ -50,6 +50,10 @@
       "name": "Division with Remainder",
       "description": "Share things out equally and find what is left over."
     },
+    "simpleFractions": {
+      "name": "Simple Fractions",
+      "description": "Cut a whole into equal parts and build fractions."
+    },
     "multiplication": {
       "name": "Multiplication",
       "description": "Build bright block structures and discover how multiplication fits together."
@@ -780,6 +784,56 @@
     "completion": {
       "title": "Station cleared!",
       "summary": "{{total}} missions completed",
+      "firstTry": "{{first}} on the first try"
+    }
+  },
+  "simpleFractionsPage": {
+    "title": "Simple Fractions",
+    "subtitle": "Cut, take pieces, and discover the numerator and the denominator.",
+    "completedBadge": "Completed"
+  },
+  "fractionFactory": {
+    "gameName": "Fraction Factory",
+    "gameDescription": "Cut the whole into equal pieces, take the pieces the order asks for, and ship it",
+    "progress": "Order {{current}} of {{total}}",
+    "ticket": {
+      "label": "Order",
+      "unknown": "Which fraction is this?"
+    },
+    "prompt": {
+      "cut": "How many equal pieces?",
+      "pattern": "Which cut is a real one?",
+      "cutting": "Cutting…",
+      "reverse": "Which fraction came out here?"
+    },
+    "lesson": {
+      "denominator": "Denominator {{count}} — how many equal parts the whole was cut into",
+      "numerator": "Numerator {{count}} — how many parts we took"
+    },
+    "feedback": {
+      "shipped": "Order shipped!",
+      "wrongCut": "You cut {{got}} pieces, but the order needs {{want}} equal pieces.",
+      "unequal": "These pieces are not the same size, so none of them can be",
+      "wrongPick": "You built a different fraction from the order.",
+      "wrongReverse": "That does not match the shape. Count again: how many pieces in total, and how many are filled?"
+    },
+    "actions": {
+      "playAgain": "Another shift",
+      "backToTopic": "Back to the topic"
+    },
+    "a11y": {
+      "cut": "Cut into {{count}} equal pieces",
+      "piece": "Piece {{index}} of {{total}}",
+      "patternEqual": "A cut into {{count}} equal pieces",
+      "patternUnequal": "A cut into {{count}} unequal pieces",
+      "numeratorUp": "Bigger numerator",
+      "numeratorDown": "Smaller numerator",
+      "denominatorUp": "Bigger denominator",
+      "denominatorDown": "Smaller denominator"
+    },
+    "completion": {
+      "title": "The factory is running!",
+      "summary": "{{total}} orders shipped",
       "firstTry": "{{first}} on the first try"
     }
   }
