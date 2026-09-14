@@ -5,7 +5,7 @@ import i18n, { getDirection, supportedLanguages } from '../index';
 import en from '../locales/en/translation.json';
 import he from '../locales/he/translation.json';
 import App from '../../App';
-import { coordinateSystemGames } from '../../data/games';
+import { coordinateSystemGames, divisionWithRemainderGames } from '../../data/games';
 
 type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
 
@@ -30,7 +30,15 @@ function structure(value: Json): Json {
 }
 
 const EN_PATHS = leafPaths(en as Json);
-const ROUTES = ['/', '/grade/7', '/grade/7/coordinate-system', ...coordinateSystemGames.map((g) => g.path!)];
+const ROUTES = [
+  '/',
+  '/grade/4',
+  '/grade/4/division-with-remainder',
+  '/grade/7',
+  '/grade/7/coordinate-system',
+  ...coordinateSystemGames.map((g) => g.path!),
+  ...divisionWithRemainderGames.map((g) => g.path!),
+];
 
 afterEach(async () => {
   await i18n.changeLanguage('he');

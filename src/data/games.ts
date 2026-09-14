@@ -90,3 +90,14 @@ export const coordinateSystemGames: Game[] = [
     icon: '🎨',
   },
 ];
+
+export const divisionWithRemainderGames: Game[] = [
+  {
+    id: 'cargoStation',
+    enabled: true,
+    path: '/grade/4/division-with-remainder/cargo-station',
+    nameKey: 'cargoStation.gameName',
+    descriptionKey: 'cargoStation.gameDescription',
+    icon: '📦',
+  },
+];

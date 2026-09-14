@@ -11,7 +11,8 @@
   "nav": {
     "allGrades": "All grades",
     "grade7Topics": "Grade 7 topics",
-    "accountNavLabel": "Account navigation"
+    "accountNavLabel": "Account navigation",
+    "grade4Topics": "Grade 4 topics"
   },
   "auth": {
     "title": "Account",
@@ -45,6 +46,14 @@
     "subtitle": "Choose a topic to explore"
   },
   "topics": {
+    "divisionWithRemainder": {
+      "name": "Division with Remainder",
+      "description": "Share things out equally and find what is left over."
+    },
+    "multiplication": {
+      "name": "Multiplication",
+      "description": "Coming soon"
+    },
     "coordinateSystem": {
       "name": "Coordinate System",
       "description": "Plot points, find locations, and play with the grid."
@@ -658,5 +667,84 @@
   "language": {
     "label": "Language",
     "switchTo": "עברית"
+  },
+  "divisionWithRemainderPage": {
+    "title": "Division with Remainder",
+    "subtitle": "Share the crates out equally and discover the leftovers.",
+    "completedBadge": "Completed"
+  },
+  "cargoStation": {
+    "gameName": "Cargo Station",
+    "gameDescription": "Hand out the crates equally and read the leftovers",
+    "progress": "Delivery {{current}} of {{total}}",
+    "stages": {
+      "stage1": {
+        "name": "Stage 1 — Perfect Loads",
+        "intro": "Every crate finds a loader."
+      },
+      "stage2": {
+        "name": "Stage 2 — Something Is Left",
+        "intro": "Now a few crates stay on the platform."
+      },
+      "stage3": {
+        "name": "Stage 3 — Mixed Deliveries",
+        "intro": "Bigger loads, bigger leftovers."
+      },
+      "stage4": {
+        "name": "Stage 4 — Final Mission",
+        "intro": "One last delivery. You've got this!"
+      }
+    },
+    "mission": {
+      "crates": "crates",
+      "loaders": "loaders",
+      "instruction": "Tap a loader to hand it one crate. In the end every loader must have the same number of crates.",
+      "readNumbers": "Equal loads! Now read the station: how many crates did each loader get, and how many are left?"
+    },
+    "platform": {
+      "title": "Platform",
+      "leftoverTitle": "Left over",
+      "empty": "The platform is empty"
+    },
+    "split": {
+      "unequal": "The loaders don't have the same number of crates yet.",
+      "canGiveMore": "There are still enough crates to give every loader one more."
+    },
+    "equation": {
+      "remainderWord": "remainder",
+      "perLoader": "Each loader",
+      "leftover": "Left over"
+    },
+    "counts": {
+      "perLoader": "Each loader got: {{crates}}",
+      "leftover": "Left on the platform: {{crates}}"
+    },
+    "feedback": {
+      "correct": "Perfect delivery!",
+      "incorrect": "Look at the station again: count one loader's crates, then count the crates still on the platform."
+    },
+    "actions": {
+      "reset": "Start over",
+      "checkSplit": "Check the split",
+      "deliver": "Deliver!",
+      "playAgain": "Play again",
+      "backToTopic": "Back to the topic"
+    },
+    "a11y": {
+      "giveCrate": "Give a crate to loader {{index}}. It has {{crates}} crates.",
+      "decrease": {
+        "quotient": "One less for each loader",
+        "remainder": "One less left over"
+      },
+      "increase": {
+        "quotient": "One more for each loader",
+        "remainder": "One more left over"
+      }
+    },
+    "completion": {
+      "title": "Station cleared!",
+      "summary": "{{total}} deliveries completed",
+      "firstTry": "{{first}} on the first try"
+    }
   }
 }

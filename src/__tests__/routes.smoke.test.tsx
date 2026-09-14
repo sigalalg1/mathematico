@@ -3,10 +3,10 @@ import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../test/testUtils';
 import i18n from '../i18n';
 import App from '../App';
-import { coordinateSystemGames } from '../data/games';
+import { coordinateSystemGames, divisionWithRemainderGames } from '../data/games';
 
-const STATIC_ROUTES = ['/', '/grade/7', '/grade/7/coordinate-system', '/account', '/activity'];
-const GAME_ROUTES = coordinateSystemGames.map((game) => game.path!);
+const STATIC_ROUTES = ['/', '/grade/4', '/grade/4/division-with-remainder', '/grade/7', '/grade/7/coordinate-system', '/account', '/activity'];
+const GAME_ROUTES = [...coordinateSystemGames, ...divisionWithRemainderGames].map((game) => game.path!);
 const ALL_ROUTES = [...STATIC_ROUTES, ...GAME_ROUTES];
 
 describe('routing smoke tests', () => {
@@ -57,6 +57,13 @@ describe('routing smoke tests', () => {
   it('redirects an unknown grade back to the home page', () => {
     renderWithProviders(<App />, ['/grade/3']);
     expect(screen.getByRole('heading', { level: 1, name: i18n.t('app.title') })).toBeInTheDocument();
+  });
+
+  it('shows the Grade 4 division game as a card on its topic page', () => {
+    renderWithProviders(<App />, ['/grade/4/division-with-remainder']);
+    for (const game of divisionWithRemainderGames) {
+      expect(screen.getByText(i18n.t(game.nameKey) as string)).toBeInTheDocument();
+    }
   });
 
   it('shows every coordinate system game as a card on the topic page', () => {

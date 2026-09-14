@@ -11,7 +11,8 @@
   "nav": {
     "allGrades": "כל הכיתות",
     "grade7Topics": "נושאי כיתה ז'",
-    "accountNavLabel": "ניווט חשבון"
+    "accountNavLabel": "ניווט חשבון",
+    "grade4Topics": "נושאי כיתה ד'"
   },
   "auth": {
     "title": "חשבון",
@@ -45,6 +46,14 @@
     "subtitle": "בחרו נושא לחקור"
   },
   "topics": {
+    "divisionWithRemainder": {
+      "name": "חילוק עם שארית",
+      "description": "חלקו שווה בשווה וגלו מה נשאר."
+    },
+    "multiplication": {
+      "name": "כפל",
+      "description": "בקרוב"
+    },
     "coordinateSystem": {
       "name": "מערכת צירים",
       "description": "סמנו נקודות, מצאו מיקומים ושחקו עם הצירים."
@@ -658,5 +667,84 @@
   "language": {
     "label": "שפה",
     "switchTo": "English"
+  },
+  "divisionWithRemainderPage": {
+    "title": "חילוק עם שארית",
+    "subtitle": "חלקו את הארגזים שווה בשווה וגלו מה נשאר.",
+    "completedBadge": "הושלם"
+  },
+  "cargoStation": {
+    "gameName": "תחנת המטען",
+    "gameDescription": "חלקו את הארגזים שווה בשווה וגלו את השארית",
+    "progress": "משלוח {{current}} מתוך {{total}}",
+    "stages": {
+      "stage1": {
+        "name": "שלב 1 — חלוקה מושלמת",
+        "intro": "כל הארגזים מתחלקים בדיוק."
+      },
+      "stage2": {
+        "name": "שלב 2 — משהו נשאר",
+        "intro": "עכשיו כמה ארגזים יישארו על הרציף."
+      },
+      "stage3": {
+        "name": "שלב 3 — משלוחים מעורבים",
+        "intro": "יותר ארגזים, יותר שארית."
+      },
+      "stage4": {
+        "name": "שלב 4 — משימת סיום",
+        "intro": "משלוח אחרון. אתם יודעים לעשות את זה!"
+      }
+    },
+    "mission": {
+      "crates": "ארגזים",
+      "loaders": "רובוטים",
+      "instruction": "הקישו על רובוט כדי לתת לו ארגז אחד. בסוף לכל הרובוטים צריך להיות אותו מספר ארגזים.",
+      "readNumbers": "חלוקה שווה! עכשיו קראו מהתחנה: כמה ארגזים קיבל כל רובוט, וכמה ארגזים נשארו?"
+    },
+    "platform": {
+      "title": "רציף",
+      "leftoverTitle": "שארית",
+      "empty": "הרציף ריק"
+    },
+    "split": {
+      "unequal": "לרובוטים עדיין אין אותו מספר ארגזים.",
+      "canGiveMore": "אפשר עוד לתת לכל רובוט ארגז נוסף."
+    },
+    "equation": {
+      "remainderWord": "שארית",
+      "perLoader": "לכל רובוט",
+      "leftover": "נשארו"
+    },
+    "counts": {
+      "perLoader": "כל רובוט קיבל: {{crates}}",
+      "leftover": "נשארו על הרציף: {{crates}}"
+    },
+    "feedback": {
+      "correct": "משלוח מושלם!",
+      "incorrect": "הסתכלו שוב על התחנה: ספרו כמה ארגזים יש לרובוט אחד, ואז כמה ארגזים נשארו על הרציף."
+    },
+    "actions": {
+      "reset": "מתחילים מחדש",
+      "checkSplit": "בדקו את החלוקה",
+      "deliver": "שולחים!",
+      "playAgain": "משחקים שוב",
+      "backToTopic": "חזרה לנושא"
+    },
+    "a11y": {
+      "giveCrate": "תנו ארגז לרובוט {{index}}. יש לו {{crates}} ארגזים.",
+      "decrease": {
+        "quotient": "פחות אחד לכל רובוט",
+        "remainder": "פחות אחד בשארית"
+      },
+      "increase": {
+        "quotient": "עוד אחד לכל רובוט",
+        "remainder": "עוד אחד בשארית"
+      }
+    },
+    "completion": {
+      "title": "התחנה התרוקנה!",
+      "summary": "{{total}} משלוחים הושלמו",
+      "firstTry": "{{first}} בניסיון הראשון"
+    }
   }
 }

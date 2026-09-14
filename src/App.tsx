@@ -2,6 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { GradePage } from './pages/GradePage';
 import { CoordinateSystemPage } from './pages/CoordinateSystemPage';
+import { DivisionWithRemainderPage } from './pages/DivisionWithRemainderPage';
+import { CargoStationPage } from './pages/CargoStationPage';
 import { CoordinateVocabularyPage } from './pages/CoordinateVocabularyPage';
 import { MeetTheAxesPage } from './pages/MeetTheAxesPage';
 import { HitTheTargetPage } from './pages/HitTheTargetPage';
@@ -24,6 +26,8 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/grade/:gradeId" element={<GradePage />} />
+      <Route path="/grade/4/division-with-remainder" element={<DivisionWithRemainderPage />} />
+      <Route path="/grade/4/division-with-remainder/cargo-station" element={<CargoStationPage />} />
       <Route path="/grade/7/coordinate-system" element={<CoordinateSystemPage />} />
       <Route path="/grade/7/coordinate-system/coordinate-vocabulary" element={<CoordinateVocabularyPage />} />
       <Route path="/grade/7/coordinate-system/meet-the-axes" element={<MeetTheAxesPage />} />

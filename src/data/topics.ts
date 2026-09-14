@@ -2,6 +2,17 @@ import type { Topic } from '../types';
 
 export const topics: Topic[] = [
   {
+    id: 'divisionWithRemainder',
+    gradeId: 4,
+    enabled: true,
+    path: '/grade/4/division-with-remainder',
+  },
+  {
+    id: 'multiplication',
+    gradeId: 4,
+    enabled: false,
+  },
+  {
     id: 'coordinateSystem',
     gradeId: 7,
     enabled: true,
