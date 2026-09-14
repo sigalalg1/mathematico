@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildCargoStationStages, CARGO_STATION_TOTAL } from '../cargoStationData';
+import { buildCargoStationStages, buildQuotientChoices, CARGO_STATION_TOTAL, evaluateQuotientChoice } from '../cargoStationData';
 import type { CargoChallenge } from '../../../types/cargoStation';
 
 const RUNS = 400;
@@ -104,5 +104,83 @@ describe('cargo station — round structure', () => {
   it('varies the exercises between rounds', () => {
     const signatures = new Set(allRounds(60).map((round) => round.map((c) => `${c.dividend}/${c.divisor}`).join('|')));
     expect(signatures.size).toBeGreaterThan(1);
+  });
+});
+
+describe('cargo station — the one choice the child makes', () => {
+  it('accepts exactly floor(dividend / divisor) and nothing else', () => {
+    for (const c of ALL) {
+      expect(evaluateQuotientChoice(c, Math.floor(c.dividend / c.divisor))).toBe('correct');
+      expect(c.quotient).toBe(Math.floor(c.dividend / c.divisor));
+      expect(c.remainder).toBe(c.dividend % c.divisor);
+    }
+  });
+
+  it('rejects quotient - 1 as too low because a whole extra round still fits', () => {
+    for (const c of ALL) {
+      const choice = c.quotient - 1;
+      // The leftover after an equal-but-not-maximal share is still >= one full round.
+      expect(c.dividend - choice * c.divisor).toBeGreaterThanOrEqual(c.divisor);
+      expect(evaluateQuotientChoice(c, choice)).toBe('tooLow');
+    }
+  });
+
+  it('rejects quotient + 1 as too high because the depot runs dry', () => {
+    for (const c of ALL) {
+      const choice = c.quotient + 1;
+      expect(choice * c.divisor).toBeGreaterThan(c.dividend);
+      expect(evaluateQuotientChoice(c, choice)).toBe('tooHigh');
+    }
+  });
+
+  it('judges an exact division and a division with remainder by the same rule', () => {
+    const exact = { id: 'x', stageId: 'stage1', dividend: 12, divisor: 4, quotient: 3, remainder: 0 };
+    const withRemainder = { id: 'y', stageId: 'stage2', dividend: 17, divisor: 4, quotient: 4, remainder: 1 };
+
+    expect(evaluateQuotientChoice(exact, 3)).toBe('correct');
+    expect(evaluateQuotientChoice(exact, 2)).toBe('tooLow');
+    expect(evaluateQuotientChoice(exact, 4)).toBe('tooHigh');
+
+    expect(evaluateQuotientChoice(withRemainder, 4)).toBe('correct');
+    expect(evaluateQuotientChoice(withRemainder, 3)).toBe('tooLow');
+    expect(evaluateQuotientChoice(withRemainder, 5)).toBe('tooHigh');
+  });
+});
+
+describe('cargo station — the amount buttons', () => {
+  it('always offers the correct amount plus believable neighbours', () => {
+    for (const c of ALL) {
+      const options = buildQuotientChoices(c);
+      expect(options).toContain(c.quotient);
+      expect(options.length).toBeGreaterThanOrEqual(3);
+      expect(options.length).toBeLessThanOrEqual(4);
+      expect(new Set(options).size).toBe(options.length);
+      for (const option of options) {
+        expect(Number.isInteger(option)).toBe(true);
+        // No absurd distractors: every button stays within two of the answer.
+        expect(option).toBeGreaterThanOrEqual(1);
+        expect(Math.abs(option - c.quotient)).toBeLessThanOrEqual(2);
+      }
+    }
+  });
+
+  it('offers exactly one correct button; every other one is a real mistake', () => {
+    for (const c of ALL) {
+      const options = buildQuotientChoices(c);
+      const correct = options.filter((option) => evaluateQuotientChoice(c, option) === 'correct');
+      expect(correct).toEqual([c.quotient]);
+    }
+  });
+
+  it('moves the correct answer around instead of parking it in one slot', () => {
+    const challenge = { id: 'z', stageId: 'stage2', dividend: 17, divisor: 4, quotient: 4, remainder: 1 };
+    const positions = new Set(Array.from({ length: 120 }, () => buildQuotientChoices(challenge).indexOf(4)));
+    expect(positions.size).toBeGreaterThan(1);
+  });
+
+  it('sometimes offers a fourth amount, and never fewer than three', () => {
+    const challenge = { id: 'z', stageId: 'stage3', dividend: 17, divisor: 4, quotient: 4, remainder: 1 };
+    const sizes = new Set(Array.from({ length: 200 }, () => buildQuotientChoices(challenge).length));
+    expect([...sizes].sort()).toEqual([3, 4]);
   });
 });

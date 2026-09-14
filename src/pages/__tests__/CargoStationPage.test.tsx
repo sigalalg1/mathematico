@@ -3,166 +3,205 @@ import { act, fireEvent, screen } from '@testing-library/react';
 import { renderWithProviders } from '../../test/testUtils';
 import i18n from '../../i18n';
 import { CargoStationPage } from '../CargoStationPage';
+import type { CargoChallenge } from '../../types/cargoStation';
 
-vi.mock('../../data/games/cargoStationData', () => ({
-  CARGO_STATION_TOTAL: 2,
-  buildCargoStationStages: () => [
-    {
-      id: 'stage1',
-      nameKey: 'cargoStation.stages.stage1.name',
-      introKey: 'cargoStation.stages.stage1.intro',
-      // 6 crates, 3 loaders -> 2 each, nothing left over.
-      challenges: [{ id: 'stage1-0', stageId: 'stage1', dividend: 6, divisor: 3, quotient: 2, remainder: 0 }],
+// Mission 1: 12 boxes / 4 robots -> 3 each, nothing left over.
+// Mission 2: 17 boxes / 4 robots -> 4 each, 1 left over.
+vi.mock('../../data/games/cargoStationData', async (importOriginal) => {
+  const original = await importOriginal<typeof import('../../data/games/cargoStationData')>();
+  return {
+    ...original,
+    CARGO_STATION_TOTAL: 2,
+    // Fixed button order keeps the tests readable; the shuffle is covered by the data tests.
+    buildQuotientChoices: (challenge: CargoChallenge) => {
+      const quotient = Math.floor(challenge.dividend / challenge.divisor);
+      return [quotient - 1, quotient, quotient + 1];
     },
-    {
-      id: 'stage2',
-      nameKey: 'cargoStation.stages.stage2.name',
-      introKey: 'cargoStation.stages.stage2.intro',
-      // 7 crates, 3 loaders -> 2 each, 1 left over.
-      challenges: [{ id: 'stage2-0', stageId: 'stage2', dividend: 7, divisor: 3, quotient: 2, remainder: 1 }],
-    },
-  ],
-}));
+    buildCargoStationStages: () => [
+      {
+        id: 'stage1',
+        nameKey: 'cargoStation.stages.stage1.name',
+        introKey: 'cargoStation.stages.stage1.intro',
+        challenges: [{ id: 'stage1-0', stageId: 'stage1', dividend: 12, divisor: 4, quotient: 3, remainder: 0 }],
+      },
+      {
+        id: 'stage2',
+        nameKey: 'cargoStation.stages.stage2.name',
+        introKey: 'cargoStation.stages.stage2.intro',
+        challenges: [{ id: 'stage2-0', stageId: 'stage2', dividend: 17, divisor: 4, quotient: 4, remainder: 1 }],
+      },
+    ],
+  };
+});
 
 const t = (key: string, options?: Record<string, unknown>) => i18n.t(key, options) as string;
+
+const robots = (c: HTMLElement) => Array.from(c.querySelectorAll('.cs-robot'));
+const robotLoad = (index: number) => screen.getByTestId(`robot-stack-${index}`).querySelectorAll('.cs-box').length;
+const depotBoxes = () => screen.getByTestId('depot-boxes').querySelectorAll('.cs-box').length;
+const storageBoxes = () => screen.getByTestId('storage-boxes').querySelectorAll('.cs-box').length;
 const progress = () => screen.getByRole('progressbar').getAttribute('aria-valuenow');
-const loaders = (container: HTMLElement) => Array.from(container.querySelectorAll<HTMLButtonElement>('.cs-loader'));
-const platformCrates = () => screen.getByTestId('platform-crates').querySelectorAll('.cs-crate').length;
-const checkSplitButton = () => screen.queryByRole('button', { name: t('cargoStation.actions.checkSplit') });
-const deliverButton = () => screen.getByRole('button', { name: t('cargoStation.actions.deliver') });
+const amountButton = (count: number) => screen.getByRole('button', { name: t('cargoStation.a11y.choose', { count }) });
 
-function give(container: HTMLElement, index: number, times = 1) {
-  for (let i = 0; i < times; i++) fireEvent.click(loaders(container)[index]);
+/** Taps an amount and lets the distribution animation finish. */
+function choose(count: number) {
+  fireEvent.click(amountButton(count));
+  act(() => vi.advanceTimersByTime(1200));
 }
 
-function bump(variant: 'quotient' | 'remainder', times: number) {
-  for (let i = 0; i < times; i++) {
-    fireEvent.click(screen.getByLabelText(t(`cargoStation.a11y.increase.${variant}`)));
-  }
+/**
+ * Watches the launch play out and the next mission arrive. Each phase schedules
+ * its follow-up timer only after React has committed, so the clock is advanced
+ * one phase at a time.
+ */
+function watchLaunch() {
+  act(() => vi.advanceTimersByTime(1200));
+  act(() => vi.advanceTimersByTime(1000));
 }
 
-function shareEvenly(container: HTMLElement, perLoader: number) {
-  const count = loaders(container).length;
-  for (let round = 0; round < perLoader; round++) {
-    for (let i = 0; i < count; i++) give(container, i);
-  }
+/** Waits out a failed attempt, after which the station resets itself. */
+function watchReset() {
+  act(() => vi.advanceTimersByTime(2000));
 }
 
-describe('Cargo Station — dealing the crates', () => {
+describe('Cargo Station — the arrival', () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());
 
-  it('shows every crate on the platform and one loader per divisor', () => {
+  it('shows the whole load, one robot per divisor, and asks the single question', () => {
     const { container } = renderWithProviders(<CargoStationPage />);
-    expect(platformCrates()).toBe(6);
-    expect(loaders(container)).toHaveLength(3);
+
+    expect(depotBoxes()).toBe(12);
+    expect(robots(container)).toHaveLength(4);
+    expect(screen.getByText(t('cargoStation.question'))).toBeInTheDocument();
   });
 
-  it('moves a crate from the platform onto a loader when it is tapped', () => {
+  it('offers large amount buttons instead of the old manual distribution UI', () => {
     const { container } = renderWithProviders(<CargoStationPage />);
-    give(container, 0);
-    expect(platformCrates()).toBe(5);
-    expect(container.querySelectorAll('[data-testid="loader-stack-0"] .cs-crate')).toHaveLength(1);
+
+    expect(container.querySelectorAll('.cs-choice')).toHaveLength(3);
+    for (const count of [2, 3, 4]) expect(amountButton(count)).toBeInTheDocument();
+    // The retired interaction model must be gone, not hidden alongside the new one.
+    expect(container.querySelector('.cs-stepper')).toBeNull();
+    expect(screen.queryByText(t('cargoStation.equation.remainderWord'))).not.toBeInTheDocument();
   });
 
-  it('explains an uneven split instead of accepting it, and stays playable', () => {
-    const { container } = renderWithProviders(<CargoStationPage />);
-    give(container, 0, 2);
-    fireEvent.click(checkSplitButton()!);
-
-    expect(screen.getByText(t('cargoStation.split.unequal'))).toBeInTheDocument();
-    expect(checkSplitButton()).not.toBeNull();
-    expect(loaders(container)[1]).not.toBeDisabled();
-  });
-
-  it('says the crates can still be shared when too many are left on the platform', () => {
-    const { container } = renderWithProviders(<CargoStationPage />);
-    shareEvenly(container, 1);
-    fireEvent.click(checkSplitButton()!);
-
-    expect(screen.getByText(t('cargoStation.split.canGiveMore'))).toBeInTheDocument();
-    expect(checkSplitButton()).not.toBeNull();
-  });
-
-  it('lets the child start the distribution over', () => {
-    const { container } = renderWithProviders(<CargoStationPage />);
-    give(container, 0, 3);
-    fireEvent.click(screen.getByRole('button', { name: t('cargoStation.actions.reset') }));
-    expect(platformCrates()).toBe(6);
-  });
-
-  it('opens the written form once the split is equal', () => {
-    const { container } = renderWithProviders(<CargoStationPage />);
-    shareEvenly(container, 2);
-    fireEvent.click(checkSplitButton()!);
-
-    expect(checkSplitButton()).toBeNull();
-    expect(screen.getByText(t('cargoStation.equation.remainderWord'))).toBeInTheDocument();
-    expect(screen.getByText(t('cargoStation.platform.leftoverTitle'))).toBeInTheDocument();
+  it('starts every robot empty, so no cargo has moved before the child decides', () => {
+    renderWithProviders(<CargoStationPage />);
+    for (let i = 0; i < 4; i++) expect(robotLoad(i)).toBe(0);
+    expect(storageBoxes()).toBe(0);
   });
 });
 
-describe('Cargo Station — answering the division', () => {
+describe('Cargo Station — the correct choice', () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());
 
-  function reachAnswerPhase(container: HTMLElement, perLoader: number) {
-    shareEvenly(container, perLoader);
-    fireEvent.click(checkSplitButton()!);
-  }
+  it('distributes the cargo, empties the depot and shows the equation', () => {
+    renderWithProviders(<CargoStationPage />);
+    choose(3);
 
-  it('advances to the next delivery on a correct quotient and remainder', () => {
-    const { container } = renderWithProviders(<CargoStationPage />);
-    reachAnswerPhase(container, 2);
-    bump('quotient', 2);
-    fireEvent.click(deliverButton());
-
-    expect(screen.getByText(t('cargoStation.feedback.correct'))).toBeInTheDocument();
-    act(() => vi.advanceTimersByTime(1200));
-    expect(progress()).toBe('2');
-    expect(platformCrates()).toBe(7);
+    for (let i = 0; i < 4; i++) expect(robotLoad(i)).toBe(3);
+    expect(depotBoxes()).toBe(0);
+    expect(storageBoxes()).toBe(0);
+    expect(screen.getByTestId('cargo-equation').textContent).toContain('12 ÷ 4 = 3');
   });
 
-  it('does not advance on a wrong answer, shows the counts, and allows another try', () => {
-    const { container } = renderWithProviders(<CargoStationPage />);
-    reachAnswerPhase(container, 2);
-    bump('quotient', 3);
-    fireEvent.click(deliverButton());
-
-    expect(screen.getByText(t('cargoStation.feedback.incorrect'))).toBeInTheDocument();
-    expect(screen.getByText(t('cargoStation.counts.perLoader', { crates: 2 }))).toBeInTheDocument();
-    expect(screen.getByText(t('cargoStation.counts.leftover', { crates: 0 }))).toBeInTheDocument();
-    act(() => vi.advanceTimersByTime(1200));
+  it('launches the robots and moves on to the next mission without another tap', () => {
+    renderWithProviders(<CargoStationPage />);
     expect(progress()).toBe('1');
 
-    // Retry in place: the deliver button must still work after a wrong answer.
-    expect(deliverButton()).not.toBeDisabled();
-    fireEvent.click(screen.getByLabelText(t('cargoStation.a11y.decrease.quotient')));
-    fireEvent.click(deliverButton());
-    act(() => vi.advanceTimersByTime(1200));
+    choose(3);
+    watchLaunch();
+
     expect(progress()).toBe('2');
+    expect(depotBoxes()).toBe(17);
+    expect(screen.getByText(t('cargoStation.question'))).toBeInTheDocument();
   });
 
-  it('needs the remainder too, and finishes the round on the last delivery', () => {
-    const { container } = renderWithProviders(<CargoStationPage />);
-    reachAnswerPhase(container, 2);
-    bump('quotient', 2);
-    fireEvent.click(deliverButton());
-    act(() => vi.advanceTimersByTime(1200));
+  it('leaves the remainder visible in the remainder bay next to the equation', () => {
+    renderWithProviders(<CargoStationPage />);
+    choose(3);
+    watchLaunch();
 
-    // Second delivery: 7 crates, 3 loaders -> 2 each and 1 left over.
-    reachAnswerPhase(container, 2);
-    expect(platformCrates()).toBe(1);
+    // Mission 2: 17 / 4 -> 4 each and 1 box that cannot be shared.
+    choose(4);
+    for (let i = 0; i < 4; i++) expect(robotLoad(i)).toBe(4);
+    expect(storageBoxes()).toBe(1);
+    expect(depotBoxes()).toBe(0);
 
-    bump('quotient', 2);
-    fireEvent.click(deliverButton());
-    expect(screen.getByText(t('cargoStation.feedback.incorrect'))).toBeInTheDocument();
+    const equation = screen.getByTestId('cargo-equation').textContent ?? '';
+    expect(equation).toContain('17 ÷ 4 = 4');
+    expect(equation).toContain(t('cargoStation.equation.remainderWord'));
+    expect(equation).toContain('1');
+  });
 
-    bump('remainder', 1);
-    fireEvent.click(deliverButton());
-    act(() => vi.advanceTimersByTime(1200));
+  it('finishes the round after the last mission', () => {
+    renderWithProviders(<CargoStationPage />);
+    choose(3);
+    watchLaunch();
+    choose(4);
+    watchLaunch();
 
     expect(screen.getByText(t('cargoStation.completion.title'))).toBeInTheDocument();
+  });
+});
+
+describe('Cargo Station — a choice that is too high', () => {
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  it('runs the depot dry and strands the last robot instead of just saying "wrong"', () => {
+    const { container } = renderWithProviders(<CargoStationPage />);
+    choose(4); // 4 x 4 = 16 > 12 boxes.
+
+    expect(robotLoad(0)).toBe(4);
+    expect(robotLoad(1)).toBe(4);
+    expect(robotLoad(2)).toBe(4);
+    expect(robotLoad(3)).toBe(0);
+    expect(depotBoxes()).toBe(0);
+    expect(screen.getByText(t('cargoStation.feedback.tooHigh'))).toBeInTheDocument();
+    expect(container.querySelectorAll('.cs-robot-incomplete')).toHaveLength(1);
+  });
+
+  it('resets the station quickly and lets the child choose again on the same mission', () => {
+    renderWithProviders(<CargoStationPage />);
+    choose(4);
+    watchReset();
+
+    expect(progress()).toBe('1');
+    expect(depotBoxes()).toBe(12);
+    for (let i = 0; i < 4; i++) expect(robotLoad(i)).toBe(0);
+
+    choose(3);
+    expect(screen.getByTestId('cargo-equation').textContent).toContain('12 ÷ 4 = 3');
+  });
+});
+
+describe('Cargo Station — a choice that is too low', () => {
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  it('shares equally but shows that another full round still fits', () => {
+    const { container } = renderWithProviders(<CargoStationPage />);
+    choose(2); // 2 x 4 = 8, leaving 4 boxes: still one more round for everyone.
+
+    for (let i = 0; i < 4; i++) expect(robotLoad(i)).toBe(2);
+    expect(storageBoxes()).toBe(4);
+    expect(screen.getByText(t('cargoStation.feedback.tooLow'))).toBeInTheDocument();
+    // One more box is visibly heading to every robot.
+    expect(container.querySelectorAll('.cs-ghost-box')).toHaveLength(4);
+    expect(screen.queryByTestId('cargo-equation')).not.toBeInTheDocument();
+  });
+
+  it('does not advance the mission and clears itself for another try', () => {
+    renderWithProviders(<CargoStationPage />);
+    choose(2);
+    watchReset();
+
+    expect(progress()).toBe('1');
+    expect(storageBoxes()).toBe(0);
+    expect(screen.getByText(t('cargoStation.question'))).toBeInTheDocument();
   });
 });
 
@@ -177,18 +216,25 @@ describe('Cargo Station — languages', () => {
     await i18n.changeLanguage(language);
     const { container } = renderWithProviders(<CargoStationPage />);
     const text = container.textContent ?? '';
+
     expect(text).not.toContain('cargoStation.');
     expect(screen.getByRole('heading', { level: 1, name: t('cargoStation.gameName') })).toBeInTheDocument();
   });
 
-  it('keeps the written division form LTR on the Hebrew page', async () => {
+  it('keeps the division sentence LTR on the Hebrew page', async () => {
+    await i18n.changeLanguage('he');
+    renderWithProviders(<CargoStationPage />);
+    choose(3);
+
+    expect(screen.getByTestId('cargo-equation').querySelector('.cs-equation-text')).toHaveAttribute('dir', 'ltr');
+  });
+
+  it('never shows the stage scaffolding to the child', async () => {
     await i18n.changeLanguage('he');
     const { container } = renderWithProviders(<CargoStationPage />);
-    shareEvenly(container, 2);
-    fireEvent.click(checkSplitButton()!);
+    const text = container.textContent ?? '';
 
-    const equation = container.querySelector('.cs-equation-text');
-    expect(equation).toHaveAttribute('dir', 'ltr');
-    expect(equation?.textContent).toContain('6 ÷ 3 =');
+    expect(text).not.toContain(t('cargoStation.stages.stage1.name'));
+    expect(text).not.toContain(t('cargoStation.progress', { current: 1, total: 2 }));
   });
 });

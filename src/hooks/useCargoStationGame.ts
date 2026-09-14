@@ -1,18 +1,18 @@
 import { useMemo } from 'react';
 import { useChallengeRound } from './useChallengeRound';
-import { buildCargoStationStages, CARGO_STATION_TOTAL } from '../data/games/cargoStationData';
+import { buildCargoStationStages, buildQuotientChoices, CARGO_STATION_TOTAL } from '../data/games/cargoStationData';
 import type { CargoAnswer, CargoChallenge } from '../types/cargoStation';
 
 function checkAnswer(challenge: CargoChallenge, answer: CargoAnswer): boolean {
-  return answer.quotient === challenge.quotient && answer.remainder === challenge.remainder;
+  return answer.quotient === Math.floor(challenge.dividend / challenge.divisor);
 }
 
 function formatAnswer(answer: CargoAnswer): string {
-  return `${answer.quotient} r ${answer.remainder}`;
+  return String(answer.quotient);
 }
 
 function formatCorrect(challenge: CargoChallenge): string {
-  return `${challenge.quotient} r ${challenge.remainder}`;
+  return String(Math.floor(challenge.dividend / challenge.divisor));
 }
 
 export function useCargoStationGame() {
@@ -31,7 +31,15 @@ export function useCargoStationGame() {
 
   const stageIndex = stages.findIndex((stage) => stage.id === round.challenge.stageId);
 
-  return { ...round, stages, stage: stages[stageIndex] ?? stages[0], stageIndex: Math.max(stageIndex, 0) };
+  // The offered amounts stay fixed while a mission is retried, so a wrong tap
+  // never reshuffles the buttons under the child's finger.
+  const options = useMemo(
+    () => buildQuotientChoices(round.challenge),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [round.challenge.id, round.roundKey],
+  );
+
+  return { ...round, options, stages, stage: stages[stageIndex] ?? stages[0], stageIndex: Math.max(stageIndex, 0) };
 }
 
 export const CARGO_STATION_TOTAL_COUNT = CARGO_STATION_TOTAL;

@@ -1,349 +1,527 @@
 /*
- * Cargo Station — the Grade 4 visual language.
- * All tokens are scoped to .cargo-station so nothing here can restyle Grade 7.
+ * Cargo Station — a Grade 4 game viewport, not a card on a page.
+ * Everything is scoped to .cargo-station so Grade 7 keeps its own look.
  */
 .cargo-station {
-  --cs-night: #141b33;
-  --cs-night-2: #1f2a4d;
-  --cs-panel: #202c52;
-  --cs-panel-line: rgba(140, 190, 255, 0.22);
+  --cs-night: #101a36;
+  --cs-night-2: #1b2750;
+  --cs-deck: #24325e;
+  --cs-line: rgba(140, 190, 255, 0.2);
   --cs-ink: #eaf1ff;
-  --cs-ink-soft: #a9bbe4;
-  --cs-crate: #ffc05c;
-  --cs-crate-dark: #e08a1f;
-  --cs-leftover: #ff8a6b;
-  --cs-leftover-dark: #d75234;
+  --cs-ink-soft: #9fb3de;
+  --cs-box: #ffc05c;
+  --cs-box-top: #ffdf9d;
+  --cs-box-dark: #d8821a;
+  --cs-left: #ff8a6b;
+  --cs-left-top: #ffc0ad;
+  --cs-left-dark: #cf4c2e;
   --cs-go: #3fd6a8;
-  --cs-go-dark: #1fa87f;
+  --cs-go-dark: #159d74;
+  --cs-stop: #ff6b6b;
 
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto;
 }
 
-.cs-top {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  width: 100%;
-}
-
-.cs-top .quiz-progress {
-  flex: 1;
-}
-
-.cs-stage-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-}
-
-.cs-stage-pill {
-  font-size: var(--text-xs);
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  color: var(--cs-night);
-  background: linear-gradient(180deg, #7ee7ff, #45c8f0);
-  border-radius: var(--radius-pill);
-  padding: 6px 16px;
-}
-
-.cs-stage-banner {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--cs-ink);
-  background: rgba(63, 214, 168, 0.18);
-  border: 2px solid rgba(63, 214, 168, 0.5);
-  border-radius: var(--radius-pill);
-  padding: 5px 16px;
-  animation: cs-pop-in 260ms ease;
-}
-
-.cs-mission {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-3);
-}
-
-.cs-mission-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-md);
-  font-weight: 800;
-  color: var(--text-h);
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-pill);
-  padding: 6px 16px;
-  box-shadow: var(--shadow-sm);
-}
-
-.cs-mission-chip-icon {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  background: linear-gradient(180deg, var(--cs-crate), var(--cs-crate-dark));
-}
-
-.cs-mission-chip-icon-loader {
-  border-radius: 6px;
-  background: linear-gradient(180deg, #7ee7ff, #4b8dff);
-}
-
-.cs-instruction {
-  font-size: var(--text-base);
-  font-weight: 600;
-  color: var(--text);
-  text-align: center;
-  max-width: 520px;
-}
-
-/* --- the station scene ---------------------------------------------------- */
+/* --- the scene ------------------------------------------------------------ */
 
 .cs-scene {
   position: relative;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-5);
+  gap: var(--space-3);
+  width: 100%;
+  min-height: clamp(440px, 72vh, 720px);
+  padding: var(--space-4) var(--space-5) var(--space-5);
   border-radius: var(--radius-xl);
   background:
-    radial-gradient(520px 240px at 50% -10%, rgba(126, 231, 255, 0.16), transparent 70%),
-    linear-gradient(180deg, var(--cs-night), var(--cs-night-2));
-  box-shadow: var(--shadow-lg);
+    radial-gradient(680px 300px at 50% -6%, rgba(126, 231, 255, 0.2), transparent 68%),
+    radial-gradient(420px 220px at 12% 108%, rgba(199, 139, 255, 0.16), transparent 70%),
+    linear-gradient(180deg, var(--cs-night) 0%, var(--cs-night-2) 62%, var(--cs-deck) 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(140, 190, 255, 0.12),
+    var(--shadow-lg);
   overflow: hidden;
 }
 
-/* Blocky floor grid, drawn with gradients rather than any image asset. */
+/* Station machinery: a blocky floor grid + girders, pure gradients, no assets. */
+.cs-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--cs-line) 0 2px, transparent 2px 120px),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0 2px, transparent 2px 160px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 .cs-scene::after {
   content: '';
   position: absolute;
   inset: auto 0 0 0;
-  height: 42%;
-  background-image:
-    repeating-linear-gradient(90deg, var(--cs-panel-line) 0 1px, transparent 1px 44px),
-    repeating-linear-gradient(0deg, var(--cs-panel-line) 0 1px, transparent 1px 30px);
-  opacity: 0.5;
+  height: 34%;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 3px, transparent 3px 52px),
+    linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.32));
   pointer-events: none;
 }
 
-.cs-platform {
+/* --- HUD: mission path + sound -------------------------------------------- */
+
+.cs-hud {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.cs-path {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cs-pad {
+  display: block;
+  width: 26px;
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+  transition: background 240ms ease;
+}
+
+.cs-pad-done {
+  background: linear-gradient(180deg, #7bf3cd, var(--cs-go));
+  box-shadow: 0 0 12px rgba(63, 214, 168, 0.6);
+}
+
+.cs-pad-active {
+  width: 40px;
+  background: linear-gradient(180deg, #ffe9a8, var(--cs-box));
+  box-shadow: 0 0 14px rgba(255, 192, 92, 0.6);
+  animation: cs-pad-pulse 1.5s ease-in-out infinite;
+}
+
+/* --- field: depot on top, robot bay in the middle, remainder bay below ----- */
+
+.cs-field {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: 96px;
-  padding: var(--space-3);
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.06);
-  border: 2px dashed rgba(255, 255, 255, 0.18);
-  transition:
-    border-color 200ms ease,
-    background 200ms ease;
+  flex: 1;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--space-3);
+  align-items: stretch;
 }
 
-.cs-platform-leftover {
-  border-style: solid;
-  border-color: rgba(255, 138, 107, 0.7);
-  background: rgba(255, 138, 107, 0.12);
-}
-
-.cs-platform.cs-highlight {
-  animation: cs-attention 900ms ease 2;
-}
-
-.cs-platform-label {
+.cs-zone-label {
   font-size: var(--text-xs);
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--cs-ink-soft);
 }
 
-.cs-platform-empty {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--cs-ink-soft);
+/* --- depot ---------------------------------------------------------------- */
+
+.cs-depot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-height: 116px;
+  padding: var(--space-2) var(--space-4) var(--space-3);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+    0 10px 24px rgba(0, 0, 0, 0.24);
 }
 
-.cs-crate-field {
+.cs-depot-count {
+  font-size: var(--text-3xl);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--cs-box-top);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.28);
+}
+
+.cs-depot-pile {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 5px;
   min-height: 34px;
+  max-width: 560px;
 }
 
-/* --- crates --------------------------------------------------------------- */
+/* --- boxes ---------------------------------------------------------------- */
 
-.cs-crate {
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  background: linear-gradient(180deg, #ffd98a 0 38%, var(--cs-crate) 38% 74%, var(--cs-crate-dark) 74% 100%);
-  box-shadow:
-    inset 0 0 0 2px rgba(0, 0, 0, 0.12),
-    0 3px 0 rgba(0, 0, 0, 0.22);
-  animation: cs-crate-drop 260ms cubic-bezier(0.3, 1.4, 0.5, 1);
-}
-
-.cs-crate-leftover {
-  background: linear-gradient(180deg, #ffb9a3 0 38%, var(--cs-leftover) 38% 74%, var(--cs-leftover-dark) 74% 100%);
-  animation: cs-leftover-pulse 1.6s ease-in-out infinite;
-}
-
-.cs-crate-loaded {
-  width: 22px;
-  height: 22px;
+.cs-box {
+  width: 26px;
+  height: 26px;
   border-radius: 6px;
+  background: linear-gradient(180deg, var(--cs-box-top) 0 34%, var(--cs-box) 34% 72%, var(--cs-box-dark) 72% 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.14),
+    0 3px 0 rgba(0, 0, 0, 0.26);
+  animation: cs-box-in 240ms cubic-bezier(0.3, 1.5, 0.5, 1) backwards;
+  animation-delay: calc(var(--cs-box-index, 0) * 18ms);
 }
 
-/* --- loaders -------------------------------------------------------------- */
+.cs-box-leftover {
+  background: linear-gradient(180deg, var(--cs-left-top) 0 34%, var(--cs-left) 34% 72%, var(--cs-left-dark) 72% 100%);
+  animation:
+    cs-box-drop 300ms cubic-bezier(0.3, 1.4, 0.5, 1) backwards,
+    cs-left-glow 1.5s ease-in-out 320ms infinite;
+  animation-delay: calc(var(--cs-box-index, 0) * 70ms), calc(var(--cs-box-index, 0) * 70ms + 320ms);
+}
 
-.cs-loaders {
-  position: relative;
-  z-index: 1;
+/* --- robot bay ------------------------------------------------------------ */
+
+.cs-bay {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
-  gap: var(--space-3);
+  /* Robots keep a sensible size and stay grouped in the middle of the bay
+     instead of drifting to the edges when only two of them arrive. */
+  grid-template-columns: repeat(var(--cs-robot-count, 4), minmax(72px, 150px));
+  justify-content: center;
+  gap: var(--space-4);
   align-items: end;
+  justify-items: center;
+  padding-bottom: var(--space-2);
 }
 
-.cs-loader {
+.cs-robot {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 6px;
-  min-height: 150px;
-  min-width: 88px;
-  padding: var(--space-2);
-  border-radius: var(--radius-lg);
-  border: 2px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.05);
-  cursor: pointer;
-  font-family: inherit;
-  transition:
-    transform 140ms ease,
-    border-color 140ms ease,
-    background 140ms ease;
+  gap: 4px;
+  width: 100%;
+  max-width: 140px;
+  padding: 6px 4px 0;
+  transition: transform 220ms ease;
 }
 
-.cs-loader:not(:disabled):active {
-  transform: translateY(2px) scale(0.98);
-}
-
-.cs-loader:not(:disabled) {
-  border-color: color-mix(in srgb, var(--cs-loader-color) 55%, transparent);
-}
-
-.cs-loader:disabled {
-  cursor: default;
-}
-
-.cs-loader-uneven {
-  border-color: var(--cs-leftover);
-  background: rgba(255, 138, 107, 0.16);
-  animation: cs-wobble 420ms ease;
-}
-
-.cs-loader-cheering {
-  animation: cs-cheer 620ms ease;
-}
-
-.cs-loader-stack {
+.cs-robot-stack {
   display: flex;
   flex-wrap: wrap-reverse;
   align-items: flex-end;
   justify-content: center;
   gap: 4px;
-  max-width: 78px;
-  min-height: 26px;
+  min-height: 30px;
+  max-width: 92px;
 }
 
-.cs-loader-figure {
-  display: block;
-  width: 64px;
-  animation: cs-nod 320ms ease;
+/* Boxes land on a robot from the depot above it. */
+.cs-robot-stack .cs-box {
+  width: 22px;
+  height: 22px;
+  animation: cs-box-fly 240ms cubic-bezier(0.25, 1.3, 0.45, 1) backwards;
+  animation-delay: calc(var(--cs-box-index, 0) * 40ms);
 }
 
-.cs-robot {
+.cs-robot-svg {
   width: 100%;
+  max-width: 96px;
   height: auto;
   display: block;
 }
 
+.cs-robot-shadow {
+  fill: rgba(0, 0, 0, 0.3);
+}
+
 .cs-robot-head {
-  fill: var(--cs-loader-color);
+  fill: var(--cs-robot-color);
 }
 
-.cs-robot-antenna,
-.cs-robot-foot,
+.cs-robot-trim,
+.cs-robot-leg,
 .cs-robot-tray {
-  fill: color-mix(in srgb, var(--cs-loader-color) 62%, #0b1330);
+  fill: color-mix(in srgb, var(--cs-robot-color) 58%, #0a1230);
 }
 
-.cs-robot-light {
-  fill: #fff6d8;
+.cs-robot-tray-line {
+  fill: rgba(255, 255, 255, 0.25);
+}
+
+.cs-robot-visor {
+  fill: #101a36;
 }
 
 .cs-robot-eye {
-  fill: #16203f;
+  fill: #9ff2ff;
 }
 
 .cs-robot-mouth {
-  fill: rgba(22, 32, 63, 0.65);
+  fill: rgba(16, 26, 54, 0.55);
 }
 
-.cs-loader-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 34px;
-  height: 30px;
-  padding: 0 8px;
+.cs-robot-lamp {
+  fill: var(--cs-stop);
+  transition: fill 200ms ease;
+}
+
+.cs-robot-ready .cs-robot-lamp {
+  fill: #7bf3cd;
+  filter: drop-shadow(0 0 5px rgba(63, 214, 168, 0.95));
+}
+
+.cs-robot-incomplete .cs-robot-lamp {
+  animation: cs-lamp-blink 340ms steps(1) 4;
+}
+
+.cs-robot-flame {
+  fill: #ffd166;
+  opacity: 0;
+}
+
+.cs-robot-ready .cs-robot-eye {
+  fill: #d8fff4;
+}
+
+.cs-robot-incomplete {
+  animation: cs-shake 400ms ease;
+}
+
+.cs-robot-ready {
+  animation: cs-power-up 520ms ease;
+}
+
+.cs-robot-launching {
+  animation: cs-launch 850ms cubic-bezier(0.5, 0, 0.9, 0.4) forwards;
+  animation-delay: var(--cs-robot-delay);
+}
+
+.cs-robot-launching .cs-robot-flame {
+  opacity: 1;
+  animation: cs-flame 120ms ease-in-out infinite alternate;
+}
+
+/* cargo meter */
+
+.cs-meter {
+  display: block;
+  width: 78%;
+  max-width: 92px;
+  height: 10px;
   border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+
+.cs-meter-fill {
+  display: block;
+  height: 100%;
+  width: var(--cs-meter, 0%);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--cs-box), #ffe9a8);
+  transition: width 200ms ease;
+}
+
+.cs-robot-ready .cs-meter-fill {
+  background: linear-gradient(90deg, var(--cs-go), #9ff7db);
+}
+
+.cs-robot-incomplete .cs-meter-fill {
+  background: linear-gradient(90deg, var(--cs-stop), #ffb0b0);
+}
+
+.cs-robot-count {
   font-size: var(--text-md);
   font-weight: 900;
   color: var(--cs-night);
-  background: var(--cs-loader-color);
-}
-
-.cs-count-callout {
-  position: relative;
-  z-index: 1;
-  align-self: center;
-  font-size: var(--text-sm);
-  font-weight: 800;
-  color: var(--cs-night);
-  background: #ffe9a8;
+  background: var(--cs-robot-color);
   border-radius: var(--radius-pill);
-  padding: 4px 14px;
-  animation: cs-pop-in 240ms ease;
+  min-width: 32px;
+  text-align: center;
+  padding: 1px 9px;
 }
 
-/* --- actions & answer ----------------------------------------------------- */
+/* The "one more round would still fit" hint: an outlined box nudging downwards
+   onto the robot, deliberately unlike the solid boxes it already carries. */
+.cs-ghost-box {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  border-radius: 6px;
+  border: 3px dashed var(--cs-box-top);
+  background: rgba(255, 192, 92, 0.22);
+  animation: cs-ghost-nudge 700ms ease-in-out infinite;
+}
 
-.cs-actions,
-.cs-completion-actions {
+.cs-ghost-box::after {
+  content: '';
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  margin-left: -7px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid var(--cs-box-top);
+}
+
+/* --- remainder bay -------------------------------------------------------- */
+
+.cs-storage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 66px;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 3px dashed rgba(255, 138, 107, 0.5);
+  background: rgba(255, 138, 107, 0.08);
+  transition:
+    border-color 220ms ease,
+    background 220ms ease;
+}
+
+.cs-scene-success .cs-storage,
+.cs-scene-launch .cs-storage,
+.cs-scene-tooLow .cs-storage {
+  border-style: solid;
+  border-color: rgba(255, 138, 107, 0.9);
+  background: rgba(255, 138, 107, 0.18);
+}
+
+.cs-storage-pile {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 26px;
+  flex: 1;
+}
+
+.cs-storage-empty {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--cs-ink-soft);
+}
+
+.cs-storage-count {
+  font-size: var(--text-xl);
+  font-weight: 900;
+  color: var(--cs-left-top);
+  min-width: 28px;
+  text-align: center;
+}
+
+/* --- console: the one decision, then the explanation ---------------------- */
+
+.cs-console {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 148px;
+}
+
+.cs-question {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--cs-ink);
+  text-align: center;
+}
+
+.cs-choices {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--space-3);
 }
+
+.cs-choice {
+  min-width: 88px;
+  min-height: 82px;
+  padding: 0 var(--space-4);
+  font-family: inherit;
+  font-size: var(--text-3xl);
+  font-weight: 900;
+  color: #0d1a2e;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #ffe9a8 0 46%, var(--cs-box) 46% 100%);
+  box-shadow:
+    0 6px 0 var(--cs-box-dark),
+    0 12px 20px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 120ms ease;
+}
+
+.cs-choice:active {
+  transform: translateY(5px);
+  box-shadow:
+    0 1px 0 var(--cs-box-dark),
+    0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.cs-equation {
+  animation: cs-pop-in 260ms ease;
+}
+
+.cs-equation-text {
+  display: inline-block;
+  font-size: var(--text-2xl);
+  font-weight: 900;
+  color: var(--cs-ink);
+  background: rgba(255, 255, 255, 0.1);
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-6);
+}
+
+.cs-equation-quotient,
+.cs-equation-remainder {
+  display: inline-block;
+  border-radius: var(--radius-sm);
+  padding: 0 8px;
+  color: var(--cs-night);
+  background: var(--cs-box);
+}
+
+.cs-equation-remainder {
+  background: var(--cs-left);
+}
+
+.cs-alert {
+  font-size: var(--text-lg);
+  font-weight: 900;
+  text-align: center;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-6);
+  animation: cs-pop-in 220ms ease;
+}
+
+.cs-alert-tooHigh {
+  color: #4a0f0f;
+  background: linear-gradient(180deg, #ffb0b0, var(--cs-stop));
+}
+
+.cs-alert-tooLow {
+  color: #4a2a06;
+  background: linear-gradient(180deg, #ffe9a8, var(--cs-box));
+}
+
+/* --- buttons & completion -------------------------------------------------- */
 
 .cs-btn {
   min-height: 52px;
@@ -371,167 +549,33 @@
   box-shadow: 0 4px 0 var(--border);
 }
 
-.cs-btn-ghost:not(:disabled):active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 var(--border);
-}
-
-.cs-answer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-  width: 100%;
-}
-
-.cs-equation {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.cs-equation-text {
-  font-size: var(--text-2xl);
-  font-weight: 900;
-  color: var(--text-h);
-  background: var(--surface);
-  border: 3px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-3) var(--space-6);
-  box-shadow: var(--shadow-sm);
-  text-align: center;
-}
-
-.cs-slot-value {
-  display: inline-block;
-  min-width: 46px;
-  border-radius: var(--radius-sm);
-  background: #fff0c9;
-  border: 2px solid var(--cs-crate-dark);
-  padding: 0 6px;
-}
-
-.cs-slot-value-remainder {
-  background: #ffe0d6;
-  border-color: var(--cs-leftover-dark);
-}
-
-.cs-steppers {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-4);
-}
-
-.cs-stepper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  border: 3px solid var(--cs-crate);
-}
-
-.cs-stepper-remainder {
-  border-color: var(--cs-leftover);
-}
-
-.cs-stepper-label {
-  font-size: var(--text-sm);
-  font-weight: 800;
-  color: var(--text-h);
-}
-
-.cs-stepper-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.cs-stepper-button {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
-  border: none;
-  font-size: var(--text-2xl);
-  font-weight: 900;
-  line-height: 1;
-  color: #0d1a2e;
-  background: var(--bg-alt);
-  cursor: pointer;
-}
-
-.cs-stepper-button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.cs-stepper-button:not(:disabled):active {
-  transform: scale(0.94);
-}
-
-.cs-stepper-value {
-  min-width: 46px;
-  text-align: center;
-  font-size: var(--text-2xl);
-  font-weight: 900;
-  color: var(--text-h);
-}
-
-/* --- feedback ------------------------------------------------------------- */
-
-.cs-feedback {
-  max-width: 520px;
-  text-align: center;
-  font-weight: 800;
-  border-radius: var(--radius-lg);
-  padding: var(--space-3) var(--space-5);
-  animation: cs-pop-in 220ms ease;
-}
-
-.cs-feedback-hint {
-  font-size: var(--text-sm);
-  color: var(--warning);
-  background: var(--warning-bg);
-  border: 2px solid var(--warning-border);
-}
-
-.cs-feedback-correct {
-  font-size: var(--text-lg);
-  color: var(--success);
-  background: var(--success-bg);
-  border: 2px solid var(--success-border);
-}
-
-/* --- completion ----------------------------------------------------------- */
-
 .cs-completion {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
   width: 100%;
+  min-height: clamp(380px, 60vh, 620px);
+  justify-content: center;
   padding: var(--space-8) var(--space-5);
   border-radius: var(--radius-xl);
   background:
-    radial-gradient(420px 200px at 50% 0%, rgba(126, 231, 255, 0.2), transparent 70%),
-    linear-gradient(180deg, var(--cs-night), var(--cs-night-2));
+    radial-gradient(520px 240px at 50% 0%, rgba(126, 231, 255, 0.22), transparent 70%),
+    linear-gradient(180deg, var(--cs-night), var(--cs-deck));
   box-shadow: var(--shadow-lg);
   text-align: center;
 }
 
 .cs-completion-crew {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
 .cs-completion-robot {
   display: block;
-  width: 64px;
+  width: 84px;
   animation: cs-hop 1.6s ease-in-out infinite;
-  animation-delay: var(--cs-delay);
+  animation-delay: var(--cs-robot-delay);
 }
 
 .cs-completion-title {
@@ -550,25 +594,65 @@
 }
 
 .cs-completion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
   margin-top: var(--space-3);
 }
 
 /* --- motion --------------------------------------------------------------- */
 
-@keyframes cs-crate-drop {
+@keyframes cs-box-in {
   from {
-    transform: translateY(-14px) scale(0.7);
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* A box flying down from the depot onto a robot's tray. */
+@keyframes cs-box-fly {
+  from {
+    transform: translateY(-110px) scale(0.75);
+    opacity: 0.2;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Leftovers falling into the remainder bay below the robots. */
+@keyframes cs-box-drop {
+  from {
+    transform: translateY(-64px) scale(0.8);
     opacity: 0;
   }
   to {
     transform: translateY(0) scale(1);
     opacity: 1;
+  }
+}
+
+@keyframes cs-left-glow {
+  0%,
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.2);
+    transform: scale(1.08);
   }
 }
 
 @keyframes cs-pop-in {
   from {
-    transform: translateY(6px) scale(0.96);
+    transform: translateY(8px) scale(0.94);
     opacity: 0;
   }
   to {
@@ -577,28 +661,87 @@
   }
 }
 
-@keyframes cs-nod {
+@keyframes cs-pad-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes cs-power-up {
   0% {
     transform: translateY(0);
   }
-  45% {
-    transform: translateY(-7px) scale(1.04);
+  40% {
+    transform: translateY(-9px) scale(1.04);
   }
   100% {
     transform: translateY(0);
   }
 }
 
-@keyframes cs-cheer {
+@keyframes cs-launch {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  22% {
+    transform: translateY(10px) scale(0.96);
+  }
+  100% {
+    transform: translateY(-300px) scale(0.72);
+    opacity: 0;
+  }
+}
+
+@keyframes cs-flame {
+  from {
+    transform: scaleY(0.7);
+    opacity: 0.7;
+  }
+  to {
+    transform: scaleY(1.25);
+    opacity: 1;
+  }
+}
+
+@keyframes cs-shake {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateX(0);
   }
-  30% {
-    transform: translateY(-10px);
+  25% {
+    transform: translateX(-6px);
   }
-  60% {
-    transform: translateY(-4px);
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+@keyframes cs-lamp-blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes cs-ghost-nudge {
+  0%,
+  100% {
+    transform: translateY(-6px);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
   }
 }
 
@@ -608,42 +751,7 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes cs-wobble {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
-}
-
-@keyframes cs-leftover-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    filter: brightness(1);
-  }
-  50% {
-    transform: scale(1.09);
-    filter: brightness(1.18);
-  }
-}
-
-@keyframes cs-attention {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(255, 138, 107, 0);
-  }
-  50% {
-    box-shadow: 0 0 0 6px rgba(255, 138, 107, 0.35);
+    transform: translateY(-10px);
   }
 }
 
@@ -655,42 +763,65 @@
   }
 }
 
-@media (max-width: 620px) {
+/* --- responsive ----------------------------------------------------------- */
+
+@media (max-width: 780px) {
   .cs-scene {
+    min-height: clamp(420px, 78vh, 680px);
     padding: var(--space-3);
   }
 
-  .cs-loaders {
-    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
-    gap: 6px;
+  /* Simplify the station decoration rather than shrinking the playfield. */
+  .cs-scene::before {
+    display: none;
   }
 
-  .cs-loader {
-    min-width: 60px;
-    min-height: 128px;
-    padding: 6px 2px;
+  .cs-bay {
+    gap: 4px;
   }
 
-  .cs-loader-figure {
-    width: 46px;
+  .cs-robot-svg {
+    max-width: 66px;
   }
 
-  .cs-loader-stack {
-    max-width: 58px;
+  .cs-robot-stack {
+    max-width: 62px;
+    gap: 3px;
   }
 
-  .cs-crate {
-    width: 24px;
-    height: 24px;
+  .cs-robot-stack .cs-box {
+    width: 16px;
+    height: 16px;
   }
 
-  .cs-crate-loaded {
-    width: 18px;
-    height: 18px;
+  .cs-box {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cs-depot-count {
+    font-size: var(--text-2xl);
+  }
+
+  .cs-choice {
+    min-width: 72px;
+    min-height: 72px;
+    font-size: var(--text-2xl);
   }
 
   .cs-equation-text {
-    font-size: var(--text-xl);
-    padding: var(--space-3);
+    font-size: var(--text-lg);
+    padding: var(--space-2) var(--space-3);
+  }
+}
+
+@media (max-width: 480px) {
+  .cs-robot-count,
+  .cs-storage-count {
+    font-size: var(--text-base);
+  }
+
+  .cs-meter {
+    height: 8px;
   }
 }

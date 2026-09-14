@@ -9,12 +9,14 @@ interface PageLayoutProps {
   subtitle?: string;
   backTo?: string;
   backLabel?: string;
+  /** `game` shrinks the page chrome and widens the content so a game scene can own the viewport. */
+  variant?: 'default' | 'game';
   children: ReactNode;
 }
 
-export function PageLayout({ title, subtitle, backTo, backLabel, children }: PageLayoutProps) {
+export function PageLayout({ title, subtitle, backTo, backLabel, variant = 'default', children }: PageLayoutProps) {
   return (
-    <div className="page">
+    <div className={`page${variant === 'game' ? ' page-game' : ''}`}>
       <header className="page-header">
         <div className="page-header-bar">
           {backTo ? (

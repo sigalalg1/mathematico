@@ -1,4 +1,5 @@
-import type { CargoChallenge } from '../../types/cargoStation';
+import type { CargoChallenge, CargoChoiceResult } from '../../types/cargoStation';
+import { shuffle } from '../../utils/shuffle';
 
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -45,6 +46,31 @@ function buildChallenge(id: string, stageId: string, spec: ChallengeSpec): Cargo
 
 function challengeKey(challenge: CargoChallenge): string {
   return `${challenge.dividend}/${challenge.divisor}`;
+}
+
+/** Builds a small set of believable "per robot" choices around the floor quotient. */
+export function buildQuotientChoices(challenge: CargoChallenge, random = Math.random): number[] {
+  const quotient = Math.floor(challenge.dividend / challenge.divisor);
+  const choices = new Set([Math.max(1, quotient - 1), quotient, quotient + 1]);
+  if (random() < 0.35) choices.add(random() < 0.5 ? Math.max(1, quotient - 2) : quotient + 2);
+  return shuffle([...choices]);
+}
+
+/**
+ * Judges a proposed "boxes per robot" amount the way the station does it.
+ *
+ * `tooHigh` — handing out `choice` to everyone needs more cargo than the depot
+ * holds, so the last robot is left half loaded.
+ * `tooLow`  — everyone got the same amount, but the leftover pile is still big
+ * enough for one more complete round, so the load was not maximal. This is the
+ * rule that makes "equal sharing" alone insufficient: only floor division wins.
+ */
+export function evaluateQuotientChoice(challenge: CargoChallenge, choice: number): CargoChoiceResult {
+  const { dividend, divisor } = challenge;
+  const handedOut = choice * divisor;
+  if (handedOut > dividend) return 'tooHigh';
+  if (dividend - handedOut >= divisor) return 'tooLow';
+  return 'correct';
 }
 
 /** Builds a challenge while avoiding an exact repeat of one already in the round. */

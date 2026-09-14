@@ -1,4 +1,4 @@
-/** A single "share the crates" delivery: dividend = divisor * quotient + remainder. */
+/** A single cargo mission: dividend = divisor * quotient + remainder. */
 export interface CargoChallenge {
   id: string;
   stageId: string;
@@ -14,8 +14,6 @@ export interface CargoChallenge {
 
 export interface CargoAnswer {
   quotient: number;
-  remainder: number;
 }
 
-/** Why a proposed distribution is not a valid equal share yet. */
-export type SplitProblem = 'unequal' | 'canGiveMore';
+export type CargoChoiceResult = 'correct' | 'tooLow' | 'tooHigh';

@@ -3,32 +3,48 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { PageLayout } from '../components/PageLayout';
 import { MathText } from '../components/MathText';
-import { QuizProgress } from '../components/quiz/QuizProgress';
 import { SoundToggle } from '../components/SoundToggle';
 import { useCargoStationGame, CARGO_STATION_TOTAL_COUNT } from '../hooks/useCargoStationGame';
 import { useGameSessionTracking } from '../hooks/useGameSessionTracking';
+import { evaluateQuotientChoice } from '../data/games/cargoStationData';
 import { useSound } from '../audio/useSound';
-import type { SplitProblem } from '../types/cargoStation';
 import './CargoStationPage.css';
 
 const GAME_ID = 'cargoStation';
 const TOPIC_PATH = '/grade/4/division-with-remainder';
-const STEPPER_MAX = 12;
-/** Distinct, cool-but-playful loader colours; index-stable so a robot keeps its identity. */
-const LOADER_COLORS = ['#4dd4c1', '#6aa8ff', '#ffb45c', '#c78bff', '#7ee08a', '#ff8fa8'];
+
+/**
+ * One tick flies a whole load to one robot, so the depot empties robot by robot
+ * and a shortfall always shows up as the *last* robot standing half loaded.
+ */
+const DEAL_TICK_MS = 160;
+/** How long the equation stays up before the robots fire their thrusters. */
+const SUCCESS_HOLD_MS = 1100;
+const LAUNCH_MS = 850;
+/** A failed attempt is held long enough to be read, then the station resets itself. */
+const FAIL_HOLD_MS = 1900;
+
+/** Distinct, index-stable robot colours so a robot keeps its identity across a mission. */
+const ROBOT_COLORS = ['#4dd4c1', '#6aa8ff', '#ffb45c', '#c78bff', '#7ee08a', '#ff8fa8'];
+
+/**
+ * ARRIVAL -> DECISION -> DISTRIBUTION -> LAUNCH -> NEXT MISSION.
+ * `ready` waits for the single tap; `dealing` runs the distribution animation;
+ * the rest are the outcomes the child watches play out.
+ */
+type Phase = 'ready' | 'dealing' | 'success' | 'launch' | 'tooHigh' | 'tooLow';
 
 export function CargoStationPage() {
   const { t } = useTranslation();
   const { enabled: soundEnabled, play, toggle: toggleSound } = useSound();
   const game = useCargoStationGame();
   const challenge = game.challenge;
+  const { dividend, divisor } = challenge;
 
-  const [loads, setLoads] = useState<number[]>(() => new Array(challenge.divisor).fill(0));
-  const [splitConfirmed, setSplitConfirmed] = useState(false);
-  const [splitProblem, setSplitProblem] = useState<SplitProblem | null>(null);
-  const [quotientInput, setQuotientInput] = useState(0);
-  const [remainderInput, setRemainderInput] = useState(0);
-  const [bannerVisible, setBannerVisible] = useState(false);
+  const [phase, setPhase] = useState<Phase>('ready');
+  const [choice, setChoice] = useState<number | null>(null);
+  /** How many robots the conveyor has reached so far. */
+  const [loadedRobots, setLoadedRobots] = useState(0);
 
   useGameSessionTracking(GAME_ID, {
     total: CARGO_STATION_TOTAL_COUNT,
@@ -38,91 +54,90 @@ export function CargoStationPage() {
     roundKey: game.roundKey,
   });
 
-  // Reset the station whenever a new delivery (or a new round) starts.
+  // A new mission (or a replayed round) always arrives with an empty station.
   const resetKey = `${game.index}-${game.roundKey}`;
   const [lastResetKey, setLastResetKey] = useState(resetKey);
   if (resetKey !== lastResetKey) {
     setLastResetKey(resetKey);
-    setLoads(new Array(challenge.divisor).fill(0));
-    setSplitConfirmed(false);
-    setSplitProblem(null);
-    setQuotientInput(0);
-    setRemainderInput(0);
+    setPhase('ready');
+    setChoice(null);
+    setLoadedRobots(0);
   }
 
+  // Runs the distribution: every tick sends one robot its whole requested load,
+  // taking whatever the depot has left — so a shortfall strands the last robot.
   useEffect(() => {
-    if (game.status === 'correct') play('hit');
-    else if (game.status === 'incorrect') play('miss');
+    if (phase !== 'dealing' || choice === null) return undefined;
+    const outcome = evaluateQuotientChoice(challenge, choice);
+    let served = 0;
+    const timer = window.setInterval(() => {
+      served += 1;
+      setLoadedRobots(served);
+      play('move');
+      if (served < divisor) return;
+      window.clearInterval(timer);
+      play(outcome === 'correct' ? 'hit' : 'miss');
+      setPhase(outcome === 'correct' ? 'success' : outcome);
+    }, DEAL_TICK_MS);
+    return () => window.clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [game.status]);
+  }, [phase, choice, challenge]);
+
+  // Outcome pacing: celebrate and auto-advance, or show the failure and reset.
+  useEffect(() => {
+    if (phase === 'success') {
+      const timer = window.setTimeout(() => {
+        play('fire');
+        setPhase('launch');
+      }, SUCCESS_HOLD_MS);
+      return () => window.clearTimeout(timer);
+    }
+    if (phase === 'launch') {
+      const timer = window.setTimeout(() => game.next(), LAUNCH_MS);
+      return () => window.clearTimeout(timer);
+    }
+    if (phase === 'tooHigh' || phase === 'tooLow') {
+      const timer = window.setTimeout(() => {
+        setPhase('ready');
+        setChoice(null);
+        setLoadedRobots(0);
+      }, FAIL_HOLD_MS);
+      return () => window.clearTimeout(timer);
+    }
+    return undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
 
   useEffect(() => {
     if (game.completed) play('gameComplete');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [game.completed]);
 
+  // Stage changes stay audible but invisible: no "Stage 2" label on screen.
   const previousStageIndex = usePrevious(game.stageIndex);
   useEffect(() => {
     if (previousStageIndex === undefined || previousStageIndex === game.stageIndex) return;
     play('stageComplete');
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- paired with the chime, not derived state
-    setBannerVisible(true);
-    const timer = window.setTimeout(() => setBannerVisible(false), 2400);
-    return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [game.stageIndex]);
 
-  useEffect(() => {
-    if (game.status !== 'correct') return;
-    const timer = window.setTimeout(() => game.next(), 1100);
-    return () => window.clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [game.status, game.index]);
-
-  const dealt = loads.reduce((sum, value) => sum + value, 0);
-  const onPlatform = challenge.dividend - dealt;
-  const locked = game.status === 'correct';
-  const minLoad = Math.min(...loads);
-  const maxLoad = Math.max(...loads);
-  const uneven = maxLoad !== minLoad;
-
-  function giveCrateTo(index: number) {
-    if (splitConfirmed || locked || onPlatform === 0) return;
-    setSplitProblem(null);
-    setLoads((current) => current.map((value, i) => (i === index ? value + 1 : value)));
-    play('move');
-  }
-
-  function resetLoads() {
-    if (splitConfirmed || locked) return;
-    setLoads(new Array(challenge.divisor).fill(0));
-    setSplitProblem(null);
-  }
-
-  function checkSplit() {
-    if (uneven) {
-      setSplitProblem('unequal');
-      play('miss');
-      return;
-    }
-    if (onPlatform >= challenge.divisor) {
-      setSplitProblem('canGiveMore');
-      play('miss');
-      return;
-    }
-    setSplitProblem(null);
-    setSplitConfirmed(true);
+  function chooseAmount(amount: number) {
+    if (phase !== 'ready') return;
     play('phaseChange');
-  }
-
-  function deliver() {
-    if (locked) return;
-    game.submit({ quotient: quotientInput, remainder: remainderInput });
+    setChoice(amount);
+    setLoadedRobots(0);
+    setPhase('dealing');
+    game.submit({ quotient: amount });
   }
 
   if (game.completed) {
     return (
-      <PageLayout title={t('cargoStation.gameName')} backTo={TOPIC_PATH} backLabel={t('divisionWithRemainderPage.title')}>
+      <PageLayout
+        title={t('cargoStation.gameName')}
+        backTo={TOPIC_PATH}
+        backLabel={t('divisionWithRemainderPage.title')}
+        variant="game"
+      >
         <div className="cargo-station">
           <CargoStationCompletion total={game.total} firstTryCount={game.firstAttemptCorrectCount} onRetry={game.retry} />
         </div>
@@ -130,213 +145,212 @@ export function CargoStationPage() {
     );
   }
 
-  const showCounts = game.status === 'incorrect';
+  // Robot i is served the requested amount, or whatever the depot has left.
+  const loads = Array.from({ length: divisor }, (_, i) =>
+    i < loadedRobots && choice !== null ? Math.max(0, Math.min(choice, dividend - i * choice)) : 0,
+  );
+  const delivered = loads.reduce((sum, load) => sum + load, 0);
+  const settled = phase === 'success' || phase === 'launch' || phase === 'tooLow';
+  const inDepot = settled ? 0 : dividend - delivered;
+  const inStorage = settled ? dividend - delivered : 0;
+  const feedbackKey = phase === 'tooHigh' ? 'tooHigh' : phase === 'tooLow' ? 'tooLow' : null;
 
   return (
-    <PageLayout title={t('cargoStation.gameName')} backTo={TOPIC_PATH} backLabel={t('divisionWithRemainderPage.title')}>
+    <PageLayout
+      title={t('cargoStation.gameName')}
+      backTo={TOPIC_PATH}
+      backLabel={t('divisionWithRemainderPage.title')}
+      variant="game"
+    >
       <div className="cargo-station">
-        <div className="cs-top">
-          <QuizProgress current={game.index + 1} total={game.total} labelKey="cargoStation.progress" />
-          <SoundToggle enabled={soundEnabled} onToggle={toggleSound} />
-        </div>
+        <section className={`cs-scene cs-scene-${phase}`}>
+          <div className="cs-hud">
+            <MissionPath current={game.index + 1} total={game.total} />
+            <SoundToggle enabled={soundEnabled} onToggle={toggleSound} />
+          </div>
 
-        <div className="cs-stage-row">
-          <span className="cs-stage-pill">{t(game.stage.nameKey)}</span>
-          {bannerVisible && <span className="cs-stage-banner">{t(game.stage.introKey)}</span>}
-        </div>
+          <div className="cs-field">
+            <div className="cs-depot" aria-label={t('cargoStation.a11y.depot', { count: inDepot })}>
+              <span className="cs-zone-label">{t('cargoStation.depot.label')}</span>
+              <span className="cs-depot-count">
+                <MathText>{inDepot}</MathText>
+              </span>
+              <div className="cs-depot-pile" data-testid="depot-boxes">
+                {Array.from({ length: inDepot }, (_, i) => (
+                  <Box key={i} index={i} />
+                ))}
+              </div>
+            </div>
 
-        <div className="cs-mission">
-          <span className="cs-mission-chip">
-            <span className="cs-mission-chip-icon" aria-hidden="true" />
-            <MathText>{challenge.dividend}</MathText> {t('cargoStation.mission.crates')}
-          </span>
-          <span className="cs-mission-chip">
-            <span className="cs-mission-chip-icon cs-mission-chip-icon-loader" aria-hidden="true" />
-            <MathText>{challenge.divisor}</MathText> {t('cargoStation.mission.loaders')}
-          </span>
-        </div>
-        <p className="cs-instruction">
-          {splitConfirmed ? t('cargoStation.mission.readNumbers') : t('cargoStation.mission.instruction')}
-        </p>
-
-        <section className={`cs-scene${splitConfirmed ? ' cs-scene-confirmed' : ''}`}>
-          <div className={`cs-platform${splitConfirmed ? ' cs-platform-leftover' : ''}${showCounts ? ' cs-highlight' : ''}`}>
-            <span className="cs-platform-label">
-              {splitConfirmed ? t('cargoStation.platform.leftoverTitle') : t('cargoStation.platform.title')}
-            </span>
-            <div className="cs-crate-field" data-testid="platform-crates">
-              {Array.from({ length: onPlatform }, (_, i) => (
-                <span key={i} className={`cs-crate${splitConfirmed ? ' cs-crate-leftover' : ''}`} />
+            <div className="cs-bay" style={{ '--cs-robot-count': divisor } as CSSProperties} data-testid="robot-bay">
+              {loads.map((load, index) => (
+                <Robot
+                  key={index}
+                  index={index}
+                  load={load}
+                  requested={choice}
+                  phase={phase}
+                  color={ROBOT_COLORS[index % ROBOT_COLORS.length]}
+                />
               ))}
-              {onPlatform === 0 && <span className="cs-platform-empty">{t('cargoStation.platform.empty')}</span>}
             </div>
-            {showCounts && (
-              <span className="cs-count-callout">{t('cargoStation.counts.leftover', { crates: onPlatform })}</span>
+
+            <div className="cs-storage" aria-label={t('cargoStation.a11y.storage', { count: inStorage })}>
+              <span className="cs-zone-label">{t('cargoStation.storage.label')}</span>
+              <div className="cs-storage-pile" data-testid="storage-boxes">
+                {Array.from({ length: inStorage }, (_, i) => (
+                  <Box key={i} index={i} leftover />
+                ))}
+                {inStorage === 0 && <span className="cs-storage-empty">{t('cargoStation.storage.empty')}</span>}
+              </div>
+              <span className="cs-storage-count">
+                <MathText>{inStorage}</MathText>
+              </span>
+            </div>
+          </div>
+
+          <div className="cs-console">
+            {phase === 'ready' && (
+              <>
+                <p className="cs-question">{t('cargoStation.question')}</p>
+                <div className="cs-choices">
+                  {game.options.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className="cs-choice"
+                      onClick={() => chooseAmount(option)}
+                      aria-label={t('cargoStation.a11y.choose', { count: option })}
+                    >
+                      <MathText>{option}</MathText>
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
-          </div>
 
-          <div className="cs-loaders" style={{ '--cs-loader-count': challenge.divisor } as CSSProperties}>
-            {loads.map((count, index) => (
-              <LoaderRobot
-                key={index}
-                index={index}
-                count={count}
-                color={LOADER_COLORS[index % LOADER_COLORS.length]}
-                disabled={splitConfirmed || locked || onPlatform === 0}
-                uneven={splitProblem === 'unequal' && count !== maxLoad}
-                cheering={locked}
-                showCount={!splitConfirmed || showCounts}
-                onGive={() => giveCrateTo(index)}
-              />
-            ))}
+            {(phase === 'success' || phase === 'launch') && (
+              <p className="cs-equation" data-testid="cargo-equation">
+                <MathText className="cs-equation-text">
+                  {dividend} ÷ {divisor} = <span className="cs-equation-quotient">{challenge.quotient}</span>{' '}
+                  {challenge.remainder > 0 && (
+                    <>
+                      {t('cargoStation.equation.remainderWord')}{' '}
+                      <span className="cs-equation-remainder">{challenge.remainder}</span>
+                    </>
+                  )}
+                </MathText>
+              </p>
+            )}
+
+            {feedbackKey && <p className={`cs-alert cs-alert-${feedbackKey}`}>{t(`cargoStation.feedback.${feedbackKey}`)}</p>}
           </div>
-          {showCounts && <span className="cs-count-callout cs-count-callout-loaders">{t('cargoStation.counts.perLoader', { crates: minLoad })}</span>}
         </section>
-
-        {!splitConfirmed ? (
-          <div className="cs-actions">
-            <button type="button" className="btn cs-btn cs-btn-ghost" onClick={resetLoads} disabled={dealt === 0}>
-              {t('cargoStation.actions.reset')}
-            </button>
-            <button type="button" className="btn cs-btn cs-btn-primary" onClick={checkSplit}>
-              {t('cargoStation.actions.checkSplit')}
-            </button>
-          </div>
-        ) : (
-          <div className="cs-answer">
-            <div className="cs-equation">
-              <MathText className="cs-equation-text">
-                {challenge.dividend} ÷ {challenge.divisor} ={' '}
-                <span className="cs-slot-value">{quotientInput}</span> {t('cargoStation.equation.remainderWord')}{' '}
-                <span className="cs-slot-value cs-slot-value-remainder">{remainderInput}</span>
-              </MathText>
-            </div>
-            {/* LTR so the two steppers sit in the same order as the written form above. */}
-            <div className="cs-steppers" dir="ltr">
-              <NumberStepper
-                label={t('cargoStation.equation.perLoader')}
-                value={quotientInput}
-                onChange={setQuotientInput}
-                disabled={locked}
-                variant="quotient"
-              />
-              <NumberStepper
-                label={t('cargoStation.equation.leftover')}
-                value={remainderInput}
-                onChange={setRemainderInput}
-                disabled={locked}
-                variant="remainder"
-              />
-            </div>
-            <button type="button" className="btn cs-btn cs-btn-primary" onClick={deliver} disabled={locked}>
-              {t('cargoStation.actions.deliver')}
-            </button>
-          </div>
-        )}
-
-        {splitProblem && <p className="cs-feedback cs-feedback-hint">{t(`cargoStation.split.${splitProblem}`)}</p>}
-        {game.status === 'incorrect' && <p className="cs-feedback cs-feedback-hint">{t('cargoStation.feedback.incorrect')}</p>}
-        {game.status === 'correct' && <p className="cs-feedback cs-feedback-correct">{t('cargoStation.feedback.correct')}</p>}
       </div>
     </PageLayout>
   );
 }
 
-interface LoaderRobotProps {
-  index: number;
-  count: number;
-  color: string;
-  disabled: boolean;
-  uneven: boolean;
-  cheering: boolean;
-  showCount: boolean;
-  onGive: () => void;
-}
-
-function LoaderRobot({ index, count, color, disabled, uneven, cheering, showCount, onGive }: LoaderRobotProps) {
+/** Game-native progress: a row of launch pads, lit as missions are completed. */
+function MissionPath({ current, total }: { current: number; total: number }) {
   const { t } = useTranslation();
-  const classes = ['cs-loader'];
-  if (uneven) classes.push('cs-loader-uneven');
-  if (cheering) classes.push('cs-loader-cheering');
 
   return (
-    <button
-      type="button"
-      className={classes.join(' ')}
-      style={{ '--cs-loader-color': color } as CSSProperties}
-      onClick={onGive}
-      disabled={disabled}
-      aria-label={t('cargoStation.a11y.giveCrate', { index: index + 1, crates: count })}
+    <div
+      className="cs-path"
+      role="progressbar"
+      aria-valuenow={current}
+      aria-valuemin={1}
+      aria-valuemax={total}
+      aria-label={t('cargoStation.progress', { current, total })}
     >
-      <span className="cs-loader-stack" data-testid={`loader-stack-${index}`}>
-        {Array.from({ length: count }, (_, i) => (
-          <span key={i} className="cs-crate cs-crate-loaded" />
+      {Array.from({ length: total }, (_, i) => {
+        const state = i + 1 < current ? 'done' : i + 1 === current ? 'active' : 'todo';
+        return <span key={i} className={`cs-pad cs-pad-${state}`} aria-hidden="true" />;
+      })}
+    </div>
+  );
+}
+
+function Box({ index, leftover = false }: { index: number; leftover?: boolean }) {
+  return (
+    <span
+      className={`cs-box${leftover ? ' cs-box-leftover' : ''}`}
+      style={{ '--cs-box-index': index } as CSSProperties}
+      aria-hidden="true"
+    />
+  );
+}
+
+interface RobotProps {
+  index: number;
+  load: number;
+  requested: number | null;
+  phase: Phase;
+  color: string;
+}
+
+function Robot({ index, load, requested, phase, color }: RobotProps) {
+  const { t } = useTranslation();
+  const full = requested !== null && load >= requested;
+  const incomplete = phase === 'tooHigh' && !full;
+  const cleared = (phase === 'success' || phase === 'launch' || phase === 'tooLow') && full;
+  const fill = requested && requested > 0 ? Math.min(load / requested, 1) : 0;
+
+  const classes = ['cs-robot'];
+  if (incomplete) classes.push('cs-robot-incomplete');
+  if (cleared) classes.push('cs-robot-ready');
+  if (phase === 'launch') classes.push('cs-robot-launching');
+
+  return (
+    <div
+      className={classes.join(' ')}
+      style={{ '--cs-robot-color': color, '--cs-robot-delay': `${index * 70}ms` } as CSSProperties}
+      aria-label={t('cargoStation.a11y.robot', { index: index + 1, count: load })}
+      data-testid={`robot-${index}`}
+    >
+      {/* The too-low lesson: one more box is still on its way to everyone. */}
+      {phase === 'tooLow' && <span className="cs-ghost-box" aria-hidden="true" />}
+
+      <span className="cs-robot-stack" data-testid={`robot-stack-${index}`}>
+        {Array.from({ length: load }, (_, i) => (
+          <Box key={i} index={i} />
         ))}
       </span>
-      {/* Re-mounting on every change replays the little "nod" animation. */}
-      <span className="cs-loader-figure" key={count}>
-        <RobotGlyph />
+
+      <RobotGlyph />
+
+      <span className="cs-meter" aria-hidden="true">
+        <span className="cs-meter-fill" style={{ '--cs-meter': `${Math.round(fill * 100)}%` } as CSSProperties} />
       </span>
-      <span className="cs-loader-badge">{showCount ? <MathText>{count}</MathText> : '?'}</span>
-    </button>
+
+      <span className="cs-robot-count" aria-hidden="true">
+        <MathText>{load}</MathText>
+      </span>
+    </div>
   );
 }
 
-/** A simple original blocky loader built from plain SVG rectangles. */
+/** An original blocky loader robot, drawn entirely from plain SVG primitives. */
 function RobotGlyph() {
   return (
-    <svg viewBox="0 0 64 68" className="cs-robot" aria-hidden="true" focusable="false">
-      <rect x="30" y="2" width="4" height="9" rx="2" className="cs-robot-antenna" />
-      <circle cx="32" cy="4" r="4" className="cs-robot-light" />
-      <rect x="10" y="11" width="44" height="34" rx="10" className="cs-robot-head" />
-      <rect x="18" y="22" width="10" height="11" rx="5" className="cs-robot-eye" />
-      <rect x="36" y="22" width="10" height="11" rx="5" className="cs-robot-eye" />
-      <rect x="24" y="37" width="16" height="4" rx="2" className="cs-robot-mouth" />
-      <rect x="4" y="46" width="56" height="12" rx="5" className="cs-robot-tray" />
-      <rect x="14" y="58" width="10" height="8" rx="3" className="cs-robot-foot" />
-      <rect x="40" y="58" width="10" height="8" rx="3" className="cs-robot-foot" />
+    <svg viewBox="0 0 72 92" className="cs-robot-svg" aria-hidden="true" focusable="false">
+      <ellipse cx="36" cy="87" rx="24" ry="5" className="cs-robot-shadow" />
+      <rect x="33" y="0" width="6" height="11" rx="3" className="cs-robot-trim" />
+      <circle cx="36" cy="2" r="5" className="cs-robot-lamp" />
+      <rect x="8" y="10" width="56" height="38" rx="13" className="cs-robot-head" />
+      <rect x="14" y="17" width="44" height="16" rx="8" className="cs-robot-visor" />
+      <rect x="21" y="21" width="10" height="9" rx="4.5" className="cs-robot-eye" />
+      <rect x="41" y="21" width="10" height="9" rx="4.5" className="cs-robot-eye" />
+      <rect x="27" y="39" width="18" height="4" rx="2" className="cs-robot-mouth" />
+      <rect x="2" y="50" width="68" height="16" rx="7" className="cs-robot-tray" />
+      <rect x="10" y="54" width="52" height="4" rx="2" className="cs-robot-tray-line" />
+      <rect x="16" y="68" width="12" height="14" rx="4" className="cs-robot-leg" />
+      <rect x="44" y="68" width="12" height="14" rx="4" className="cs-robot-leg" />
+      <g className="cs-robot-thruster" aria-hidden="true">
+        <path d="M22 82 L36 104 L50 82 Z" className="cs-robot-flame" />
+      </g>
     </svg>
-  );
-}
-
-interface NumberStepperProps {
-  label: string;
-  value: number;
-  onChange: (value: number) => void;
-  disabled: boolean;
-  variant: 'quotient' | 'remainder';
-}
-
-function NumberStepper({ label, value, onChange, disabled, variant }: NumberStepperProps) {
-  const { t } = useTranslation();
-
-  return (
-    <div className={`cs-stepper cs-stepper-${variant}`}>
-      <span className="cs-stepper-label">{label}</span>
-      <div className="cs-stepper-controls" dir="ltr">
-        <button
-          type="button"
-          className="cs-stepper-button"
-          onClick={() => onChange(Math.max(0, value - 1))}
-          disabled={disabled || value === 0}
-          aria-label={t(`cargoStation.a11y.decrease.${variant}`)}
-        >
-          −
-        </button>
-        <output className="cs-stepper-value">
-          <MathText>{value}</MathText>
-        </output>
-        <button
-          type="button"
-          className="cs-stepper-button"
-          onClick={() => onChange(Math.min(STEPPER_MAX, value + 1))}
-          disabled={disabled || value === STEPPER_MAX}
-          aria-label={t(`cargoStation.a11y.increase.${variant}`)}
-        >
-          +
-        </button>
-      </div>
-    </div>
   );
 }
 
@@ -360,8 +374,12 @@ function CargoStationCompletion({ total, firstTryCount, onRetry }: CargoStationC
   return (
     <div className="cs-completion">
       <div className="cs-completion-crew" aria-hidden="true">
-        {LOADER_COLORS.slice(0, 4).map((color, index) => (
-          <span key={color} className="cs-completion-robot" style={{ '--cs-loader-color': color, '--cs-delay': `${index * 120}ms` } as CSSProperties}>
+        {ROBOT_COLORS.slice(0, 4).map((color, index) => (
+          <span
+            key={color}
+            className="cs-completion-robot"
+            style={{ '--cs-robot-color': color, '--cs-robot-delay': `${index * 120}ms` } as CSSProperties}
+          >
             <RobotGlyph />
           </span>
         ))}
