@@ -111,4 +111,12 @@ export const simpleFractionsGames: Game[] = [
     descriptionKey: 'fractionFactory.gameDescription',
     icon: '🍕',
   },
+  {
+    id: 'fractionBalloons',
+    enabled: true,
+    path: '/grade/4/simple-fractions/fraction-balloons',
+    nameKey: 'fractionBalloons.gameName',
+    descriptionKey: 'fractionBalloons.gameDescription',
+    icon: '🎈',
+  },
 ];

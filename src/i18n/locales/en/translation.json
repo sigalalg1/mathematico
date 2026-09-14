@@ -783,5 +783,25 @@
       "summary": "{{total}} orders shipped",
       "firstTry": "{{first}} on the first try"
     }
+  },
+  "fractionBalloons": {
+    "gameName": "Fraction Balloons",
+    "gameDescription": "Find the balloon with the right fraction and pop it",
+    "progress": "Question {{current}} of {{total}}",
+    "prompt": {
+      "symbolic": "Find the fraction",
+      "visual": "Which fraction is coloured?"
+    },
+    "a11y": {
+      "balloon": "Balloon {{numerator}} over {{denominator}}"
+    },
+    "actions": {
+      "playAgain": "Play again",
+      "backToTopic": "Back to topic"
+    },
+    "completion": {
+      "title": "All the balloons popped! 🎈",
+      "summary": "You popped {{total}} balloons"
+    }
   }
 }

@@ -783,5 +783,25 @@
       "summary": "{{total}} הזמנות יצאו לדרך",
       "firstTry": "{{first}} בניסיון הראשון"
     }
+  },
+  "fractionBalloons": {
+    "gameName": "בלוני שברים",
+    "gameDescription": "מצאו את הבלון עם השבר הנכון ופוצצו אותו",
+    "progress": "שאלה {{current}} מתוך {{total}}",
+    "prompt": {
+      "symbolic": "מצאו את השבר",
+      "visual": "איזה שבר צבוע?"
+    },
+    "a11y": {
+      "balloon": "בלון {{numerator}} חלקי {{denominator}}"
+    },
+    "actions": {
+      "playAgain": "עוד סבב",
+      "backToTopic": "חזרה לנושא"
+    },
+    "completion": {
+      "title": "כל הבלונים התפוצצו! 🎈",
+      "summary": "{{total}} בלונים פוצצתם"
+    }
   }
 }
