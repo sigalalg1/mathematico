@@ -1,0 +1,775 @@
+/*
+ * Monkey Balloon Shooter — a jungle clearing that owns the viewport, in the same
+ * spirit as Fraction Balloons' sky but warmer and greener. CSS keyframes and one
+ * inline SVG only: no animation library, no image assets.
+ * Everything is scoped to .mb-game so no other page inherits the palette.
+ */
+.mb-game {
+  --mb-sky-top: #6fd3ff;
+  --mb-sky-low: #d7f6ff;
+  --mb-leafy: #2f8f4e;
+  --mb-ink: #1d3b1f;
+  --mb-ink-soft: #45704a;
+  --mb-panel: rgba(255, 255, 255, 0.8);
+
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mb-scene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: clamp(500px, 78vh, 780px);
+  padding: var(--space-4) var(--space-4) var(--space-5);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(680px 280px at 50% 112%, rgba(255, 243, 176, 0.6), transparent 70%),
+    linear-gradient(180deg, var(--mb-sky-top) 0%, #a9e8ff 46%, var(--mb-sky-low) 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.4),
+    var(--shadow-lg);
+  overflow: hidden;
+}
+
+/* --- scenery -------------------------------------------------------------- */
+
+.mb-jungle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mb-sun {
+  position: absolute;
+  top: 6%;
+  inset-inline-end: 8%;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 36%, #fff6c9, #ffd166 68%, rgba(255, 209, 102, 0) 72%);
+  opacity: 0.9;
+}
+
+.mb-cloud {
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: mb-cloud-drift 28s ease-in-out infinite alternate;
+}
+
+.mb-cloud::before,
+.mb-cloud::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  border-radius: 999px;
+  background: inherit;
+}
+
+.mb-cloud-1 {
+  top: 12%;
+  left: 10%;
+  width: 150px;
+  height: 40px;
+}
+
+.mb-cloud-1::before {
+  left: 20px;
+  width: 62px;
+  height: 62px;
+}
+
+.mb-cloud-1::after {
+  left: 68px;
+  width: 44px;
+  height: 44px;
+}
+
+.mb-cloud-2 {
+  top: 30%;
+  left: 54%;
+  width: 118px;
+  height: 32px;
+  opacity: 0.7;
+  animation-duration: 36s;
+  animation-delay: -12s;
+}
+
+.mb-cloud-2::before {
+  left: 16px;
+  width: 50px;
+  height: 50px;
+}
+
+.mb-cloud-2::after {
+  left: 54px;
+  width: 34px;
+  height: 34px;
+}
+
+@keyframes mb-cloud-drift {
+  from {
+    transform: translateX(-16px);
+  }
+  to {
+    transform: translateX(20px);
+  }
+}
+
+/* Two big palm fronds leaning in from the top corners. */
+.mb-leaf {
+  position: absolute;
+  top: -70px;
+  width: 220px;
+  height: 180px;
+  border-radius: 0 0 100% 0;
+  background: linear-gradient(160deg, #3fae62, #1f7a42);
+  opacity: 0.85;
+  animation: mb-leaf-sway 7s ease-in-out infinite alternate;
+}
+
+.mb-leaf-1 {
+  left: -60px;
+  transform: rotate(18deg);
+}
+
+.mb-leaf-2 {
+  right: -70px;
+  width: 180px;
+  height: 150px;
+  border-radius: 0 0 0 100%;
+  transform: rotate(-14deg);
+  animation-delay: -3s;
+}
+
+@keyframes mb-leaf-sway {
+  from {
+    filter: brightness(1);
+  }
+  to {
+    filter: brightness(1.08);
+  }
+}
+
+.mb-ground {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 14%;
+  background: linear-gradient(180deg, #8ed48a, var(--mb-leafy));
+  border-radius: 50% 50% 0 0 / 26% 26% 0 0;
+}
+
+/* --- hud ------------------------------------------------------------------ */
+
+.mb-hud {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.mb-progress {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.mb-pip {
+  width: 12px;
+  height: 14px;
+  border-radius: 50% 50% 46% 46%;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.mb-pip-active {
+  background: #ff6b9d;
+  transform: scale(1.3);
+}
+
+.mb-pip-done {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(0.72);
+}
+
+/* --- the fact ------------------------------------------------------------- */
+
+.mb-question {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-5) var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--mb-panel);
+  box-shadow: 0 6px 18px rgba(29, 59, 31, 0.16);
+  color: var(--mb-ink);
+  animation: mb-question-in 300ms ease backwards;
+}
+
+.mb-prompt {
+  margin: 0;
+  font-size: clamp(0.95rem, 2.1vw, 1.25rem);
+  font-weight: 800;
+  color: var(--mb-ink-soft);
+}
+
+.mb-fact {
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+@keyframes mb-question-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- play area ------------------------------------------------------------ */
+
+.mb-play {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(var(--space-2), 3vw, var(--space-5));
+  width: 100%;
+  margin-top: auto;
+}
+
+.mb-monkey-slot {
+  flex: 0 0 auto;
+  width: clamp(110px, 17vw, 180px);
+  align-self: flex-end;
+  padding-bottom: var(--space-3);
+}
+
+.mb-balloons {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(var(--space-2), 3.5vw, var(--space-6));
+  padding-bottom: var(--space-4);
+}
+
+/* --- monkey --------------------------------------------------------------- */
+
+.mb-monkey {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 8px 12px rgba(29, 59, 31, 0.25));
+  transform-origin: 50% 100%;
+}
+
+.mb-monkey-idle {
+  animation: mb-monkey-breathe 2.8s ease-in-out infinite alternate;
+}
+
+.mb-monkey-aiming {
+  animation: mb-monkey-recoil 260ms ease-out;
+}
+
+.mb-monkey-happy {
+  animation: mb-monkey-cheer 520ms ease-in-out;
+}
+
+.mb-monkey-puzzled {
+  animation: mb-monkey-shrug 560ms ease-in-out;
+}
+
+.mb-monkey-arm {
+  transform-origin: 60px 94px;
+  transition: transform 140ms ease;
+}
+
+/* The popper arm lifts into line while aiming and stays up through the reaction. */
+.mb-monkey-aiming .mb-monkey-arm,
+.mb-monkey-happy .mb-monkey-arm,
+.mb-monkey-puzzled .mb-monkey-arm {
+  transform: rotate(-14deg);
+}
+
+.mb-monkey-head {
+  transform-origin: 60px 80px;
+  transition: transform 180ms ease;
+}
+
+.mb-monkey-puzzled .mb-monkey-head {
+  transform: rotate(-9deg);
+}
+
+.mb-monkey-happy .mb-monkey-head {
+  transform: translateY(-3px);
+}
+
+.mb-monkey-think {
+  fill: #1d3b1f;
+  font-weight: 900;
+  animation: mb-think-pop 560ms ease-out;
+}
+
+@keyframes mb-monkey-breathe {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-3px) scale(1.015);
+  }
+}
+
+@keyframes mb-monkey-recoil {
+  0% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(-6px) rotate(-2deg);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes mb-monkey-cheer {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(-16px) rotate(-4deg);
+  }
+  60% {
+    transform: translateY(-6px) rotate(4deg);
+  }
+}
+
+@keyframes mb-monkey-shrug {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  35% {
+    transform: translateY(4px) rotate(3deg);
+  }
+  70% {
+    transform: translateY(2px) rotate(-2deg);
+  }
+}
+
+@keyframes mb-think-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- the popper dart ------------------------------------------------------ */
+
+.mb-dart {
+  position: absolute;
+  z-index: 3;
+  width: 30px;
+  height: 12px;
+  margin: -6px 0 0 -15px;
+  border-radius: 6px 10px 10px 6px;
+  background: linear-gradient(90deg, #ff6b9d 0%, #ff6b9d 45%, #ffd166 46%, #ffd166 100%);
+  box-shadow: 0 2px 6px rgba(29, 59, 31, 0.3);
+  pointer-events: none;
+  animation: mb-dart-fly var(--mb-dart-flight, 260ms) cubic-bezier(0.3, 0.6, 0.4, 1) forwards;
+}
+
+/* A miss: the dart pings back off the balloon instead of sticking. */
+.mb-dart-bounced {
+  animation: mb-dart-bounce 400ms ease-in forwards;
+}
+
+@keyframes mb-dart-fly {
+  from {
+    transform: rotate(var(--mb-dart-angle, 0deg)) translateX(0) scale(0.7);
+  }
+  to {
+    transform: translate(var(--mb-dart-dx, 0), var(--mb-dart-dy, 0)) rotate(var(--mb-dart-angle, 0deg)) scale(1);
+  }
+}
+
+@keyframes mb-dart-bounce {
+  0% {
+    transform: translate(var(--mb-dart-dx, 0), var(--mb-dart-dy, 0)) rotate(var(--mb-dart-angle, 0deg));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(var(--mb-dart-dx, 0px) * 0.7), calc(var(--mb-dart-dy, 0px) * 0.7 + 60px)) rotate(calc(var(--mb-dart-angle, 0deg) + 220deg));
+    opacity: 0;
+  }
+}
+
+/* --- balloons ------------------------------------------------------------- */
+
+.mb-balloon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  margin-bottom: var(--mb-lift, 0px);
+  /*
+   * The float lives on the button, the press response on the body inside it, so
+   * a tap never fights the bobbing transform.
+   */
+  animation: mb-float var(--mb-float-duration, 3.6s) ease-in-out infinite alternate;
+  animation-delay: var(--mb-float-delay, 0s);
+}
+
+.mb-balloon-body {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* A comfortable tap target for a 9-10 year old on a tablet. */
+  width: clamp(92px, 15vw, 132px);
+  height: clamp(112px, 18vw, 158px);
+  border-radius: 50% 50% 48% 48%;
+  background: radial-gradient(circle at 34% 28%, var(--mb-balloon-light), var(--mb-balloon-dark) 72%);
+  box-shadow: 0 10px 22px rgba(29, 59, 31, 0.22);
+  color: #fff;
+  transition: transform 140ms ease;
+}
+
+.mb-balloon:hover .mb-balloon-body {
+  transform: scale(1.05);
+}
+
+.mb-balloon:active .mb-balloon-body {
+  transform: scale(0.94);
+}
+
+.mb-balloon-shine {
+  position: absolute;
+  top: 16%;
+  left: 20%;
+  width: 22%;
+  height: 16%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  filter: blur(1px);
+}
+
+/* The number never rotates or scales with the float, so it stays readable. */
+.mb-balloon-value {
+  position: relative;
+  font-size: clamp(1.8rem, 4.4vw, 2.6rem);
+  font-weight: 900;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.24);
+}
+
+.mb-balloon-knot {
+  width: 12px;
+  height: 10px;
+  margin-top: -2px;
+  border-radius: 0 0 6px 6px;
+  background: var(--mb-balloon-dark);
+}
+
+.mb-balloon-string {
+  width: 2px;
+  height: clamp(24px, 4vw, 40px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.2));
+}
+
+/* Four distinct balloon colours to go with the four float rhythms. */
+.mb-balloon-0 {
+  --mb-balloon-light: #ff9bbd;
+  --mb-balloon-dark: #e8376f;
+}
+
+.mb-balloon-1 {
+  --mb-balloon-light: #ffd580;
+  --mb-balloon-dark: #f08a1d;
+}
+
+.mb-balloon-2 {
+  --mb-balloon-light: #9be7a8;
+  --mb-balloon-dark: #1f8f4e;
+}
+
+.mb-balloon-3 {
+  --mb-balloon-light: #b3b0ff;
+  --mb-balloon-dark: #5b46d6;
+}
+
+@keyframes mb-float {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(var(--mb-drift, 6px), -14px, 0);
+  }
+}
+
+/* --- the pop -------------------------------------------------------------- */
+
+.mb-balloon-popping {
+  animation: none;
+  pointer-events: none;
+}
+
+.mb-balloon-popping .mb-balloon-body {
+  animation: mb-pop 400ms cubic-bezier(0.3, 1.5, 0.5, 1) forwards;
+}
+
+.mb-balloon-popping .mb-balloon-knot,
+.mb-balloon-popping .mb-balloon-string {
+  animation: mb-string-fall 400ms ease-in forwards;
+}
+
+@keyframes mb-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.24);
+  }
+  55% {
+    transform: scale(1.32);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes mb-string-fall {
+  to {
+    transform: translateY(18px) rotate(12deg);
+    opacity: 0;
+  }
+}
+
+.mb-burst {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.mb-spark {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 3px;
+  background: #fff5b1;
+  transform: rotate(var(--mb-spark-angle, 0deg)) translateY(0);
+  animation: mb-spark-out 500ms ease-out forwards;
+}
+
+.mb-spark:nth-child(even) {
+  background: #ffd166;
+}
+
+.mb-spark:nth-child(3n) {
+  background: #ff8fab;
+}
+
+@keyframes mb-spark-out {
+  from {
+    opacity: 1;
+    transform: rotate(var(--mb-spark-angle, 0deg)) translateY(0) scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(var(--mb-spark-angle, 0deg)) translateY(-70px) scale(1);
+  }
+}
+
+/* --- the dodge (a miss) --------------------------------------------------- */
+
+/*
+ * Two identical keyframes: the page alternates between them so shooting the same
+ * wrong balloon twice in a row visibly restarts the dodge.
+ */
+.mb-balloon-dodging-0 .mb-balloon-body {
+  animation: mb-dodge-a 520ms ease-in-out;
+}
+
+.mb-balloon-dodging-1 .mb-balloon-body {
+  animation: mb-dodge-b 520ms ease-in-out;
+}
+
+@keyframes mb-dodge-a {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(10px, -8px) rotate(7deg);
+  }
+  55% {
+    transform: translate(-8px, 3px) rotate(-6deg);
+  }
+  80% {
+    transform: translate(4px, 0) rotate(3deg);
+  }
+}
+
+@keyframes mb-dodge-b {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(10px, -8px) rotate(7deg);
+  }
+  55% {
+    transform: translate(-8px, 3px) rotate(-6deg);
+  }
+  80% {
+    transform: translate(4px, 0) rotate(3deg);
+  }
+}
+
+/* --- completion ----------------------------------------------------------- */
+
+.mb-scene-done {
+  justify-content: center;
+}
+
+.mb-completion {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-xl);
+  background: var(--mb-panel);
+  box-shadow: 0 12px 32px rgba(29, 59, 31, 0.18);
+  text-align: center;
+  color: var(--mb-ink);
+}
+
+.mb-completion .mb-monkey {
+  width: clamp(130px, 22vw, 180px);
+  animation: mb-monkey-breathe 2.4s ease-in-out infinite alternate;
+}
+
+.mb-completion-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+}
+
+.mb-completion-summary {
+  margin: 0;
+  color: var(--mb-ink-soft);
+  font-weight: 700;
+}
+
+.mb-completion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-top: var(--space-2);
+}
+
+.mb-btn {
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.mb-btn-primary {
+  background: #ff6b9d;
+  color: #fff;
+  border: none;
+}
+
+.mb-btn-ghost {
+  background: transparent;
+  color: var(--mb-ink);
+  border: 2px solid rgba(29, 59, 31, 0.25);
+}
+
+/* --- narrow screens ------------------------------------------------------- */
+
+/* Scenery goes first; the balloons and the fact keep their size. */
+@media (max-width: 720px) {
+  .mb-leaf,
+  .mb-cloud-2 {
+    display: none;
+  }
+
+  .mb-play {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .mb-monkey-slot {
+    order: 2;
+    width: clamp(96px, 30vw, 140px);
+    padding-bottom: 0;
+  }
+
+  .mb-balloons {
+    order: 1;
+    gap: var(--space-3);
+  }
+
+  .mb-balloon {
+    margin-bottom: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mb-balloon,
+  .mb-cloud,
+  .mb-leaf,
+  .mb-question,
+  .mb-monkey,
+  .mb-monkey-think,
+  .mb-completion .mb-monkey,
+  .mb-balloon-popping .mb-balloon-body,
+  .mb-balloon-dodging-0 .mb-balloon-body,
+  .mb-balloon-dodging-1 .mb-balloon-body {
+    animation: none;
+  }
+
+  .mb-dart {
+    animation-duration: 1ms;
+    animation-fill-mode: forwards;
+  }
+
+  .mb-spark {
+    display: none;
+  }
+}

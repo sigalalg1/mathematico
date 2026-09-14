@@ -3,12 +3,13 @@ import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../test/testUtils';
 import i18n from '../i18n';
 import App from '../App';
-import { coordinateSystemGames, divisionWithRemainderGames, simpleFractionsGames } from '../data/games';
+import { coordinateSystemGames, divisionWithRemainderGames, multiplicationGames, simpleFractionsGames } from '../data/games';
 
 const STATIC_ROUTES = [
   '/',
   '/grade/4',
   '/grade/4/division-with-remainder',
+  '/grade/4/multiplication',
   '/grade/4/simple-fractions',
   '/grade/4/penalty-shootout',
   '/grade/7',
@@ -16,7 +17,7 @@ const STATIC_ROUTES = [
   '/account',
   '/activity',
 ];
-const GAME_ROUTES = [...coordinateSystemGames, ...divisionWithRemainderGames, ...simpleFractionsGames].map((game) => game.path!);
+const GAME_ROUTES = [...coordinateSystemGames, ...divisionWithRemainderGames, ...multiplicationGames, ...simpleFractionsGames].map((game) => game.path!);
 const ALL_ROUTES = [...STATIC_ROUTES, ...GAME_ROUTES];
 
 describe('routing smoke tests', () => {
@@ -79,6 +80,13 @@ describe('routing smoke tests', () => {
   it('shows the Grade 4 fractions game as a card on its topic page', () => {
     renderWithProviders(<App />, ['/grade/4/simple-fractions']);
     for (const game of simpleFractionsGames) {
+      expect(screen.getByText(i18n.t(game.nameKey) as string)).toBeInTheDocument();
+    }
+  });
+
+  it('shows both Grade 4 multiplication games as cards on their topic page', () => {
+    renderWithProviders(<App />, ['/grade/4/multiplication']);
+    for (const game of multiplicationGames) {
       expect(screen.getByText(i18n.t(game.nameKey) as string)).toBeInTheDocument();
     }
   });

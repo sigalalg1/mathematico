@@ -5,7 +5,7 @@ import i18n, { getDirection, supportedLanguages } from '../index';
 import en from '../locales/en/translation.json';
 import he from '../locales/he/translation.json';
 import App from '../../App';
-import { coordinateSystemGames, divisionWithRemainderGames } from '../../data/games';
+import { coordinateSystemGames, divisionWithRemainderGames, multiplicationGames, simpleFractionsGames } from '../../data/games';
 
 type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
 
@@ -34,10 +34,15 @@ const ROUTES = [
   '/',
   '/grade/4',
   '/grade/4/division-with-remainder',
+  '/grade/4/multiplication',
+  '/grade/4/simple-fractions',
+  '/grade/4/penalty-shootout',
   '/grade/7',
   '/grade/7/coordinate-system',
   ...coordinateSystemGames.map((g) => g.path!),
   ...divisionWithRemainderGames.map((g) => g.path!),
+  ...multiplicationGames.map((g) => g.path!),
+  ...simpleFractionsGames.map((g) => g.path!),
 ];
 
 afterEach(async () => {

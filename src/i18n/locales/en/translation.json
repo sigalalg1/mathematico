@@ -56,7 +56,7 @@
     },
     "multiplication": {
       "name": "Multiplication",
-      "description": "Build bright block structures and discover how multiplication fits together."
+      "description": "Build block structures, pop balloons, and master multiplication."
     },
     "penaltyShootout": {
       "name": "Penalty Shootout",
@@ -910,6 +910,34 @@
       "title": "The factory is running!",
       "summary": "{{total}} orders shipped",
       "firstTry": "{{first}} on the first try"
+    }
+  },
+  "multiplicationPage": {
+    "title": "Multiplication",
+    "subtitle": "Practise the times tables and find the right answer fast.",
+    "completedBadge": "Completed"
+  },
+  "monkeyBalloonShooter": {
+    "gameName": "Monkey Balloon Shooter",
+    "gameDescription": "Help the monkey pop the balloon with the right answer",
+    "prompt": "Which balloon has the answer?",
+    "progress": "Question {{current}} of {{total}}",
+    "a11y": {
+      "balloon": "Balloon {{value}}",
+      "monkey": {
+        "idle": "The monkey is waiting",
+        "aiming": "The monkey is shooting",
+        "happy": "The monkey is cheering",
+        "puzzled": "The monkey looks puzzled"
+      }
+    },
+    "actions": {
+      "playAgain": "Play again",
+      "backToTopic": "Back to topic"
+    },
+    "completion": {
+      "title": "All the balloons popped! 🐵",
+      "summary": "You solved {{total}} multiplication facts"
     }
   }
 }

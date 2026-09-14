@@ -17,7 +17,7 @@ export const topics: Topic[] = [
     id: 'multiplication',
     gradeId: 4,
     enabled: true,
-    path: '/grade/4/multiplication/block-builders',
+    path: '/grade/4/multiplication',
   },
   {
     id: 'penaltyShootout',

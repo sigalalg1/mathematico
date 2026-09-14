@@ -6,6 +6,8 @@ import { DivisionWithRemainderPage } from './pages/DivisionWithRemainderPage';
 import { CargoStationPage } from './pages/CargoStationPage';
 import { SimpleFractionsPage } from './pages/SimpleFractionsPage';
 import { FractionFactoryPage } from './pages/FractionFactoryPage';
+import { MultiplicationPage } from './pages/MultiplicationPage';
+import { MonkeyBalloonShooterPage } from './pages/MonkeyBalloonShooterPage';
 import { CoordinateVocabularyPage } from './pages/CoordinateVocabularyPage';
 import { MeetTheAxesPage } from './pages/MeetTheAxesPage';
 import { HitTheTargetPage } from './pages/HitTheTargetPage';
@@ -37,6 +39,8 @@ function App() {
       <Route path="/grade/4/penalty-shootout" element={<PenaltyShootoutPage />} />
       <Route path="/grade/4/simple-fractions" element={<SimpleFractionsPage />} />
       <Route path="/grade/4/simple-fractions/fraction-factory" element={<FractionFactoryPage />} />
+      <Route path="/grade/4/multiplication" element={<MultiplicationPage />} />
+      <Route path="/grade/4/multiplication/monkey-balloon-shooter" element={<MonkeyBalloonShooterPage />} />
       <Route path="/grade/7/coordinate-system" element={<CoordinateSystemPage />} />
       <Route path="/grade/7/coordinate-system/coordinate-vocabulary" element={<CoordinateVocabularyPage />} />
       <Route path="/grade/7/coordinate-system/meet-the-axes" element={<MeetTheAxesPage />} />
