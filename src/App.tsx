@@ -18,6 +18,7 @@ import { DrawByCoordinatesPage } from './pages/DrawByCoordinatesPage';
 import { AccountPage } from './pages/AccountPage';
 import { ActivityPage } from './pages/ActivityPage';
 import { useDocumentDirection } from './i18n/useDocumentDirection';
+import { BlockBuildersPage } from './pages/BlockBuildersPage';
 
 function App() {
   useDocumentDirection();
@@ -28,6 +29,7 @@ function App() {
       <Route path="/grade/:gradeId" element={<GradePage />} />
       <Route path="/grade/4/division-with-remainder" element={<DivisionWithRemainderPage />} />
       <Route path="/grade/4/division-with-remainder/cargo-station" element={<CargoStationPage />} />
+      <Route path="/grade/4/multiplication/block-builders" element={<BlockBuildersPage />} />
       <Route path="/grade/7/coordinate-system" element={<CoordinateSystemPage />} />
       <Route path="/grade/7/coordinate-system/coordinate-vocabulary" element={<CoordinateVocabularyPage />} />
       <Route path="/grade/7/coordinate-system/meet-the-axes" element={<MeetTheAxesPage />} />

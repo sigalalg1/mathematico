@@ -10,7 +10,8 @@ export const topics: Topic[] = [
   {
     id: 'multiplication',
     gradeId: 4,
-    enabled: false,
+    enabled: true,
+    path: '/grade/4/multiplication/block-builders',
   },
   {
     id: 'coordinateSystem',

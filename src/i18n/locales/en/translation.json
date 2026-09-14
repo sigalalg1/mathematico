@@ -52,7 +52,7 @@
     },
     "multiplication": {
       "name": "Multiplication",
-      "description": "Coming soon"
+      "description": "Build bright block structures and discover how multiplication fits together."
     },
     "coordinateSystem": {
       "name": "Coordinate System",
@@ -69,6 +69,59 @@
     "algebraBasics": {
       "name": "Algebra Basics",
       "description": "Coming soon"
+    }
+  },
+  "blockBuilders": {
+    "gameName": "Block Builders",
+    "gameDescription": "Build arrays, complete structures, and master multiplication.",
+    "mission": "BUILD {{current}}",
+    "progress": "Build {{current}} of {{total}}",
+    "prompts": {
+      "buildArray": "Set the rows and columns for this build",
+      "matchBuild": "Which build matches the plan?",
+      "completeBuild": "How many blocks finish the structure?",
+      "missingFactor": "How many rows are hiding?",
+      "quickBuild": "Quick build: choose the product"
+    },
+    "labels": {
+      "rows": "Rows",
+      "columns": "Columns",
+      "builtOf": "{{visible}} of {{total}} blocks are already placed"
+    },
+    "feedback": {
+      "correct": {
+        "title": "Built!",
+        "body": "{{rows}} rows of {{columns}} make {{product}} blocks."
+      },
+      "tooFew": {
+        "title": "The build needs a little more",
+        "body": "Compare your amount with {{rows}} complete rows of {{columns}}."
+      },
+      "tooMany": {
+        "title": "Some blocks are extra",
+        "body": "The plan stops after {{rows}} complete rows of {{columns}}."
+      },
+      "different": {
+        "title": "That is a different structure",
+        "body": "Look for exactly {{rows}} rows with {{columns}} blocks in each row."
+      },
+      "reversed": {
+        "title": "Great rotation!",
+        "body": "It has the same {{product}} blocks. Turn it to match the plan's orientation."
+      }
+    },
+    "a11y": {
+      "array": "{{rows}} rows by {{columns}} columns, {{count}} blocks",
+      "rotation": "The reversed array rotates to show the same product",
+      "comparison": "Your choice, {{selected}} blocks, compared with the target, {{target}} blocks"
+    },
+    "completion": {
+      "title": "The block city is complete!",
+      "summary": "You finished all {{count}} builds. Every row helped the city rise."
+    },
+    "actions": {
+      "replay": "Build a new city",
+      "back": "Back to Grade 4"
     }
   },
   "coordinateSystemPage": {

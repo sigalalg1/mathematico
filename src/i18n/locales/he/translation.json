@@ -52,7 +52,7 @@
     },
     "multiplication": {
       "name": "כפל",
-      "description": "בקרוב"
+      "description": "בונים מבנים צבעוניים ומגלים איך הכפל מתחבר."
     },
     "coordinateSystem": {
       "name": "מערכת צירים",
@@ -69,6 +69,59 @@
     "algebraBasics": {
       "name": "יסודות באלגברה",
       "description": "בקרוב"
+    }
+  },
+  "blockBuilders": {
+    "gameName": "בונים בכפל",
+    "gameDescription": "בונים מערכים, משלימים מבנים ושולטים בכפל.",
+    "mission": "בנייה {{current}}",
+    "progress": "בנייה {{current}} מתוך {{total}}",
+    "prompts": {
+      "buildArray": "בחרו שורות ועמודות לפי התוכנית",
+      "matchBuild": "איזו בנייה מתאימה לתוכנית?",
+      "completeBuild": "כמה קוביות ישלימו את המבנה?",
+      "missingFactor": "כמה שורות מסתתרות?",
+      "quickBuild": "בנייה מהירה: בחרו את המכפלה"
+    },
+    "labels": {
+      "rows": "שורות",
+      "columns": "עמודות",
+      "builtOf": "{{visible}} מתוך {{total}} קוביות כבר במקום"
+    },
+    "feedback": {
+      "correct": {
+        "title": "בנוי!",
+        "body": "{{rows}} שורות של {{columns}} הן {{product}} קוביות."
+      },
+      "tooFew": {
+        "title": "צריך עוד קצת לבנייה",
+        "body": "השוו את הכמות ל־{{rows}} שורות מלאות של {{columns}}."
+      },
+      "tooMany": {
+        "title": "יש כמה קוביות מיותרות",
+        "body": "התוכנית נעצרת אחרי {{rows}} שורות מלאות של {{columns}}."
+      },
+      "different": {
+        "title": "זה מבנה אחר",
+        "body": "חפשו בדיוק {{rows}} שורות עם {{columns}} קוביות בכל שורה."
+      },
+      "reversed": {
+        "title": "סיבוב מעולה!",
+        "body": "יש בו אותן {{product}} קוביות. סובבו כדי להתאים לכיוון שבתוכנית."
+      }
+    },
+    "a11y": {
+      "array": "{{rows}} שורות על {{columns}} עמודות, {{count}} קוביות",
+      "rotation": "המערך ההפוך מסתובב ומראה את אותה מכפלה",
+      "comparison": "הבחירה שלכם, {{selected}} קוביות, לעומת היעד, {{target}} קוביות"
+    },
+    "completion": {
+      "title": "עיר הקוביות הושלמה!",
+      "summary": "סיימתם את כל {{count}} הבניות. כל שורה עזרה לעיר לצמוח."
+    },
+    "actions": {
+      "replay": "לבנות עיר חדשה",
+      "back": "חזרה לכיתה ד׳"
     }
   },
   "coordinateSystemPage": {
