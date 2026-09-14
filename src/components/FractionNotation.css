@@ -1,0 +1,63 @@
+/*
+ * Stacked fraction notation. Sizes are driven by a single custom property so a
+ * game can scale the whole thing (digits + bar) in one place.
+ */
+.fraction {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.fraction-inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1;
+  font-weight: 900;
+  font-size: var(--fraction-size, 28px);
+}
+
+.fraction-sm {
+  --fraction-size: 18px;
+}
+
+.fraction-md {
+  --fraction-size: 30px;
+}
+
+.fraction-lg {
+  --fraction-size: 52px;
+}
+
+.fraction-part {
+  display: block;
+  padding: 0 0.18em;
+  border-radius: 0.16em;
+  transition:
+    background 200ms ease,
+    color 200ms ease,
+    transform 200ms ease;
+}
+
+.fraction-bar {
+  display: block;
+  width: 100%;
+  min-width: 0.9em;
+  height: max(2px, 0.08em);
+  border-radius: 999px;
+  background: currentColor;
+}
+
+/* The lesson pointer: the half being named right now lights up. */
+.fraction-lit {
+  background: var(--fraction-lit-bg, #ffd166);
+  color: var(--fraction-lit-ink, #24203a);
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fraction-part {
+    transition: none;
+  }
+}

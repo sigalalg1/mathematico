@@ -101,3 +101,14 @@ export const divisionWithRemainderGames: Game[] = [
     icon: '📦',
   },
 ];
+
+export const simpleFractionsGames: Game[] = [
+  {
+    id: 'fractionFactory',
+    enabled: true,
+    path: '/grade/4/simple-fractions/fraction-factory',
+    nameKey: 'fractionFactory.gameName',
+    descriptionKey: 'fractionFactory.gameDescription',
+    icon: '🍕',
+  },
+];
