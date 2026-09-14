@@ -1,0 +1,120 @@
+.coordinate-mission {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.coordinate-mission-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 460px;
+}
+
+.coordinate-mission-top .quiz-progress {
+  flex: 1;
+}
+
+.coordinate-mission-prompt {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-h);
+  text-align: center;
+  max-width: 460px;
+}
+
+.coordinate-mission-pair {
+  display: block;
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--text-h);
+  background: var(--bg-alt);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-5);
+}
+
+.coordinate-mission-choices {
+  max-width: var(--container-narrow);
+}
+
+.coordinate-mission-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+
+.coordinate-mission-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: 800;
+  font-size: var(--text-md);
+  color: var(--primary);
+}
+
+.coordinate-mission-field input {
+  width: 84px;
+  font-size: var(--text-xl);
+  font-weight: 800;
+  text-align: center;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  font-family: var(--sans);
+  color: var(--text-h);
+}
+
+.coordinate-mission-field input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.coordinate-mission-feedback {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.feedback-correct-text {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--success);
+}
+
+.feedback-hint-text {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--warning);
+  background: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-4);
+  animation: feedback-in 220ms ease;
+}
+
+.coordinate-mission-completion-detail {
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.coordinate-mission-recommendation {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-4);
+}
+
+.coordinate-mission-completion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}

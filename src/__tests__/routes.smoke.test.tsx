@@ -1,0 +1,68 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { screen } from '@testing-library/react';
+import { renderWithProviders } from '../test/testUtils';
+import i18n from '../i18n';
+import App from '../App';
+import { coordinateSystemGames } from '../data/games';
+
+const STATIC_ROUTES = ['/', '/grade/7', '/grade/7/coordinate-system', '/account', '/activity'];
+const GAME_ROUTES = coordinateSystemGames.map((game) => game.path!);
+const ALL_ROUTES = [...STATIC_ROUTES, ...GAME_ROUTES];
+
+describe('routing smoke tests', () => {
+  let consoleError: ReturnType<typeof vi.spyOn>;
+  let consoleWarn: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    localStorage.clear();
+    consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleError.mockRestore();
+    consoleWarn.mockRestore();
+  });
+
+  it('registers a route for every enabled game in the topic registry', () => {
+    for (const game of coordinateSystemGames) {
+      expect(game.enabled).toBe(true);
+      expect(game.path).toMatch(/^\/grade\/7\/coordinate-system\//);
+    }
+    expect(new Set(GAME_ROUTES).size).toBe(GAME_ROUTES.length);
+  });
+
+  it.each(ALL_ROUTES)('renders %s without crashing and with a page heading', (route) => {
+    renderWithProviders(<App />, [route]);
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+  });
+
+  it.each(ALL_ROUTES)('renders %s with no React warnings or errors', (route) => {
+    renderWithProviders(<App />, [route]);
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(consoleWarn).not.toHaveBeenCalled();
+  });
+
+  it.each(GAME_ROUTES)('renders %s again in English without crashing', async (route) => {
+    await i18n.changeLanguage('en');
+    try {
+      renderWithProviders(<App />, [route]);
+      expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+      expect(consoleError).not.toHaveBeenCalled();
+    } finally {
+      await i18n.changeLanguage('he');
+    }
+  });
+
+  it('redirects an unknown grade back to the home page', () => {
+    renderWithProviders(<App />, ['/grade/3']);
+    expect(screen.getByRole('heading', { level: 1, name: i18n.t('app.title') })).toBeInTheDocument();
+  });
+
+  it('shows every coordinate system game as a card on the topic page', () => {
+    renderWithProviders(<App />, ['/grade/7/coordinate-system']);
+    for (const game of coordinateSystemGames) {
+      expect(screen.getByText(i18n.t(game.nameKey) as string)).toBeInTheDocument();
+    }
+  });
+});

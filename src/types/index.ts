@@ -16,4 +16,5 @@ export interface Game {
   path?: string;
   nameKey: string;
   descriptionKey: string;
+  icon: string;
 }

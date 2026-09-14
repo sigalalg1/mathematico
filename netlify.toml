@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Single-page app: every unknown path must fall through to index.html so that
+# refreshing or deep-linking a nested React Router route (for example
+# /grade/7/coordinate-system/hit-the-target) does not 404.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

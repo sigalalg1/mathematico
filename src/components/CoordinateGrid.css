@@ -247,3 +247,114 @@
   cursor: pointer;
 }
 
+
+.shape-polygon {
+  fill: var(--primary-tint);
+  fill-opacity: 0.35;
+  stroke: var(--primary);
+  stroke-width: 2.5;
+}
+
+.shape-segment {
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.shape-segment-default {
+  stroke: var(--primary);
+}
+
+.shape-segment-correct {
+  stroke: var(--success-border);
+}
+
+.shape-segment-incorrect {
+  stroke: var(--error-border);
+  stroke-dasharray: 3 5;
+}
+
+.vertex-dot {
+  fill: var(--text-h);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.vertex-label {
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--text-h);
+  font-family: var(--sans);
+}
+
+.clickable-point {
+  cursor: pointer;
+}
+
+.clickable-point.is-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.clickable-point-hit {
+  fill: transparent;
+}
+
+.clickable-point-dot {
+  fill: var(--primary);
+  stroke: #fff;
+  stroke-width: 2.5;
+  transition: fill 0.15s ease, r 0.15s ease;
+}
+
+.clickable-point:hover .clickable-point-dot {
+  fill: var(--primary-tint);
+}
+
+.clickable-point.is-correct .clickable-point-dot {
+  fill: var(--success-border);
+  animation: grid-target-pulse 700ms ease-out;
+}
+
+.clickable-point.is-incorrect .clickable-point-dot {
+  fill: var(--error-border);
+}
+
+.clickable-point-label {
+  font-size: 14px;
+  font-weight: 800;
+  fill: var(--text-h);
+  font-family: var(--sans);
+}
+
+.draw-sequence-line {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.55;
+}
+
+.draw-sequence-complete .draw-sequence-line {
+  stroke: var(--success-border);
+  stroke-width: 3;
+  opacity: 0.9;
+}
+
+.draw-point {
+  fill: var(--text-h);
+  opacity: 0.45;
+}
+
+.draw-point-current {
+  fill: var(--primary);
+  opacity: 1;
+  stroke: #fff;
+  stroke-width: 2.5;
+  animation: grid-target-pulse 500ms ease-out;
+}
+
+.draw-sequence-complete .draw-point {
+  fill: var(--success-border);
+  opacity: 0.85;
+}

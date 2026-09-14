@@ -1,0 +1,96 @@
+.coordinate-detective {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.coordinate-detective-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 460px;
+}
+
+.coordinate-detective-top .quiz-progress {
+  flex: 1;
+}
+
+.coordinate-detective-prompt {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-h);
+  text-align: center;
+  max-width: 460px;
+}
+
+.coordinate-detective-legend {
+  display: flex;
+  gap: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.coordinate-detective-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend-dot-target {
+  background: var(--primary);
+}
+
+.legend-dot-wrong {
+  background: var(--error-border);
+}
+
+.coordinate-detective-choices {
+  max-width: var(--container-narrow);
+}
+
+.coordinate-detective-feedback {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.feedback-correct-text {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--success);
+}
+
+.feedback-hint-text {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--warning);
+  background: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-4);
+  animation: feedback-in 220ms ease;
+}
+
+.coordinate-detective-completion-detail {
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.coordinate-detective-completion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}

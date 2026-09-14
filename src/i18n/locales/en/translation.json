@@ -62,7 +62,8 @@
   },
   "coordinateSystemPage": {
     "title": "Coordinate System",
-    "subtitle": "Choose an exercise to practice"
+    "subtitle": "Choose an exercise to practice",
+    "completedBadge": "Completed"
   },
   "exercises": {
     "meetTheAxes": {
@@ -232,7 +233,11 @@
       }
     },
     "feedback": {
-      "correctMessages": ["Bullseye! 🎯", "Hit! 🎯", "Nice shot! 🎯"],
+      "correctMessages": [
+        "Bullseye! 🎯",
+        "Hit! 🎯",
+        "Nice shot! 🎯"
+      ],
       "xSign": "Almost! The target is {{direction}} of 0, so X is {{sign}}.",
       "ySign": "Almost! The target is {{direction}} 0, so Y is {{sign}}.",
       "swapped": "Almost — X first, then Y.",
@@ -276,7 +281,11 @@
     },
     "feedback": {
       "xDone": "X done! Now Y",
-      "correctMessages": ["Made it! 🚀", "Perfect!", "Nailed it! 🚀"],
+      "correctMessages": [
+        "Made it! 🚀",
+        "Perfect!",
+        "Nailed it! 🚀"
+      ],
       "directMistake": "Almost! {{axis}} is {{sign}} — fly {{direction}}.",
       "swapped": "X first, then Y.",
       "other": "Almost! Try again."
@@ -304,6 +313,303 @@
       "title": "🚀 Mission Complete!",
       "summary": "{{total}} destinations completed",
       "firstTry": "{{count}} on the first try"
+    }
+  },
+  "quadrantChallenge": {
+    "gameName": "Quadrant Challenge",
+    "gameDescription": "Read the signs, find the quadrant",
+    "progress": "Challenge {{current}} of {{total}}",
+    "prompts": {
+      "whichQuadrant": "Which quadrant?",
+      "whichQuadrantFromSigns": "Which quadrant?",
+      "whichSigns": "What are the signs here?",
+      "whereIsThisPoint": "Where is this point?"
+    },
+    "stages": {
+      "stage1": {
+        "name": "Stage 1 — Spot the Quadrant",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "Stage 2 — Coordinates → Quadrant",
+        "intro": "Now from the numbers alone."
+      },
+      "stage3": {
+        "name": "Stage 3 — Signs → Quadrant",
+        "intro": "Just the signs this time."
+      },
+      "stage4": {
+        "name": "Stage 4 — Quadrant → Signs",
+        "intro": "Now work backwards."
+      },
+      "stage5": {
+        "name": "Stage 5 — Axis Tricks",
+        "intro": "Watch out — not every point is in a quadrant!"
+      }
+    },
+    "locations": {
+      "quadrant1": "Quadrant I",
+      "quadrant2": "Quadrant II",
+      "quadrant3": "Quadrant III",
+      "quadrant4": "Quadrant IV",
+      "xAxis": "On the X-axis",
+      "yAxis": "On the Y-axis",
+      "origin": "Origin"
+    },
+    "signLabels": {
+      "x": "X",
+      "y": "Y",
+      "plus": "+",
+      "minus": "−"
+    },
+    "feedback": {
+      "correctMessages": [
+        "Exactly right!",
+        "Nailed it!",
+        "Correct!"
+      ],
+      "clickHint": "Not quite — look at the signs again.",
+      "signsHint": "Check the quadrant's position again."
+    },
+    "completion": {
+      "title": "🧭 Quadrant Challenge complete!",
+      "summary": "{{total}} challenges completed",
+      "firstTry": "{{count}} on the first try"
+    }
+  },
+  "coordinateDetective": {
+    "gameName": "Coordinate Detective",
+    "gameDescription": "Spot the mistake in a wrong answer",
+    "progress": "Case {{current}} of {{total}}",
+    "prompt": "A classmate marked this point. What went wrong?",
+    "legendTarget": "Real point",
+    "legendWrong": "Classmate's guess",
+    "categories": {
+      "swappedXY": "Swapped X and Y",
+      "xSignError": "Wrong X sign",
+      "ySignError": "Wrong Y sign",
+      "axisConfusion": "Mixed up an axis point with a quadrant",
+      "zeroConfusion": "Got confused about zero"
+    },
+    "feedback": {
+      "correctMessages": [
+        "Case solved!",
+        "Good eye!",
+        "Exactly!"
+      ],
+      "incorrectHint": "Look again — compare the two points closely."
+    },
+    "completion": {
+      "title": "🔍 Coordinate Detective complete!",
+      "summary": "{{total}} cases solved",
+      "firstTry": "{{count}} on the first try"
+    }
+  },
+  "distancesSegments": {
+    "gameName": "Distances and Segments",
+    "gameDescription": "Measure straight segments on the grid",
+    "progress": "Segment {{current}} of {{total}}",
+    "promptHorizontal": "What's the length of AB?",
+    "promptVertical": "What's the length of AB?",
+    "inputLabel": "Length",
+    "actions": {
+      "check": "Check length"
+    },
+    "stages": {
+      "stage1": {
+        "name": "Stage 1 — Positive Coordinates",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "Stage 2 — Crossing Zero",
+        "intro": "Now the segment crosses zero."
+      },
+      "stage3": {
+        "name": "Stage 3 — Negative Coordinates",
+        "intro": "Negative coordinates this time."
+      },
+      "stage4": {
+        "name": "Stage 4 — Mixed Segments",
+        "intro": "Horizontal and vertical, mixed up."
+      }
+    },
+    "feedback": {
+      "correctMessages": [
+        "Exactly right!",
+        "Correct!",
+        "Well measured!"
+      ],
+      "incorrectHint": "Count the grid squares between the points."
+    },
+    "completion": {
+      "title": "📏 Distances and Segments complete!",
+      "summary": "{{total}} segments measured",
+      "firstTry": "{{count}} on the first try"
+    }
+  },
+  "shapesOnPlane": {
+    "gameName": "Shapes on the Plane",
+    "gameDescription": "Build and measure shapes from coordinates",
+    "progress": "Shape {{current}} of {{total}}",
+    "shapeNames": {
+      "rectangle": "rectangle",
+      "square": "square",
+      "isoscelesTrapezoid": "isosceles trapezoid"
+    },
+    "prompts": {
+      "completeShapeTitle": {
+        "rectangle": "Complete rectangle ABCD",
+        "square": "Complete square ABCD",
+        "isoscelesTrapezoid": "Complete isosceles trapezoid ABCD"
+      },
+      "completeShapeAction": "Click the coordinate plane where vertex D should be.",
+      "parallelSidesNote": "Sides AB and CD are parallel.",
+      "sideLength": "What's the length of {{side}}?",
+      "perimeter": "What's the perimeter of the rectangle?",
+      "area": "What's the area of the rectangle?"
+    },
+    "inputLabel": "Answer",
+    "actions": {
+      "check": "Check"
+    },
+    "stages": {
+      "stage1": {
+        "name": "Stage 1 — Complete the Shape",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "Stage 2 — Side Lengths",
+        "intro": "Now let's measure a side."
+      },
+      "stage3": {
+        "name": "Stage 3 — Perimeter",
+        "intro": "Add up all four sides."
+      },
+      "stage4": {
+        "name": "Stage 4 — Area",
+        "intro": "Width times height."
+      }
+    },
+    "feedback": {
+      "correctMessages": [
+        "Exactly right!",
+        "Correct!",
+        "Well done!"
+      ],
+      "incorrectHintPoint": "Look at how far D should be from A, B, and C.",
+      "incorrectHintNumber": "Use the coordinates of the corners to recheck."
+    },
+    "completion": {
+      "title": "📐 Shapes on the Plane complete!",
+      "summary": "{{total}} shape challenges completed",
+      "firstTry": "{{count}} on the first try"
+    }
+  },
+  "coordinateMission": {
+    "gameName": "Coordinate Mission",
+    "gameDescription": "A short final mission mixing it all together",
+    "progress": "Mission {{current}} of {{total}}",
+    "prompts": {
+      "identifyAxis": "Tap the Y-axis.",
+      "readCoordinate": "What are this point's coordinates?",
+      "placePoint": "Tap the correct spot for this point.",
+      "quadrant": "Which quadrant is this point in?",
+      "quadrantFromSigns": "Which quadrant matches these signs?",
+      "axisOrQuadrant": "Where is this point?",
+      "detectMistake": "A classmate placed this point wrong. What happened?",
+      "segment": "What's the length of this segment?",
+      "completeRectangle": "Tap to complete the rectangle's missing corner."
+    },
+    "feedback": {
+      "correctMessages": [
+        "Nailed it!",
+        "Correct!",
+        "On target!"
+      ],
+      "incorrectHint": "Take another look and try again."
+    },
+    "completion": {
+      "title": "🚩 Coordinate Mission complete! 🎉",
+      "summary": "{{total}} challenges completed",
+      "firstTry": "{{count}} on the first try",
+      "recommendation": "Worth another round of {{game}}.",
+      "allGood": "Great work across the board!"
+    }
+  },
+  "findThePoint": {
+    "progress": "Point {{current}} of {{total}}",
+    "promptLead": "Which point is at",
+    "promptTrailing": "?",
+    "stages": {
+      "stage1": {
+        "name": "Stage 1 — First Quadrant",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "Stage 2 — All Four Quadrants",
+        "intro": "Now points can be anywhere on the plane."
+      },
+      "stage3": {
+        "name": "Stage 3 — On the Axes",
+        "intro": "Watch for points sitting right on an axis."
+      },
+      "stage4": {
+        "name": "Stage 4 — Mixed Challenge",
+        "intro": "A little bit of everything."
+      }
+    },
+    "feedback": {
+      "correctMessages": [
+        "Spot on!",
+        "Found it!",
+        "Exactly right!"
+      ],
+      "youClicked": "You clicked:",
+      "xSign": "Check X — the target is {{direction}} of 0, so X is {{sign}}.",
+      "ySign": "Check Y — the target is {{direction}} 0, so Y is {{sign}}.",
+      "swapped": "Check again — X first, then Y.",
+      "other": "Check again — compare the X and Y values carefully."
+    },
+    "words": {
+      "left": "left",
+      "right": "right",
+      "above": "above",
+      "below": "below",
+      "negative": "negative",
+      "positive": "positive"
+    },
+    "completion": {
+      "title": "📍 You finished Find the Point!",
+      "summary": "{{total}} points completed",
+      "firstTry": "{{count}} found on the first try"
+    },
+    "actions": {
+      "playAgain": "Play again",
+      "backToTopic": "Back to Coordinate System"
+    }
+  },
+  "drawByCoordinates": {
+    "progress": "Point {{current}} of {{total}}",
+    "promptLead": "Find the point",
+    "drawings": {
+      "house": "House",
+      "tree": "Tree",
+      "boat": "Sailboat",
+      "rocket": "Rocket",
+      "star": "Star"
+    },
+    "feedback": {
+      "checkX": "Check X again.",
+      "checkY": "Check Y again.",
+      "checkBoth": "X first, then Y."
+    },
+    "completion": {
+      "title": "🎨 You revealed the picture!",
+      "summary": "You drew the {{name}}!"
+    },
+    "actions": {
+      "anotherDrawing": "Another Drawing",
+      "backToTopic": "Back to Coordinate System"
     }
   },
   "quiz": {

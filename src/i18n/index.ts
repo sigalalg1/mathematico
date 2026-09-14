@@ -16,8 +16,13 @@ function isSupportedLanguage(value: string | null): value is Language {
 }
 
 function getInitialLanguage(): Language {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  return isSupportedLanguage(stored) ? stored : DEFAULT_LANGUAGE;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return isSupportedLanguage(stored) ? stored : DEFAULT_LANGUAGE;
+  } catch {
+    // Storage can throw in private-browsing / blocked-cookie modes.
+    return DEFAULT_LANGUAGE;
+  }
 }
 
 export function getDirection(language: string): 'rtl' | 'ltr' {
@@ -25,7 +30,11 @@ export function getDirection(language: string): 'rtl' | 'ltr' {
 }
 
 export function setLanguage(language: Language): void {
-  localStorage.setItem(STORAGE_KEY, language);
+  try {
+    localStorage.setItem(STORAGE_KEY, language);
+  } catch {
+    // Ignore storage failures; the choice just won't survive a reload.
+  }
   void i18n.changeLanguage(language);
 }
 

@@ -153,7 +153,7 @@ export function HitTheTargetPage() {
             </div>
           )}
 
-          <div className="hit-the-target-inputs">
+          <div className="hit-the-target-inputs" dir="ltr">
             <label className="hit-the-target-field">
               <span>{t('hitTheTarget.inputs.x')}</span>
               <input

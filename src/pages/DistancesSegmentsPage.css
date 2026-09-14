@@ -1,0 +1,117 @@
+.distances-segments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.distances-segments-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 460px;
+}
+
+.distances-segments-top .quiz-progress {
+  flex: 1;
+}
+
+.distances-segments-stage {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--primary);
+  background: var(--primary-bg);
+  border-radius: var(--radius-pill);
+  padding: 4px 14px;
+}
+
+.distances-segments-banner {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--success);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-5);
+  animation: feedback-in 220ms ease;
+}
+
+.distances-segments-prompt {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-h);
+  text-align: center;
+}
+
+.distances-segments-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+
+.distances-segments-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: 800;
+  font-size: var(--text-md);
+  color: var(--primary);
+}
+
+.distances-segments-field input {
+  width: 84px;
+  font-size: var(--text-xl);
+  font-weight: 800;
+  text-align: center;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  font-family: var(--sans);
+  color: var(--text-h);
+}
+
+.distances-segments-field input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.distances-segments-feedback {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.feedback-correct-text {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--success);
+}
+
+.feedback-hint-text {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--warning);
+  background: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-4);
+  animation: feedback-in 220ms ease;
+}
+
+.distances-segments-completion-detail {
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.distances-segments-completion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}

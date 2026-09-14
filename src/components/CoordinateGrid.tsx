@@ -32,6 +32,14 @@ interface CoordinateGridProps {
   trail?: { x: number; y: number }[];
   /** Makes the whole plane clickable; reports the nearest integer coordinate. */
   onGridClick?: (point: { x: number; y: number }) => void;
+  /** Makes the whole plane clickable; reports which quadrant (1-4) was clicked. */
+  onQuadrantClick?: (quadrant: 1 | 2 | 3 | 4) => void;
+  /** Straight segments between two points (e.g. distances, shape sides). */
+  segments?: { from: { x: number; y: number }; to: { x: number; y: number }; variant?: 'default' | 'correct' | 'incorrect' }[];
+  /** A closed polygon outline (e.g. a rectangle built from vertices). */
+  polygon?: { x: number; y: number }[];
+  /** Small labeled dots, e.g. vertex labels A/B/C/D. */
+  vertexLabels?: { point: { x: number; y: number }; label: string }[];
   /** Renders xAxis/yAxis/origin as clickable answer targets. */
   interactiveTargets?: GridTargetId[];
   targetLabels?: Partial<Record<GridTargetId, string>>;
@@ -39,6 +47,18 @@ interface CoordinateGridProps {
   correctTargetId?: GridTargetId | null;
   status?: QuizAnswerStatus;
   onSelectTarget?: (id: GridTargetId) => void;
+  /** Several labeled points shown at once, each clickable directly on the grid (e.g. Find the Point). */
+  clickablePoints?: { id: string; point: { x: number; y: number }; label: string }[];
+  onSelectPoint?: (id: string) => void;
+  selectedPointId?: string | null;
+  correctPointId?: string | null;
+  pointsAnswered?: boolean;
+  /** Disables further clicks on the points (e.g. once the round is fully correct). Defaults to pointsAnswered. */
+  pointsLocked?: boolean;
+  /** A growing connected sequence of points placed in order (e.g. Draw by Coordinates). Earlier points render subtly; the latest is prominent. */
+  drawnPoints?: { x: number; y: number }[];
+  /** Emphasizes the finished outline once the whole sequence has been placed. */
+  drawComplete?: boolean;
 }
 
 const VIEW_SIZE = 320;
@@ -64,12 +84,24 @@ export function CoordinateGrid({
   shipArrivedSeed = 0,
   trail = [],
   onGridClick,
+  onQuadrantClick,
+  segments = [],
+  polygon,
+  vertexLabels = [],
   interactiveTargets,
   targetLabels,
   selectedTargetId = null,
   correctTargetId = null,
   status = 'unanswered',
   onSelectTarget,
+  clickablePoints = [],
+  onSelectPoint,
+  selectedPointId = null,
+  correctPointId = null,
+  pointsAnswered = false,
+  pointsLocked = pointsAnswered,
+  drawnPoints = [],
+  drawComplete = false,
 }: CoordinateGridProps) {
   const gridId = useId();
   const worldSize = max - min + PADDING * 2;
@@ -93,6 +125,7 @@ export function CoordinateGrid({
   };
 
   const answered = status !== 'unanswered';
+  const locked = status === 'correct';
   const targetStateClass = (targetId: GridTargetId) => {
     if (!answered) return '';
     if (targetId === correctTargetId) return 'is-correct';
@@ -100,7 +133,10 @@ export function CoordinateGrid({
     return '';
   };
   const hasTarget = (targetId: GridTargetId) => interactiveTargets?.includes(targetId) ?? false;
-  const isInteractive = Boolean(interactiveTargets && interactiveTargets.length > 0);
+  // The SVG is only decorative when nothing inside it is a real control. Axis
+  // targets and labelled clickable points both are, so the plane must stay in
+  // the accessibility tree whenever either is present.
+  const isInteractive = Boolean((interactiveTargets && interactiveTargets.length > 0) || clickablePoints.length > 0);
 
   function handleTargetKeyDown(event: KeyboardEvent, targetId: GridTargetId) {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -110,18 +146,25 @@ export function CoordinateGrid({
   }
 
   function handleGridClick(event: MouseEvent<SVGRectElement>) {
-    if (!onGridClick) return;
+    if (!onGridClick && !onQuadrantClick) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const relX = (event.clientX - rect.left) / rect.width;
     const relY = (event.clientY - rect.top) / rect.height;
     const svgX = relX * VIEW_SIZE;
     const svgY = relY * VIEW_SIZE;
-    const worldX = Math.round(svgX / scale - PADDING + min);
-    const worldY = Math.round((VIEW_SIZE - svgY) / scale + min - PADDING);
-    onGridClick({
-      x: Math.min(max, Math.max(min, worldX)),
-      y: Math.min(max, Math.max(min, worldY)),
-    });
+    const worldX = svgX / scale - PADDING + min;
+    const worldY = (VIEW_SIZE - svgY) / scale + min - PADDING;
+
+    if (onGridClick) {
+      onGridClick({
+        x: Math.min(max, Math.max(min, Math.round(worldX))),
+        y: Math.min(max, Math.max(min, Math.round(worldY))),
+      });
+    }
+    if (onQuadrantClick) {
+      const quadrant: 1 | 2 | 3 | 4 = worldX >= 0 ? (worldY >= 0 ? 1 : 4) : worldY >= 0 ? 2 : 3;
+      onQuadrantClick(quadrant);
+    }
   }
 
   return (
@@ -242,9 +285,9 @@ export function CoordinateGrid({
             x2={toScreenX(max)}
             y2={originY}
             role="button"
-            tabIndex={answered ? -1 : 0}
+            tabIndex={locked ? -1 : 0}
             aria-label={targetLabels?.xAxis}
-            className={`grid-target grid-target-line ${targetStateClass('xAxis')} ${answered ? 'is-disabled' : ''}`}
+            className={`grid-target grid-target-line ${targetStateClass('xAxis')} ${locked ? 'is-disabled' : ''}`}
             onClick={() => onSelectTarget?.('xAxis')}
             onKeyDown={(event) => handleTargetKeyDown(event, 'xAxis')}
           />
@@ -256,9 +299,9 @@ export function CoordinateGrid({
             x2={originX}
             y2={toScreenY(max)}
             role="button"
-            tabIndex={answered ? -1 : 0}
+            tabIndex={locked ? -1 : 0}
             aria-label={targetLabels?.yAxis}
-            className={`grid-target grid-target-line ${targetStateClass('yAxis')} ${answered ? 'is-disabled' : ''}`}
+            className={`grid-target grid-target-line ${targetStateClass('yAxis')} ${locked ? 'is-disabled' : ''}`}
             onClick={() => onSelectTarget?.('yAxis')}
             onKeyDown={(event) => handleTargetKeyDown(event, 'yAxis')}
           />
@@ -269,9 +312,9 @@ export function CoordinateGrid({
             cy={originY}
             r={16}
             role="button"
-            tabIndex={answered ? -1 : 0}
+            tabIndex={locked ? -1 : 0}
             aria-label={targetLabels?.origin}
-            className={`grid-target grid-target-circle ${targetStateClass('origin')} ${answered ? 'is-disabled' : ''}`}
+            className={`grid-target grid-target-circle ${targetStateClass('origin')} ${locked ? 'is-disabled' : ''}`}
             onClick={() => onSelectTarget?.('origin')}
             onKeyDown={(event) => handleTargetKeyDown(event, 'origin')}
           />
@@ -345,7 +388,86 @@ export function CoordinateGrid({
           </g>
         )}
 
-        {onGridClick && (
+        {polygon && polygon.length > 2 && (
+          <polygon points={polygon.map((p) => `${toScreenX(p.x)},${toScreenY(p.y)}`).join(' ')} className="shape-polygon" />
+        )}
+
+        {segments.map((segment, index) => (
+          <line
+            key={`segment-${index}-${segment.from.x}-${segment.from.y}-${segment.to.x}-${segment.to.y}`}
+            x1={toScreenX(segment.from.x)}
+            y1={toScreenY(segment.from.y)}
+            x2={toScreenX(segment.to.x)}
+            y2={toScreenY(segment.to.y)}
+            className={`shape-segment shape-segment-${segment.variant ?? 'default'}`}
+          />
+        ))}
+
+        {vertexLabels.map(({ point: vertex, label }) => (
+          <g key={`vertex-${label}-${vertex.x}-${vertex.y}`}>
+            <circle cx={toScreenX(vertex.x)} cy={toScreenY(vertex.y)} r={5} className="vertex-dot" />
+            <text x={toScreenX(vertex.x) + 9} y={toScreenY(vertex.y) - 9} className="vertex-label">
+              {label}
+            </text>
+          </g>
+        ))}
+
+        {drawnPoints.length > 0 && (
+          <g className={drawComplete ? 'draw-sequence draw-sequence-complete' : 'draw-sequence'}>
+            {drawnPoints.length > 1 && (
+              <polyline
+                points={drawnPoints.map((p) => `${toScreenX(p.x)},${toScreenY(p.y)}`).join(' ')}
+                className="draw-sequence-line"
+              />
+            )}
+            {drawnPoints.map((p, i) => {
+              const isLast = i === drawnPoints.length - 1;
+              return (
+                <circle
+                  key={`draw-point-${i}-${p.x}-${p.y}`}
+                  cx={toScreenX(p.x)}
+                  cy={toScreenY(p.y)}
+                  r={isLast && !drawComplete ? 8 : 4}
+                  className={isLast && !drawComplete ? 'draw-point draw-point-current' : 'draw-point'}
+                />
+              );
+            })}
+          </g>
+        )}
+
+        {clickablePoints.map(({ id, point: p, label }) => {
+          const stateClass = pointsAnswered
+            ? id === correctPointId
+              ? 'is-correct'
+              : id === selectedPointId
+                ? 'is-incorrect'
+                : ''
+            : '';
+          return (
+            <g
+              key={`clickable-point-${id}`}
+              role="button"
+              tabIndex={pointsLocked ? -1 : 0}
+              aria-label={label}
+              className={`clickable-point ${stateClass} ${pointsLocked ? 'is-disabled' : ''}`}
+              onClick={() => onSelectPoint?.(id)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  onSelectPoint?.(id);
+                }
+              }}
+            >
+              <circle cx={toScreenX(p.x)} cy={toScreenY(p.y)} r={14} className="clickable-point-hit" />
+              <circle cx={toScreenX(p.x)} cy={toScreenY(p.y)} r={7} className="clickable-point-dot" />
+              <text x={toScreenX(p.x) + 10} y={toScreenY(p.y) - 10} className="clickable-point-label">
+                {label}
+              </text>
+            </g>
+          );
+        })}
+
+        {(onGridClick || onQuadrantClick) && (
           <rect
             x={0}
             y={0}

@@ -9,12 +9,14 @@ interface CardProps {
   icon?: ReactNode;
   to?: string;
   disabled?: boolean;
+  statusBadge?: ReactNode;
 }
 
-export function Card({ title, description, icon, to, disabled }: CardProps) {
+export function Card({ title, description, icon, to, disabled, statusBadge }: CardProps) {
   const { t } = useTranslation();
   const content = (
     <>
+      {statusBadge && <span className="card-status-badge">{statusBadge}</span>}
       {icon && <span className="card-icon">{icon}</span>}
       <h3 className="card-title">{title}</h3>
       {description && <p className="card-description">{description}</p>}

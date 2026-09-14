@@ -62,7 +62,8 @@
   },
   "coordinateSystemPage": {
     "title": "מערכת צירים",
-    "subtitle": "בחרו תרגיל כדי להתאמן"
+    "subtitle": "בחרו תרגיל כדי להתאמן",
+    "completedBadge": "הושלם"
   },
   "exercises": {
     "meetTheAxes": {
@@ -232,7 +233,11 @@
       }
     },
     "feedback": {
-      "correctMessages": ["בול! 🎯", "פגיעה! 🎯", "יש! 🎯"],
+      "correctMessages": [
+        "בול! 🎯",
+        "פגיעה! 🎯",
+        "יש! 🎯"
+      ],
       "xSign": "כמעט! המטרה {{direction}} ל-0, לכן X {{sign}}.",
       "ySign": "כמעט! המטרה {{direction}} ל-0, לכן Y {{sign}}.",
       "swapped": "כמעט — קודם X, אחר כך Y.",
@@ -276,7 +281,11 @@
     },
     "feedback": {
       "xDone": "X מוכן! עכשיו Y",
-      "correctMessages": ["יש! 🚀", "הגענו!", "בדיוק!"],
+      "correctMessages": [
+        "יש! 🚀",
+        "הגענו!",
+        "בדיוק!"
+      ],
       "directMistake": "כמעט! {{axis}} {{sign}} — טסים {{direction}}.",
       "swapped": "קודם X, אחר כך Y.",
       "other": "כמעט! ננסה שוב."
@@ -304,6 +313,303 @@
       "title": "🚀 המשימה הושלמה!",
       "summary": "{{total}} יעדים הושלמו",
       "firstTry": "{{count}} בניסיון ראשון"
+    }
+  },
+  "quadrantChallenge": {
+    "gameName": "אתגר הרביעים",
+    "gameDescription": "קוראים סימנים, מוצאים רביע",
+    "progress": "אתגר {{current}} מתוך {{total}}",
+    "prompts": {
+      "whichQuadrant": "באיזה רביע?",
+      "whichQuadrantFromSigns": "באיזה רביע?",
+      "whichSigns": "מה הסימנים כאן?",
+      "whereIsThisPoint": "איפה הנקודה הזו?"
+    },
+    "stages": {
+      "stage1": {
+        "name": "שלב 1 — מזהים רביע",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "שלב 2 — קואורדינטות ← רביע",
+        "intro": "עכשיו רק מהמספרים."
+      },
+      "stage3": {
+        "name": "שלב 3 — סימנים ← רביע",
+        "intro": "הפעם רק הסימנים."
+      },
+      "stage4": {
+        "name": "שלב 4 — רביע ← סימנים",
+        "intro": "עכשיו בכיוון ההפוך."
+      },
+      "stage5": {
+        "name": "שלב 5 — מלכודות על הצירים",
+        "intro": "שימו לב — לא כל נקודה נמצאת ברביע!"
+      }
+    },
+    "locations": {
+      "quadrant1": "רביע I",
+      "quadrant2": "רביע II",
+      "quadrant3": "רביע III",
+      "quadrant4": "רביע IV",
+      "xAxis": "על ציר X",
+      "yAxis": "על ציר Y",
+      "origin": "ראשית הצירים"
+    },
+    "signLabels": {
+      "x": "X",
+      "y": "Y",
+      "plus": "+",
+      "minus": "−"
+    },
+    "feedback": {
+      "correctMessages": [
+        "בדיוק!",
+        "מדויק!",
+        "נכון!"
+      ],
+      "clickHint": "לא בדיוק — הסתכלו שוב על הסימנים.",
+      "signsHint": "בדקו שוב את מיקום הרביע."
+    },
+    "completion": {
+      "title": "🧭 סיימת את אתגר הרביעים!",
+      "summary": "{{total}} אתגרים הושלמו",
+      "firstTry": "{{count}} בניסיון ראשון"
+    }
+  },
+  "coordinateDetective": {
+    "gameName": "בלשי הקואורדינטות",
+    "gameDescription": "מגלים את הטעות בתשובה שגויה",
+    "progress": "תיק {{current}} מתוך {{total}}",
+    "prompt": "חבר לכיתה סימן את הנקודה הזו. מה הוא טעה?",
+    "legendTarget": "הנקודה האמיתית",
+    "legendWrong": "הניחוש של החבר",
+    "categories": {
+      "swappedXY": "החליף בין X ל-Y",
+      "xSignError": "טעה בסימן של X",
+      "ySignError": "טעה בסימן של Y",
+      "axisConfusion": "בלבל נקודה על ציר עם רביע",
+      "zeroConfusion": "התבלבל עם האפס"
+    },
+    "feedback": {
+      "correctMessages": [
+        "התיק נפתר!",
+        "עין טובה!",
+        "בדיוק!"
+      ],
+      "incorrectHint": "תסתכלו שוב — השוו בין שתי הנקודות."
+    },
+    "completion": {
+      "title": "🔍 סיימת את בלשי הקואורדינטות!",
+      "summary": "{{total}} תיקים נפתרו",
+      "firstTry": "{{count}} בניסיון ראשון"
+    }
+  },
+  "distancesSegments": {
+    "gameName": "מרחקים וקטעים",
+    "gameDescription": "מודדים קטעים ישרים על הצירים",
+    "progress": "קטע {{current}} מתוך {{total}}",
+    "promptHorizontal": "מה אורך הקטע AB?",
+    "promptVertical": "מה אורך הקטע AB?",
+    "inputLabel": "אורך",
+    "actions": {
+      "check": "בדיקת אורך"
+    },
+    "stages": {
+      "stage1": {
+        "name": "שלב 1 — קואורדינטות חיוביות",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "שלב 2 — חוצים את האפס",
+        "intro": "עכשיו הקטע חוצה את האפס."
+      },
+      "stage3": {
+        "name": "שלב 3 — קואורדינטות שליליות",
+        "intro": "הפעם עם קואורדינטות שליליות."
+      },
+      "stage4": {
+        "name": "שלב 4 — קטעים מעורבים",
+        "intro": "אופקי ואנכי, בערבוביה."
+      }
+    },
+    "feedback": {
+      "correctMessages": [
+        "בדיוק נכון!",
+        "נכון!",
+        "מדידה מעולה!"
+      ],
+      "incorrectHint": "ספרו את משבצות הרשת בין הנקודות."
+    },
+    "completion": {
+      "title": "📏 סיימת את מרחקים וקטעים!",
+      "summary": "{{total}} קטעים נמדדו",
+      "firstTry": "{{count}} בניסיון ראשון"
+    }
+  },
+  "shapesOnPlane": {
+    "gameName": "צורות על מערכת הצירים",
+    "gameDescription": "בונים ומודדים צורות לפי קואורדינטות",
+    "progress": "צורה {{current}} מתוך {{total}}",
+    "shapeNames": {
+      "rectangle": "מלבן",
+      "square": "ריבוע",
+      "isoscelesTrapezoid": "טרפז שווה־שוקיים"
+    },
+    "prompts": {
+      "completeShapeTitle": {
+        "rectangle": "השלימו את המלבן ABCD",
+        "square": "השלימו את הריבוע ABCD",
+        "isoscelesTrapezoid": "השלימו את הטרפז שווה־השוקיים ABCD"
+      },
+      "completeShapeAction": "לחצו על מערכת הצירים במקום שבו צריך להיות הקודקוד D.",
+      "parallelSidesNote": "הצלעות AB ו-CD מקבילות.",
+      "sideLength": "מה אורך הצלע {{side}}?",
+      "perimeter": "מה היקף המלבן?",
+      "area": "מה שטח המלבן?"
+    },
+    "inputLabel": "תשובה",
+    "actions": {
+      "check": "בדיקה"
+    },
+    "stages": {
+      "stage1": {
+        "name": "שלב 1 — השלמת הצורה",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "שלב 2 — אורכי צלעות",
+        "intro": "עכשיו נמדוד צלע."
+      },
+      "stage3": {
+        "name": "שלב 3 — היקף",
+        "intro": "מחברים את כל ארבע הצלעות."
+      },
+      "stage4": {
+        "name": "שלב 4 — שטח",
+        "intro": "רוחב כפול גובה."
+      }
+    },
+    "feedback": {
+      "correctMessages": [
+        "בדיוק נכון!",
+        "נכון!",
+        "כל הכבוד!"
+      ],
+      "incorrectHintPoint": "שימו לב כמה רחוק D צריכה להיות מ-A, B ו-C.",
+      "incorrectHintNumber": "השתמשו בקואורדינטות של הקודקודים כדי לבדוק שוב."
+    },
+    "completion": {
+      "title": "📐 סיימת את צורות על מערכת הצירים!",
+      "summary": "{{total}} אתגרי צורות הושלמו",
+      "firstTry": "{{count}} בניסיון ראשון"
+    }
+  },
+  "coordinateMission": {
+    "gameName": "משימת הצירים",
+    "gameDescription": "משימה אחרונה קצרה שמשלבת הכל",
+    "progress": "משימה {{current}} מתוך {{total}}",
+    "prompts": {
+      "identifyAxis": "לחצו על ציר Y.",
+      "readCoordinate": "מהם השיעורים של הנקודה הזו?",
+      "placePoint": "לחצו על המקום הנכון עבור הנקודה הזו.",
+      "quadrant": "באיזה רביע נמצאת הנקודה הזו?",
+      "quadrantFromSigns": "איזה רביע מתאים לסימנים האלה?",
+      "axisOrQuadrant": "איפה נמצאת הנקודה הזו?",
+      "detectMistake": "חבר לכיתה סימן את הנקודה הזו לא נכון. מה קרה?",
+      "segment": "מה אורך הקטע הזה?",
+      "completeRectangle": "לחצו כדי להשלים את הקודקוד החסר של המלבן."
+    },
+    "feedback": {
+      "correctMessages": [
+        "בול!",
+        "נכון!",
+        "מדויק!"
+      ],
+      "incorrectHint": "תסתכלו שוב ונסו פעם נוספת."
+    },
+    "completion": {
+      "title": "🚩 משימת הצירים הושלמה! 🎉",
+      "summary": "{{total}} אתגרים הושלמו",
+      "firstTry": "{{count}} בניסיון ראשון",
+      "recommendation": "כדאי לעשות עוד סיבוב ב{{game}}.",
+      "allGood": "עבודה מצוינת בכל התחומים!"
+    }
+  },
+  "findThePoint": {
+    "progress": "נקודה {{current}} מתוך {{total}}",
+    "promptLead": "איזו נקודה נמצאת ב-",
+    "promptTrailing": "?",
+    "stages": {
+      "stage1": {
+        "name": "שלב 1 — רביע ראשון",
+        "intro": ""
+      },
+      "stage2": {
+        "name": "שלב 2 — כל ארבעת הרביעים",
+        "intro": "עכשיו הנקודות יכולות להיות בכל מקום על המישור."
+      },
+      "stage3": {
+        "name": "שלב 3 — על הצירים",
+        "intro": "שימו לב לנקודות שנמצאות בדיוק על ציר."
+      },
+      "stage4": {
+        "name": "שלב 4 — אתגר משולב",
+        "intro": "קצת מהכול."
+      }
+    },
+    "feedback": {
+      "correctMessages": [
+        "בדיוק!",
+        "מצאת!",
+        "נכון לגמרי!"
+      ],
+      "youClicked": "לחצתם על:",
+      "xSign": "בדקו את X — המטרה {{direction}} ל-0, לכן X {{sign}}.",
+      "ySign": "בדקו את Y — המטרה {{direction}} ל-0, לכן Y {{sign}}.",
+      "swapped": "בדקו שוב — קודם X, אחר כך Y.",
+      "other": "בדקו שוב — השוו בעיון בין ערכי ה-X וה-Y."
+    },
+    "words": {
+      "left": "משמאל",
+      "right": "מימין",
+      "above": "מעל",
+      "below": "מתחת",
+      "negative": "שלילי",
+      "positive": "חיובי"
+    },
+    "completion": {
+      "title": "📍 סיימת את מצאו את הנקודה!",
+      "summary": "{{total}} נקודות הושלמו",
+      "firstTry": "{{count}} נמצאו בניסיון ראשון"
+    },
+    "actions": {
+      "playAgain": "לשחק שוב",
+      "backToTopic": "חזרה למערכת הצירים"
+    }
+  },
+  "drawByCoordinates": {
+    "progress": "נקודה {{current}} מתוך {{total}}",
+    "promptLead": "מצאו את הנקודה",
+    "drawings": {
+      "house": "בית",
+      "tree": "עץ",
+      "boat": "סירת מפרש",
+      "rocket": "רקטה",
+      "star": "כוכב"
+    },
+    "feedback": {
+      "checkX": "בדקו שוב את X.",
+      "checkY": "בדקו שוב את Y.",
+      "checkBoth": "קודם X, אחר כך Y."
+    },
+    "completion": {
+      "title": "🎨 גיליתם את הציור!",
+      "summary": "ציירתם את ה{{name}}!"
+    },
+    "actions": {
+      "anotherDrawing": "ציור נוסף",
+      "backToTopic": "חזרה למערכת הצירים"
     }
   },
   "quiz": {
