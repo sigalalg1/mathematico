@@ -42,5 +42,19 @@ this list covers what a human still needs to eyeball.
 - [ ] At a phone width (~375px) the grid, inputs and buttons stay usable and nothing overflows horizontally.
 - [ ] Buttons are large enough to tap; the coordinate plane is still readable.
 
+## Accounts (student-only)
+Without `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` the app runs guest-only by design:
+- [ ] `/account` shows the "accounts unavailable" notice, the form is disabled, and every game still plays.
+- [ ] Activity from a guest round appears on `/activity` and survives a reload (localStorage).
+
+With Supabase configured (needs a real project):
+- [ ] Sign up with a simple password such as `0000`. If Supabase rejects it, lower
+      **Authentication → Sign In / Providers → Minimum password length** in the Supabase dashboard (default 6).
+- [ ] If email confirmation is on, the page says to confirm by email; after confirming, sign-in works.
+- [ ] Sign in, play a round, and see it on `/activity`; the same round is visible after a reload (session persists).
+- [ ] Sign out returns to the sign-in form, and games still play as a guest afterwards.
+- [ ] Wrong password shows the server's message, not a blank screen.
+- [ ] Go offline (devtools) and try to sign in — a friendly error appears and gameplay keeps working.
+
 ## Console
 - [ ] No errors or React warnings in the browser console while playing through a game.

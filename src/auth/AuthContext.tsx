@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { supabase } from '../lib/supabase';
 import { AuthContext, type AuthContextValue, type AuthResult } from './authContextValue';
 import type { User } from '@supabase/supabase-js';
@@ -9,45 +9,81 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!supabase) return;
+    let active = true;
 
     supabase.auth
       .getSession()
-      .then(({ data }) => setUser(data.session?.user ?? null))
-      .catch(() => setUser(null))
-      .finally(() => setIsInitializing(false));
+      .then(({ data }) => {
+        if (active) setUser(data.session?.user ?? null);
+      })
+      .catch(() => {
+        // Unreachable/misconfigured backend — stay a guest instead of crashing.
+        if (active) setUser(null);
+      })
+      .finally(() => {
+        if (active) setIsInitializing(false);
+      });
 
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      // A session event also means the initial check is settled.
+      setIsInitializing(false);
     });
 
-    return () => subscription.subscription.unsubscribe();
+    return () => {
+      active = false;
+      subscription.subscription.unsubscribe();
+    };
   }, []);
 
-  async function signUp(email: string, password: string): Promise<AuthResult> {
+  const signUp = useCallback(async (email: string, password: string): Promise<AuthResult> => {
     if (!supabase) return { error: 'unavailable' };
-    const { error } = await supabase.auth.signUp({ email, password });
-    return { error: error?.message ?? null };
-  }
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) return { error: error.message };
+      // Supabase returns a session immediately only when email confirmation is off.
+      return { error: null, needsEmailConfirmation: data.session === null };
+    } catch {
+      return { error: 'unexpected' };
+    }
+  }, []);
 
-  async function signIn(email: string, password: string): Promise<AuthResult> {
+  const signIn = useCallback(async (email: string, password: string): Promise<AuthResult> => {
     if (!supabase) return { error: 'unavailable' };
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error?.message ?? null };
-  }
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      return { error: error?.message ?? null };
+    } catch {
+      return { error: 'unexpected' };
+    }
+  }, []);
 
-  async function signOut(): Promise<void> {
-    if (!supabase) return;
-    await supabase.auth.signOut();
-  }
+  const signOut = useCallback(async (): Promise<AuthResult> => {
+    if (!supabase) return { error: null };
+    try {
+      const { error } = await supabase.auth.signOut();
+      // Even when the server rejects (expired/unknown session) the student must
+      // end up signed out locally rather than stuck in a half-signed-in state.
+      setUser(null);
+      return { error: error?.message ?? null };
+    } catch {
+      setUser(null);
+      return { error: 'unexpected' };
+    }
+  }, []);
 
-  const value: AuthContextValue = {
-    status: user ? 'authenticated' : 'guest',
-    user,
-    isInitializing,
-    signUp,
-    signIn,
-    signOut,
-  };
+  const value: AuthContextValue = useMemo(
+    () => ({
+      status: user ? 'authenticated' : 'guest',
+      user,
+      isInitializing,
+      isConfigured: Boolean(supabase),
+      signUp,
+      signIn,
+      signOut,
+    }),
+    [user, isInitializing, signUp, signIn, signOut],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

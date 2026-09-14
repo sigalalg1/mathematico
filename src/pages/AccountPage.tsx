@@ -2,20 +2,25 @@ import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageLayout } from '../components/PageLayout';
 import { useAuth } from '../auth/useAuth';
-import { supabase } from '../lib/supabase';
 import './AccountPage.css';
 
 type Mode = 'signIn' | 'signUp';
 
 export function AccountPage() {
   const { t } = useTranslation();
-  const { user, signIn, signUp, signOut } = useAuth();
+  const { user, isConfigured, signIn, signUp, signOut } = useAuth();
   const [mode, setMode] = useState<Mode>('signIn');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  function describeError(code: string): string {
+    if (code === 'unavailable') return t('auth.unavailable');
+    if (code === 'unexpected') return t('auth.unexpectedError');
+    return code;
+  }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -27,22 +32,33 @@ export function AccountPage() {
 
     setSubmitting(false);
     if (result.error) {
-      setError(result.error === 'unavailable' ? t('auth.unavailable') : result.error);
+      setError(describeError(result.error));
       return;
     }
+    setPassword('');
     if (mode === 'signUp') {
-      setMessage(t('auth.signUpSuccess'));
+      setMessage(result.needsEmailConfirmation ? t('auth.signUpConfirmEmail') : t('auth.signUpSuccess'));
     }
+  }
+
+  async function handleSignOut() {
+    setError(null);
+    setMessage(null);
+    setSubmitting(true);
+    const result = await signOut();
+    setSubmitting(false);
+    if (result.error) setError(describeError(result.error));
   }
 
   return (
     <PageLayout title={t('auth.title')} backTo="/" backLabel={t('app.title')}>
-      {!supabase && <p className="account-notice">{t('auth.unavailable')}</p>}
+      {!isConfigured && <p className="account-notice">{t('auth.unavailable')}</p>}
 
       {user ? (
         <div className="account-panel">
           <p className="account-email">{user.email}</p>
-          <button type="button" className="btn btn-primary" onClick={() => signOut()}>
+          {error && <p className="account-error">{error}</p>}
+          <button type="button" className="btn btn-primary" onClick={handleSignOut} disabled={submitting}>
             {t('auth.signOut')}
           </button>
         </div>
@@ -52,14 +68,22 @@ export function AccountPage() {
             <button
               type="button"
               className={`account-tab ${mode === 'signIn' ? 'is-active' : ''}`}
-              onClick={() => setMode('signIn')}
+              onClick={() => {
+                setMode('signIn');
+                setError(null);
+                setMessage(null);
+              }}
             >
               {t('auth.signIn')}
             </button>
             <button
               type="button"
               className={`account-tab ${mode === 'signUp' ? 'is-active' : ''}`}
-              onClick={() => setMode('signUp')}
+              onClick={() => {
+                setMode('signUp');
+                setError(null);
+                setMessage(null);
+              }}
             >
               {t('auth.signUp')}
             </button>
@@ -78,12 +102,13 @@ export function AccountPage() {
             </label>
             <label className="account-field">
               <span>{t('auth.password')}</span>
+              {/* Intentionally no length/complexity rules: any non-empty password
+                  is accepted so young students can pick something simple. */}
               <input
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 required
-                minLength={6}
                 autoComplete={mode === 'signIn' ? 'current-password' : 'new-password'}
               />
             </label>
@@ -91,7 +116,7 @@ export function AccountPage() {
             {error && <p className="account-error">{error}</p>}
             {message && <p className="account-message">{message}</p>}
 
-            <button type="submit" className="btn btn-primary" disabled={submitting || !supabase}>
+            <button type="submit" className="btn btn-primary" disabled={submitting || !isConfigured}>
               {mode === 'signIn' ? t('auth.signIn') : t('auth.signUp')}
             </button>
           </form>

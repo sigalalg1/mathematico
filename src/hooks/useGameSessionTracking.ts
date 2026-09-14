@@ -13,11 +13,14 @@ interface TrackedRound {
 
 /** Opens a session when a round starts and closes it when the round completes. Never throws into the caller. */
 export function useGameSessionTracking(gameId: string, round: TrackedRound, enabled = true): void {
-  const { user } = useAuth();
+  const { user, isInitializing } = useAuth();
   const sessionIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!enabled) return;
+    // Wait for the stored Supabase session to resolve, otherwise a signed-in
+    // student's first round on a freshly loaded page would be written to the
+    // guest (localStorage) store and then re-opened once auth settles.
+    if (!enabled || isInitializing) return;
     let cancelled = false;
     startGameSession(gameId, user?.id ?? null)
       .then((id) => {
@@ -30,7 +33,7 @@ export function useGameSessionTracking(gameId: string, round: TrackedRound, enab
       cancelled = true;
     };
     // A new session opens for every retry (roundKey) and on user identity change.
-  }, [enabled, gameId, user?.id, round.roundKey]);
+  }, [enabled, isInitializing, gameId, user?.id, round.roundKey]);
 
   useEffect(() => {
     if (!round.completed || !sessionIdRef.current) return;

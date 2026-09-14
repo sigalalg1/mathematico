@@ -13,17 +13,30 @@ function readAll(): GameSession[] {
   }
 }
 
+/** Abandoned (never completed) rounds accumulate forever otherwise, eventually filling storage. */
+const MAX_STORED_SESSIONS = 200;
+
 function writeAll(sessions: GameSession[]): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions.slice(0, MAX_STORED_SESSIONS)));
   } catch {
     // Storage unavailable or full — silently drop; tracking must never break gameplay.
   }
 }
 
+/** crypto.randomUUID is unavailable in insecure contexts (plain-http dev hosts). */
+function newSessionId(): string {
+  try {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+  } catch {
+    // Fall through to the non-crypto id below.
+  }
+  return `local-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 export function startLocalSession(gameId: string): GameSession {
   const session: GameSession = {
-    id: crypto.randomUUID(),
+    id: newSessionId(),
     userId: null,
     gameId,
     startedAt: new Date().toISOString(),
