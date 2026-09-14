@@ -56,7 +56,7 @@
     },
     "multiplication": {
       "name": "Multiplication",
-      "description": "Coming soon"
+      "description": "Pop balloons and master the times tables."
     },
     "coordinateSystem": {
       "name": "Coordinate System",
@@ -802,6 +802,34 @@
     "completion": {
       "title": "All the balloons popped! 🎈",
       "summary": "You popped {{total}} balloons"
+    }
+  },
+  "multiplicationPage": {
+    "title": "Multiplication",
+    "subtitle": "Practise the times tables and find the right answer fast.",
+    "completedBadge": "Completed"
+  },
+  "monkeyBalloonShooter": {
+    "gameName": "Monkey Balloon Shooter",
+    "gameDescription": "Help the monkey pop the balloon with the right answer",
+    "prompt": "Which balloon has the answer?",
+    "progress": "Question {{current}} of {{total}}",
+    "a11y": {
+      "balloon": "Balloon {{value}}",
+      "monkey": {
+        "idle": "The monkey is waiting",
+        "aiming": "The monkey is shooting",
+        "happy": "The monkey is cheering",
+        "puzzled": "The monkey looks puzzled"
+      }
+    },
+    "actions": {
+      "playAgain": "Play again",
+      "backToTopic": "Back to topic"
+    },
+    "completion": {
+      "title": "All the balloons popped! 🐵",
+      "summary": "You solved {{total}} multiplication facts"
     }
   }
 }

@@ -120,3 +120,14 @@ export const simpleFractionsGames: Game[] = [
     icon: '🎈',
   },
 ];
+
+export const multiplicationGames: Game[] = [
+  {
+    id: 'monkeyBalloonShooter',
+    enabled: true,
+    path: '/grade/4/multiplication/monkey-balloon-shooter',
+    nameKey: 'monkeyBalloonShooter.gameName',
+    descriptionKey: 'monkeyBalloonShooter.gameDescription',
+    icon: '🐵',
+  },
+];

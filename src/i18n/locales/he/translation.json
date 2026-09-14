@@ -56,7 +56,7 @@
     },
     "multiplication": {
       "name": "כפל",
-      "description": "בקרוב"
+      "description": "פוצצו בלונים ושלטו בלוח הכפל."
     },
     "coordinateSystem": {
       "name": "מערכת צירים",
@@ -802,6 +802,34 @@
     "completion": {
       "title": "כל הבלונים התפוצצו! 🎈",
       "summary": "{{total}} בלונים פוצצתם"
+    }
+  },
+  "multiplicationPage": {
+    "title": "כפל",
+    "subtitle": "תרגלו את לוח הכפל ומצאו מהר את התשובה הנכונה.",
+    "completedBadge": "הושלם"
+  },
+  "monkeyBalloonShooter": {
+    "gameName": "קוף ובלוני הכפל",
+    "gameDescription": "עזרו לקוף לפוצץ את הבלון עם התשובה הנכונה",
+    "prompt": "באיזה בלון התשובה?",
+    "progress": "שאלה {{current}} מתוך {{total}}",
+    "a11y": {
+      "balloon": "בלון {{value}}",
+      "monkey": {
+        "idle": "הקוף מחכה",
+        "aiming": "הקוף יורה",
+        "happy": "הקוף שמח",
+        "puzzled": "הקוף מבולבל"
+      }
+    },
+    "actions": {
+      "playAgain": "עוד סבב",
+      "backToTopic": "חזרה לנושא"
+    },
+    "completion": {
+      "title": "כל הבלונים התפוצצו! 🐵",
+      "summary": "פתרתם {{total}} תרגילי כפל"
     }
   }
 }
