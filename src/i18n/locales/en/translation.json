@@ -70,6 +70,10 @@
       "name": "Coordinate System",
       "description": "Plot points, find locations, and play with the grid."
     },
+    "signedNumbers": {
+      "name": "Signed Numbers",
+      "description": "Positive and negative numbers on the line: order, distance, adding and multiplying."
+    },
     "fractions": {
       "name": "Fractions",
       "description": "Coming soon"
@@ -704,6 +708,159 @@
     "actions": {
       "playAgain": "Play again",
       "backToTopic": "Back to Coordinate System"
+    }
+  },
+  "signedNumbersPage": {
+    "title": "Signed Numbers",
+    "subtitle": "Pick an activity to practise",
+    "completedBadge": "Done"
+  },
+  "signedNumbers": {
+    "progress": "Question {{current}} of {{total}}",
+    "completion": {
+      "summary": "{{total}} questions completed",
+      "firstTry": "{{count}} solved on the first try"
+    },
+    "actions": {
+      "playAgain": "Play again",
+      "backToTopic": "Back to Signed Numbers"
+    }
+  },
+  "numberLinePlace": {
+    "gameName": "Find the Spot",
+    "gameDescription": "Count the ticks along the number line and click exactly where the number lives.",
+    "prompt": {
+      "locate": "Where is",
+      "trailing": "? Click the exact tick."
+    },
+    "direction": {
+      "left": "left",
+      "right": "right"
+    },
+    "feedback": {
+      "correctMessages": [
+        "Right on the spot!",
+        "Counted perfectly!",
+        "Nicely done!"
+      ],
+      "youClicked": "You clicked:",
+      "shouldBeLeft": "The distance from 0 is right, but a negative number sits to the left of 0.",
+      "shouldBeRight": "The distance from 0 is right, but a positive number sits to the right of 0.",
+      "countAgain": "So close! Go back to the nearest tick that shows a number and count from there. Each tick is worth {{step}}.",
+      "oneTickWorth": "Each tick on this line is worth {{step}}. Start from a tick that shows a number and count from there.",
+      "recap": "That is {{count}} ticks {{direction}}, each worth {{step}}."
+    },
+    "completion": {
+      "title": "📍 You finished Find the Spot!"
+    }
+  },
+  "compareSigned": {
+    "gameName": "Which Is Greater?",
+    "gameDescription": "The further right on the line, the greater the number. Click the right one.",
+    "prompt": {
+      "greatest": "Click the greatest number",
+      "smallest": "Click the smallest number"
+    },
+    "hint": "Remember: further to the right means greater.",
+    "feedback": {
+      "correctMessages": [
+        "Exactly right!",
+        "You read the line perfectly!",
+        "Nice one!"
+      ],
+      "youClicked": "You clicked:",
+      "biggerDistanceIsSmaller": "With negative numbers it flips: the further from 0, the smaller the number.",
+      "negativeIsAlwaysSmaller": "Every negative number is smaller than every positive number, however big its digits look.",
+      "lookRight": "Compare by position on the line, not by the digits: further right means greater.",
+      "recapGreatest": "That is the number furthest to the right on the line — so it is the greatest.",
+      "recapSmallest": "That is the number furthest to the left on the line — so it is the smallest."
+    },
+    "completion": {
+      "title": "⚖️ You finished Which Is Greater!"
+    }
+  },
+  "absoluteValue": {
+    "gameName": "Distance from Zero",
+    "gameDescription": "Absolute value is a distance. Measure it on the line and click the answer.",
+    "prompt": {
+      "evaluate": "What is",
+      "findFromDistance": "Which negative number is {{distance}} away from 0?",
+      "findFromDistancePositive": "Which positive number is {{distance}} away from 0?",
+      "distanceBetween": "How far is it from point A to point B? Click the answer on the line.",
+      "trailing": "? Click the answer on the line."
+    },
+    "feedback": {
+      "correctMessages": [
+        "Exactly!",
+        "Measured perfectly!",
+        "Nice!"
+      ],
+      "youClicked": "You clicked:",
+      "neverNegative": "A distance can never be negative — an absolute value is always 0 or more.",
+      "wrongSide": "The distance is right, but you were asked about the other side of 0.",
+      "countTheGap": "Count how many ticks lie between the two points — that is the distance between them.",
+      "measureFromZero": "Measure from 0 to the number and count the ticks.",
+      "recapLabel": "Measured on the line:"
+    },
+    "completion": {
+      "title": "📏 You finished Distance from Zero!"
+    }
+  },
+  "signedAddSub": {
+    "gameName": "Steps on the Line",
+    "gameDescription": "Adding and subtracting is movement along the line. Find where you land.",
+    "prompt": {
+      "land": "Where do you land? Click the tick."
+    },
+    "direction": {
+      "left": "left",
+      "right": "right"
+    },
+    "feedback": {
+      "correctMessages": [
+        "Perfect landing!",
+        "Right on the spot!",
+        "Great move!"
+      ],
+      "youClicked": "You landed on:",
+      "wrongDirection": "Check the direction: the rest of this expression moves you {{direction}}.",
+      "addNegative": "Adding a negative number moves you left.",
+      "subtractNegative": "Subtracting a negative number turns you around and moves you right.",
+      "countSteps": "Right direction! Count the number of steps again.",
+      "recapLabel": "What happened on the line:"
+    },
+    "completion": {
+      "title": "👣 You finished Steps on the Line!"
+    }
+  },
+  "signRules": {
+    "gameName": "The Sign Rule",
+    "gameDescription": "Discover for yourself when a product is positive and when it is negative, then click the result.",
+    "prompt": {
+      "continuePattern": "Continue the pattern — click the result on the line.",
+      "solve": "Click the result on the line."
+    },
+    "ladderTitle": "Look at the pattern:",
+    "rulesTitle": "Sign rules you have found:",
+    "rules": {
+      "posPos": "(+) · (+) = +",
+      "posNeg": "(+) · (−) = −",
+      "negPos": "(−) · (+) = −",
+      "negNeg": "(−) · (−) = +"
+    },
+    "feedback": {
+      "correctMessages": [
+        "Sign rule mastered!",
+        "Exactly!",
+        "Very nice!"
+      ],
+      "youClicked": "You clicked:",
+      "signError": "The size is right — check the sign. Two matching signs give a positive result; different signs give a negative one.",
+      "magnitudeError": "Work the numbers out without their signs first, then decide whether the result is positive or negative.",
+      "ladderHint": "Look at the pattern above — it keeps going at the same rate."
+    },
+    "completion": {
+      "title": "✖️ You finished The Sign Rule!"
     }
   },
   "quiz": {

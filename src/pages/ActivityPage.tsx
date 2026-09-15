@@ -8,6 +8,7 @@ import {
   divisionWithRemainderGames,
   fractionsPart1Games,
   multiplicationGames,
+  signedNumbersGames,
   simpleFractionsGames,
 } from '../data/games';
 import type { GameSession } from '../types/activity';
@@ -17,6 +18,7 @@ function useGameName(gameId: string): string {
   const { t } = useTranslation();
   const game = [
     ...coordinateSystemGames,
+    ...signedNumbersGames,
     ...divisionWithRemainderGames,
     ...simpleFractionsGames,
     ...fractionsPart1Games,

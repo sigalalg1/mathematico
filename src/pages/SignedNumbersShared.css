@@ -1,0 +1,169 @@
+/* Shared layout for every activity in the Grade 7 Signed Numbers unit. */
+
+.signed-activity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.signed-activity-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 560px;
+}
+
+.signed-activity-top .quiz-progress {
+  flex: 1;
+}
+
+.signed-activity-note {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--primary);
+  background: var(--primary-bg);
+  border-radius: var(--radius-pill);
+  padding: 4px 14px;
+  text-align: center;
+}
+
+.signed-activity-prompt {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-h);
+  text-align: center;
+  max-width: 560px;
+}
+
+.signed-activity-focus {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+/* The expression a question is built around, shown as the hero line. */
+.signed-activity-expression {
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  color: var(--text-h);
+  letter-spacing: 0.02em;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.signed-activity-feedback {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.signed-activity-recap {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.feedback-correct-text {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--success);
+}
+
+.feedback-hint-text {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--warning);
+  background: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-4);
+  animation: signed-feedback-in 220ms ease;
+}
+
+@keyframes signed-feedback-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.signed-activity-completion-detail {
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.signed-activity-completion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+/* --- pattern ladder (The Sign Rule) --------------------------------------- */
+
+.signed-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.signed-ladder-row {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+
+/* --- sign rule chips ------------------------------------------------------ */
+
+.signed-rule-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.signed-rule-chip {
+  font-size: var(--text-sm);
+  font-weight: 800;
+  border-radius: var(--radius-pill);
+  padding: 4px 14px;
+  border: 2px solid var(--border);
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  transition:
+    background 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease;
+}
+
+.signed-rule-chip.is-discovered {
+  background: var(--success-bg);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+/* Decorative only — the chip's accessible name stays the rule itself. */
+.signed-rule-chip.is-discovered::before {
+  content: '✓ ';
+}

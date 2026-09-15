@@ -38,6 +38,12 @@ export const topics: Topic[] = [
     path: '/grade/7/coordinate-system',
   },
   {
+    id: 'signedNumbers',
+    gradeId: 7,
+    enabled: true,
+    path: '/grade/7/signed-numbers',
+  },
+  {
     id: 'fractions',
     gradeId: 7,
     enabled: false,

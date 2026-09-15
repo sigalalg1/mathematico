@@ -7,7 +7,8 @@ this list covers what a human still needs to eyeball.
 ## Navigation
 - [ ] Home page loads and shows the grade cards; only Grade 7 is enabled.
 - [ ] Home → Grade 7 → Coordinate System works, and the back links go back correctly.
-- [ ] Every game card on the Coordinate System page opens its game.
+- [ ] Home → Grade 7 → Signed Numbers works, and the back links go back correctly.
+- [ ] Every game card on the Coordinate System and Signed Numbers pages opens its game.
 - [ ] Refresh the page while on a nested URL (e.g. `/grade/7/coordinate-system/hit-the-target`) — it must load, not 404. (This is what the Netlify SPA redirect fixes.)
 
 ## Language and direction
@@ -33,6 +34,14 @@ this list covers what a human still needs to eyeball.
 - [ ] **Find the Point** — four labelled points show at once; a wrong click explains the mistake and the points stay clickable.
 - [ ] **Draw by Coordinates** — each correct click adds a point and connects the line; a wrong click hints at X or Y; the last point reveals the finished picture.
 - [ ] **Coordinate Mission** — the mixed capstone runs through all its question types and the completion screen suggests something to practise.
+
+## Per-game spot checks — Signed Numbers (Grade 7)
+- [ ] **Find the Spot** — the line gets longer and less labelled as you go; clicking the mirror image of the target explains the side of zero, and a near miss asks you to recount.
+- [ ] **Which Is Greater?** — every question is a trap for "compare the digits" (e.g. -7 vs -3); a wrong pick measures both distances from zero on the line.
+- [ ] **Distance from Zero** — `|x|`, "which negative number is d from 0", and the gap between two plotted points A and B all work; a negative answer is called out as impossible.
+- [ ] **Steps on the Line** — the walker slides to the answer; a wrong landing draws the move you actually made, and subtracting a negative is explained as turning around.
+- [ ] **The Sign Rule** — the first three questions show a descending pattern; the four rule chips light up only for cases you have answered correctly, and the pattern reappears as a hint after a slip.
+- [ ] Every signed number, absolute value bar and expression reads left-to-right in Hebrew (e.g. `-3 + 5`, `|-7|`, `(-4) × 3` — never reversed).
 
 ## Feedback and sound
 - [ ] A wrong answer always shows feedback and never blocks a retry (except Coordinate Detective, which is single-attempt by design).
