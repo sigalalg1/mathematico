@@ -12,7 +12,8 @@
     "allGrades": "All grades",
     "grade7Topics": "Grade 7 topics",
     "accountNavLabel": "Account navigation",
-    "grade4Topics": "Grade 4 topics"
+    "grade4Topics": "Grade 4 topics",
+    "grade3Topics": "Grade 3 topics"
   },
   "auth": {
     "title": "Account",
@@ -46,6 +47,10 @@
     "subtitle": "Choose a topic to explore"
   },
   "topics": {
+    "geometryAnglesTriangles": {
+      "name": "Geometry – Angles & Triangles",
+      "description": "Build, hunt, and classify angles and triangles through play."
+    },
     "divisionWithRemainder": {
       "name": "Division with Remainder",
       "description": "Share things out equally and find what is left over."
@@ -760,6 +765,55 @@
     "title": "Simple Fractions",
     "subtitle": "Cut, take pieces, and discover the numerator and the denominator.",
     "completedBadge": "Completed"
+  },
+  "geometry": {
+    "unitName": "Geometry – Angles & Triangles",
+    "unitDescription": "Open rays, hunt angles, and discover every triangle's two names.",
+    "completedBadge": "Completed",
+    "progress": "Challenge {{current}} of {{total}}",
+    "activities": {
+      "meet-the-angle": { "name": "Meet the Angle", "description": "Move a ray and discover the vertex, arms, and opening." },
+      "angle-types": { "name": "Angle Types", "description": "Compare acute, right, and obtuse angles with 90°." },
+      "angle-hunter": { "name": "Angle Hunter", "description": "Hit only the requested angles, however they are turned." },
+      "build-an-angle": { "name": "Build an Angle", "description": "Drag an arm to build the requested angle type." },
+      "find-the-angles": { "name": "Find the Angles", "description": "Spot angle types hidden in colorful shapes and scenes." },
+      "meet-the-triangle": { "name": "Meet the Triangle", "description": "Explore three sides, three vertices, and three angles." },
+      "triangles-by-sides": { "name": "Triangles by Sides", "description": "Use equal-side clues to classify triangles." },
+      "triangles-by-angles": { "name": "Triangles by Angles", "description": "Classify triangles by their actual corner angles." },
+      "triangle-lab": { "name": "Triangle Lab", "description": "Move vertices and watch both triangle names change." },
+      "who-am-i": { "name": "Who Am I?", "description": "Solve valid riddles that combine side and angle clues." },
+      "rotation": { "name": "Don't Trust the Rotation", "description": "Classify fast: turning a shape never changes its type." },
+      "geometry-challenge": { "name": "Geometry Challenge", "description": "A fresh mixed session using everything you learned." }
+    },
+    "prompts": {
+      "explore-angle": "Drag the pink arm. What changes—and what stays the same?",
+      "select-angle": "What type of angle is shown?",
+      "hunt-angle": "Hit only {{type}} angles!",
+      "build-angle": "Drag the arm to build a {{type}} angle.",
+      "find-corners": "Find a {{type}} angle in the scene.",
+      "explore-triangle": "Inspect this triangle from every direction.",
+      "select-sides": "Choose the {{type}} triangle.",
+      "select-triangle-angle": "Choose the {{type}}.",
+      "triangle-lab": "Move a vertex, then read both names together.",
+      "riddle": "Who am I? Use both clues.",
+      "rotation": "Ignore the rotation. Classify the triangle."
+    },
+    "angleTypes": { "acute": "acute angle", "right": "right angle", "obtuse": "obtuse angle" },
+    "sideTypes": { "equilateral": "equilateral", "isosceles": "isosceles", "scalene": "scalene" },
+    "triangleAngleTypes": { "acute": "acute triangle", "right": "right triangle", "obtuse": "obtuse triangle" },
+    "concepts": {
+      "angleParts": "Two rays share one vertex. The opening—not the arm length—sets the angle size.",
+      "dragArm": "Use 90° as your benchmark: acute < 90°, right = 90°, obtuse is between 90° and 180°.",
+      "triangleParts": "Every triangle has exactly 3 sides, 3 vertices, and 3 angles—even when tilted or narrow."
+    },
+    "riddles": {
+      "sides": { "equilateral": "All three sides are equal.", "isosceles": "Exactly two sides are equal.", "scalene": "All three side lengths differ." },
+      "angles": { "acute": "All my angles are acute.", "right": "I have one right angle.", "obtuse": "I have one obtuse angle." }
+    },
+    "actions": { "check": "Check", "continue": "Continue", "playAgain": "Play again", "back": "Back to the unit" },
+    "feedback": { "correct": "Great geometry!", "retry": "Look carefully and try again." },
+    "completion": { "title": "Geometry explorer!", "body": "You completed all {{count}} challenges." },
+    "a11y": { "angle": "Angle of {{degrees}} degrees", "selectAngle": "Select {{degrees}} degree angle", "triangle": "Interactive triangle" }
   },
   "fractionsPart1": {
     "unitName": "Fractions – Part 1",

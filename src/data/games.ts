@@ -1,5 +1,29 @@
 import type { Game } from '../types';
 
+const GEOMETRY_PATH = '/grade/3/geometry-angles-triangles';
+
+export const geometryAnglesTrianglesGames: Game[] = [
+  ['meet-the-angle', '📐'],
+  ['angle-types', '🧭'],
+  ['angle-hunter', '🎯'],
+  ['build-an-angle', '🛠️'],
+  ['find-the-angles', '🔎'],
+  ['meet-the-triangle', '🔺'],
+  ['triangles-by-sides', '📏'],
+  ['triangles-by-angles', '✨'],
+  ['triangle-lab', '🧪'],
+  ['who-am-i', '🕵️'],
+  ['rotation', '🔄'],
+  ['geometry-challenge', '🏆'],
+].map(([id, icon]) => ({
+  id,
+  enabled: true,
+  path: `${GEOMETRY_PATH}/${id}`,
+  nameKey: `geometry.activities.${id}.name`,
+  descriptionKey: `geometry.activities.${id}.description`,
+  icon,
+}));
+
 export const coordinateSystemGames: Game[] = [
   {
     id: 'coordinateVocabulary',

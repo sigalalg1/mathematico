@@ -24,6 +24,8 @@ import { useDocumentDirection } from './i18n/useDocumentDirection';
 import { PenaltyShootoutPage } from './pages/PenaltyShootoutPage';
 import { FractionsPart1Page } from './pages/FractionsPart1Page';
 import { FractionsPart1ActivityPage } from './pages/FractionsPart1ActivityPage';
+import { GeometryAnglesTrianglesPage } from './pages/GeometryAnglesTrianglesPage';
+import { GeometryActivityPage } from './pages/GeometryActivityPage';
 
 function App() {
   useDocumentDirection();
@@ -33,6 +35,8 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/grade/:gradeId" element={<GradePage />} />
       <Route path="/grade/4/division-with-remainder" element={<DivisionWithRemainderPage />} />
+      <Route path="/grade/3/geometry-angles-triangles" element={<GeometryAnglesTrianglesPage />} />
+      <Route path="/grade/3/geometry-angles-triangles/:activityId" element={<GeometryActivityPage />} />
       <Route path="/grade/4/penalty-shootout" element={<PenaltyShootoutPage />} />
       <Route path="/grade/4/simple-fractions" element={<SimpleFractionsPage />} />
       <Route path="/grade/4/fractions-part-1" element={<FractionsPart1Page />} />

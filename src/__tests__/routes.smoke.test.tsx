@@ -7,12 +7,15 @@ import {
   coordinateSystemGames,
   divisionWithRemainderGames,
   fractionsPart1Games,
+  geometryAnglesTrianglesGames,
   multiplicationGames,
   simpleFractionsGames,
 } from '../data/games';
 
 const STATIC_ROUTES = [
   '/',
+  '/grade/3',
+  '/grade/3/geometry-angles-triangles',
   '/grade/4',
   '/grade/4/division-with-remainder',
   '/grade/4/multiplication',
@@ -25,6 +28,7 @@ const STATIC_ROUTES = [
   '/activity',
 ];
 const GAME_ROUTES = [
+  ...geometryAnglesTrianglesGames,
   ...coordinateSystemGames,
   ...divisionWithRemainderGames,
   ...multiplicationGames,
@@ -49,6 +53,8 @@ describe('routing smoke tests', () => {
   });
 
   it('registers a route for every enabled game in the topic registry', () => {
+    expect(geometryAnglesTrianglesGames).toHaveLength(12);
+    expect(geometryAnglesTrianglesGames.every((game) => game.path?.startsWith('/grade/3/geometry-angles-triangles/'))).toBe(true);
     for (const game of coordinateSystemGames) {
       expect(game.enabled).toBe(true);
       expect(game.path).toMatch(/^\/grade\/7\/coordinate-system\//);
@@ -82,7 +88,7 @@ describe('routing smoke tests', () => {
   });
 
   it('redirects an unknown grade back to the home page', () => {
-    renderWithProviders(<App />, ['/grade/3']);
+    renderWithProviders(<App />, ['/grade/2']);
     expect(screen.getByRole('heading', { level: 1, name: i18n.t('app.title') })).toBeInTheDocument();
   });
 

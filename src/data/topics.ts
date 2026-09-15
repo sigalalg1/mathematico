@@ -2,6 +2,12 @@ import type { Topic } from '../types';
 
 export const topics: Topic[] = [
   {
+    id: 'geometryAnglesTriangles',
+    gradeId: 3,
+    enabled: true,
+    path: '/grade/3/geometry-angles-triangles',
+  },
+  {
     id: 'divisionWithRemainder',
     gradeId: 4,
     enabled: true,
