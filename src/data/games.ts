@@ -89,4 +89,12 @@ export const coordinateSystemGames: Game[] = [
     descriptionKey: 'games.drawByCoordinates.description',
     icon: '🎨',
   },
+  {
+    id: 'coordinateScale',
+    enabled: true,
+    path: '/grade/7/coordinate-system/coordinate-scale',
+    nameKey: 'coordinateScale.gameName',
+    descriptionKey: 'coordinateScale.gameDescription',
+    icon: '📊',
+  },
 ];

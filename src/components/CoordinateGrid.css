@@ -326,6 +326,36 @@
   font-family: var(--sans);
 }
 
+.scale-hint-span {
+  stroke: var(--primary);
+  stroke-width: 6;
+  stroke-linecap: round;
+  opacity: 0.8;
+  animation: scale-hint-pulse 900ms ease-out 2;
+}
+
+.scale-hint-cap {
+  stroke: var(--primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.scale-hint-label {
+  font-weight: 800;
+  fill: var(--primary);
+}
+
+@keyframes scale-hint-pulse {
+  0% {
+    stroke-width: 12;
+    opacity: 1;
+  }
+  100% {
+    stroke-width: 6;
+    opacity: 0.8;
+  }
+}
+
 .draw-sequence-line {
   fill: none;
   stroke: var(--primary);

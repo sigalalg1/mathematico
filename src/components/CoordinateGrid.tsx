@@ -59,6 +59,25 @@ interface CoordinateGridProps {
   drawnPoints?: { x: number; y: number }[];
   /** Emphasizes the finished outline once the whole sequence has been placed. */
   drawComplete?: boolean;
+  /**
+   * How many real units one grid square is worth. Only the tick *labels*
+   * change: positions stay whole grid squares, so every other prop keeps
+   * working in grid-square coordinates. Defaults to 1, the implicit scale
+   * every other game relies on.
+   */
+  unitScale?: number;
+  /**
+   * Which tick positions show their number. Tick marks are always drawn, and
+   * the origin's 0 always stays visible. Omit (or pass null) to label every
+   * tick, which is what every existing game expects.
+   */
+  labeledTicks?: { x: number[]; y: number[] } | null;
+  /**
+   * Highlights the span between two ticks on one axis to show what a single
+   * grid square is worth. Used to explain a wrong answer, not for decoration.
+   */
+  scaleHint?: { axis: 'x' | 'y'; fromTick: number; toTick: number } | null;
+  scaleHintSeed?: number | string;
 }
 
 const VIEW_SIZE = 320;
@@ -102,13 +121,23 @@ export function CoordinateGrid({
   pointsLocked = pointsAnswered,
   drawnPoints = [],
   drawComplete = false,
+  unitScale = 1,
+  labeledTicks = null,
+  scaleHint = null,
+  scaleHintSeed = 0,
 }: CoordinateGridProps) {
   const gridId = useId();
   const worldSize = max - min + PADDING * 2;
-  const scale = VIEW_SIZE / worldSize;
+  const pxPerSquare = VIEW_SIZE / worldSize;
 
-  const toScreenX = (x: number) => (x - min + PADDING) * scale;
-  const toScreenY = (y: number) => VIEW_SIZE - (y - min + PADDING) * scale;
+  const toScreenX = (x: number) => (x - min + PADDING) * pxPerSquare;
+  const toScreenY = (y: number) => VIEW_SIZE - (y - min + PADDING) * pxPerSquare;
+
+  const tickLabel = (n: number) => {
+    const value = n * unitScale;
+    return value === 0 ? '0' : String(value);
+  };
+  const showsLabel = (axis: 'x' | 'y', n: number) => labeledTicks === null || labeledTicks[axis].includes(n);
 
   const ticks: number[] = [];
   for (let n = min; n <= max; n++) {
@@ -152,8 +181,8 @@ export function CoordinateGrid({
     const relY = (event.clientY - rect.top) / rect.height;
     const svgX = relX * VIEW_SIZE;
     const svgY = relY * VIEW_SIZE;
-    const worldX = svgX / scale - PADDING + min;
-    const worldY = (VIEW_SIZE - svgY) / scale + min - PADDING;
+    const worldX = svgX / pxPerSquare - PADDING + min;
+    const worldY = (VIEW_SIZE - svgY) / pxPerSquare + min - PADDING;
 
     if (onGridClick) {
       onGridClick({
@@ -254,17 +283,21 @@ export function CoordinateGrid({
         {ticks.map((n) => (
           <g key={`tick-x-${n}`}>
             <line x1={toScreenX(n)} y1={originY - 4} x2={toScreenX(n)} y2={originY + 4} className="tick-mark" />
-            <text x={toScreenX(n)} y={originY + 17} textAnchor="middle" className="tick-label">
-              {n}
-            </text>
+            {showsLabel('x', n) && (
+              <text x={toScreenX(n)} y={originY + 17} textAnchor="middle" className="tick-label">
+                {tickLabel(n)}
+              </text>
+            )}
           </g>
         ))}
         {ticks.map((n) => (
           <g key={`tick-y-${n}`}>
             <line x1={originX - 4} y1={toScreenY(n)} x2={originX + 4} y2={toScreenY(n)} className="tick-mark" />
-            <text x={originX - 9} y={toScreenY(n) + 4} textAnchor="end" className="tick-label">
-              {n}
-            </text>
+            {showsLabel('y', n) && (
+              <text x={originX - 9} y={toScreenY(n) + 4} textAnchor="end" className="tick-label">
+                {tickLabel(n)}
+              </text>
+            )}
           </g>
         ))}
         <text x={originX - 9} y={originY + 17} textAnchor="end" className="tick-label">
@@ -277,6 +310,48 @@ export function CoordinateGrid({
         <text x={originX} y={toScreenY(max) - LABEL_OFFSET} textAnchor="middle" className="axis-label">
           Y
         </text>
+
+        {scaleHint && (
+          <g key={`scale-hint-${scaleHintSeed}`} className="scale-hint">
+            {scaleHint.axis === 'x' ? (
+              <>
+                <line
+                  x1={toScreenX(scaleHint.fromTick)}
+                  y1={originY}
+                  x2={toScreenX(scaleHint.toTick)}
+                  y2={originY}
+                  className="scale-hint-span"
+                />
+                {[scaleHint.fromTick, scaleHint.toTick].map((n) => (
+                  <g key={`scale-hint-x-${n}`}>
+                    <line x1={toScreenX(n)} y1={originY - 8} x2={toScreenX(n)} y2={originY + 8} className="scale-hint-cap" />
+                    <text x={toScreenX(n)} y={originY + 17} textAnchor="middle" className="tick-label scale-hint-label">
+                      {tickLabel(n)}
+                    </text>
+                  </g>
+                ))}
+              </>
+            ) : (
+              <>
+                <line
+                  x1={originX}
+                  y1={toScreenY(scaleHint.fromTick)}
+                  x2={originX}
+                  y2={toScreenY(scaleHint.toTick)}
+                  className="scale-hint-span"
+                />
+                {[scaleHint.fromTick, scaleHint.toTick].map((n) => (
+                  <g key={`scale-hint-y-${n}`}>
+                    <line x1={originX - 8} y1={toScreenY(n)} x2={originX + 8} y2={toScreenY(n)} className="scale-hint-cap" />
+                    <text x={originX - 9} y={toScreenY(n) + 4} textAnchor="end" className="tick-label scale-hint-label">
+                      {tickLabel(n)}
+                    </text>
+                  </g>
+                ))}
+              </>
+            )}
+          </g>
+        )}
 
         {hasTarget('xAxis') && (
           <line
