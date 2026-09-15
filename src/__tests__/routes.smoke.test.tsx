@@ -3,7 +3,13 @@ import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../test/testUtils';
 import i18n from '../i18n';
 import App from '../App';
-import { coordinateSystemGames, divisionWithRemainderGames, multiplicationGames, simpleFractionsGames } from '../data/games';
+import {
+  coordinateSystemGames,
+  divisionWithRemainderGames,
+  fractionsPart1Games,
+  multiplicationGames,
+  simpleFractionsGames,
+} from '../data/games';
 
 const STATIC_ROUTES = [
   '/',
@@ -11,13 +17,20 @@ const STATIC_ROUTES = [
   '/grade/4/division-with-remainder',
   '/grade/4/multiplication',
   '/grade/4/simple-fractions',
+  '/grade/4/fractions-part-1',
   '/grade/4/penalty-shootout',
   '/grade/7',
   '/grade/7/coordinate-system',
   '/account',
   '/activity',
 ];
-const GAME_ROUTES = [...coordinateSystemGames, ...divisionWithRemainderGames, ...multiplicationGames, ...simpleFractionsGames].map((game) => game.path!);
+const GAME_ROUTES = [
+  ...coordinateSystemGames,
+  ...divisionWithRemainderGames,
+  ...multiplicationGames,
+  ...simpleFractionsGames,
+  ...fractionsPart1Games,
+].map((game) => game.path!);
 const ALL_ROUTES = [...STATIC_ROUTES, ...GAME_ROUTES];
 
 describe('routing smoke tests', () => {
@@ -82,6 +95,13 @@ describe('routing smoke tests', () => {
     for (const game of simpleFractionsGames) {
       expect(screen.getByText(i18n.t(game.nameKey) as string)).toBeInTheDocument();
     }
+  });
+
+  it('shows all ten ordered activities on the Fractions Part 1 page', () => {
+    renderWithProviders(<App />, ['/grade/4/fractions-part-1']);
+    fractionsPart1Games.forEach((game, index) => {
+      expect(screen.getByText(`${index + 1}. ${i18n.t(game.nameKey)}`)).toBeInTheDocument();
+    });
   });
 
   it('shows both Grade 4 multiplication games as cards on their topic page', () => {

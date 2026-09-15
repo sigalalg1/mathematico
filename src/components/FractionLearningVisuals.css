@@ -1,0 +1,107 @@
+.fraction-number-line {
+  position: relative;
+  width: min(92%, 620px);
+  height: 112px;
+  margin: var(--space-5) auto var(--space-2);
+}
+
+.fnl-track {
+  position: absolute;
+  inset: 24px 0 auto;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--text-h);
+}
+
+.fnl-point {
+  position: absolute;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 54px;
+  padding: 0;
+  border: 0;
+  color: var(--text-h);
+  background: transparent;
+  transform: translateX(-50%);
+}
+
+.fnl-point:enabled {
+  cursor: pointer;
+}
+
+.fnl-point:disabled {
+  opacity: 1;
+}
+
+.fnl-dot {
+  width: 22px;
+  height: 34px;
+  border: 4px solid var(--text-h);
+  border-block-width: 0;
+  background: transparent;
+}
+
+.fnl-point-marked .fnl-dot,
+.fnl-point-selected .fnl-dot {
+  width: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 6px var(--primary-bg);
+}
+
+.fnl-label {
+  min-height: 42px;
+  font-weight: 800;
+}
+
+.fraction-collection {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(38px, 1fr));
+  gap: var(--space-3);
+  width: min(100%, 520px);
+  margin: var(--space-3) auto;
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: var(--bg-alt);
+}
+
+.collection-item {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  color: #b9b2c9;
+  background: transparent;
+  font-size: clamp(26px, 5vw, 42px);
+  filter: grayscale(0.8);
+}
+
+button.collection-item {
+  cursor: pointer;
+  transition: transform 140ms ease, filter 140ms ease;
+}
+
+button.collection-item:hover {
+  transform: scale(1.12);
+}
+
+.collection-item-selected {
+  color: var(--accent);
+  filter: none;
+  transform: scale(1.08);
+}
+
+@media (max-width: 520px) {
+  .fraction-collection {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .fnl-point {
+    width: 42px;
+  }
+}

@@ -54,6 +54,10 @@
       "name": "שברים פשוטים",
       "description": "חתכו שלם לחלקים שווים ובנו שברים."
     },
+    "fractionsPart1": {
+      "name": "שברים – חלק א׳",
+      "description": "חוקרים שברים בעזרת צורות, ישר המספרים, קבוצות ומשחקים."
+    },
     "multiplication": {
       "name": "כפל",
       "description": "בונים מבנים, מפוצצים בלונים ושולטים בכפל."
@@ -910,6 +914,61 @@
       "title": "המפעל עובד!",
       "summary": "{{total}} הזמנות יצאו לדרך",
       "firstTry": "{{first}} בניסיון הראשון"
+    }
+  },
+  "fractionsPart1": {
+    "unitName": "שברים – חלק א׳",
+    "unitDescription": "בונים שבר מחלקים שווים ומשתמשים בו בציורים, בקבוצות ובישר המספרים.",
+    "progress": "אתגר {{current}} מתוך {{total}}",
+    "activities": {
+      "build-a-fraction": { "name": "בונים שבר", "description": "צובעים חלקים שווים ובונים מהם שברים." },
+      "numerator-denominator": { "name": "מונה ומכנה", "description": "מחברים כל מספר לחלקים שרואים." },
+      "find-the-fraction": { "name": "מצא את השבר", "description": "מתאימים בין שבר כתוב לדגם חזותי." },
+      "build-the-whole": { "name": "בנה את השלם", "description": "משתמשים בחלקים הנתונים כדי להשלים שלם." },
+      "same-fraction": { "name": "אותו שבר, צורה אחרת", "description": "מגלים כמויות שוות שמוצגות בדרכים שונות." },
+      "fraction-number-line": { "name": "שברים על ישר המספרים", "description": "ממקמים ומזהים שברים בין 0 ל־1." },
+      "which-is-greater": { "name": "מי גדול יותר?", "description": "משווים כמויות חזותיות בעזרת <, > ו־=." },
+      "fraction-of-collection": { "name": "שבר מתוך קבוצה", "description": "מוצאים איזה חלק מהעצמים בקבוצה צבוע." },
+      "fraction-pizzeria": { "name": "פיצריית השברים", "description": "מכינים הזמנות פיצה וקוראים את השברים." },
+      "fractions-challenge": { "name": "אתגר השברים", "description": "משלבים את כל מה שלמדנו בסבב חדש." }
+    },
+    "prompts": {
+      "build": "צבעו בדיוק את השבר הזה",
+      "readModel": "איזה שבר צבוע?",
+      "terms": {
+        "numerator": "איזה מספר הוא המונה?",
+        "denominator": "איזה מספר הוא המכנה?",
+        "selected": "כמה חלקים צבועים?",
+        "total": "כמה חלקים שווים יש?"
+      },
+      "findModel": "בחרו בדגם שמציג את השבר",
+      "whole": "כמה חלקים שווים משלימים את השלם?",
+      "equivalent": "מצאו אותה כמות בצורה אחרת",
+      "numberLinePlace": "מקמו את השבר על ישר המספרים",
+      "numberLineRead": "איזה שבר מסומן?",
+      "compare": "הביטו בדגמים. איזה סימן מתאים ביניהם?",
+      "collection": "איזה שבר מהקבוצה צבוע?",
+      "collectionBuild": "צבעו את החלק הזה מתוך הקבוצה",
+      "pizzaBuild": "הכינו את הזמנת הפיצה",
+      "pizzaRead": "איזה שבר מהפיצה נאכל?"
+    },
+    "feedback": {
+      "correct": "בדיוק!",
+      "retry": "הביטו בכמות הצבועה ונסו שוב."
+    },
+    "actions": {
+      "check": "בדיקה",
+      "playAgain": "עוד סבב",
+      "back": "חזרה ליחידה"
+    },
+    "a11y": {
+      "piece": "חלק {{index}} מתוך {{total}}",
+      "collection": "{{selected}} עצמים צבועים מתוך {{total}}",
+      "numberLine": "ישר שברים מאפס עד אחת"
+    },
+    "completion": {
+      "title": "משימת השברים הושלמה!",
+      "body": "פתרתם {{count}} אתגרי שברים חזותיים."
     }
   },
   "multiplicationPage": {

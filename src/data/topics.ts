@@ -14,6 +14,12 @@ export const topics: Topic[] = [
     path: '/grade/4/simple-fractions',
   },
   {
+    id: 'fractionsPart1',
+    gradeId: 4,
+    enabled: true,
+    path: '/grade/4/fractions-part-1',
+  },
+  {
     id: 'multiplication',
     gradeId: 4,
     enabled: true,
