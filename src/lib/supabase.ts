@@ -18,7 +18,7 @@ function createSupabaseClient(): SupabaseClient | null {
   } catch (error) {
     // A malformed VITE_SUPABASE_URL makes createClient throw synchronously.
     // That must never take the whole app down — fall back to guest mode.
-    console.warn('[mathematico] Supabase is misconfigured; running in guest mode.', error);
+    console.warn('[Matika] Supabase is misconfigured; running in guest mode.', error);
     return null;
   }
 }

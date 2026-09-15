@@ -1,7 +1,8 @@
 {
   "app": {
-    "title": "Mathematico",
-    "subtitle": "Pick your grade and start playing with math!"
+    "title": "Matika",
+    "subtitle": "Pick your grade and start playing with math!",
+    "homeLabel": "Matika home"
   },
   "common": {
     "comingSoon": "Coming soon",
@@ -14,6 +15,12 @@
     "accountNavLabel": "Account navigation",
     "grade4Topics": "Grade 4 topics",
     "grade3Topics": "Grade 3 topics"
+  },
+  "install": {
+    "action": "Install Matika",
+    "iosAction": "Install Matika",
+    "iosInstructions": "In Safari, tap Share → Add to Home Screen.",
+    "dismiss": "Not now"
   },
   "auth": {
     "title": "Account",

@@ -7,7 +7,7 @@ export function HomePage() {
   const { t } = useTranslation();
 
   return (
-    <PageLayout title={t('app.title')} subtitle={t('app.subtitle')}>
+    <PageLayout title={t('app.title')} subtitle={t('app.subtitle')} brandTitle>
       <div className="card-grid">
         {grades.map((grade) => (
           <Card
