@@ -21,6 +21,7 @@ import { AccountPage } from './pages/AccountPage';
 import { ActivityPage } from './pages/ActivityPage';
 import { useDocumentDirection } from './i18n/useDocumentDirection';
 import { BlockBuildersPage } from './pages/BlockBuildersPage';
+import { PenaltyShootoutPage } from './pages/PenaltyShootoutPage';
 
 function App() {
   useDocumentDirection();
@@ -32,6 +33,7 @@ function App() {
       <Route path="/grade/4/division-with-remainder" element={<DivisionWithRemainderPage />} />
       <Route path="/grade/4/division-with-remainder/cargo-station" element={<CargoStationPage />} />
       <Route path="/grade/4/multiplication/block-builders" element={<BlockBuildersPage />} />
+      <Route path="/grade/4/penalty-shootout" element={<PenaltyShootoutPage />} />
       <Route path="/grade/4/simple-fractions" element={<SimpleFractionsPage />} />
       <Route path="/grade/4/simple-fractions/fraction-factory" element={<FractionFactoryPage />} />
       <Route path="/grade/7/coordinate-system" element={<CoordinateSystemPage />} />

@@ -58,6 +58,10 @@
       "name": "Multiplication",
       "description": "Build bright block structures and discover how multiplication fits together."
     },
+    "penaltyShootout": {
+      "name": "Penalty Shootout",
+      "description": "Solve addition challenges and aim your shots into the goal."
+    },
     "coordinateSystem": {
       "name": "Coordinate System",
       "description": "Plot points, find locations, and play with the grid."
@@ -73,6 +77,41 @@
     "algebraBasics": {
       "name": "Algebra Basics",
       "description": "Coming soon"
+    }
+  },
+  "penaltyShootout": {
+    "gameName": "Penalty Shootout",
+    "prompt": "Solve, aim, and shoot!",
+    "progress": "{{current}} / {{total}}",
+    "positions": {
+      "topLeft": "top left",
+      "topRight": "top right",
+      "bottomLeft": "bottom left",
+      "bottomRight": "bottom right"
+    },
+    "results": {
+      "goal": "GOAL!",
+      "save": "Saved! Check the sum and shoot again",
+      "post": "Off the post! Take another look",
+      "wide": "Just wide! Recalculate and try again"
+    },
+    "keeper": {
+      "ready": "Goalkeeper ready",
+      "diveLeft": "Goalkeeper diving left",
+      "diveRight": "Goalkeeper diving right",
+      "save": "Goalkeeper making a save",
+      "disappointed": "Goalkeeper after the goal"
+    },
+    "a11y": {
+      "target": "{{position}} target: answer {{answer}}"
+    },
+    "completion": {
+      "title": "What a match!",
+      "body": "You finished all {{count}} addition kicks."
+    },
+    "actions": {
+      "playAgain": "Play another match",
+      "back": "Back to Grade 4"
     }
   },
   "blockBuilders": {

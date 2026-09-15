@@ -10,6 +10,7 @@ const STATIC_ROUTES = [
   '/grade/4',
   '/grade/4/division-with-remainder',
   '/grade/4/simple-fractions',
+  '/grade/4/penalty-shootout',
   '/grade/7',
   '/grade/7/coordinate-system',
   '/account',
