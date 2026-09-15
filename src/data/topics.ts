@@ -20,6 +20,12 @@ export const topics: Topic[] = [
     path: '/grade/4/multiplication/block-builders',
   },
   {
+    id: 'penaltyShootout',
+    gradeId: 4,
+    enabled: true,
+    path: '/grade/4/penalty-shootout',
+  },
+  {
     id: 'coordinateSystem',
     gradeId: 7,
     enabled: true,

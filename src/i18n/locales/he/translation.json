@@ -58,6 +58,10 @@
       "name": "כפל",
       "description": "בונים מבנים צבעוניים ומגלים איך הכפל מתחבר."
     },
+    "penaltyShootout": {
+      "name": "בעיטות חשבון",
+      "description": "פותרים תרגילי חיבור ובועטים את התשובה אל השער."
+    },
     "coordinateSystem": {
       "name": "מערכת צירים",
       "description": "סמנו נקודות, מצאו מיקומים ושחקו עם הצירים."
@@ -73,6 +77,41 @@
     "algebraBasics": {
       "name": "יסודות באלגברה",
       "description": "בקרוב"
+    }
+  },
+  "penaltyShootout": {
+    "gameName": "בעיטות חשבון",
+    "prompt": "פותרים, מכוונים ובועטים!",
+    "progress": "{{current}} / {{total}}",
+    "positions": {
+      "topLeft": "שמאל למעלה",
+      "topRight": "ימין למעלה",
+      "bottomLeft": "שמאל למטה",
+      "bottomRight": "ימין למטה"
+    },
+    "results": {
+      "goal": "גול!",
+      "save": "הדיפה! בדקו את הסכום ובעטו שוב",
+      "post": "לקורה! הביטו שוב בתרגיל",
+      "wide": "כמעט! חשבו מחדש ונסו שוב"
+    },
+    "keeper": {
+      "ready": "השוער מוכן",
+      "diveLeft": "השוער מזנק שמאלה",
+      "diveRight": "השוער מזנק ימינה",
+      "save": "השוער הודף את הכדור",
+      "disappointed": "השוער אחרי הגול"
+    },
+    "a11y": {
+      "target": "מטרה {{position}}: תשובה {{answer}}"
+    },
+    "completion": {
+      "title": "איזה משחק!",
+      "body": "סיימתם את כל {{count}} בעיטות החיבור."
+    },
+    "actions": {
+      "playAgain": "לשחק שוב",
+      "back": "חזרה לכיתה ד׳"
     }
   },
   "blockBuilders": {

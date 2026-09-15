@@ -1,4 +1,18 @@
-export type SoundName = 'fire' | 'hit' | 'miss' | 'stageComplete' | 'gameComplete' | 'move' | 'phaseChange' | 'cut' | 'select';
+export type SoundName =
+  | 'fire'
+  | 'hit'
+  | 'miss'
+  | 'stageComplete'
+  | 'gameComplete'
+  | 'move'
+  | 'phaseChange'
+  | 'cut'
+  | 'select'
+  | 'footballKick'
+  | 'footballSave'
+  | 'footballPost'
+  | 'footballGoal'
+  | 'whistle';
 
 let sharedContext: AudioContext | null = null;
 
@@ -94,6 +108,24 @@ export function playSoundEffect(name: SoundName): void {
       // A soft click for picking a piece up or putting it back.
       case 'select':
         tone(ctx, { freq: 760, start: now, duration: 0.06, type: 'sine', gain: 0.08 });
+        break;
+      case 'footballKick':
+        tone(ctx, { freq: 150, freqEnd: 75, start: now, duration: 0.09, type: 'triangle', gain: 0.14 });
+        break;
+      case 'footballSave':
+        tone(ctx, { freq: 190, freqEnd: 120, start: now, duration: 0.16, type: 'sine', gain: 0.09 });
+        break;
+      case 'footballPost':
+        tone(ctx, { freq: 1250, start: now, duration: 0.16, type: 'triangle', gain: 0.11 });
+        break;
+      case 'footballGoal':
+        tone(ctx, { freq: 520, start: now, duration: 0.12, type: 'square', gain: 0.07 });
+        tone(ctx, { freq: 720, start: now + 0.08, duration: 0.18, type: 'sine', gain: 0.13 });
+        tone(ctx, { freq: 920, start: now + 0.17, duration: 0.24, type: 'sine', gain: 0.1 });
+        break;
+      case 'whistle':
+        tone(ctx, { freq: 1400, start: now, duration: 0.12, type: 'sine', gain: 0.08 });
+        tone(ctx, { freq: 1750, start: now + 0.1, duration: 0.18, type: 'sine', gain: 0.07 });
         break;
     }
   } catch {
