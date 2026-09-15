@@ -1,7 +1,8 @@
 {
   "app": {
-    "title": "מתמטיקו",
-    "subtitle": "בחרו כיתה והתחילו לשחק עם מתמטיקה!"
+    "title": "Matika",
+    "subtitle": "בחרו כיתה והתחילו לשחק עם מתמטיקה!",
+    "homeLabel": "דף הבית של Matika"
   },
   "common": {
     "comingSoon": "בקרוב",
@@ -14,6 +15,12 @@
     "accountNavLabel": "ניווט חשבון",
     "grade4Topics": "נושאי כיתה ד'",
     "grade3Topics": "נושאי כיתה ג'"
+  },
+  "install": {
+    "action": "התקנת Matika",
+    "iosAction": "התקנת Matika",
+    "iosInstructions": "ב-Safari לחצו על שיתוף, ואז על הוספה למסך הבית.",
+    "dismiss": "לא עכשיו"
   },
   "auth": {
     "title": "חשבון",

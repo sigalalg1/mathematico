@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../auth/useAuth';
+import { InstallAppAction } from './InstallAppAction';
 import './HeaderNav.css';
 
 export function HeaderNav() {
@@ -9,6 +10,7 @@ export function HeaderNav() {
 
   return (
     <nav className="header-nav" aria-label={t('nav.accountNavLabel')}>
+      <InstallAppAction />
       <Link className="header-nav-link" to="/activity">
         {t('activity.navLabel')}
       </Link>
