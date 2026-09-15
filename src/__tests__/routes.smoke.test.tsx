@@ -53,6 +53,9 @@ describe('routing smoke tests', () => {
       expect(game.enabled).toBe(true);
       expect(game.path).toMatch(/^\/grade\/7\/coordinate-system\//);
     }
+    expect(divisionWithRemainderGames).toEqual([]);
+    expect(simpleFractionsGames).toEqual([]);
+    expect(multiplicationGames.map((game) => game.id)).toEqual(['monkeyBalloonShooter']);
     expect(new Set(GAME_ROUTES).size).toBe(GAME_ROUTES.length);
   });
 
@@ -104,7 +107,7 @@ describe('routing smoke tests', () => {
     });
   });
 
-  it('shows both Grade 4 multiplication games as cards on their topic page', () => {
+  it('shows the Grade 4 multiplication game as a card on its topic page', () => {
     renderWithProviders(<App />, ['/grade/4/multiplication']);
     for (const game of multiplicationGames) {
       expect(screen.getByText(i18n.t(game.nameKey) as string)).toBeInTheDocument();

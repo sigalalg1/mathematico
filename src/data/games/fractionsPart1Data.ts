@@ -5,7 +5,7 @@ import type {
   FractionChoice,
   FractionValue,
 } from '../../types/fractionsPart1';
-import type { FractionShapeKind } from '../../types/fractionFactory';
+import type { FractionShapeKind } from '../../types/fractionShape';
 import { shuffle } from '../../utils/shuffle';
 import { createSeededRandom, pickRandom, randomInt } from '../../utils/seededRandom';
 

@@ -1,4 +1,4 @@
-import type { FractionShapeKind } from './fractionFactory';
+import type { FractionShapeKind } from './fractionShape';
 
 export interface FractionValue {
   numerator: number;

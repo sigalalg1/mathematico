@@ -1,4 +1,4 @@
-import type { FractionShapeKind } from '../types/fractionFactory';
+import type { FractionShapeKind } from '../types/fractionShape';
 
 /** Every whole is drawn inside the same square viewBox, whatever its shape. */
 export const FRACTION_VIEW = 200;
