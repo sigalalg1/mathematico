@@ -31,7 +31,61 @@
   "activity": {
     "title": "My Activity",
     "navLabel": "Activity",
-    "empty": "No completed games yet — go play something!"
+    "subtitle": "Here's everything you've been practising in Mathematico",
+    "empty": "Nothing here yet 🎈",
+    "emptyHint": "Play a game and your journey will start showing up right here.",
+    "emptyAction": "Let's play!",
+    "loading": "Loading your activity…",
+    "errorTitle": "We couldn't load your activity right now 🌧️",
+    "errorHint": "Nothing is lost — try again in a bit. You can keep playing meanwhile.",
+    "errorAction": "Go play",
+    "guestNote": "You're playing as a guest, so this activity is saved on this device only. Sign in to keep it everywhere.",
+    "unknownGame": "A Mathematico game",
+    "summary": {
+      "heading": "Your journey so far",
+      "games": "games played",
+      "questions": "problems solved",
+      "correct": "correct answers",
+      "days": "practice days",
+      "accuracy": "{{correct}} of {{total}} correct"
+    },
+    "range": {
+      "label": "Show activity from",
+      "week": "This week",
+      "month": "This month",
+      "all": "All time",
+      "empty": "Nothing in this time range yet — try a wider one."
+    },
+    "recent": {
+      "heading": "Recently played",
+      "score": "{{correct}} of {{total}} correct",
+      "playAgain": "Play {{game}} again",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "gradeTopic": "{{grade}} · {{topic}}"
+    },
+    "practiced": {
+      "heading": "What I've practised",
+      "sessions": "Games: {{n}}",
+      "questions": "Problems: {{n}}",
+      "playMore": "More {{topic}}"
+    },
+    "status": {
+      "firstTry": "First try!",
+      "gettingStarted": "Off to a good start",
+      "lotsOfPractice": "Practised a lot",
+      "goingGreat": "Going great",
+      "morePractice": "Could use a bit more practice",
+      "restingTopic": "Haven't played this lately"
+    },
+    "insight": {
+      "heading": "A little note for you",
+      "mostPracticed": "{{topic}} is what you've practised most this week — nice going!",
+      "comeBack": "You haven't visited {{topic}} in a while. Fancy another go?",
+      "freshChallenge": "You know {{topic}} really well by now — ready for a fresh challenge there?",
+      "keepGoing": "Last time you played {{topic}}. Want to pick up where you left off?",
+      "action": "Take me there"
+    }
   },
   "grades": {
     "1": "Grade 1",

@@ -60,6 +60,10 @@ export async function getSupabaseActivityHistory(userId: string): Promise<GameSe
     .eq('user_id', userId)
     .not('completed_at', 'is', null)
     .order('completed_at', { ascending: false });
-  if (error || !data) return [];
+  // Reading history is the one call whose failure is worth surfacing: the
+  // activity page needs to tell "nothing played yet" apart from "backend
+  // unreachable". activityTracker catches this and degrades gracefully.
+  if (error) throw error;
+  if (!data) return [];
   return (data as GameSessionRow[]).map(fromRow);
 }
