@@ -20,6 +20,12 @@ import { ShapesOnPlanePage } from './pages/ShapesOnPlanePage';
 import { CoordinateMissionPage } from './pages/CoordinateMissionPage';
 import { DrawByCoordinatesPage } from './pages/DrawByCoordinatesPage';
 import { CoordinateScalePage } from './pages/CoordinateScalePage';
+import { SignedNumbersPage } from './pages/SignedNumbersPage';
+import { NumberLinePlacePage } from './pages/NumberLinePlacePage';
+import { CompareSignedPage } from './pages/CompareSignedPage';
+import { AbsoluteValuePage } from './pages/AbsoluteValuePage';
+import { SignedAddSubPage } from './pages/SignedAddSubPage';
+import { SignRulesPage } from './pages/SignRulesPage';
 import { AccountPage } from './pages/AccountPage';
 import { ActivityPage } from './pages/ActivityPage';
 import { useDocumentDirection } from './i18n/useDocumentDirection';
@@ -54,6 +60,12 @@ function App() {
       <Route path="/grade/7/coordinate-system/coordinate-mission" element={<CoordinateMissionPage />} />
       <Route path="/grade/7/coordinate-system/draw-by-coordinates" element={<DrawByCoordinatesPage />} />
       <Route path="/grade/7/coordinate-system/coordinate-scale" element={<CoordinateScalePage />} />
+      <Route path="/grade/7/signed-numbers" element={<SignedNumbersPage />} />
+      <Route path="/grade/7/signed-numbers/find-the-spot" element={<NumberLinePlacePage />} />
+      <Route path="/grade/7/signed-numbers/which-is-greater" element={<CompareSignedPage />} />
+      <Route path="/grade/7/signed-numbers/distance-from-zero" element={<AbsoluteValuePage />} />
+      <Route path="/grade/7/signed-numbers/steps-on-the-line" element={<SignedAddSubPage />} />
+      <Route path="/grade/7/signed-numbers/the-sign-rule" element={<SignRulesPage />} />
       <Route path="/account" element={<AccountPage />} />
       <Route path="/activity" element={<ActivityPage />} />
     </Routes>

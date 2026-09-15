@@ -99,6 +99,50 @@ export const coordinateSystemGames: Game[] = [
   },
 ];
 
+/** Grade 7 — Signed Numbers, in teaching order: the line, then order, then distance, then the four operations. */
+export const signedNumbersGames: Game[] = [
+  {
+    id: 'numberLinePlace',
+    enabled: true,
+    path: '/grade/7/signed-numbers/find-the-spot',
+    nameKey: 'numberLinePlace.gameName',
+    descriptionKey: 'numberLinePlace.gameDescription',
+    icon: '📍',
+  },
+  {
+    id: 'compareSigned',
+    enabled: true,
+    path: '/grade/7/signed-numbers/which-is-greater',
+    nameKey: 'compareSigned.gameName',
+    descriptionKey: 'compareSigned.gameDescription',
+    icon: '⚖️',
+  },
+  {
+    id: 'absoluteValue',
+    enabled: true,
+    path: '/grade/7/signed-numbers/distance-from-zero',
+    nameKey: 'absoluteValue.gameName',
+    descriptionKey: 'absoluteValue.gameDescription',
+    icon: '📏',
+  },
+  {
+    id: 'signedAddSub',
+    enabled: true,
+    path: '/grade/7/signed-numbers/steps-on-the-line',
+    nameKey: 'signedAddSub.gameName',
+    descriptionKey: 'signedAddSub.gameDescription',
+    icon: '👣',
+  },
+  {
+    id: 'signRules',
+    enabled: true,
+    path: '/grade/7/signed-numbers/the-sign-rule',
+    nameKey: 'signRules.gameName',
+    descriptionKey: 'signRules.gameDescription',
+    icon: '✖️',
+  },
+];
+
 export const divisionWithRemainderGames: Game[] = [
   {
     id: 'cargoStation',

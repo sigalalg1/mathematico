@@ -3,7 +3,13 @@ import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../test/testUtils';
 import i18n from '../i18n';
 import App from '../App';
-import { coordinateSystemGames, divisionWithRemainderGames, multiplicationGames, simpleFractionsGames } from '../data/games';
+import {
+  coordinateSystemGames,
+  divisionWithRemainderGames,
+  multiplicationGames,
+  signedNumbersGames,
+  simpleFractionsGames,
+} from '../data/games';
 
 const STATIC_ROUTES = [
   '/',
@@ -14,10 +20,17 @@ const STATIC_ROUTES = [
   '/grade/4/penalty-shootout',
   '/grade/7',
   '/grade/7/coordinate-system',
+  '/grade/7/signed-numbers',
   '/account',
   '/activity',
 ];
-const GAME_ROUTES = [...coordinateSystemGames, ...divisionWithRemainderGames, ...multiplicationGames, ...simpleFractionsGames].map((game) => game.path!);
+const GAME_ROUTES = [
+  ...coordinateSystemGames,
+  ...signedNumbersGames,
+  ...divisionWithRemainderGames,
+  ...multiplicationGames,
+  ...simpleFractionsGames,
+].map((game) => game.path!);
 const ALL_ROUTES = [...STATIC_ROUTES, ...GAME_ROUTES];
 
 describe('routing smoke tests', () => {
@@ -89,6 +102,26 @@ describe('routing smoke tests', () => {
     for (const game of multiplicationGames) {
       expect(screen.getByText(i18n.t(game.nameKey) as string)).toBeInTheDocument();
     }
+  });
+
+  it('registers a route for every enabled signed numbers game in the topic registry', () => {
+    for (const game of signedNumbersGames) {
+      expect(game.enabled).toBe(true);
+      expect(game.path).toMatch(/^\/grade\/7\/signed-numbers\//);
+    }
+  });
+
+  it('shows every signed numbers game as a card on the topic page', () => {
+    renderWithProviders(<App />, ['/grade/7/signed-numbers']);
+    for (const game of signedNumbersGames) {
+      expect(screen.getByText(i18n.t(game.nameKey) as string)).toBeInTheDocument();
+    }
+  });
+
+  it('offers both Grade 7 topics on the grade page', () => {
+    renderWithProviders(<App />, ['/grade/7']);
+    expect(screen.getByText(i18n.t('topics.coordinateSystem.name') as string)).toBeInTheDocument();
+    expect(screen.getByText(i18n.t('topics.signedNumbers.name') as string)).toBeInTheDocument();
   });
 
   it('shows every coordinate system game as a card on the topic page', () => {
