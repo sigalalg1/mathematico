@@ -54,6 +54,10 @@
       "name": "Simple Fractions",
       "description": "Cut a whole into equal parts and build fractions."
     },
+    "fractionsPart1": {
+      "name": "Fractions – Part 1",
+      "description": "Explore fractions with shapes, number lines, groups, and games."
+    },
     "multiplication": {
       "name": "Multiplication",
       "description": "Build block structures, pop balloons, and master multiplication."
@@ -910,6 +914,61 @@
       "title": "The factory is running!",
       "summary": "{{total}} orders shipped",
       "firstTry": "{{first}} on the first try"
+    }
+  },
+  "fractionsPart1": {
+    "unitName": "Fractions – Part 1",
+    "unitDescription": "Build a fraction from equal parts, then use it in pictures, groups, and number lines.",
+    "progress": "Challenge {{current}} of {{total}}",
+    "activities": {
+      "build-a-fraction": { "name": "Build a Fraction", "description": "Tap equal pieces to build and read fractions." },
+      "numerator-denominator": { "name": "Numerator and Denominator", "description": "Connect each number to the parts you can see." },
+      "find-the-fraction": { "name": "Find the Fraction", "description": "Match fraction symbols and visual models." },
+      "build-the-whole": { "name": "Build the Whole", "description": "Use the given pieces to reconstruct one whole." },
+      "same-fraction": { "name": "Same Fraction, Different Representation", "description": "Spot equal amounts shown in different ways." },
+      "fraction-number-line": { "name": "Fractions on a Number Line", "description": "Place and identify fractions between 0 and 1." },
+      "which-is-greater": { "name": "Which Is Greater?", "description": "Compare visible amounts with <, >, and =." },
+      "fraction-of-collection": { "name": "Fraction of a Collection", "description": "Find the fraction of objects in a group." },
+      "fraction-pizzeria": { "name": "Fraction Pizzeria", "description": "Prepare pizza orders and read the slices." },
+      "fractions-challenge": { "name": "Fractions Challenge", "description": "Mix everything you learned in a fresh session." }
+    },
+    "prompts": {
+      "build": "Color exactly this fraction",
+      "readModel": "Which fraction is colored?",
+      "terms": {
+        "numerator": "Which number is the numerator?",
+        "denominator": "Which number is the denominator?",
+        "selected": "How many parts are selected?",
+        "total": "How many equal parts are there?"
+      },
+      "findModel": "Tap the model that shows this fraction",
+      "whole": "How many equal pieces complete the whole?",
+      "equivalent": "Find the same amount in a different form",
+      "numberLinePlace": "Place this fraction on the number line",
+      "numberLineRead": "Which fraction is marked?",
+      "compare": "Look at the models. Which sign belongs between them?",
+      "collection": "What fraction of the collection is colored?",
+      "collectionBuild": "Color this fraction of the collection",
+      "pizzaBuild": "Prepare this pizza order",
+      "pizzaRead": "What fraction of the pizza was eaten?"
+    },
+    "feedback": {
+      "correct": "Exactly right!",
+      "retry": "Look at the colored amount and try again."
+    },
+    "actions": {
+      "check": "Check",
+      "playAgain": "Play again",
+      "back": "Back to the unit"
+    },
+    "a11y": {
+      "piece": "Piece {{index}} of {{total}}",
+      "collection": "{{selected}} colored objects out of {{total}}",
+      "numberLine": "Fraction number line from zero to one"
+    },
+    "completion": {
+      "title": "Fraction mission complete!",
+      "body": "You solved {{count}} visual fraction challenges."
     }
   },
   "multiplicationPage": {

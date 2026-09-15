@@ -25,6 +25,8 @@ import { ActivityPage } from './pages/ActivityPage';
 import { useDocumentDirection } from './i18n/useDocumentDirection';
 import { BlockBuildersPage } from './pages/BlockBuildersPage';
 import { PenaltyShootoutPage } from './pages/PenaltyShootoutPage';
+import { FractionsPart1Page } from './pages/FractionsPart1Page';
+import { FractionsPart1ActivityPage } from './pages/FractionsPart1ActivityPage';
 
 function App() {
   useDocumentDirection();
@@ -39,6 +41,8 @@ function App() {
       <Route path="/grade/4/penalty-shootout" element={<PenaltyShootoutPage />} />
       <Route path="/grade/4/simple-fractions" element={<SimpleFractionsPage />} />
       <Route path="/grade/4/simple-fractions/fraction-factory" element={<FractionFactoryPage />} />
+      <Route path="/grade/4/fractions-part-1" element={<FractionsPart1Page />} />
+      <Route path="/grade/4/fractions-part-1/:activityId" element={<FractionsPart1ActivityPage />} />
       <Route path="/grade/4/multiplication" element={<MultiplicationPage />} />
       <Route path="/grade/4/multiplication/monkey-balloon-shooter" element={<MonkeyBalloonShooterPage />} />
       <Route path="/grade/7/coordinate-system" element={<CoordinateSystemPage />} />

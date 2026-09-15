@@ -121,6 +121,28 @@ export const simpleFractionsGames: Game[] = [
   },
 ];
 
+const FRACTIONS_PART1_PATH = '/grade/4/fractions-part-1';
+
+export const fractionsPart1Games: Game[] = [
+  ['build-a-fraction', '🟠'],
+  ['numerator-denominator', '🔢'],
+  ['find-the-fraction', '🔎'],
+  ['build-the-whole', '🧩'],
+  ['same-fraction', '🎭'],
+  ['fraction-number-line', '📍'],
+  ['which-is-greater', '⚖️'],
+  ['fraction-of-collection', '⭐'],
+  ['fraction-pizzeria', '🍕'],
+  ['fractions-challenge', '🏆'],
+].map(([id, icon]) => ({
+  id,
+  enabled: true,
+  path: `${FRACTIONS_PART1_PATH}/${id}`,
+  nameKey: `fractionsPart1.activities.${id}.name`,
+  descriptionKey: `fractionsPart1.activities.${id}.description`,
+  icon,
+}));
+
 export const multiplicationGames: Game[] = [
   {
     id: 'monkeyBalloonShooter',
