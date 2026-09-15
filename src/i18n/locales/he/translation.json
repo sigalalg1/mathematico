@@ -12,7 +12,8 @@
     "allGrades": "כל הכיתות",
     "grade7Topics": "נושאי כיתה ז'",
     "accountNavLabel": "ניווט חשבון",
-    "grade4Topics": "נושאי כיתה ד'"
+    "grade4Topics": "נושאי כיתה ד'",
+    "grade3Topics": "נושאי כיתה ג'"
   },
   "auth": {
     "title": "חשבון",
@@ -46,6 +47,10 @@
     "subtitle": "בחרו נושא לחקור"
   },
   "topics": {
+    "geometryAnglesTriangles": {
+      "name": "גאומטריה – זוויות ומשולשים",
+      "description": "בונים, צדים וממיינים זוויות ומשולשים במשחק."
+    },
     "divisionWithRemainder": {
       "name": "חילוק עם שארית",
       "description": "חלקו שווה בשווה וגלו מה נשאר."
@@ -917,6 +922,55 @@
     "title": "שברים פשוטים",
     "subtitle": "חתכו, בחרו חלקים וגלו מהו מונה ומהו מכנה.",
     "completedBadge": "הושלם"
+  },
+  "geometry": {
+    "unitName": "גאומטריה – זוויות ומשולשים",
+    "unitDescription": "פותחים שוקיים, צדים זוויות ומגלים שלכל משולש שני שמות.",
+    "completedBadge": "הושלם",
+    "progress": "אתגר {{current}} מתוך {{total}}",
+    "activities": {
+      "meet-the-angle": { "name": "מכירים זוויות", "description": "מזיזים שוק ומגלים קודקוד, שוקיים ומפתח." },
+      "angle-types": { "name": "סוגי זוויות", "description": "משווים זווית חדה, ישרה וקהה ל־90°." },
+      "angle-hunter": { "name": "צייד הזוויות", "description": "פוגעים רק בסוג המבוקש, בכל כיוון וסיבוב." },
+      "build-an-angle": { "name": "בונים זווית", "description": "גוררים שוק ובונים את סוג הזווית שהתבקש." },
+      "find-the-angles": { "name": "מוצאים זוויות", "description": "מגלים סוגי זוויות בתוך צורות וסצנות צבעוניות." },
+      "meet-the-triangle": { "name": "מכירים משולשים", "description": "חוקרים שלוש צלעות, שלושה קודקודים ושלוש זוויות." },
+      "triangles-by-sides": { "name": "משולשים לפי צלעות", "description": "נעזרים בסימוני שוויון וממיינים משולשים." },
+      "triangles-by-angles": { "name": "משולשים לפי זוויות", "description": "ממיינים משולשים לפי הזוויות האמיתיות שלהם." },
+      "triangle-lab": { "name": "מעבדת המשולשים", "description": "מזיזים קודקודים ורואים את שני השמות משתנים." },
+      "who-am-i": { "name": "מי אני?", "description": "פותרים חידות אפשריות שמשלבות צלעות וזוויות." },
+      "rotation": { "name": "אל תתנו לסיבוב לבלבל אתכם", "description": "ממיינים במהירות: סיבוב אינו משנה את סוג הצורה." },
+      "geometry-challenge": { "name": "אתגר הגאומטריה", "description": "סבב מעורב וחדש שמשלב את כל מה שלמדנו." }
+    },
+    "prompts": {
+      "explore-angle": "גררו את השוק הוורודה. מה משתנה ומה נשאר?",
+      "select-angle": "איזה סוג זווית מוצג?",
+      "hunt-angle": "פגעו רק בזוויות מסוג {{type}}!",
+      "build-angle": "גררו את השוק ובנו {{type}}.",
+      "find-corners": "מצאו בסצנה {{type}}.",
+      "explore-triangle": "חקרו את המשולש מכל כיוון.",
+      "select-sides": "בחרו משולש {{type}}.",
+      "select-triangle-angle": "בחרו {{type}}.",
+      "triangle-lab": "הזיזו קודקוד וקראו את שני השמות יחד.",
+      "riddle": "מי אני? השתמשו בשני הרמזים.",
+      "rotation": "התעלמו מהסיבוב ומיינו את המשולש."
+    },
+    "angleTypes": { "acute": "זווית חדה", "right": "זווית ישרה", "obtuse": "זווית קהה" },
+    "sideTypes": { "equilateral": "שווה צלעות", "isosceles": "שווה שוקיים", "scalene": "שונה צלעות" },
+    "triangleAngleTypes": { "acute": "משולש חד־זוויות", "right": "משולש ישר־זווית", "obtuse": "משולש קהה־זווית" },
+    "concepts": {
+      "angleParts": "שתי שוקי הזווית נפגשות בקודקוד אחד. גודל הזווית נקבע לפי המפתח, לא לפי אורך השוקיים.",
+      "dragArm": "השתמשו ב־90° כמדד: חדה קטנה מ־90°, ישרה שווה ל־90°, וקהה בין 90° ל־180°.",
+      "triangleParts": "לכל משולש בדיוק 3 צלעות, 3 קודקודים ו־3 זוויות — גם כשהוא נטוי או צר."
+    },
+    "riddles": {
+      "sides": { "equilateral": "כל שלוש הצלעות שלי שוות.", "isosceles": "בדיוק שתי צלעות שלי שוות.", "scalene": "כל שלוש הצלעות שלי שונות." },
+      "angles": { "acute": "כל הזוויות שלי חדות.", "right": "יש לי זווית ישרה אחת.", "obtuse": "יש לי זווית קהה אחת." }
+    },
+    "actions": { "check": "בדיקה", "continue": "ממשיכים", "playAgain": "משחקים שוב", "back": "חזרה ליחידה" },
+    "feedback": { "correct": "גאומטריה מצוינת!", "retry": "התבוננו היטב ונסו שוב." },
+    "completion": { "title": "חוקרי גאומטריה!", "body": "השלמתם את כל {{count}} האתגרים." },
+    "a11y": { "angle": "זווית של {{degrees}} מעלות", "selectAngle": "בחירת זווית של {{degrees}} מעלות", "triangle": "משולש אינטראקטיבי" }
   },
   "fractionsPart1": {
     "unitName": "שברים – חלק א׳",
