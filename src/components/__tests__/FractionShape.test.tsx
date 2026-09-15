@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, render } from '@testing-library/react';
 import { FractionShape } from '../FractionShape';
 import { buildFractionPieces, FRACTION_VIEW, separationOffset } from '../../utils/fractionShapeGeometry';
-import type { FractionShapeKind } from '../../types/fractionFactory';
+import type { FractionShapeKind } from '../../types/fractionShape';
 
 const SHAPES: FractionShapeKind[] = ['circle', 'bar', 'grid'];
 const DENOMINATORS = [2, 3, 4, 5, 6, 8];

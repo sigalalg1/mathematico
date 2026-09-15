@@ -3,9 +3,7 @@ import { HomePage } from './pages/HomePage';
 import { GradePage } from './pages/GradePage';
 import { CoordinateSystemPage } from './pages/CoordinateSystemPage';
 import { DivisionWithRemainderPage } from './pages/DivisionWithRemainderPage';
-import { CargoStationPage } from './pages/CargoStationPage';
 import { SimpleFractionsPage } from './pages/SimpleFractionsPage';
-import { FractionFactoryPage } from './pages/FractionFactoryPage';
 import { MultiplicationPage } from './pages/MultiplicationPage';
 import { MonkeyBalloonShooterPage } from './pages/MonkeyBalloonShooterPage';
 import { CoordinateVocabularyPage } from './pages/CoordinateVocabularyPage';
@@ -23,7 +21,6 @@ import { CoordinateScalePage } from './pages/CoordinateScalePage';
 import { AccountPage } from './pages/AccountPage';
 import { ActivityPage } from './pages/ActivityPage';
 import { useDocumentDirection } from './i18n/useDocumentDirection';
-import { BlockBuildersPage } from './pages/BlockBuildersPage';
 import { PenaltyShootoutPage } from './pages/PenaltyShootoutPage';
 import { FractionsPart1Page } from './pages/FractionsPart1Page';
 import { FractionsPart1ActivityPage } from './pages/FractionsPart1ActivityPage';
@@ -36,11 +33,8 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/grade/:gradeId" element={<GradePage />} />
       <Route path="/grade/4/division-with-remainder" element={<DivisionWithRemainderPage />} />
-      <Route path="/grade/4/division-with-remainder/cargo-station" element={<CargoStationPage />} />
-      <Route path="/grade/4/multiplication/block-builders" element={<BlockBuildersPage />} />
       <Route path="/grade/4/penalty-shootout" element={<PenaltyShootoutPage />} />
       <Route path="/grade/4/simple-fractions" element={<SimpleFractionsPage />} />
-      <Route path="/grade/4/simple-fractions/fraction-factory" element={<FractionFactoryPage />} />
       <Route path="/grade/4/fractions-part-1" element={<FractionsPart1Page />} />
       <Route path="/grade/4/fractions-part-1/:activityId" element={<FractionsPart1ActivityPage />} />
       <Route path="/grade/4/multiplication" element={<MultiplicationPage />} />

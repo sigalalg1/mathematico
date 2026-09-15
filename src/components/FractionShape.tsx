@@ -1,5 +1,5 @@
 import type { CSSProperties, KeyboardEvent } from 'react';
-import type { FractionShapeKind } from '../types/fractionFactory';
+import type { FractionShapeKind } from '../types/fractionShape';
 import { buildFractionPieces, separationOffset, FRACTION_VIEW } from '../utils/fractionShapeGeometry';
 import './FractionShape.css';
 
