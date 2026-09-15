@@ -680,6 +680,42 @@
       "backToTopic": "Back to Coordinate System"
     }
   },
+  "coordinateScale": {
+    "gameName": "What's the Scale?",
+    "gameDescription": "Work out what one grid square is worth, then find the point.",
+    "progress": "Question {{current}} of {{total}}",
+    "sameScale": "Both axes use the same scale.",
+    "prompt": {
+      "axisValue": "Which point on the {{axis}} axis is at",
+      "locate": "Where is the point",
+      "anchorKnown": "You already know:",
+      "trailing": "?"
+    },
+    "axisNames": {
+      "x": "X",
+      "y": "Y"
+    },
+    "feedback": {
+      "correctMessages": [
+        "Exactly!",
+        "You read the scale right!",
+        "Nicely worked out!"
+      ],
+      "youClicked": "You clicked:",
+      "scaleExplained": "Look at the axis: from 0 to {{to}} there are {{squares}} squares, so one square is {{unit}}.",
+      "swapped": "Move along X first, then along Y.",
+      "signError": "Check the sign — which side of 0 should the value be on?"
+    },
+    "completion": {
+      "title": "📊 You finished What's the Scale!",
+      "summary": "{{total}} questions completed",
+      "firstTry": "{{count}} solved on the first try"
+    },
+    "actions": {
+      "playAgain": "Play again",
+      "backToTopic": "Back to Coordinate System"
+    }
+  },
   "quiz": {
     "progress": "{{current}} / {{total}}",
     "progressLabel": "Question {{current}} of {{total}}",

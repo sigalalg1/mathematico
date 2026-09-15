@@ -32,6 +32,45 @@ describe('CoordinateGrid — rendering', () => {
   });
 });
 
+describe('CoordinateGrid — scale and partial labels', () => {
+  const labels = (container: HTMLElement) => [...container.querySelectorAll('.tick-label')].map((node) => node.textContent);
+
+  it('labels every tick with its own index when no scale is given', () => {
+    const { container } = render(<CoordinateGrid />);
+    expect(labels(container)).toHaveLength(21); // 10 per axis plus the shared origin
+  });
+
+  it('multiplies tick labels by the unit scale without moving anything', () => {
+    const { container } = render(<CoordinateGrid unitScale={2} />);
+    const text = labels(container);
+    for (const value of ['2', '4', '6', '8', '10', '-10']) expect(text).toContain(value);
+    expect(text).not.toContain('3');
+  });
+
+  it('renders clean halves for a fractional scale', () => {
+    const { container } = render(<CoordinateGrid unitScale={0.5} />);
+    const text = labels(container);
+    expect(text).toContain('0.5');
+    expect(text).toContain('2.5');
+    expect(text).toContain('-2.5');
+  });
+
+  it('shows only the requested tick labels but keeps every tick mark', () => {
+    const { container } = render(<CoordinateGrid unitScale={2} labeledTicks={{ x: [1, 2], y: [] }} />);
+    expect(labels(container).sort()).toEqual(['0', '2', '4']);
+    expect(container.querySelectorAll('.tick-mark')).toHaveLength(20);
+  });
+
+  it('draws a scale hint spanning two ticks only when asked', () => {
+    const { container, rerender } = render(<CoordinateGrid />);
+    expect(container.querySelector('.scale-hint-span')).not.toBeInTheDocument();
+
+    rerender(<CoordinateGrid unitScale={5} scaleHint={{ axis: 'y', fromTick: 0, toTick: 2 }} />);
+    expect(container.querySelector('.scale-hint-span')).toBeInTheDocument();
+    expect([...container.querySelectorAll('.scale-hint-label')].map((n) => n.textContent)).toEqual(['0', '10']);
+  });
+});
+
 describe('CoordinateGrid — click mapping', () => {
   it('reports the nearest integer coordinate that was clicked', () => {
     const onGridClick = vi.fn();

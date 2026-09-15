@@ -680,6 +680,42 @@
       "backToTopic": "חזרה למערכת הצירים"
     }
   },
+  "coordinateScale": {
+    "gameName": "מה קנה המידה?",
+    "gameDescription": "גלו כמה שווה משבצת אחת ברשת, ורק אז מצאו את הנקודה.",
+    "progress": "שאלה {{current}} מתוך {{total}}",
+    "sameScale": "שני הצירים באותו קנה מידה.",
+    "prompt": {
+      "axisValue": "איזו נקודה על ציר {{axis}} נמצאת ב-",
+      "locate": "איפה נמצאת הנקודה",
+      "anchorKnown": "ידוע לכם:",
+      "trailing": "?"
+    },
+    "axisNames": {
+      "x": "X",
+      "y": "Y"
+    },
+    "feedback": {
+      "correctMessages": [
+        "בדיוק!",
+        "קראתם נכון את קנה המידה!",
+        "עבודה יפה!"
+      ],
+      "youClicked": "לחצתם על:",
+      "scaleExplained": "הסתכלו על הציר: מ-0 עד {{to}} יש {{squares}} משבצות, כלומר משבצת אחת שווה {{unit}}.",
+      "swapped": "קודם זזים על ציר X, ורק אחר כך על ציר Y.",
+      "signError": "בדקו את הסימן — באיזה צד של 0 צריך להיות הערך?"
+    },
+    "completion": {
+      "title": "📊 סיימתם את מה קנה המידה!",
+      "summary": "{{total}} שאלות הושלמו",
+      "firstTry": "{{count}} נפתרו בניסיון ראשון"
+    },
+    "actions": {
+      "playAgain": "לשחק שוב",
+      "backToTopic": "חזרה למערכת הצירים"
+    }
+  },
   "quiz": {
     "progress": "{{current}} / {{total}}",
     "progressLabel": "שאלה {{current}} מתוך {{total}}",

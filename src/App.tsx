@@ -17,6 +17,7 @@ import { DistancesSegmentsPage } from './pages/DistancesSegmentsPage';
 import { ShapesOnPlanePage } from './pages/ShapesOnPlanePage';
 import { CoordinateMissionPage } from './pages/CoordinateMissionPage';
 import { DrawByCoordinatesPage } from './pages/DrawByCoordinatesPage';
+import { CoordinateScalePage } from './pages/CoordinateScalePage';
 import { AccountPage } from './pages/AccountPage';
 import { ActivityPage } from './pages/ActivityPage';
 import { useDocumentDirection } from './i18n/useDocumentDirection';
@@ -46,6 +47,7 @@ function App() {
       <Route path="/grade/7/coordinate-system/shapes-on-plane" element={<ShapesOnPlanePage />} />
       <Route path="/grade/7/coordinate-system/coordinate-mission" element={<CoordinateMissionPage />} />
       <Route path="/grade/7/coordinate-system/draw-by-coordinates" element={<DrawByCoordinatesPage />} />
+      <Route path="/grade/7/coordinate-system/coordinate-scale" element={<CoordinateScalePage />} />
       <Route path="/account" element={<AccountPage />} />
       <Route path="/activity" element={<ActivityPage />} />
     </Routes>
