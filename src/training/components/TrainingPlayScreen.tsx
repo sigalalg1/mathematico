@@ -1,9 +1,37 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MathText } from '../../components/MathText';
 import { toneForIndex } from '../../components/activityTones';
 import type { TrainingMode } from '../../types/training';
+import { formatDuration } from '../metrics';
 import type { TrainingSessionState } from '../useTrainingSession';
 import './TrainingActivity.css';
+
+/** How often the displayed time is refreshed. It is re-read, never counted. */
+const TIMER_REFRESH_MS = 500;
+
+/**
+ * The challenge clock. It only ever *displays* what the session engine
+ * measured: every refresh re-reads the tracked active duration, so a throttled
+ * or missed interval tick cannot make the shown time drift from the recorded
+ * one, and hidden or paused spans never appear on it.
+ */
+function TrainingTimer({ getActiveDurationMs }: { getActiveDurationMs: () => number }) {
+  const { t } = useTranslation();
+  const [elapsedMs, setElapsedMs] = useState(() => getActiveDurationMs());
+
+  useEffect(() => {
+    const id = window.setInterval(() => setElapsedMs(getActiveDurationMs()), TIMER_REFRESH_MS);
+    return () => window.clearInterval(id);
+  }, [getActiveDurationMs]);
+
+  return (
+    <span className="tr-timer" data-testid="tr-timer" aria-label={t('training.hud.timerLabel')}>
+      <span aria-hidden="true">⏱</span>
+      <span dir="ltr">{formatDuration(elapsedMs)}</span>
+    </span>
+  );
+}
 
 interface TrainingPlayScreenProps {
   session: TrainingSessionState;
@@ -16,9 +44,11 @@ interface TrainingPlayScreenProps {
  * The generic answering screen: progress, an optional streak chip, the fact
  * itself and the answer choices.
  *
- * There is deliberately no visible countdown or running clock. Practice is
- * meant to feel unhurried, and in a challenge a live timer would add pressure
- * without telling the child anything they cannot see at the end.
+ * Practice deliberately shows no clock at all: it is meant to feel unhurried,
+ * and the time it quietly records is never put in front of the child. A
+ * personal challenge does show one, kept small and next to the progress bar —
+ * the fact itself stays the thing being looked at. There is never a countdown:
+ * nothing runs out, so the timer informs rather than pressures.
  */
 export function TrainingPlayScreen({ session, mode, promptKey }: TrainingPlayScreenProps) {
   const { t } = useTranslation();
@@ -45,6 +75,7 @@ export function TrainingPlayScreen({ session, mode, promptKey }: TrainingPlayScr
             {session.index + 1}/{session.total}
           </span>
         </div>
+        {mode === 'challenge' && <TrainingTimer getActiveDurationMs={session.getActiveDurationMs} />}
         {mode === 'challenge' && (
           <span className={`tr-streak${session.currentStreak > 0 ? ' tr-streak-on' : ''}`} data-testid="tr-streak">
             {t('training.hud.streak', { value: session.currentStreak })}

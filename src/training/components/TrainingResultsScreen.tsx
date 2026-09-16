@@ -7,7 +7,7 @@ import type {
   TrainingPersonalBest,
   TrainingSessionResult,
 } from '../../types/training';
-import { accuracyPercent, secondsPerQuestion } from '../metrics';
+import { accuracyPercent, formatDuration, secondsPerQuestion } from '../metrics';
 import './TrainingActivity.css';
 
 interface TrainingResultsScreenProps {
@@ -102,6 +102,14 @@ export function TrainingResultsScreen({
           detail={t('training.results.streakDetail')}
         />
       </div>
+
+      {/* Total time is context, not a result: one quiet line under the three
+          figures that actually matter, and only where time is part of the game. */}
+      {isChallenge && (
+        <p className="tr-total-time" data-testid="tr-total-time">
+          {t('training.results.totalTime', { time: formatDuration(result.totalDurationMs) })}
+        </p>
+      )}
 
       {result.accuracy === 1 && <p className="tr-perfect">{t('training.results.perfect', { total: result.totalQuestions })}</p>}
 

@@ -30,10 +30,12 @@ create table if not exists public.training_sessions (
 
   started_at timestamptz not null,
   completed_at timestamptz not null,
-  -- Wall clock start -> finish, including feedback pauses.
+  -- Active start -> finish, including feedback beats but excluding any span
+  -- the session was paused or the tab was hidden/backgrounded.
   total_duration_ms int not null check (total_duration_ms >= 0),
-  -- Sum of the per-question think times only: app-controlled animation and
-  -- feedback delays are excluded, so pace measures the child, not the UI.
+  -- Sum of the per-question active think times only: app-controlled animation
+  -- and feedback delays, paused time and hidden time are all excluded, so pace
+  -- measures the child, not the UI and not a phone left locked mid-session.
   answering_duration_ms int not null check (answering_duration_ms >= 0),
 
   total_questions int not null check (total_questions >= 0),
