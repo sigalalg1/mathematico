@@ -84,14 +84,13 @@ export function HomePage() {
             {t('app.chooseGrade')}
           </h2>
           <div className="card-grid">
-            {grades.map((grade, index) => (
+            {enabledGrades.map((grade, index) => (
               <Card
                 key={grade.id}
                 title={t(`grades.${grade.id}`)}
-                icon={<span dir="ltr">{grade.id}</span>}
+                icon="🎓"
                 accent={index % 2 === 0 ? 'mint' : 'purple'}
-                to={grade.enabled ? `/grade/${grade.id}` : undefined}
-                disabled={!grade.enabled}
+                to={`/grade/${grade.id}`}
               />
             ))}
           </div>
