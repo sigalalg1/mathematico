@@ -4,8 +4,31 @@ import { MathText } from '../../components/MathText';
 import { toneForIndex } from '../../components/activityTones';
 import type { TrainingMode, TrainingQuestion } from '../../types/training';
 import { formatDuration } from '../metrics';
-import type { TrainingSessionState } from '../useTrainingSession';
+import type { TrainingPhase, TrainingSessionState } from '../useTrainingSession';
 import './TrainingActivity.css';
+
+/**
+ * What a custom question renderer is handed. Deliberately the same
+ * `submit(answer: string)` contract the built-in choice buttons use, so a
+ * scene that lets the child assemble an answer (shading parts, tapping a
+ * number line, shooting a balloon) needs nothing extra — and generic over the
+ * question's payload, so an activity whose question carries structured data
+ * (e.g. a fraction model) gets it back fully typed.
+ */
+export interface TrainingQuestionRenderProps<TPayload = never> {
+  question: TrainingQuestion<TPayload>;
+  phase: TrainingPhase;
+  /** The answer just given, while `phase` is `feedback`. */
+  lastAnswer: TrainingSessionState<TPayload>['lastAnswer'];
+  mode: TrainingMode;
+  /** 0-based position of the current question, and how many there are. */
+  index: number;
+  total: number;
+  /** Already-translated prompt line for this activity. */
+  promptLabel: string;
+  /** Records the answer. Ignored unless the session is still answering. */
+  submit: (answer: string) => void;
+}
 
 /** How often the displayed time is refreshed. It is re-read, never counted. */
 const TIMER_REFRESH_MS = 500;
@@ -33,31 +56,19 @@ function TrainingTimer({ getActiveDurationMs }: { getActiveDurationMs: () => num
   );
 }
 
-/**
- * What an activity that draws its own question needs from the engine: the
- * question, whether answering is still open, what was just answered, and the
- * one way to answer. Deliberately the same `submit(answer: string)` contract
- * the built-in choice buttons use, so a scene that lets the child assemble an
- * answer (shading parts, tapping a number line) needs nothing extra.
- */
-export interface TrainingQuestionRenderContext<TPayload> {
-  question: TrainingQuestion<TPayload>;
-  phase: TrainingSessionState<TPayload>['phase'];
-  lastAnswer: TrainingSessionState<TPayload>['lastAnswer'];
-  submit: (answer: string) => void;
-}
-
-interface TrainingPlayScreenProps<TPayload> {
+interface TrainingPlayScreenProps<TPayload = never> {
   session: TrainingSessionState<TPayload>;
   mode: TrainingMode;
   /** i18n key for the activity's own question prompt line. */
   promptKey: string;
   /**
-   * Replaces the textual fact and the choice buttons for activities whose
-   * question is a picture. The HUD, the feedback line and the whole session
-   * lifecycle stay shared.
+   * Replaces the default prompt-and-buttons block with the activity's own
+   * visual — a game scene, a diagram, anything that can present a prompt and
+   * take one of the options as an answer. The HUD, the feedback line and the
+   * whole session lifecycle around it stay exactly as they are, which is the
+   * point: a picture-based activity gets the full engine for free.
    */
-  renderQuestion?: (context: TrainingQuestionRenderContext<TPayload>) => ReactNode;
+  renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
 }
 
 /**
@@ -80,7 +91,7 @@ export function TrainingPlayScreen<TPayload = never>({
   const { question, lastAnswer, phase } = session;
 
   return (
-    <div className="tr-play">
+    <div className={`tr-play${renderQuestion ? ' tr-play-custom' : ''}`}>
       <div className="tr-hud">
         <div
           className="tr-progress"
@@ -109,9 +120,16 @@ export function TrainingPlayScreen<TPayload = never>({
       </div>
 
       {renderQuestion ? (
-        <div className="tr-custom-question" data-testid="tr-question">
-          {renderQuestion({ question, phase, lastAnswer, submit: session.submit })}
-        </div>
+        renderQuestion({
+          question,
+          phase,
+          lastAnswer,
+          mode,
+          index: session.index,
+          total: session.total,
+          promptLabel: t(promptKey),
+          submit: session.submit,
+        })
       ) : (
         <>
           <div className="tr-question" data-testid="tr-question">
@@ -122,8 +140,7 @@ export function TrainingPlayScreen<TPayload = never>({
           <div className="tr-options">
             {question.options.map((option, position) => {
               // Rotating pastel tints, the same device the grade 3–4 activity
-              // tiles use, so the answer choices read as playful rather than as
-              // a form.
+              // tiles use, so the answer choices read as playful, not as a form.
               const classes = ['tr-option', `tr-option-${toneForIndex(position)}`];
               if (phase !== 'answering' && lastAnswer) {
                 if (option === lastAnswer.correctAnswer) classes.push('tr-option-correct');

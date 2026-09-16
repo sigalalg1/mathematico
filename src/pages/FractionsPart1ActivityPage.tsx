@@ -15,7 +15,7 @@ import { useGameSessionTracking } from '../hooks/useGameSessionTracking';
 import { FRACTIONS_PART1_ACTIVITY_IDS } from '../data/games/fractionsPart1Data';
 import { getFractionTrainingActivity } from '../data/games/fractionsPart1Training';
 import { TrainingActivityScreen } from '../training/components/TrainingActivityScreen';
-import type { TrainingQuestionRenderContext } from '../training/components/TrainingPlayScreen';
+import type { TrainingQuestionRenderProps } from '../training/components/TrainingPlayScreen';
 import type { FractionActivityId, FractionChallenge } from '../types/fractionsPart1';
 import './FractionsPart1ActivityPage.css';
 
@@ -69,7 +69,7 @@ function FractionTrainingScene({
   context,
 }: {
   activityId: FractionActivityId;
-  context: TrainingQuestionRenderContext<FractionChallenge>;
+  context: TrainingQuestionRenderProps<FractionChallenge>;
 }) {
   const { enabled, play, toggle } = useSound();
   const { question, phase, lastAnswer } = context;

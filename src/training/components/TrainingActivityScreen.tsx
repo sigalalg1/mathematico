@@ -12,7 +12,7 @@ import { isChallengeEligible, resolveConfiguration } from '../configuration';
 import { useTrainingRecords } from '../useTrainingRecords';
 import { useTrainingSession } from '../useTrainingSession';
 import type { TrainingClock } from '../clock';
-import { TrainingPlayScreen, type TrainingQuestionRenderContext } from './TrainingPlayScreen';
+import { TrainingPlayScreen, type TrainingQuestionRenderProps } from './TrainingPlayScreen';
 import { TrainingResultsScreen } from './TrainingResultsScreen';
 import { TrainingSetupScreen } from './TrainingSetupScreen';
 import './TrainingActivity.css';
@@ -26,7 +26,13 @@ import './TrainingActivity.css';
 const CORRECT_FEEDBACK_MS = 450;
 const WRONG_FEEDBACK_MS = 1200;
 
-interface TrainingActivityScreenProps<TPayload> {
+/** How long the answer feedback stays on screen, per outcome. */
+export interface TrainingFeedbackTiming {
+  correct: number;
+  wrong: number;
+}
+
+interface TrainingActivityScreenProps<TPayload = never> {
   activity: TrainingActivityDefinition<TPayload>;
   /** Activity title, back link and grade pill for the page shell. */
   titleKey: string;
@@ -35,14 +41,20 @@ interface TrainingActivityScreenProps<TPayload> {
   backLabel: string;
   /** Shown above the fact on every question. */
   promptKey: string;
+  /**
+   * Lets an activity draw its own question scene (a game scene, a shaded
+   * model, a number line) in place of the default fact-and-choices layout.
+   * Everything else — setup, session, timing, results — stays shared.
+   */
+  renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
+  /**
+   * Lengthens the feedback beat for a renderer whose answer animation needs
+   * longer than the plain buttons do. Excluded from the child's measured think
+   * time either way, so a slower beat can never make their pace look worse.
+   */
+  feedbackTiming?: TrainingFeedbackTiming;
   /** Injected in tests so timings are exact. */
   clock?: TrainingClock;
-  /**
-   * Lets an activity draw its own question scene (a shaded model, a number
-   * line) in place of the default fact-and-choices layout. Everything else —
-   * setup, session, timing, results — stays shared.
-   */
-  renderQuestion?: (context: TrainingQuestionRenderContext<TPayload>) => ReactNode;
 }
 
 /**
@@ -58,8 +70,9 @@ export function TrainingActivityScreen<TPayload = never>({
   backTo,
   backLabel,
   promptKey,
-  clock,
   renderQuestion,
+  feedbackTiming,
+  clock,
 }: TrainingActivityScreenProps<TPayload>) {
   const { t } = useTranslation();
   const { capabilities } = activity;
@@ -116,10 +129,11 @@ export function TrainingActivityScreen<TPayload = never>({
           configuration={run.configuration}
           mode={run.mode}
           promptKey={promptKey}
+          renderQuestion={renderQuestion}
+          feedbackTiming={feedbackTiming}
           backTo={backTo}
           backLabel={backLabel}
           clock={clock}
-          renderQuestion={renderQuestion}
           onChangeSettings={() => setRun(null)}
         />
       )}
@@ -132,10 +146,11 @@ interface TrainingRunProps<TPayload> {
   configuration: TrainingConfiguration;
   mode: TrainingMode;
   promptKey: string;
+  renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
+  feedbackTiming?: TrainingFeedbackTiming;
   backTo: string;
   backLabel: string;
   clock?: TrainingClock;
-  renderQuestion?: (context: TrainingQuestionRenderContext<TPayload>) => ReactNode;
   onChangeSettings: () => void;
 }
 
@@ -145,10 +160,11 @@ function TrainingRun<TPayload>({
   configuration,
   mode,
   promptKey,
+  renderQuestion,
+  feedbackTiming,
   backTo,
   backLabel,
   clock,
-  renderQuestion,
   onChangeSettings,
 }: TrainingRunProps<TPayload>) {
   const session = useTrainingSession({ activity, configuration, mode, clock });
@@ -180,9 +196,12 @@ function TrainingRun<TPayload>({
   const { phase, lastAnswer, advance } = session;
   useEffect(() => {
     if (phase !== 'feedback' || !lastAnswer) return undefined;
-    const timer = window.setTimeout(advance, lastAnswer.isCorrect ? CORRECT_FEEDBACK_MS : WRONG_FEEDBACK_MS);
+    const beat = lastAnswer.isCorrect
+      ? (feedbackTiming?.correct ?? CORRECT_FEEDBACK_MS)
+      : (feedbackTiming?.wrong ?? WRONG_FEEDBACK_MS);
+    const timer = window.setTimeout(advance, beat);
     return () => window.clearTimeout(timer);
-  }, [phase, lastAnswer, advance]);
+  }, [phase, lastAnswer, advance, feedbackTiming?.correct, feedbackTiming?.wrong]);
 
   const result = session.result;
   useEffect(() => {

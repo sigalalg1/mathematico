@@ -4,6 +4,7 @@ import { renderWithProviders } from '../test/testUtils';
 import i18n from '../i18n';
 import App from '../App';
 import {
+  arithmeticFluencyGames,
   coordinateSystemGames,
   divisionWithRemainderGames,
   findGame,
@@ -16,6 +17,8 @@ import {
 
 const STATIC_ROUTES = [
   '/',
+  '/grade/2',
+  '/grade/2/arithmetic-fluency',
   '/grade/3',
   '/grade/3/geometry-angles-triangles',
   '/grade/4',
@@ -31,6 +34,7 @@ const STATIC_ROUTES = [
   '/activity',
 ];
 const GAME_ROUTES = [
+  ...arithmeticFluencyGames,
   ...geometryAnglesTrianglesGames,
   ...coordinateSystemGames,
   ...signedNumbersGames,
@@ -62,6 +66,16 @@ describe('routing smoke tests', () => {
     for (const game of coordinateSystemGames) {
       expect(game.enabled).toBe(true);
       expect(game.path).toMatch(/^\/grade\/7\/coordinate-system\//);
+    }
+    expect(arithmeticFluencyGames.map((game) => game.id)).toEqual([
+      'arithmeticFactsTo20',
+      'arithmeticTwoDigitPlain',
+      'arithmeticAdditionRegrouping',
+      'arithmeticSubtractionRegrouping',
+    ]);
+    for (const game of arithmeticFluencyGames) {
+      expect(game.enabled).toBe(true);
+      expect(game.path).toMatch(/^\/grade\/2\/arithmetic-fluency\//);
     }
     expect(divisionWithRemainderGames).toEqual([]);
     expect(simpleFractionsGames).toEqual([]);
@@ -95,8 +109,9 @@ describe('routing smoke tests', () => {
     }
   });
 
-  it('redirects an unknown grade back to the home page', () => {
-    renderWithProviders(<App />, ['/grade/2']);
+  it('redirects a grade with no content yet back to the home page', () => {
+    // Grade 1 is a known id with nothing behind it; grade 2 now has a real unit.
+    renderWithProviders(<App />, ['/grade/1']);
     expect(screen.getByRole('heading', { level: 1, name: i18n.t('app.title') })).toBeInTheDocument();
   });
 

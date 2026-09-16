@@ -1,6 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { GradePage } from './pages/GradePage';
+import { ArithmeticFluencyPage } from './pages/ArithmeticFluencyPage';
+import { ArithmeticFluencyActivityPage } from './pages/ArithmeticFluencyActivityPage';
 import { CoordinateSystemPage } from './pages/CoordinateSystemPage';
 import { DivisionWithRemainderPage } from './pages/DivisionWithRemainderPage';
 import { SimpleFractionsPage } from './pages/SimpleFractionsPage';
@@ -46,6 +48,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/grade/:gradeId" element={<GradePage />} />
+        <Route path="/grade/2/arithmetic-fluency" element={<ArithmeticFluencyPage />} />
+        <Route path="/grade/2/arithmetic-fluency/:activityId" element={<ArithmeticFluencyActivityPage />} />
         <Route path="/grade/4/division-with-remainder" element={<DivisionWithRemainderPage />} />
         <Route path="/grade/3/geometry-angles-triangles" element={<GeometryAnglesTrianglesPage />} />
         <Route path="/grade/3/geometry-angles-triangles/:activityId" element={<GeometryActivityPage />} />

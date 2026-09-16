@@ -1092,11 +1092,18 @@
 
 .mb-balloons {
   display: grid;
-  grid-template-columns: repeat(4, minmax(88px, 1fr));
+  /* auto-fit rather than a hardcoded column count: the scene sits inside a
+     centered content column that can be much narrower than the viewport, so
+     wrapping must react to the balloons' own available width, not a
+     viewport-width media query that a narrow desktop window never crosses. */
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
   align-items: center;
   justify-items: center;
   gap: clamp(10px, 2vw, 24px);
   width: 100%;
+  /* Lets the grid actually shrink as a flex item instead of forcing .mb-play
+     wider than the scene, which is what clipped the balloons. */
+  min-width: 0;
   padding: var(--space-5) 0 var(--space-6);
 }
 

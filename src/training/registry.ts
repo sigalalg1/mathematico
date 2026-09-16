@@ -1,6 +1,8 @@
 import type { TrainingActivityDefinition } from '../types/training';
 import { multiplicationTablesActivity } from '../data/games/multiplicationTablesData';
 import { fractionsPart1TrainingActivities } from '../data/games/fractionsPart1Training';
+import { basketballMonkeyActivity } from '../data/games/basketballMonkeyData';
+import { arithmeticFluencyActivities } from '../data/games/arithmeticFluencyData';
 
 /**
  * Every activity that opts into the training system. Adding a new one is a
@@ -8,7 +10,9 @@ import { fractionsPart1TrainingActivities } from '../data/games/fractionsPart1Tr
  */
 const TRAINING_ACTIVITIES: TrainingActivityDefinition<unknown>[] = [
   multiplicationTablesActivity,
+  basketballMonkeyActivity,
   ...fractionsPart1TrainingActivities,
+  ...arithmeticFluencyActivities,
 ];
 
 export function getTrainingActivity(activityId: string): TrainingActivityDefinition<unknown> | undefined {

@@ -22,7 +22,8 @@
     "grade7Topics": "Grade 7 topics",
     "accountNavLabel": "Account navigation",
     "grade4Topics": "Grade 4 topics",
-    "grade3Topics": "Grade 3 topics"
+    "grade3Topics": "Grade 3 topics",
+    "grade2Topics": "Grade 2 topics"
   },
   "install": {
     "action": "Install Mathletica",
@@ -120,6 +121,10 @@
     "algebraBasics": {
       "name": "Algebra Basics",
       "description": "Coming soon"
+    },
+    "arithmeticFluency": {
+      "name": "Arithmetic Fluency",
+      "description": "Adding and subtracting until it is fast, accurate and confident."
     }
   },
   "penaltyShootout": {
@@ -1315,6 +1320,60 @@
     },
     "a11y": {
       "monkey": "A friendly monkey in a basketball uniform preparing to shoot"
+    }
+  },
+  "arithmeticFluencyPage": {
+    "title": "Arithmetic Fluency",
+    "subtitle": "Practise adding and subtracting until the answer just arrives.",
+    "listIntro": "Pick a skill, practise at your own pace — and try to beat your record every round!",
+    "completedBadge": "Completed"
+  },
+  "arithmeticFluency": {
+    "skills": {
+      "arithmeticFactsTo20": {
+        "gameName": "Adding & Subtracting to 20",
+        "gameDescription": "The foundational number facts — pop the balloon holding the answer",
+        "intro": "Choose your training mode, difficulty, and number of questions.",
+        "prompt": "Which balloon has the answer?",
+        "difficulty": {
+          "basic": "Up to 10, never crossing the ten",
+          "intermediate": "Up to 20, never crossing the ten",
+          "hard": "Crossing the ten: 7+5, 15−7"
+        }
+      },
+      "arithmeticTwoDigitPlain": {
+        "gameName": "Two Digits, No Regrouping",
+        "gameDescription": "Two-digit adding and subtracting with no carrying or borrowing — shoot the right hoop",
+        "intro": "Choose your training mode, difficulty, and number of shots.",
+        "prompt": "Which hoop has the answer?",
+        "difficulty": {
+          "basic": "Smaller numbers, friendly digits",
+          "intermediate": "The full two-digit range",
+          "hard": "Big digits, right up to the edge"
+        }
+      },
+      "arithmeticAdditionRegrouping": {
+        "gameName": "Adding with Regrouping",
+        "gameDescription": "Two-digit addition that always needs a carry — do not lose that ten!",
+        "intro": "Choose your training mode, difficulty, and number of questions.",
+        "prompt": "Which balloon has the answer?",
+        "difficulty": {
+          "basic": "Smaller numbers, like 28+17",
+          "intermediate": "A wider range, like 36+29",
+          "hard": "Totals close to 100, like 47+38"
+        }
+      },
+      "arithmeticSubtractionRegrouping": {
+        "gameName": "Subtracting with Regrouping",
+        "gameDescription": "Two-digit subtraction that always needs a borrow — break a ten and score",
+        "intro": "Choose your training mode, difficulty, and number of shots.",
+        "prompt": "Which hoop has the answer?",
+        "difficulty": {
+          "basic": "Smaller numbers, like 52−28",
+          "intermediate": "A wider range, like 71−36",
+          "hard": "Big numbers, small answers, like 83−47"
+        }
+      }
     }
   }
 }
