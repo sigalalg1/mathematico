@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageLayout } from '../../components/PageLayout';
 import { useGameSessionTracking } from '../../hooks/useGameSessionTracking';
@@ -12,7 +12,7 @@ import { isChallengeEligible, resolveConfiguration } from '../configuration';
 import { useTrainingRecords } from '../useTrainingRecords';
 import { useTrainingSession } from '../useTrainingSession';
 import type { TrainingClock } from '../clock';
-import { TrainingPlayScreen } from './TrainingPlayScreen';
+import { TrainingPlayScreen, type TrainingQuestionRenderProps } from './TrainingPlayScreen';
 import { TrainingResultsScreen } from './TrainingResultsScreen';
 import { TrainingSetupScreen } from './TrainingSetupScreen';
 import './TrainingActivity.css';
@@ -26,6 +26,12 @@ import './TrainingActivity.css';
 const CORRECT_FEEDBACK_MS = 450;
 const WRONG_FEEDBACK_MS = 1200;
 
+/** How long the answer feedback stays on screen, per outcome. */
+export interface TrainingFeedbackTiming {
+  correct: number;
+  wrong: number;
+}
+
 interface TrainingActivityScreenProps {
   activity: TrainingActivityDefinition;
   /** Activity title, back link and grade pill for the page shell. */
@@ -35,6 +41,14 @@ interface TrainingActivityScreenProps {
   backLabel: string;
   /** Shown above the fact on every question. */
   promptKey: string;
+  /** Replaces the default question block with the activity's own visual. */
+  renderQuestion?: (props: TrainingQuestionRenderProps) => ReactNode;
+  /**
+   * Lengthens the feedback beat for a renderer whose answer animation needs
+   * longer than the plain buttons do. Excluded from the child's measured think
+   * time either way, so a slower beat can never make their pace look worse.
+   */
+  feedbackTiming?: TrainingFeedbackTiming;
   /** Injected in tests so timings are exact. */
   clock?: TrainingClock;
 }
@@ -52,6 +66,8 @@ export function TrainingActivityScreen({
   backTo,
   backLabel,
   promptKey,
+  renderQuestion,
+  feedbackTiming,
   clock,
 }: TrainingActivityScreenProps) {
   const { t } = useTranslation();
@@ -109,6 +125,8 @@ export function TrainingActivityScreen({
           configuration={run.configuration}
           mode={run.mode}
           promptKey={promptKey}
+          renderQuestion={renderQuestion}
+          feedbackTiming={feedbackTiming}
           backTo={backTo}
           backLabel={backLabel}
           clock={clock}
@@ -124,6 +142,8 @@ interface TrainingRunProps {
   configuration: TrainingConfiguration;
   mode: TrainingMode;
   promptKey: string;
+  renderQuestion?: (props: TrainingQuestionRenderProps) => ReactNode;
+  feedbackTiming?: TrainingFeedbackTiming;
   backTo: string;
   backLabel: string;
   clock?: TrainingClock;
@@ -136,6 +156,8 @@ function TrainingRun({
   configuration,
   mode,
   promptKey,
+  renderQuestion,
+  feedbackTiming,
   backTo,
   backLabel,
   clock,
@@ -170,9 +192,12 @@ function TrainingRun({
   const { phase, lastAnswer, advance } = session;
   useEffect(() => {
     if (phase !== 'feedback' || !lastAnswer) return undefined;
-    const timer = window.setTimeout(advance, lastAnswer.isCorrect ? CORRECT_FEEDBACK_MS : WRONG_FEEDBACK_MS);
+    const beat = lastAnswer.isCorrect
+      ? (feedbackTiming?.correct ?? CORRECT_FEEDBACK_MS)
+      : (feedbackTiming?.wrong ?? WRONG_FEEDBACK_MS);
+    const timer = window.setTimeout(advance, beat);
     return () => window.clearTimeout(timer);
-  }, [phase, lastAnswer, advance]);
+  }, [phase, lastAnswer, advance, feedbackTiming?.correct, feedbackTiming?.wrong]);
 
   const result = session.result;
   useEffect(() => {
@@ -214,5 +239,5 @@ function TrainingRun({
     );
   }
 
-  return <TrainingPlayScreen session={session} mode={mode} promptKey={promptKey} />;
+  return <TrainingPlayScreen session={session} mode={mode} promptKey={promptKey} renderQuestion={renderQuestion} />;
 }
