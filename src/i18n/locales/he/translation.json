@@ -42,7 +42,16 @@
     "signUpSuccess": "החשבון נוצר. אפשר להתחבר עכשיו.",
     "unavailable": "חשבונות לא זמינים כרגע, אבל אפשר להמשיך לשחק כאורח/ת.",
     "unexpectedError": "משהו השתבש בחיבור. אפשר לנסות שוב, ובינתיים להמשיך לשחק כאורח/ת.",
-    "signUpConfirmEmail": "החשבון נוצר. שלחנו לך מייל אישור — אחרי האישור אפשר להתחבר."
+    "signUpConfirmEmail": "החשבון נוצר. שלחנו לך מייל אישור — אחרי האישור אפשר להתחבר.",
+    "forgotPasswordLink": "שכחת סיסמה?",
+    "forgotPasswordTitle": "איפוס סיסמה",
+    "resetPasswordAction": "שליחת קישור לאיפוס",
+    "resetPasswordSent": "אם יש חשבון עם האימייל הזה, שלחנו אליו קישור לאיפוס הסיסמה.",
+    "backToSignIn": "חזרה להתחברות",
+    "newPassword": "סיסמה חדשה",
+    "setNewPasswordTitle": "בחרו סיסמה חדשה",
+    "setNewPasswordAction": "שמירת הסיסמה החדשה",
+    "setNewPasswordSuccess": "הסיסמה עודכנה. אפשר להמשיך לשחק."
   },
   "activity": {
     "title": "הפעילות שלי",

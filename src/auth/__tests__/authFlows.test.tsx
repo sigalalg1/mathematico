@@ -12,6 +12,8 @@ type FakeAuth = {
   signUp: ReturnType<typeof vi.fn>;
   signInWithPassword: ReturnType<typeof vi.fn>;
   signOut: ReturnType<typeof vi.fn>;
+  resetPasswordForEmail: ReturnType<typeof vi.fn>;
+  updateUser: ReturnType<typeof vi.fn>;
 };
 
 const holder: { client: { auth: FakeAuth } | null } = { client: null };
@@ -40,6 +42,8 @@ function configureSupabase(overrides: Partial<FakeAuth> = {}): FakeAuth {
     signUp: vi.fn().mockResolvedValue({ data: { session, user }, error: null }),
     signInWithPassword: vi.fn().mockResolvedValue({ data: { session, user }, error: null }),
     signOut: vi.fn().mockResolvedValue({ error: null }),
+    resetPasswordForEmail: vi.fn().mockResolvedValue({ data: {}, error: null }),
+    updateUser: vi.fn().mockResolvedValue({ data: { user }, error: null }),
     ...overrides,
   };
   holder.client = { auth };
@@ -195,6 +199,76 @@ describe('scenarios 3-5 — sign up, sign in, sign out', () => {
     fireEvent.click(screen.getByRole('button', { name: t('auth.signOut') }));
     expect(await screen.findByText(t('auth.unexpectedError'))).toBeInTheDocument();
     expect(screen.getByLabelText(t('auth.email'))).toBeInTheDocument();
+  });
+});
+
+describe('forgot password — request a reset link', () => {
+  it('sends a reset link and shows confirmation, without touching sign-in state', async () => {
+    const auth = configureSupabase();
+    await renderAccountPage();
+    fireEvent.click(screen.getByRole('button', { name: t('auth.forgotPasswordLink') }));
+    fireEvent.change(screen.getByLabelText(t('auth.email')), { target: { value: 'kid@example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: t('auth.resetPasswordAction') }));
+
+    expect(await screen.findByText(t('auth.resetPasswordSent'))).toBeInTheDocument();
+    expect(auth.resetPasswordForEmail).toHaveBeenCalledWith('kid@example.com', expect.objectContaining({ redirectTo: expect.any(String) }));
+  });
+
+  it('can return to the sign-in form from the forgot-password screen', async () => {
+    configureSupabase();
+    await renderAccountPage();
+    fireEvent.click(screen.getByRole('button', { name: t('auth.forgotPasswordLink') }));
+    expect(screen.getByText(t('auth.forgotPasswordTitle'))).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: t('auth.backToSignIn') }));
+    expect(screen.getByLabelText(t('auth.password'))).toBeInTheDocument();
+  });
+
+  it('shows a readable message instead of crashing when the request throws', async () => {
+    configureSupabase({ resetPasswordForEmail: vi.fn().mockRejectedValue(new Error('offline')) });
+    await renderAccountPage();
+    fireEvent.click(screen.getByRole('button', { name: t('auth.forgotPasswordLink') }));
+    fireEvent.change(screen.getByLabelText(t('auth.email')), { target: { value: 'kid@example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: t('auth.resetPasswordAction') }));
+    expect(await screen.findByText(t('auth.unexpectedError'))).toBeInTheDocument();
+  });
+
+  it('is disabled when Supabase is not configured', async () => {
+    await renderAccountPage();
+    fireEvent.click(screen.getByRole('button', { name: t('auth.forgotPasswordLink') }));
+    expect(screen.getByRole('button', { name: t('auth.resetPasswordAction') })).toBeDisabled();
+  });
+});
+
+describe('forgot password — set a new password after following the emailed link', () => {
+  it('shows the new-password form once a PASSWORD_RECOVERY event fires, and saves the new password', async () => {
+    const auth = configureSupabase();
+    await renderAccountPage();
+    await act(async () => authStateCallback?.('PASSWORD_RECOVERY', session));
+
+    expect(await screen.findByText(t('auth.setNewPasswordTitle'))).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText(t('auth.newPassword')), { target: { value: '1234' } });
+    fireEvent.click(screen.getByRole('button', { name: t('auth.setNewPasswordAction') }));
+
+    expect(await screen.findByText(t('auth.setNewPasswordSuccess'))).toBeInTheDocument();
+    expect(auth.updateUser).toHaveBeenCalledWith({ password: '1234' });
+  });
+
+  it('shows a readable message instead of crashing when updating the password fails', async () => {
+    configureSupabase({ updateUser: vi.fn().mockResolvedValue({ data: {}, error: { message: 'Session expired' } }) });
+    await renderAccountPage();
+    await act(async () => authStateCallback?.('PASSWORD_RECOVERY', session));
+    fireEvent.change(await screen.findByLabelText(t('auth.newPassword')), { target: { value: '1234' } });
+    fireEvent.click(screen.getByRole('button', { name: t('auth.setNewPasswordAction') }));
+    expect(await screen.findByText('Session expired')).toBeInTheDocument();
+  });
+
+  it('leaves recovery mode once signed out', async () => {
+    configureSupabase();
+    await renderAccountPage();
+    await act(async () => authStateCallback?.('PASSWORD_RECOVERY', session));
+    expect(await screen.findByText(t('auth.setNewPasswordTitle'))).toBeInTheDocument();
+    await act(async () => authStateCallback?.('SIGNED_OUT', null));
+    expect(await screen.findByLabelText(t('auth.email'))).toBeInTheDocument();
   });
 });
 
