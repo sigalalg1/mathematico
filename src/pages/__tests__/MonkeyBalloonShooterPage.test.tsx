@@ -43,7 +43,7 @@ describe('Monkey Balloon Shooter', () => {
   it('shows the multiplication fact and four answer balloons', () => {
     renderWithProviders(<MonkeyBalloonShooterPage />);
 
-    expect(within(screen.getByTestId('mb-question')).getByText('3 × 4 = ?')).toBeInTheDocument();
+    expect(within(screen.getByTestId('mb-question')).getByText('3', { selector: '.mb-fact > span' }).closest('.mb-fact')).toHaveTextContent('3×4=?');
     expect(screen.getAllByTestId(/^mb-balloon-/)).toHaveLength(4);
     expect(progress()).toBe('1');
     expect(monkeyPose()).toBe('idle');
@@ -54,16 +54,19 @@ describe('Monkey Balloon Shooter', () => {
 
     fireEvent.click(balloon(12));
     expect(screen.getByTestId('mb-dart')).toBeInTheDocument();
+    expect(screen.getByTestId('mb-trajectory')).toBeInTheDocument();
+    expect(balloon(12)).toHaveClass('mb-balloon-targeted');
     expect(monkeyPose()).toBe('aiming');
 
     // The dart lands: the balloon bursts and the monkey celebrates.
     act(() => vi.advanceTimersByTime(300));
     expect(screen.getByTestId('mb-burst')).toBeInTheDocument();
+    expect(balloon(12)).toHaveClass('mb-balloon-popping');
     expect(monkeyPose()).toBe('happy');
 
     act(() => vi.advanceTimersByTime(600));
     expect(progress()).toBe('2');
-    expect(within(screen.getByTestId('mb-question')).getByText('5 × 5 = ?')).toBeInTheDocument();
+    expect(screen.getByTestId('mb-question').querySelector('.mb-fact')).toHaveTextContent('5×5=?');
   });
 
   it('leaves a wrongly shot balloon in the air and lets the child try again', () => {
@@ -114,7 +117,8 @@ describe('Monkey Balloon Shooter — languages', () => {
     renderWithProviders(<MonkeyBalloonShooterPage />);
 
     expect(screen.getByText('Which balloon has the answer?')).toBeInTheDocument();
-    expect(screen.getByText('3 × 4 = ?')).toHaveAttribute('dir', 'ltr');
+    expect(screen.getByTestId('mb-question').querySelector('.mb-fact')).toHaveAttribute('dir', 'ltr');
+    expect(screen.getByTestId('mb-question').querySelector('.mb-fact')).toHaveTextContent('3×4=?');
     expect(screen.queryByText(/monkeyBalloonShooter\./)).not.toBeInTheDocument();
   });
 });
