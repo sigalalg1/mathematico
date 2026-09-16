@@ -34,47 +34,51 @@ import { FractionsPart1ActivityPage } from './pages/FractionsPart1ActivityPage';
 import { GeometryAnglesTrianglesPage } from './pages/GeometryAnglesTrianglesPage';
 import { GeometryActivityPage } from './pages/GeometryActivityPage';
 import { BasketballMonkeyPage } from './pages/BasketballMonkeyPage';
+import { DevEnvironmentBanner } from './components/DevEnvironmentBanner';
 
 function App() {
   useDocumentDirection();
 
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/grade/:gradeId" element={<GradePage />} />
-      <Route path="/grade/4/division-with-remainder" element={<DivisionWithRemainderPage />} />
-      <Route path="/grade/3/geometry-angles-triangles" element={<GeometryAnglesTrianglesPage />} />
-      <Route path="/grade/3/geometry-angles-triangles/:activityId" element={<GeometryActivityPage />} />
-      <Route path="/grade/4/penalty-shootout" element={<PenaltyShootoutPage />} />
-      <Route path="/grade/4/simple-fractions" element={<SimpleFractionsPage />} />
-      <Route path="/grade/4/fractions-part-1" element={<FractionsPart1Page />} />
-      <Route path="/grade/4/fractions-part-1/:activityId" element={<FractionsPart1ActivityPage />} />
-      <Route path="/grade/4/multiplication" element={<MultiplicationPage />} />
-      <Route path="/grade/4/multiplication/multiplication-tables" element={<MultiplicationTablesPage />} />
-      <Route path="/grade/4/multiplication/basketball-monkey" element={<BasketballMonkeyPage />} />
-      <Route path="/grade/4/multiplication/monkey-balloon-shooter" element={<MonkeyBalloonShooterPage />} />
-      <Route path="/grade/7/coordinate-system" element={<CoordinateSystemPage />} />
-      <Route path="/grade/7/coordinate-system/coordinate-vocabulary" element={<CoordinateVocabularyPage />} />
-      <Route path="/grade/7/coordinate-system/meet-the-axes" element={<MeetTheAxesPage />} />
-      <Route path="/grade/7/coordinate-system/hit-the-target" element={<HitTheTargetPage />} />
-      <Route path="/grade/7/coordinate-system/launch-the-spaceship" element={<LaunchSpaceshipPage />} />
-      <Route path="/grade/7/coordinate-system/quadrant-challenge" element={<QuadrantChallengePage />} />
-      <Route path="/grade/7/coordinate-system/coordinate-detective" element={<CoordinateDetectivePage />} />
-      <Route path="/grade/7/coordinate-system/find-the-point" element={<FindThePointPage />} />
-      <Route path="/grade/7/coordinate-system/distances-segments" element={<DistancesSegmentsPage />} />
-      <Route path="/grade/7/coordinate-system/shapes-on-plane" element={<ShapesOnPlanePage />} />
-      <Route path="/grade/7/coordinate-system/coordinate-mission" element={<CoordinateMissionPage />} />
-      <Route path="/grade/7/coordinate-system/draw-by-coordinates" element={<DrawByCoordinatesPage />} />
-      <Route path="/grade/7/coordinate-system/coordinate-scale" element={<CoordinateScalePage />} />
-      <Route path="/grade/7/signed-numbers" element={<SignedNumbersPage />} />
-      <Route path="/grade/7/signed-numbers/find-the-spot" element={<NumberLinePlacePage />} />
-      <Route path="/grade/7/signed-numbers/which-is-greater" element={<CompareSignedPage />} />
-      <Route path="/grade/7/signed-numbers/distance-from-zero" element={<AbsoluteValuePage />} />
-      <Route path="/grade/7/signed-numbers/steps-on-the-line" element={<SignedAddSubPage />} />
-      <Route path="/grade/7/signed-numbers/the-sign-rule" element={<SignRulesPage />} />
-      <Route path="/account" element={<AccountPage />} />
-      <Route path="/activity" element={<ActivityPage />} />
-    </Routes>
+    <>
+      <DevEnvironmentBanner />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/grade/:gradeId" element={<GradePage />} />
+        <Route path="/grade/4/division-with-remainder" element={<DivisionWithRemainderPage />} />
+        <Route path="/grade/3/geometry-angles-triangles" element={<GeometryAnglesTrianglesPage />} />
+        <Route path="/grade/3/geometry-angles-triangles/:activityId" element={<GeometryActivityPage />} />
+        <Route path="/grade/4/penalty-shootout" element={<PenaltyShootoutPage />} />
+        <Route path="/grade/4/simple-fractions" element={<SimpleFractionsPage />} />
+        <Route path="/grade/4/fractions-part-1" element={<FractionsPart1Page />} />
+        <Route path="/grade/4/fractions-part-1/:activityId" element={<FractionsPart1ActivityPage />} />
+        <Route path="/grade/4/multiplication" element={<MultiplicationPage />} />
+        <Route path="/grade/4/multiplication/multiplication-tables" element={<MultiplicationTablesPage />} />
+        <Route path="/grade/4/multiplication/basketball-monkey" element={<BasketballMonkeyPage />} />
+        <Route path="/grade/4/multiplication/monkey-balloon-shooter" element={<MonkeyBalloonShooterPage />} />
+        <Route path="/grade/7/coordinate-system" element={<CoordinateSystemPage />} />
+        <Route path="/grade/7/coordinate-system/coordinate-vocabulary" element={<CoordinateVocabularyPage />} />
+        <Route path="/grade/7/coordinate-system/meet-the-axes" element={<MeetTheAxesPage />} />
+        <Route path="/grade/7/coordinate-system/hit-the-target" element={<HitTheTargetPage />} />
+        <Route path="/grade/7/coordinate-system/launch-the-spaceship" element={<LaunchSpaceshipPage />} />
+        <Route path="/grade/7/coordinate-system/quadrant-challenge" element={<QuadrantChallengePage />} />
+        <Route path="/grade/7/coordinate-system/coordinate-detective" element={<CoordinateDetectivePage />} />
+        <Route path="/grade/7/coordinate-system/find-the-point" element={<FindThePointPage />} />
+        <Route path="/grade/7/coordinate-system/distances-segments" element={<DistancesSegmentsPage />} />
+        <Route path="/grade/7/coordinate-system/shapes-on-plane" element={<ShapesOnPlanePage />} />
+        <Route path="/grade/7/coordinate-system/coordinate-mission" element={<CoordinateMissionPage />} />
+        <Route path="/grade/7/coordinate-system/draw-by-coordinates" element={<DrawByCoordinatesPage />} />
+        <Route path="/grade/7/coordinate-system/coordinate-scale" element={<CoordinateScalePage />} />
+        <Route path="/grade/7/signed-numbers" element={<SignedNumbersPage />} />
+        <Route path="/grade/7/signed-numbers/find-the-spot" element={<NumberLinePlacePage />} />
+        <Route path="/grade/7/signed-numbers/which-is-greater" element={<CompareSignedPage />} />
+        <Route path="/grade/7/signed-numbers/distance-from-zero" element={<AbsoluteValuePage />} />
+        <Route path="/grade/7/signed-numbers/steps-on-the-line" element={<SignedAddSubPage />} />
+        <Route path="/grade/7/signed-numbers/the-sign-rule" element={<SignRulesPage />} />
+        <Route path="/account" element={<AccountPage />} />
+        <Route path="/activity" element={<ActivityPage />} />
+      </Routes>
+    </>
   );
 }
 
