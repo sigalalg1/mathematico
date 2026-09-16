@@ -1260,5 +1260,19 @@
       "intermediate": "The 6–9 tables against the easier ones",
       "hard": "The 6, 7, 8 and 9 tables against each other"
     }
+  },
+  "basketballMonkey": {
+    "gameName": "Basketball Monkey",
+    "gameDescription": "Two-digit × one-digit multiplication — solve, aim, and shoot for the right hoop",
+    "intro": "Choose your training mode, difficulty, and number of shots.",
+    "prompt": "Which hoop has the answer?",
+    "difficulty": {
+      "basic": "Smaller numbers without carrying",
+      "intermediate": "Broader numbers with carrying",
+      "hard": "Larger numbers with challenging carrying"
+    },
+    "a11y": {
+      "monkey": "A friendly monkey in a basketball uniform preparing to shoot"
+    }
   }
 }

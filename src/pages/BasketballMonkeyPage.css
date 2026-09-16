@@ -1,0 +1,406 @@
+.basketball-shell {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+}
+
+.basketball-shell .page-game {
+  max-width: 1040px;
+}
+
+.bm-sound {
+  position: absolute;
+  z-index: 8;
+  inset-block-start: 12px;
+  inset-inline-end: 132px;
+}
+
+.bm-player {
+  display: none;
+}
+
+.basketball-shell:has(.tr-play) .bm-player {
+  position: absolute;
+  z-index: 4;
+  display: block;
+  width: clamp(132px, 23vw, 210px);
+  inset-inline-start: max(4%, calc((100% - 920px) / 2 + 24px));
+  inset-block-end: 54px;
+  pointer-events: none;
+  filter: drop-shadow(0 13px 12px rgb(0 0 0 / 42%));
+}
+
+.bm-player svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.bm-tail,
+.bm-arm {
+  fill: none;
+  stroke: #835034;
+  stroke-width: 16;
+  stroke-linecap: round;
+}
+
+.bm-body,
+.bm-leg,
+.bm-ear,
+.bm-head {
+  fill: #9b633e;
+}
+
+.bm-muzzle {
+  fill: #efc39b;
+}
+
+.bm-eye {
+  fill: #172333;
+}
+
+.bm-smile {
+  fill: none;
+  stroke: #5c3526;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.bm-jersey {
+  fill: #eafcff;
+  stroke: #55e6d5;
+  stroke-width: 5;
+}
+
+.bm-jersey-mark {
+  fill: #12334b;
+  font-size: 35px;
+  font-weight: 900;
+}
+
+.bm-shoe {
+  fill: #f8fdff;
+  stroke: #66d9ef;
+  stroke-width: 5;
+}
+
+.bm-headband {
+  fill: none;
+  stroke: #62f0e0;
+  stroke-width: 10;
+}
+
+.bm-headband-tail {
+  fill: #62f0e0;
+}
+
+.bm-ball {
+  fill: #f47c27;
+  stroke: #8f3519;
+  stroke-width: 4;
+}
+
+.bm-ball-line {
+  fill: none;
+  stroke: #8f3519;
+  stroke-width: 3;
+}
+
+/* Night court, fence and skyline are layered gradients: no heavy scene asset. */
+.basketball-shell .tr-play {
+  position: relative;
+  isolation: isolate;
+  gap: 14px;
+  width: 100%;
+  max-width: 920px;
+  min-height: min(690px, calc(100vh - 145px));
+  padding: 18px clamp(12px, 3vw, 30px) 205px;
+  overflow: hidden;
+  border: 1px solid rgb(92 225 224 / 42%);
+  border-radius: 28px;
+  background:
+    linear-gradient(90deg, transparent 49.7%, rgb(111 224 231 / 23%) 50%, transparent 50.3%),
+    linear-gradient(150deg, transparent 65%, rgb(75 206 213 / 16%) 65.3%, transparent 65.7%),
+    radial-gradient(circle at 8% 13%, rgb(255 245 210 / 42%) 0 1%, transparent 8%),
+    radial-gradient(circle at 92% 11%, rgb(255 245 210 / 38%) 0 1%, transparent 8%),
+    linear-gradient(180deg, #07142e 0 53%, #0b2d43 53% 70%, #123d51 70% 100%);
+  box-shadow:
+    inset 0 0 70px rgb(31 212 220 / 9%),
+    0 18px 50px rgb(0 0 0 / 32%);
+}
+
+.basketball-shell .tr-play::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 42% 0 auto;
+  height: 30%;
+  opacity: 0.5;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 42px, rgb(102 198 209 / 18%) 43px 45px),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgb(102 198 209 / 16%) 32px 34px);
+  border-block: 2px solid rgb(89 204 215 / 24%);
+  transform: perspective(260px) rotateX(-5deg);
+}
+
+.basketball-shell .tr-play::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-inline: 4%;
+  inset-block-end: 0;
+  height: 42%;
+  border: 3px solid rgb(159 239 242 / 40%);
+  border-block-end: 0;
+  border-radius: 46% 46% 0 0;
+  background: radial-gradient(ellipse at center bottom, transparent 0 34%, rgb(99 222 227 / 25%) 34.5% 35%, transparent 35.5%);
+  transform: perspective(390px) rotateX(55deg);
+  transform-origin: bottom;
+}
+
+.basketball-shell .tr-hud {
+  z-index: 3;
+  gap: 12px;
+}
+
+.basketball-shell .tr-progress-bar {
+  height: 10px;
+  background: rgb(154 188 216 / 28%);
+}
+
+.basketball-shell .tr-progress-fill {
+  background: linear-gradient(90deg, #58e6d6, #7df4ed);
+  box-shadow: 0 0 13px #56e7dc;
+}
+
+.basketball-shell .tr-progress-text,
+.basketball-shell .tr-streak {
+  color: #eafcff;
+}
+
+.basketball-shell .tr-streak {
+  border-color: rgb(102 221 224 / 32%);
+  background: rgb(5 19 43 / 76%);
+}
+
+.basketball-shell .tr-question {
+  z-index: 2;
+  gap: 3px;
+  align-self: center;
+  width: min(100%, 520px);
+  padding: 12px 20px;
+  border: 2px solid #55ded7;
+  border-radius: 22px;
+  background: rgb(4 20 46 / 88%);
+  box-shadow:
+    0 0 20px rgb(83 232 222 / 30%),
+    inset 0 0 25px rgb(53 196 210 / 8%);
+}
+
+.basketball-shell .tr-prompt {
+  color: #9dc5d7;
+}
+
+.basketball-shell .tr-fact {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-size: clamp(2.15rem, 7vw, 4rem);
+  color: #fff;
+  text-shadow: 0 3px 0 rgb(0 0 0 / 28%);
+}
+
+.basketball-shell .tr-options {
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 2vw, 20px);
+  margin-block-start: 5px;
+}
+
+/* Each answer is a lit backboard; the rim and net hang beneath it. */
+.basketball-shell .tr-option {
+  position: relative;
+  min-width: 0;
+  min-height: 94px;
+  overflow: visible;
+  border: 5px solid #dffaff;
+  border-radius: 11px;
+  background: rgb(7 25 52 / 94%);
+  color: #fff;
+  font-size: clamp(1.45rem, 4vw, 2.25rem);
+  box-shadow:
+    0 0 0 4px rgb(71 201 219 / 26%),
+    0 0 20px currentColor,
+    inset 0 0 20px rgb(44 127 174 / 20%);
+}
+
+.basketball-shell .tr-option::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 44%;
+  height: 38px;
+  inset-inline-start: 28%;
+  inset-block-end: -38px;
+  border-block-start: 7px solid #f68434;
+  border-radius: 50% 50% 40% 40%;
+  background:
+    repeating-linear-gradient(70deg, transparent 0 7px, rgb(239 244 255 / 76%) 8px 9px, transparent 10px 14px),
+    repeating-linear-gradient(-70deg, transparent 0 7px, rgb(239 244 255 / 72%) 8px 9px, transparent 10px 14px);
+  clip-path: polygon(0 0, 100% 0, 78% 100%, 22% 100%);
+}
+
+.basketball-shell .tr-option:nth-child(1) {
+  color: #6adbf8;
+}
+.basketball-shell .tr-option:nth-child(2) {
+  color: #fa88dc;
+}
+.basketball-shell .tr-option:nth-child(3) {
+  color: #79f0d0;
+}
+.basketball-shell .tr-option:nth-child(4) {
+  color: #ffb36c;
+}
+
+.basketball-shell .tr-options:has(.tr-option:disabled) .tr-option {
+  opacity: 0.62;
+}
+
+.basketball-shell .tr-options .tr-option-correct,
+.basketball-shell .tr-options .tr-option-wrong {
+  opacity: 1;
+}
+
+.basketball-shell .tr-option-correct {
+  border-color: #8affd9;
+  background: rgb(10 65 68 / 94%);
+}
+
+.basketball-shell .tr-option-wrong {
+  border-color: #ffad78;
+  background: rgb(74 37 51 / 94%);
+  animation: bm-backboard-bump 0.48s ease;
+}
+
+/* The ball belongs to the selected hoop, so its path always ends exactly there. */
+.basketball-shell .tr-options:not(:has(.tr-option-wrong)) .tr-option-correct::after,
+.basketball-shell .tr-option-wrong::after {
+  content: '';
+  position: absolute;
+  z-index: 8;
+  width: 27px;
+  aspect-ratio: 1;
+  inset: 46% auto auto 50%;
+  border: 2px solid #873318;
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 46%, #8c361b 47% 53%, transparent 54%),
+    radial-gradient(circle at 32% 25%, #ffad55, #ed6a20 67%);
+  box-shadow: 0 4px 9px rgb(0 0 0 / 42%);
+  animation: bm-shot 0.72s cubic-bezier(0.3, 0.05, 0.35, 1) both;
+}
+
+.basketball-shell .tr-options:not(:has(.tr-option-wrong)) .tr-option-correct::before {
+  animation: bm-net-swish 0.7s 0.42s ease;
+}
+
+.basketball-shell .tr-feedback {
+  z-index: 5;
+  position: absolute;
+  inset-inline: 28%;
+  inset-block-end: 20px;
+  min-height: 34px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+@keyframes bm-shot {
+  0% {
+    transform: translate(calc(-50% + var(--bm-shot-x, -260px)), var(--bm-shot-y, 255px)) rotate(0) scale(1.25);
+  }
+  58% {
+    transform: translate(-90px, -90px) rotate(270deg);
+  }
+  100% {
+    transform: translate(-50%, 28px) rotate(540deg) scale(0.72);
+  }
+}
+
+@keyframes bm-net-swish {
+  45% {
+    transform: scaleX(1.18) skewX(-7deg);
+    filter: drop-shadow(0 0 9px #9effe1);
+  }
+}
+
+@keyframes bm-backboard-bump {
+  35% {
+    transform: rotate(-2deg) translateY(2px);
+  }
+  65% {
+    transform: rotate(1.5deg);
+  }
+}
+
+@media (max-width: 620px) {
+  .bm-sound {
+    inset-inline-end: 105px;
+  }
+
+  .basketball-shell .tr-play {
+    min-height: 670px;
+    padding: 12px 10px 190px;
+    border-radius: 20px;
+  }
+
+  .basketball-shell .tr-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 47px;
+  }
+
+  .basketball-shell .tr-option {
+    min-height: 82px;
+  }
+
+  .basketball-shell:has(.tr-play) .bm-player {
+    width: 142px;
+    inset-inline-start: 3%;
+    inset-block-end: 43px;
+  }
+
+  .basketball-shell .tr-feedback {
+    inset-inline: 37% 4%;
+  }
+
+}
+
+@media (max-width: 430px) {
+  .basketball-shell .page-game {
+    padding-inline: 8px;
+  }
+
+  .basketball-shell .tr-play {
+    min-height: 650px;
+  }
+
+  .basketball-shell .tr-question {
+    padding-block: 9px;
+  }
+
+  .basketball-shell .tr-prompt {
+    font-size: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .basketball-shell .tr-option-correct::after,
+  .basketball-shell .tr-option-wrong::after {
+    animation-duration: 0.01ms;
+  }
+
+  .basketball-shell .tr-option-wrong,
+  .basketball-shell .tr-option-correct::before {
+    animation: none;
+  }
+}
