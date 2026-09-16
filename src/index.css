@@ -42,6 +42,23 @@
   --accent: #7fd3ff;
   --accent-bg: #112533;
 
+  /* ---------------------------------------------------------------------
+   * Activity-card pastel palette (grades 3–4 only).
+   * Deliberately separate from the shell accents above: these are light card
+   * BACKGROUNDS that carry dark ink, used to make the younger grades' activity
+   * listings colourful without touching the dark shell or the brand accents.
+   * ------------------------------------------------------------------- */
+  --pastel-mint: #b7f0d8;
+  --pastel-lavender: #c9b6ff;
+  --pastel-sky: #a7d6ff;
+  --pastel-peach: #ffd6a5;
+  --pastel-yellow: #ffe68c;
+  --pastel-pink: #ffb3d9;
+
+  /* Ink used on top of any pastel card. Both pass AA on every tint above. */
+  --pastel-ink: #131a22;
+  --pastel-ink-muted: #3d4654;
+
   --disabled-bg: #181d24;
   --disabled-text: #6e7887;
 

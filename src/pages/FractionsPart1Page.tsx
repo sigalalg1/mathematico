@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageLayout } from '../components/PageLayout';
-import { Card } from '../components/Card';
+import {
+  ActivityTile,
+  ActivityTileGrid,
+  PracticeBanner,
+  TitleSparkles,
+} from '../components/ActivityTileGrid';
+import { toneForIndex } from '../components/activityTones';
+import { FractionPieGlyph } from '../components/ActivityIcons';
 import { fractionsPart1Games } from '../data/games';
 import { useAuth } from '../auth/useAuth';
 import { getActivityHistory } from '../tracking/activityTracker';
@@ -23,27 +30,42 @@ export function FractionsPart1Page() {
     };
   }, [user?.id]);
 
+  // Every activity in these units ships enabled with a route; the guard keeps
+  // a future placeholder entry from rendering a dead link.
+  const activities = fractionsPart1Games.filter(
+    (game): game is typeof game & { path: string } => game.enabled && Boolean(game.path),
+  );
+
   return (
     <PageLayout
       title={t('fractionsPart1.unitName')}
-      subtitle={t('fractionsPart1.unitDescription')}
+      titleAccent={
+        <TitleSparkles>
+          <FractionPieGlyph />
+        </TitleSparkles>
+      }
+      subtitle={t('fractionsPart1.listIntro')}
       context={t('grades.4')}
       backTo="/grade/4"
       backLabel={t('nav.grade4Topics')}
     >
-      <div className="row-list">
-        {fractionsPart1Games.map((game, index) => (
-          <Card
-            layout="row"
+      <ActivityTileGrid>
+        {activities.map((game, index) => (
+          <ActivityTile
             key={game.id}
-            title={`${index + 1}. ${t(game.nameKey)}`}
+            activityId={game.id}
+            index={index + 1}
+            tone={toneForIndex(index)}
+            title={t(game.nameKey)}
             description={t(game.descriptionKey)}
-            icon={game.icon}
             to={game.path}
-            statusBadge={completedGameIds.has(game.id) ? `✓ ${t('simpleFractionsPage.completedBadge')}` : undefined}
+            completedLabel={
+              completedGameIds.has(game.id) ? `✓ ${t('simpleFractionsPage.completedBadge')}` : undefined
+            }
           />
         ))}
-      </div>
+      </ActivityTileGrid>
+      <PracticeBanner backTo="/grade/4" backLabel={t('nav.grade4Topics')} />
     </PageLayout>
   );
 }

@@ -49,6 +49,11 @@
     "navLabel": "Activity",
     "empty": "No completed games yet — go play something!"
   },
+  "activityList": {
+    "bannerTitle": "Every exercise moves you one step forward!",
+    "bannerText": "Learning, practising and growing stronger — together on Mathletica.",
+    "progressLink": "Want to see how you are doing?"
+  },
   "grades": {
     "1": "Grade 1",
     "2": "Grade 2",
@@ -1056,7 +1061,8 @@
       "angle": "Angle of {{degrees}} degrees",
       "selectAngle": "Select {{degrees}} degree angle",
       "triangle": "Interactive triangle"
-    }
+    },
+    "listIntro": "Come open up angles, build triangles, and spot shapes everywhere!"
   },
   "fractionsPart1": {
     "unitName": "Fractions – Part 1",
@@ -1141,12 +1147,14 @@
     "completion": {
       "title": "Fraction mission complete!",
       "body": "You solved {{count}} visual fraction challenges."
-    }
+    },
+    "listIntro": "Come discover how small parts make one big whole!"
   },
   "multiplicationPage": {
     "title": "Multiplication",
     "subtitle": "Practise the times tables and find the right answer fast.",
-    "completedBadge": "Completed"
+    "completedBadge": "Completed",
+    "listIntro": "Come practise the times tables and get faster every round!"
   },
   "monkeyBalloonShooter": {
     "gameName": "Monkey Balloon Shooter",

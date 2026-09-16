@@ -14,6 +14,8 @@ interface PageLayoutProps {
   context?: string;
   /** `game` shrinks the page chrome and widens the content so a game scene can own the viewport. */
   variant?: 'default' | 'game';
+  /** Optional decorative mark rendered beside the title. Purely ornamental. */
+  titleAccent?: ReactNode;
   brandTitle?: boolean;
   children: ReactNode;
 }
@@ -25,6 +27,7 @@ export function PageLayout({
   backLabel,
   context,
   variant = 'default',
+  titleAccent,
   brandTitle = false,
   children,
 }: PageLayoutProps) {
@@ -56,6 +59,11 @@ export function PageLayout({
             <h1 className="page-brand-title" aria-label={title}>
               <BrandHomeLink size="lg" tagline />
             </h1>
+          ) : titleAccent ? (
+            <div className="page-title-row">
+              <h1 className="page-title">{title}</h1>
+              {titleAccent}
+            </div>
           ) : (
             <h1 className="page-title">{title}</h1>
           )}

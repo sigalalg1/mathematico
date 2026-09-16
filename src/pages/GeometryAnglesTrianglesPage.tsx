@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card } from '../components/Card';
 import { PageLayout } from '../components/PageLayout';
+import {
+  ActivityTile,
+  ActivityTileGrid,
+  PracticeBanner,
+  TitleSparkles,
+} from '../components/ActivityTileGrid';
+import { toneForIndex } from '../components/activityTones';
+import { ActivityIcon } from '../components/ActivityIcons';
 import { geometryAnglesTrianglesGames } from '../data/games';
 import { useAuth } from '../auth/useAuth';
 import { getActivityHistory } from '../tracking/activityTracker';
@@ -21,27 +28,40 @@ export function GeometryAnglesTrianglesPage() {
     return () => { cancelled = true; };
   }, [user?.id]);
 
+  // Every activity in these units ships enabled with a route; the guard keeps
+  // a future placeholder entry from rendering a dead link.
+  const activities = geometryAnglesTrianglesGames.filter(
+    (game): game is typeof game & { path: string } => game.enabled && Boolean(game.path),
+  );
+
   return (
     <PageLayout
       title={t('geometry.unitName')}
-      subtitle={t('geometry.unitDescription')}
+      titleAccent={
+        <TitleSparkles>
+          <ActivityIcon activityId="meet-the-triangle" />
+        </TitleSparkles>
+      }
+      subtitle={t('geometry.listIntro')}
       context={t('grades.3')}
       backTo="/grade/3"
       backLabel={t('nav.grade3Topics')}
     >
-      <div className="row-list">
-        {geometryAnglesTrianglesGames.map((game, index) => (
-          <Card
-            layout="row"
+      <ActivityTileGrid>
+        {activities.map((game, index) => (
+          <ActivityTile
             key={game.id}
-            title={`${index + 1}. ${t(game.nameKey)}`}
+            activityId={game.id}
+            index={index + 1}
+            tone={toneForIndex(index)}
+            title={t(game.nameKey)}
             description={t(game.descriptionKey)}
-            icon={game.icon}
             to={game.path}
-            statusBadge={completed.has(game.id) ? `✓ ${t('geometry.completedBadge')}` : undefined}
+            completedLabel={completed.has(game.id) ? `✓ ${t('geometry.completedBadge')}` : undefined}
           />
         ))}
-      </div>
+      </ActivityTileGrid>
+      <PracticeBanner backTo="/grade/3" backLabel={t('nav.grade3Topics')} />
     </PageLayout>
   );
 }
