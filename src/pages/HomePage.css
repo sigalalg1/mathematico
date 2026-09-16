@@ -1,0 +1,17 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.home-phrase {
+  /* The brand phrase appears here and nowhere else in the product. */
+  margin-block-start: calc(var(--space-2) * -1);
+}
+
+.home .btn-cta {
+  align-self: stretch;
+  max-width: 460px;
+}

@@ -1,0 +1,101 @@
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  line-height: 1;
+}
+
+/* The mark is artwork: never mirrored, never recoloured by context. */
+.brand-mark {
+  display: block;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  transform: none;
+}
+
+[dir='rtl'] .brand-mark {
+  transform: none;
+}
+
+.brand-logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.brand-logo-wordmark {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+  white-space: nowrap;
+}
+
+.brand-logo-tagline {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* --- sizes --------------------------------------------------------------- */
+
+.brand-logo-sm {
+  gap: var(--space-2);
+}
+
+.brand-logo-sm .brand-mark {
+  width: 24px;
+  height: 24px;
+}
+
+.brand-logo-sm .brand-logo-wordmark {
+  font-size: var(--text-base);
+}
+
+.brand-logo-lg {
+  gap: var(--space-4);
+}
+
+.brand-logo-lg .brand-mark {
+  width: 52px;
+  height: 52px;
+}
+
+.brand-logo-lg .brand-logo-wordmark {
+  font-size: var(--text-3xl);
+}
+
+.brand-logo-lg .brand-logo-tagline {
+  font-size: var(--text-base);
+}
+
+/* --- square app-icon treatment ------------------------------------------- */
+
+.brand-app-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 22%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.brand-app-icon .brand-mark {
+  width: 64%;
+  height: 64%;
+}
+
+@media (max-width: 420px) {
+  .brand-logo-lg .brand-logo-wordmark {
+    font-size: var(--text-2xl);
+  }
+
+  .brand-logo-lg .brand-mark {
+    width: 42px;
+    height: 42px;
+  }
+}

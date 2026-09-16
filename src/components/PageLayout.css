@@ -2,11 +2,11 @@
   width: 100%;
   max-width: var(--container);
   margin: 0 auto;
-  padding: var(--space-6) var(--space-5) var(--space-16);
+  padding: var(--space-4) var(--space-5) var(--space-12);
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--space-10);
+  gap: var(--space-8);
 }
 
 /*
@@ -15,18 +15,17 @@
  */
 .page-game {
   max-width: 1180px;
-  padding: var(--space-4) var(--space-4) var(--space-6);
-  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4) var(--space-6);
+  gap: var(--space-4);
 }
 
 .page-game .page-header {
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .page-game .page-title {
   font-size: var(--text-lg);
   color: var(--text);
-  opacity: 0.75;
   font-weight: 700;
 }
 
@@ -41,72 +40,107 @@
   gap: var(--space-5);
 }
 
+/* Three balanced slots: back navigation, context/brand, account actions. */
 .page-header-bar {
-  position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  min-height: 36px;
+  gap: var(--space-2);
+  min-height: var(--tap);
 }
 
-.page-header-navigation {
+.page-header-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.page-header-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-width: 0;
 }
 
 .page-header-actions {
   display: flex;
-  flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
   gap: var(--space-2);
+  min-width: 0;
 }
 
 .back-link {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  font-weight: 700;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  font-weight: 600;
   font-size: var(--text-sm);
-  color: var(--primary);
-  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-3);
+  color: var(--text);
+  padding-inline: var(--space-3);
   border-radius: var(--radius-pill);
-  transition: background 0.15s ease;
+  border: 1px solid transparent;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .back-link:hover {
-  background: var(--primary-bg);
+  background: var(--bg-alt);
+  color: var(--text-h);
+}
+
+.back-link-arrow {
+  display: inline-block;
+  font-size: var(--text-md);
+  line-height: 1;
 }
 
 [dir='rtl'] .back-link-arrow {
-  display: inline-block;
   transform: scaleX(-1);
+}
+
+.back-link-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .page-header-titles {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-2);
-  text-align: center;
+  text-align: start;
 }
 
 .page-brand-title {
   display: flex;
-  justify-content: center;
   line-height: 1;
 }
 
 .page-title {
-  font-size: var(--text-4xl);
+  font-size: var(--text-3xl);
+  line-height: 1.15;
+}
+
+/* Only used when a page passes a decorative title accent. */
+.page-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
 .page-subtitle {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   font-weight: 400;
-  color: var(--text);
-  max-width: 480px;
+  color: var(--muted);
+  max-width: 52ch;
+  line-height: 1.5;
 }
 
 .page-content {
@@ -114,44 +148,53 @@
   flex: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* Content starts under the header rather than floating in the middle of a
+     tall phone viewport. */
+  justify-content: flex-start;
   gap: var(--space-6);
 }
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--space-4);
   width: 100%;
 }
 
 @media (max-width: 600px) {
   .page {
-    padding-inline: var(--space-3);
+    padding-inline: var(--space-4);
   }
 
-  .page-header-bar {
-    align-items: flex-start;
-  }
-
-  .page-header-navigation,
-  .page-header-actions {
-    max-width: calc(50% - 28px);
-  }
-
-  .page-header-actions {
-    justify-content: flex-end;
-  }
-
-  .back-link {
-    padding-inline: var(--space-2);
+  .back-link-text {
+    /* The arrow alone is enough on narrow screens; the label would truncate. */
+    max-width: 8ch;
   }
 
   .page-title {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
+  }
+}
+
+@media (max-width: 420px) {
+  .page {
+    padding-inline: var(--space-3);
   }
 
-  .page-subtitle {
-    font-size: var(--text-md);
+  /* Clipped rather than removed so the link keeps its accessible name. */
+  .back-link-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
   }
 }

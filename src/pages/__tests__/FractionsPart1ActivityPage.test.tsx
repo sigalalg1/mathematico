@@ -71,8 +71,13 @@ describe('Fractions Part 1 activities', () => {
 
   it('exposes the complete ordered unit in Hebrew', () => {
     renderWithProviders(<App />, ['/grade/4/fractions-part-1']);
+    const tiles = screen.getAllByRole('link').filter((link) => link.classList.contains('atile'));
+    expect(tiles).toHaveLength(FRACTIONS_PART1_ACTIVITY_IDS.length);
     FRACTIONS_PART1_ACTIVITY_IDS.forEach((activityId, index) => {
-      expect(screen.getByText(`${index + 1}. ${i18n.t(`fractionsPart1.activities.${activityId}.name`)}`)).toBeInTheDocument();
+      expect(tiles[index].querySelector('.atile-index')).toHaveTextContent(`${index + 1}.`);
+      expect(tiles[index].querySelector('.atile-title')).toHaveTextContent(
+        i18n.t(`fractionsPart1.activities.${activityId}.name`),
+      );
     });
   });
 });

@@ -3,18 +3,18 @@ import type { Game } from '../types';
 const GEOMETRY_PATH = '/grade/3/geometry-angles-triangles';
 
 export const geometryAnglesTrianglesGames: Game[] = [
-  ['meet-the-angle', '📐'],
-  ['angle-types', '🧭'],
-  ['angle-hunter', '🎯'],
-  ['build-an-angle', '🛠️'],
-  ['find-the-angles', '🔎'],
-  ['meet-the-triangle', '🔺'],
-  ['triangles-by-sides', '📏'],
-  ['triangles-by-angles', '✨'],
-  ['triangle-lab', '🧪'],
-  ['who-am-i', '🕵️'],
-  ['rotation', '🔄'],
-  ['geometry-challenge', '🏆'],
+  ['meet-the-angle', '∠'],
+  ['angle-types', '°'],
+  ['angle-hunter', '◎'],
+  ['build-an-angle', '∟'],
+  ['find-the-angles', '◔'],
+  ['meet-the-triangle', '△'],
+  ['triangles-by-sides', '▲'],
+  ['triangles-by-angles', '▽'],
+  ['triangle-lab', '▼'],
+  ['who-am-i', '?'],
+  ['rotation', '↻'],
+  ['geometry-challenge', '◆'],
 ].map(([id, icon]) => ({
   id,
   enabled: true,
@@ -31,7 +31,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/coordinate-vocabulary',
     nameKey: 'vocabulary.gameName',
     descriptionKey: 'vocabulary.gameDescription',
-    icon: '📖',
+    icon: 'xy',
   },
   {
     id: 'meetTheAxes',
@@ -39,7 +39,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/meet-the-axes',
     nameKey: 'exercises.meetTheAxes.name',
     descriptionKey: 'exercises.meetTheAxes.description',
-    icon: '🧭',
+    icon: '⊥',
   },
   {
     id: 'hitTheTarget',
@@ -47,7 +47,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/hit-the-target',
     nameKey: 'games.hitTheTarget.name',
     descriptionKey: 'games.hitTheTarget.description',
-    icon: '🎯',
+    icon: '◎',
   },
   {
     id: 'launchTheSpaceship',
@@ -55,7 +55,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/launch-the-spaceship',
     nameKey: 'games.launchTheSpaceship.name',
     descriptionKey: 'games.launchTheSpaceship.description',
-    icon: '🚀',
+    icon: '↗',
   },
   {
     id: 'quadrantChallenge',
@@ -63,7 +63,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/quadrant-challenge',
     nameKey: 'quadrantChallenge.gameName',
     descriptionKey: 'quadrantChallenge.gameDescription',
-    icon: '🧩',
+    icon: '⊞',
   },
   {
     id: 'coordinateDetective',
@@ -71,7 +71,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/coordinate-detective',
     nameKey: 'coordinateDetective.gameName',
     descriptionKey: 'coordinateDetective.gameDescription',
-    icon: '🔍',
+    icon: '≠',
   },
   {
     id: 'findThePoint',
@@ -79,7 +79,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/find-the-point',
     nameKey: 'games.findThePoint.name',
     descriptionKey: 'games.findThePoint.description',
-    icon: '📍',
+    icon: '•',
   },
   {
     id: 'distancesSegments',
@@ -87,7 +87,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/distances-segments',
     nameKey: 'distancesSegments.gameName',
     descriptionKey: 'distancesSegments.gameDescription',
-    icon: '📏',
+    icon: '↔',
   },
   {
     id: 'shapesOnPlane',
@@ -95,7 +95,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/shapes-on-plane',
     nameKey: 'shapesOnPlane.gameName',
     descriptionKey: 'shapesOnPlane.gameDescription',
-    icon: '📐',
+    icon: '△',
   },
   {
     id: 'coordinateMission',
@@ -103,7 +103,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/coordinate-mission',
     nameKey: 'coordinateMission.gameName',
     descriptionKey: 'coordinateMission.gameDescription',
-    icon: '🚩',
+    icon: '◇',
   },
   {
     id: 'drawByCoordinates',
@@ -111,7 +111,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/draw-by-coordinates',
     nameKey: 'games.drawByCoordinates.name',
     descriptionKey: 'games.drawByCoordinates.description',
-    icon: '🎨',
+    icon: '□',
   },
   {
     id: 'coordinateScale',
@@ -119,7 +119,7 @@ export const coordinateSystemGames: Game[] = [
     path: '/grade/7/coordinate-system/coordinate-scale',
     nameKey: 'coordinateScale.gameName',
     descriptionKey: 'coordinateScale.gameDescription',
-    icon: '📊',
+    icon: '↕',
   },
 ];
 
@@ -133,7 +133,7 @@ export const signedNumbersGames: Game[] = [
     path: '/grade/7/signed-numbers/find-the-spot',
     nameKey: 'numberLinePlace.gameName',
     descriptionKey: 'numberLinePlace.gameDescription',
-    icon: '📍',
+    icon: '±',
   },
   {
     id: 'compareSigned',
@@ -141,7 +141,7 @@ export const signedNumbersGames: Game[] = [
     path: '/grade/7/signed-numbers/which-is-greater',
     nameKey: 'compareSigned.gameName',
     descriptionKey: 'compareSigned.gameDescription',
-    icon: '⚖️',
+    icon: '<',
   },
   {
     id: 'absoluteValue',
@@ -149,7 +149,7 @@ export const signedNumbersGames: Game[] = [
     path: '/grade/7/signed-numbers/distance-from-zero',
     nameKey: 'absoluteValue.gameName',
     descriptionKey: 'absoluteValue.gameDescription',
-    icon: '📏',
+    icon: '|x|',
   },
   {
     id: 'signedAddSub',
@@ -157,7 +157,7 @@ export const signedNumbersGames: Game[] = [
     path: '/grade/7/signed-numbers/steps-on-the-line',
     nameKey: 'signedAddSub.gameName',
     descriptionKey: 'signedAddSub.gameDescription',
-    icon: '👣',
+    icon: '+−',
   },
   {
     id: 'signRules',
@@ -165,7 +165,7 @@ export const signedNumbersGames: Game[] = [
     path: '/grade/7/signed-numbers/the-sign-rule',
     nameKey: 'signRules.gameName',
     descriptionKey: 'signRules.gameDescription',
-    icon: '✖️',
+    icon: '×',
   },
 ];
 
@@ -174,16 +174,16 @@ export const simpleFractionsGames: Game[] = [];
 const FRACTIONS_PART1_PATH = '/grade/4/fractions-part-1';
 
 export const fractionsPart1Games: Game[] = [
-  ['build-a-fraction', '🟠'],
-  ['numerator-denominator', '🔢'],
-  ['find-the-fraction', '🔎'],
-  ['build-the-whole', '🧩'],
-  ['same-fraction', '🎭'],
-  ['fraction-number-line', '📍'],
-  ['which-is-greater', '⚖️'],
-  ['fraction-of-collection', '⭐'],
-  ['fraction-pizzeria', '🍕'],
-  ['fractions-challenge', '🏆'],
+  ['build-a-fraction', '½'],
+  ['numerator-denominator', '¼'],
+  ['find-the-fraction', '⅓'],
+  ['build-the-whole', '1'],
+  ['same-fraction', '='],
+  ['fraction-number-line', '↔'],
+  ['which-is-greater', '<'],
+  ['fraction-of-collection', '⅕'],
+  ['fraction-pizzeria', '⅛'],
+  ['fractions-challenge', '⅚'],
 ].map(([id, icon]) => ({
   id,
   enabled: true,
@@ -200,6 +200,25 @@ export const multiplicationGames: Game[] = [
     path: '/grade/4/multiplication/monkey-balloon-shooter',
     nameKey: 'monkeyBalloonShooter.gameName',
     descriptionKey: 'monkeyBalloonShooter.gameDescription',
-    icon: '🐵',
+    icon: '×',
   },
 ];
+
+/**
+ * Every activity in one list, so shared UI (activity history, "continue
+ * training") can resolve a stored gameId back to its name and route without
+ * each screen re-assembling the same set.
+ */
+export const allGames: Game[] = [
+  ...geometryAnglesTrianglesGames,
+  ...coordinateSystemGames,
+  ...signedNumbersGames,
+  ...divisionWithRemainderGames,
+  ...simpleFractionsGames,
+  ...fractionsPart1Games,
+  ...multiplicationGames,
+];
+
+export function findGame(gameId: string): Game | undefined {
+  return allGames.find((game) => game.id === gameId);
+}

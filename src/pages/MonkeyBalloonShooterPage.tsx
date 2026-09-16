@@ -138,7 +138,7 @@ export function MonkeyBalloonShooterPage() {
 
   if (game.completed) {
     return (
-      <PageLayout title={t('monkeyBalloonShooter.gameName')} backTo={TOPIC_PATH} backLabel={t('multiplicationPage.title')} variant="game">
+      <PageLayout title={t('monkeyBalloonShooter.gameName')} context={t('grades.4')} backTo={TOPIC_PATH} backLabel={t('multiplicationPage.title')} variant="game">
         <div className="mb-game">
           <div className="mb-scene mb-scene-done">
             <Jungle />
@@ -162,7 +162,7 @@ export function MonkeyBalloonShooterPage() {
   }
 
   return (
-    <PageLayout title={t('monkeyBalloonShooter.gameName')} backTo={TOPIC_PATH} backLabel={t('multiplicationPage.title')} variant="game">
+    <PageLayout title={t('monkeyBalloonShooter.gameName')} context={t('grades.4')} backTo={TOPIC_PATH} backLabel={t('multiplicationPage.title')} variant="game">
       <div className="mb-game">
         <div className="mb-scene" ref={sceneRef}>
           <Jungle />

@@ -84,7 +84,7 @@ export function FindThePointPage() {
     game.status === 'incorrect' && game.lastAnswer ? getMistakeMessage(t, classifyMistake(challenge.correct, game.lastAnswer), challenge.correct) : null;
 
   return (
-    <PageLayout title={t('games.findThePoint.name')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
+    <PageLayout title={t('games.findThePoint.name')} context={t('grades.7')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
       {game.completed ? (
         <FindThePointCompletion total={game.total} firstTryCount={game.firstAttemptCorrectCount} onRetry={game.retry} />
       ) : (

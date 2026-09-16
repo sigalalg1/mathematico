@@ -13,7 +13,7 @@ function pngDimensions(path: string): [number, number] {
 }
 
 describe('PWA assets', () => {
-  it('defines installable Matika manifest metadata and approved icons', () => {
+  it('defines installable Mathletica manifest metadata and approved icons', () => {
     const manifest = JSON.parse(readText('public/manifest.webmanifest')) as {
       name: string;
       short_name: string;
@@ -24,21 +24,21 @@ describe('PWA assets', () => {
     };
 
     expect(manifest).toMatchObject({
-      name: 'Matika',
-      short_name: 'Matika',
+      name: 'Mathletica',
+      short_name: 'Mathletica',
       display: 'standalone',
       start_url: '/',
       scope: '/',
     });
     expect(manifest.icons).toEqual([
-      expect.objectContaining({ src: '/brand/matika-icon-192.png', sizes: '192x192', purpose: 'any' }),
-      expect.objectContaining({ src: '/brand/matika-icon-512.png', sizes: '512x512', purpose: 'any' }),
+      expect.objectContaining({ src: '/brand/mathletica-icon-192.png', sizes: '192x192', purpose: 'any' }),
+      expect.objectContaining({ src: '/brand/mathletica-icon-512.png', sizes: '512x512', purpose: 'any' }),
     ]);
   });
 
   it('keeps exact icon dimensions and derives only the Apple size', () => {
-    expect(pngDimensions('public/brand/matika-icon-192.png')).toEqual([192, 192]);
-    expect(pngDimensions('public/brand/matika-icon-512.png')).toEqual([512, 512]);
+    expect(pngDimensions('public/brand/mathletica-icon-192.png')).toEqual([192, 192]);
+    expect(pngDimensions('public/brand/mathletica-icon-512.png')).toEqual([512, 512]);
     expect(pngDimensions('public/brand/apple-touch-icon.png')).toEqual([180, 180]);
   });
 
@@ -49,7 +49,7 @@ describe('PWA assets', () => {
 
     expect(html).toContain('href="/manifest.webmanifest"');
     expect(html).toContain('href="/brand/apple-touch-icon.png"');
-    expect(html).toContain('<title>Matika</title>');
+    expect(html).toContain('<title>Mathletica</title>');
     expect(worker).toContain("request.mode === 'navigate'");
     expect(worker).toContain("caches.match('/')");
     expect(worker).toContain('self.skipWaiting()');

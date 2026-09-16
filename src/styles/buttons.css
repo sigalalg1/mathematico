@@ -3,16 +3,17 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
+  min-height: var(--tap);
   font-family: inherit;
   font-size: var(--text-base);
   font-weight: 700;
   line-height: 1;
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-pill);
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   cursor: pointer;
   transition:
-    transform 0.15s ease,
+    transform 0.12s ease,
     background 0.15s ease,
     border-color 0.15s ease,
     box-shadow 0.15s ease;
@@ -20,48 +21,99 @@
 
 .btn:disabled {
   cursor: default;
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
 .btn-primary {
   background: var(--primary);
-  color: #fff;
+  color: var(--primary-contrast);
   box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--primary-dark);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
 }
 
 .btn-primary:active:not(:disabled) {
-  transform: translateY(0);
+  transform: translateY(1px);
 }
 
 .btn-secondary {
   background: var(--surface);
-  color: var(--primary);
-  border-color: var(--primary-tint);
+  color: var(--text-h);
+  border-color: var(--border-strong);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  border-color: var(--primary);
-  background: var(--primary-bg);
+  background: var(--surface-raised);
+  border-color: var(--primary-tint);
+}
+
+.btn-secondary:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .btn-ghost {
-  background: var(--bg-alt);
-  color: var(--text-h);
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
   padding: var(--space-2) var(--space-4);
   font-size: var(--text-sm);
+  min-height: 36px;
 }
 
 .btn-ghost:hover:not(:disabled) {
-  background: var(--border);
+  background: var(--bg-alt);
+  color: var(--text-h);
+}
+
+/** Full-width mint CTA used for the primary action on a screen. */
+.btn-cta {
+  width: 100%;
+  max-width: 420px;
+  font-size: var(--text-md);
+  padding-block: var(--space-5);
+}
+
+.btn-link {
+  background: none;
+  border: 0;
+  padding: var(--space-2) var(--space-3);
+  min-height: var(--tap);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.btn-link:hover:not(:disabled) {
+  color: var(--text-h);
 }
 
 .btn-sm {
   padding: var(--space-2) var(--space-5);
   font-size: var(--text-sm);
+  min-height: 36px;
+}
+
+.btn-arrow {
+  display: inline-block;
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+[dir='rtl'] .btn-arrow {
+  transform: scaleX(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+
+  .btn:active:not(:disabled) {
+    transform: none;
+  }
 }

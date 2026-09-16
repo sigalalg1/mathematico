@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInstallApp } from '../hooks/useInstallApp';
+import { InstallIcon } from './icons';
 import './InstallAppAction.css';
 
 export function InstallAppAction() {
@@ -27,7 +28,10 @@ export function InstallAppAction() {
       type="button"
       onClick={canInstall ? () => void install() : () => setShowInstructions(true)}
     >
-      {canInstall ? t('install.action') : t('install.iosAction')}
+      <InstallIcon className="header-nav-icon" />
+      <span className="header-nav-link-label">
+        {canInstall ? t('install.action') : t('install.iosAction')}
+      </span>
     </button>
   );
 }

@@ -1,8 +1,16 @@
 {
   "app": {
-    "title": "Matika",
-    "subtitle": "Pick your grade and start playing with math!",
-    "homeLabel": "Matika home"
+    "title": "Mathletica",
+    "subtitle": "Pick a grade and start training.",
+    "homeLabel": "Mathletica home",
+    "tagline": "Math made lighter.",
+    "brandPhrase": "Small steps. Big progress.",
+    "startTraining": "Start training",
+    "continueTraining": "Continue training",
+    "chooseGrade": "Choose a grade",
+    "chooseTopic": "Choose a topic",
+    "resume": "Resume",
+    "lastResult": "Last result: {{correct}} of {{total}}"
   },
   "common": {
     "comingSoon": "Coming soon",
@@ -17,8 +25,8 @@
     "grade3Topics": "Grade 3 topics"
   },
   "install": {
-    "action": "Install Matika",
-    "iosAction": "Install Matika",
+    "action": "Install Mathletica",
+    "iosAction": "Install Mathletica",
     "iosInstructions": "In Safari, tap Share → Add to Home Screen.",
     "dismiss": "Not now"
   },
@@ -40,6 +48,11 @@
     "title": "My Activity",
     "navLabel": "Activity",
     "empty": "No completed games yet — go play something!"
+  },
+  "activityList": {
+    "bannerTitle": "Every exercise moves you one step forward!",
+    "bannerText": "Learning, practising and growing stronger — together on Mathletica.",
+    "progressLink": "Want to see how you are doing?"
   },
   "grades": {
     "1": "Grade 1",
@@ -936,18 +949,54 @@
     "completedBadge": "Completed",
     "progress": "Challenge {{current}} of {{total}}",
     "activities": {
-      "meet-the-angle": { "name": "Meet the Angle", "description": "Move a ray and discover the vertex, arms, and opening." },
-      "angle-types": { "name": "Angle Types", "description": "Compare acute, right, and obtuse angles with 90°." },
-      "angle-hunter": { "name": "Angle Hunter", "description": "Hit only the requested angles, however they are turned." },
-      "build-an-angle": { "name": "Build an Angle", "description": "Drag an arm to build the requested angle type." },
-      "find-the-angles": { "name": "Find the Angles", "description": "Spot angle types hidden in colorful shapes and scenes." },
-      "meet-the-triangle": { "name": "Meet the Triangle", "description": "Explore three sides, three vertices, and three angles." },
-      "triangles-by-sides": { "name": "Triangles by Sides", "description": "Use equal-side clues to classify triangles." },
-      "triangles-by-angles": { "name": "Triangles by Angles", "description": "Classify triangles by their actual corner angles." },
-      "triangle-lab": { "name": "Triangle Lab", "description": "Move vertices and watch both triangle names change." },
-      "who-am-i": { "name": "Who Am I?", "description": "Solve valid riddles that combine side and angle clues." },
-      "rotation": { "name": "Don't Trust the Rotation", "description": "Classify fast: turning a shape never changes its type." },
-      "geometry-challenge": { "name": "Geometry Challenge", "description": "A fresh mixed session using everything you learned." }
+      "meet-the-angle": {
+        "name": "Meet the Angle",
+        "description": "Move a ray and discover the vertex, arms, and opening."
+      },
+      "angle-types": {
+        "name": "Angle Types",
+        "description": "Compare acute, right, and obtuse angles with 90°."
+      },
+      "angle-hunter": {
+        "name": "Angle Hunter",
+        "description": "Hit only the requested angles, however they are turned."
+      },
+      "build-an-angle": {
+        "name": "Build an Angle",
+        "description": "Drag an arm to build the requested angle type."
+      },
+      "find-the-angles": {
+        "name": "Find the Angles",
+        "description": "Spot angle types hidden in colorful shapes and scenes."
+      },
+      "meet-the-triangle": {
+        "name": "Meet the Triangle",
+        "description": "Explore three sides, three vertices, and three angles."
+      },
+      "triangles-by-sides": {
+        "name": "Triangles by Sides",
+        "description": "Use equal-side clues to classify triangles."
+      },
+      "triangles-by-angles": {
+        "name": "Triangles by Angles",
+        "description": "Classify triangles by their actual corner angles."
+      },
+      "triangle-lab": {
+        "name": "Triangle Lab",
+        "description": "Move vertices and watch both triangle names change."
+      },
+      "who-am-i": {
+        "name": "Who Am I?",
+        "description": "Solve valid riddles that combine side and angle clues."
+      },
+      "rotation": {
+        "name": "Don't Trust the Rotation",
+        "description": "Classify fast: turning a shape never changes its type."
+      },
+      "geometry-challenge": {
+        "name": "Geometry Challenge",
+        "description": "A fresh mixed session using everything you learned."
+      }
     },
     "prompts": {
       "explore-angle": "Drag the pink arm. What changes—and what stays the same?",
@@ -962,38 +1011,104 @@
       "riddle": "Who am I? Use both clues.",
       "rotation": "Ignore the rotation. Classify the triangle."
     },
-    "angleTypes": { "acute": "acute angle", "right": "right angle", "obtuse": "obtuse angle" },
-    "sideTypes": { "equilateral": "equilateral", "isosceles": "isosceles", "scalene": "scalene" },
-    "triangleAngleTypes": { "acute": "acute triangle", "right": "right triangle", "obtuse": "obtuse triangle" },
+    "angleTypes": {
+      "acute": "acute angle",
+      "right": "right angle",
+      "obtuse": "obtuse angle"
+    },
+    "sideTypes": {
+      "equilateral": "equilateral",
+      "isosceles": "isosceles",
+      "scalene": "scalene"
+    },
+    "triangleAngleTypes": {
+      "acute": "acute triangle",
+      "right": "right triangle",
+      "obtuse": "obtuse triangle"
+    },
     "concepts": {
       "angleParts": "Two rays share one vertex. The opening—not the arm length—sets the angle size.",
       "dragArm": "Use 90° as your benchmark: acute < 90°, right = 90°, obtuse is between 90° and 180°.",
       "triangleParts": "Every triangle has exactly 3 sides, 3 vertices, and 3 angles—even when tilted or narrow."
     },
     "riddles": {
-      "sides": { "equilateral": "All three sides are equal.", "isosceles": "Exactly two sides are equal.", "scalene": "All three side lengths differ." },
-      "angles": { "acute": "All my angles are acute.", "right": "I have one right angle.", "obtuse": "I have one obtuse angle." }
+      "sides": {
+        "equilateral": "All three sides are equal.",
+        "isosceles": "Exactly two sides are equal.",
+        "scalene": "All three side lengths differ."
+      },
+      "angles": {
+        "acute": "All my angles are acute.",
+        "right": "I have one right angle.",
+        "obtuse": "I have one obtuse angle."
+      }
     },
-    "actions": { "check": "Check", "continue": "Continue", "playAgain": "Play again", "back": "Back to the unit" },
-    "feedback": { "correct": "Great geometry!", "retry": "Look carefully and try again." },
-    "completion": { "title": "Geometry explorer!", "body": "You completed all {{count}} challenges." },
-    "a11y": { "angle": "Angle of {{degrees}} degrees", "selectAngle": "Select {{degrees}} degree angle", "triangle": "Interactive triangle" }
+    "actions": {
+      "check": "Check",
+      "continue": "Continue",
+      "playAgain": "Play again",
+      "back": "Back to the unit"
+    },
+    "feedback": {
+      "correct": "Great geometry!",
+      "retry": "Look carefully and try again."
+    },
+    "completion": {
+      "title": "Geometry explorer!",
+      "body": "You completed all {{count}} challenges."
+    },
+    "a11y": {
+      "angle": "Angle of {{degrees}} degrees",
+      "selectAngle": "Select {{degrees}} degree angle",
+      "triangle": "Interactive triangle"
+    },
+    "listIntro": "Come open up angles, build triangles, and spot shapes everywhere!"
   },
   "fractionsPart1": {
     "unitName": "Fractions – Part 1",
     "unitDescription": "Build a fraction from equal parts, then use it in pictures, groups, and number lines.",
     "progress": "Challenge {{current}} of {{total}}",
     "activities": {
-      "build-a-fraction": { "name": "Build a Fraction", "description": "Tap equal pieces to build and read fractions." },
-      "numerator-denominator": { "name": "Numerator and Denominator", "description": "Connect each number to the parts you can see." },
-      "find-the-fraction": { "name": "Find the Fraction", "description": "Match fraction symbols and visual models." },
-      "build-the-whole": { "name": "Build the Whole", "description": "Use the given pieces to reconstruct one whole." },
-      "same-fraction": { "name": "Same Fraction, Different Representation", "description": "Spot equal amounts shown in different ways." },
-      "fraction-number-line": { "name": "Fractions on a Number Line", "description": "Place and identify fractions between 0 and 1." },
-      "which-is-greater": { "name": "Which Is Greater?", "description": "Compare visible amounts with <, >, and =." },
-      "fraction-of-collection": { "name": "Fraction of a Collection", "description": "Find the fraction of objects in a group." },
-      "fraction-pizzeria": { "name": "Fraction Pizzeria", "description": "Prepare pizza orders and read the slices." },
-      "fractions-challenge": { "name": "Fractions Challenge", "description": "Mix everything you learned in a fresh session." }
+      "build-a-fraction": {
+        "name": "Build a Fraction",
+        "description": "Tap equal pieces to build and read fractions."
+      },
+      "numerator-denominator": {
+        "name": "Numerator and Denominator",
+        "description": "Connect each number to the parts you can see."
+      },
+      "find-the-fraction": {
+        "name": "Find the Fraction",
+        "description": "Match fraction symbols and visual models."
+      },
+      "build-the-whole": {
+        "name": "Build the Whole",
+        "description": "Use the given pieces to reconstruct one whole."
+      },
+      "same-fraction": {
+        "name": "Same Fraction, Different Representation",
+        "description": "Spot equal amounts shown in different ways."
+      },
+      "fraction-number-line": {
+        "name": "Fractions on a Number Line",
+        "description": "Place and identify fractions between 0 and 1."
+      },
+      "which-is-greater": {
+        "name": "Which Is Greater?",
+        "description": "Compare visible amounts with <, >, and =."
+      },
+      "fraction-of-collection": {
+        "name": "Fraction of a Collection",
+        "description": "Find the fraction of objects in a group."
+      },
+      "fraction-pizzeria": {
+        "name": "Fraction Pizzeria",
+        "description": "Prepare pizza orders and read the slices."
+      },
+      "fractions-challenge": {
+        "name": "Fractions Challenge",
+        "description": "Mix everything you learned in a fresh session."
+      }
     },
     "prompts": {
       "build": "Color exactly this fraction",
@@ -1032,12 +1147,14 @@
     "completion": {
       "title": "Fraction mission complete!",
       "body": "You solved {{count}} visual fraction challenges."
-    }
+    },
+    "listIntro": "Come discover how small parts make one big whole!"
   },
   "multiplicationPage": {
     "title": "Multiplication",
     "subtitle": "Practise the times tables and find the right answer fast.",
-    "completedBadge": "Completed"
+    "completedBadge": "Completed",
+    "listIntro": "Come practise the times tables and get faster every round!"
   },
   "monkeyBalloonShooter": {
     "gameName": "Monkey Balloon Shooter",

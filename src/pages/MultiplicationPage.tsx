@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageLayout } from '../components/PageLayout';
-import { Card } from '../components/Card';
+import {
+  ActivityTile,
+  ActivityTileGrid,
+  PracticeBanner,
+  TitleSparkles,
+} from '../components/ActivityTileGrid';
+import { toneForIndex } from '../components/activityTones';
+import { ActivityIcon } from '../components/ActivityIcons';
 import { multiplicationGames } from '../data/games';
 import { useAuth } from '../auth/useAuth';
 import { getActivityHistory } from '../tracking/activityTracker';
@@ -26,26 +33,42 @@ export function MultiplicationPage() {
     };
   }, [user?.id]);
 
+  // Every activity in these units ships enabled with a route; the guard keeps
+  // a future placeholder entry from rendering a dead link.
+  const activities = multiplicationGames.filter(
+    (game): game is typeof game & { path: string } => game.enabled && Boolean(game.path),
+  );
+
   return (
     <PageLayout
       title={t('multiplicationPage.title')}
-      subtitle={t('multiplicationPage.subtitle')}
+      titleAccent={
+        <TitleSparkles>
+          <ActivityIcon activityId="monkeyBalloonShooter" />
+        </TitleSparkles>
+      }
+      subtitle={t('multiplicationPage.listIntro')}
+      context={t('grades.4')}
       backTo="/grade/4"
       backLabel={t('nav.grade4Topics')}
     >
-      <div className="card-grid">
-        {multiplicationGames.map((game) => (
-          <Card
+      <ActivityTileGrid>
+        {activities.map((game, index) => (
+          <ActivityTile
             key={game.id}
+            activityId={game.id}
+            index={index + 1}
+            tone={toneForIndex(index)}
             title={t(game.nameKey)}
             description={t(game.descriptionKey)}
-            icon={game.icon}
-            to={game.enabled ? game.path : undefined}
-            disabled={!game.enabled}
-            statusBadge={game.enabled && completedGameIds.has(game.id) ? `✓ ${t('multiplicationPage.completedBadge')}` : undefined}
+            to={game.path}
+            completedLabel={
+              completedGameIds.has(game.id) ? `✓ ${t('multiplicationPage.completedBadge')}` : undefined
+            }
           />
         ))}
-      </div>
+      </ActivityTileGrid>
+      <PracticeBanner backTo="/grade/4" backLabel={t('nav.grade4Topics')} />
     </PageLayout>
   );
 }

@@ -64,7 +64,7 @@ function tone(ctx: AudioContext, { freq, freqEnd, start, duration, type = 'sine'
 
 /**
  * Short, synthesized game sounds — no audio assets to load or license.
- * Designed to be reused by any future Matika game via playSound(name).
+ * Designed to be reused by any future Mathletica game via playSound(name).
  */
 export function playSoundEffect(name: SoundName): void {
   const ctx = getContext();

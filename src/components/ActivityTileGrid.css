@@ -1,0 +1,365 @@
+/* ---------------------------------------------------------------------------
+ * Grade 3–4 activity listing: pastel tiles on the unchanged dark shell.
+ * ------------------------------------------------------------------------ */
+
+.atile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.atile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 164px;
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(19, 26, 34, 0.08);
+  color: var(--pastel-ink);
+  background: var(--atile-bg);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform 0.14s ease,
+    box-shadow 0.14s ease;
+}
+
+/* A soft highlight in the top corner keeps the flat tint from looking papery. */
+.atile::after {
+  content: '';
+  position: absolute;
+  inset-block-start: -40%;
+  inset-inline-end: -25%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  /* Soft falloff rather than a hard disc, so the tint reads as light not as a shape. */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.atile:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.atile:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.atile-mint {
+  --atile-bg: var(--pastel-mint);
+}
+.atile-lavender {
+  --atile-bg: var(--pastel-lavender);
+}
+.atile-sky {
+  --atile-bg: var(--pastel-sky);
+}
+.atile-peach {
+  --atile-bg: var(--pastel-peach);
+}
+.atile-yellow {
+  --atile-bg: var(--pastel-yellow);
+}
+.atile-pink {
+  --atile-bg: var(--pastel-pink);
+}
+
+/* --- top row: number, icon tile, completion --------------------------------- */
+
+.atile-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.atile-index {
+  font-size: var(--text-sm);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--pastel-ink);
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: var(--radius-pill);
+  padding: 5px 11px;
+  letter-spacing: -0.01em;
+}
+
+.atile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--pastel-ink);
+}
+
+.atile-icon-svg {
+  display: block;
+  width: 27px;
+  height: 27px;
+}
+
+.atile-done {
+  margin-inline-start: auto;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--pastel-ink);
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: var(--radius-pill);
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+
+/* --- body ------------------------------------------------------------------- */
+
+.atile-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.atile-title {
+  font-size: var(--text-md);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--pastel-ink);
+}
+
+.atile-description {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--pastel-ink-muted);
+}
+
+/* --- arrow affordance ------------------------------------------------------- */
+
+.atile-arrow {
+  position: relative;
+  z-index: 1;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--pastel-ink);
+  transition: transform 0.14s ease;
+}
+
+.atile-arrow svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+[dir='rtl'] .atile-arrow svg {
+  transform: scaleX(-1);
+}
+
+.atile:hover .atile-arrow {
+  transform: translateX(3px);
+}
+
+[dir='rtl'] .atile:hover .atile-arrow {
+  transform: translateX(-3px);
+}
+
+.atile:focus-visible {
+  outline: 3px solid var(--text-h);
+  outline-offset: 3px;
+}
+
+/* --- title accent ----------------------------------------------------------- */
+
+.atitle-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--primary);
+  vertical-align: middle;
+  margin-inline-start: var(--space-3);
+}
+
+.atitle-spark {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.atitle-spark-sm {
+  width: 12px;
+  height: 12px;
+  color: var(--secondary);
+}
+
+.atitle-motif {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--secondary);
+}
+
+.atitle-motif svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* --- closing encouragement banner ------------------------------------------- */
+
+.apractice-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(90deg, rgba(126, 240, 195, 0.1), rgba(183, 148, 246, 0.1)),
+    var(--surface);
+}
+
+.apractice-star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-bg);
+  border: 1px solid var(--primary-tint);
+  color: var(--primary);
+}
+
+.apractice-star svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.apractice-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.apractice-title {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.apractice-text {
+  font-size: var(--text-sm);
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.apractice-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.apractice-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding-inline: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.apractice-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  padding-inline: var(--space-5);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--primary-contrast);
+  background: var(--primary);
+}
+
+.apractice-back:hover {
+  background: var(--primary-dark);
+}
+
+@media (max-width: 480px) {
+  .atile-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  .atile {
+    min-height: 0;
+    padding: var(--space-4);
+  }
+
+  .apractice-banner {
+    padding: var(--space-4);
+  }
+
+  /* Stacked full-width so neither the link nor the pill wraps mid-word. */
+  .apractice-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+
+  .apractice-link,
+  .apractice-back {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atile,
+  .atile-arrow {
+    transition: none;
+  }
+
+  .atile:hover,
+  .atile:active,
+  .atile:hover .atile-arrow {
+    transform: none;
+  }
+}

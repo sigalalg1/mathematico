@@ -56,7 +56,7 @@ export function CompareSignedPage() {
 
   if (game.completed) {
     return (
-      <PageLayout title={t('compareSigned.gameName')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
+      <PageLayout title={t('compareSigned.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
         <SignedCompletion
           icon="⚖️"
           titleKey="compareSigned.completion.title"
@@ -107,7 +107,7 @@ export function CompareSignedPage() {
   }
 
   return (
-    <PageLayout title={t('compareSigned.gameName')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
+    <PageLayout title={t('compareSigned.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
       <div className="signed-activity">
         <div className="signed-activity-top">
           <QuizProgress current={game.index + 1} total={game.total} labelKey="signedNumbers.progress" />

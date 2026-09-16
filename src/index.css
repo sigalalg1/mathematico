@@ -1,34 +1,78 @@
 :root {
-  /* Color */
-  --text: #4a4458;
-  --text-h: #241f36;
-  --bg: #fbf9ff;
-  --bg-alt: #f3efff;
-  --surface: #ffffff;
-  --border: #e6e1f5;
+  /* ---------------------------------------------------------------------
+   * Mathletica brand palette.
+   * Mint is the single primary interaction/progress colour, purple the
+   * secondary accent; blue and yellow appear sparingly. Everything sits on
+   * a dark, restrained "training instrument" shell.
+   * ------------------------------------------------------------------- */
+  --mint: #7ef0c3;
+  --mint-strong: #a4f6d8;
+  --mint-deep: #4fd6a2;
+  --purple: #b794f6;
+  --blue: #7fd3ff;
+  --yellow: #ffd56b;
 
-  --primary: #7c3aed;
-  --primary-dark: #6025d9;
-  --primary-bg: #efe7ff;
-  --primary-tint: #ddd0ff;
+  /* Text */
+  --text: #cdd6e2;
+  --text-h: #f8fafc;
+  --muted: #9aa3b2;
 
-  --accent: #0ea5b0;
-  --accent-bg: #e2f7f7;
+  /* Shell surfaces */
+  --bg: #0e1116;
+  --bg-alt: #161b22;
+  --surface: #1e242b;
+  --surface-raised: #252c35;
+  --surface-sunken: #141920;
+  --border: #2c3440;
+  --border-strong: #3a4552;
 
-  --disabled-bg: #f2f1f7;
-  --disabled-text: #a29cb5;
+  /* Primary (mint) */
+  --primary: #7ef0c3;
+  --primary-dark: #a4f6d8;
+  --primary-contrast: #08130f;
+  --primary-bg: #16302a;
+  --primary-tint: #2f6f5c;
 
-  --success: #148a5e;
-  --success-bg: #e5faf1;
+  /* Secondary (purple) */
+  --secondary: #b794f6;
+  --secondary-bg: #221d33;
+  --secondary-tint: #574394;
+
+  /* Accent (blue) */
+  --accent: #7fd3ff;
+  --accent-bg: #112533;
+
+  /* ---------------------------------------------------------------------
+   * Activity-card pastel palette (grades 3–4 only).
+   * Deliberately separate from the shell accents above: these are light card
+   * BACKGROUNDS that carry dark ink, used to make the younger grades' activity
+   * listings colourful without touching the dark shell or the brand accents.
+   * ------------------------------------------------------------------- */
+  --pastel-mint: #b7f0d8;
+  --pastel-lavender: #c9b6ff;
+  --pastel-sky: #a7d6ff;
+  --pastel-peach: #ffd6a5;
+  --pastel-yellow: #ffe68c;
+  --pastel-pink: #ffb3d9;
+
+  /* Ink used on top of any pastel card. Both pass AA on every tint above. */
+  --pastel-ink: #131a22;
+  --pastel-ink-muted: #3d4654;
+
+  --disabled-bg: #181d24;
+  --disabled-text: #6e7887;
+
+  --success: #6fe6b4;
+  --success-bg: #12291f;
   --success-border: #34c38f;
 
-  --error: #b3251d;
-  --error-bg: #fff0ee;
-  --error-border: #ef6259;
+  --error: #ff9188;
+  --error-bg: #2b1614;
+  --error-border: #e2574c;
 
-  --warning: #9a5b06;
-  --warning-bg: #fff3e2;
-  --warning-border: #f2ab48;
+  --warning: #ffd56b;
+  --warning-bg: #2b2313;
+  --warning-border: #c09433;
 
   /* Spacing scale (4px base) */
   --space-1: 4px;
@@ -60,19 +104,28 @@
   --text-3xl: 36px;
   --text-4xl: 46px;
 
-  /* Elevation */
-  --shadow-sm: 0 2px 8px -2px rgba(76, 55, 130, 0.12);
-  --shadow-md: 0 10px 26px -8px rgba(76, 55, 130, 0.22);
-  --shadow-lg: 0 18px 40px -12px rgba(76, 55, 130, 0.28);
+  /* Elevation — on dark surfaces depth comes from shadow + hairline border. */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 24px -12px rgba(0, 0, 0, 0.75);
+  --shadow-lg: 0 20px 44px -18px rgba(0, 0, 0, 0.85);
+
+  /* Minimum comfortable touch target. */
+  --tap: 44px;
 
   /* Layout */
   --container-narrow: 640px;
   --container: 900px;
 
-  --sans: 'Segoe UI', system-ui, Roboto, sans-serif;
+  /*
+   * Inter when the platform or browser already has it, otherwise the native
+   * UI stack. Hebrew fallbacks are listed explicitly because Inter's Hebrew
+   * coverage is incomplete — no webfont dependency is added.
+   */
+  --sans: Inter, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, 'Noto Sans Hebrew', 'Arial Hebrew', Arial,
+    sans-serif;
 
   font: var(--text-md) / 1.5 var(--sans);
-  color-scheme: light;
+  color-scheme: dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -88,10 +141,10 @@
 body {
   margin: 0;
   min-height: 100svh;
+  color: var(--text);
   background:
-    radial-gradient(560px 360px at 8% -6%, rgba(124, 58, 237, 0.08), transparent 60%),
-    radial-gradient(520px 420px at 108% 12%, rgba(14, 165, 176, 0.07), transparent 55%),
-    radial-gradient(600px 500px at 50% 118%, rgba(124, 58, 237, 0.06), transparent 60%),
+    radial-gradient(620px 420px at 100% -8%, rgba(126, 240, 195, 0.07), transparent 62%),
+    radial-gradient(520px 420px at -10% 8%, rgba(183, 148, 246, 0.06), transparent 58%),
     var(--bg);
   background-attachment: fixed;
 }
@@ -107,7 +160,7 @@ h2,
 h3 {
   color: var(--text-h);
   font-weight: 800;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 
@@ -127,4 +180,5 @@ button {
 :focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
+  border-radius: 4px;
 }

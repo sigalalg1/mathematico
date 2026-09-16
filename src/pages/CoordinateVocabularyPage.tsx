@@ -59,7 +59,7 @@ export function CoordinateVocabularyPage() {
   const isLastQuestion = index === total - 1;
 
   return (
-    <PageLayout title={t('vocabulary.gameName')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
+    <PageLayout title={t('vocabulary.gameName')} context={t('grades.7')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
       {phase === 'learn' ? (
         <div className="coordinate-vocabulary">
           <QuizProgress current={teachIndex + 1} total={teachSteps.length} labelKey="quiz.learnLabel" />

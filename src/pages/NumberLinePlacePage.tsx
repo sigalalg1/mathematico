@@ -61,7 +61,7 @@ export function NumberLinePlacePage() {
 
   if (game.completed) {
     return (
-      <PageLayout title={t('numberLinePlace.gameName')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
+      <PageLayout title={t('numberLinePlace.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
         <SignedCompletion
           icon="📍"
           titleKey="numberLinePlace.completion.title"
@@ -126,7 +126,7 @@ export function NumberLinePlacePage() {
   }
 
   return (
-    <PageLayout title={t('numberLinePlace.gameName')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
+    <PageLayout title={t('numberLinePlace.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
       <div className="signed-activity">
         <div className="signed-activity-top">
           <QuizProgress current={game.index + 1} total={game.total} labelKey="signedNumbers.progress" />

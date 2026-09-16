@@ -30,12 +30,14 @@ export function DivisionWithRemainderPage() {
     <PageLayout
       title={t('divisionWithRemainderPage.title')}
       subtitle={t('divisionWithRemainderPage.subtitle')}
+      context={t('grades.4')}
       backTo="/grade/4"
       backLabel={t('nav.grade4Topics')}
     >
-      <div className="card-grid">
+      <div className="row-list">
         {divisionWithRemainderGames.map((game) => (
           <Card
+            layout="row"
             key={game.id}
             title={t(game.nameKey)}
             description={t(game.descriptionKey)}

@@ -1,11 +1,11 @@
-const CACHE_NAME = 'matika-shell-v1';
+const CACHE_NAME = 'mathletica-shell-v1';
 const SHELL_URLS = [
   '/',
   '/manifest.webmanifest',
-  '/brand/matika-logo.png',
-  '/brand/matika-mark.png',
-  '/brand/matika-icon-192.png',
-  '/brand/matika-icon-512.png',
+  '/favicon.svg',
+  '/brand/mathletica-mark.svg',
+  '/brand/mathletica-icon-192.png',
+  '/brand/mathletica-icon-512.png',
   '/brand/apple-touch-icon.png',
 ];
 
@@ -22,7 +22,7 @@ self.addEventListener('activate', (event) => {
     caches.keys()
       .then((keys) => Promise.all(
         keys
-          .filter((key) => key.startsWith('matika-shell-') && key !== CACHE_NAME)
+          .filter((key) => key.startsWith('mathletica-shell-') && key !== CACHE_NAME)
           .map((key) => caches.delete(key)),
       ))
       .then(() => self.clients.claim()),

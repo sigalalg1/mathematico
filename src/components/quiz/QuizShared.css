@@ -23,6 +23,7 @@
   font-weight: 800;
   color: var(--primary);
   background: var(--primary-bg);
+  border: 1px solid var(--primary-tint);
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-6);
   width: fit-content;
@@ -34,7 +35,8 @@
   font-size: var(--text-2xl);
   font-weight: 800;
   color: var(--text-h);
-  background: var(--bg-alt);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-6);
   width: fit-content;
@@ -58,7 +60,7 @@
   line-height: 1.3;
   padding: var(--space-4) var(--space-5);
   border-radius: var(--radius-md);
-  border: 2px solid var(--border);
+  border: 1px solid var(--border-strong);
   background: var(--surface);
   color: var(--text-h);
   cursor: pointer;
@@ -79,12 +81,12 @@
 
 .question-option:not(:disabled):hover {
   border-color: var(--primary);
-  transform: translateY(-3px);
+  background: var(--surface-raised);
   box-shadow: var(--shadow-md);
 }
 
 .question-option:not(:disabled):active {
-  transform: translateY(-1px);
+  transform: scale(0.99);
 }
 
 .question-option:disabled {
@@ -141,12 +143,12 @@
 
 .feedback-correct {
   background: var(--success-bg);
-  border: 2px solid var(--success-border);
+  border: 1px solid var(--success-border);
 }
 
 .feedback-incorrect {
   background: var(--warning-bg);
-  border: 2px solid var(--warning-border);
+  border: 1px solid var(--warning-border);
 }
 
 .feedback-title {
@@ -174,7 +176,7 @@
 
 .feedback-correct .feedback-icon {
   background: var(--success-border);
-  color: #fff;
+  color: var(--primary-contrast);
 }
 
 .feedback-incorrect .feedback-title {
@@ -183,11 +185,23 @@
 
 .feedback-incorrect .feedback-icon {
   background: var(--warning-border);
-  color: #fff;
+  color: var(--primary-contrast);
 }
 
 .feedback-explanation {
   color: var(--text);
   font-size: var(--text-base);
   line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .question-option,
+  .question-feedback {
+    animation: none;
+    transition: none;
+  }
+
+  .question-option:not(:disabled):active {
+    transform: none;
+  }
 }

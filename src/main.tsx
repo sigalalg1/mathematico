@@ -5,11 +5,12 @@ import { AuthProvider } from './auth/AuthContext'
 import './i18n'
 import './index.css'
 import './styles/buttons.css'
+import './styles/primitives.css'
 import App from './App.tsx'
 import { registerServiceWorker } from './pwa/registerServiceWorker'
 
 void registerServiceWorker().catch((error: unknown) => {
-  console.warn('[Matika] Service worker registration failed.', error)
+  console.warn('[Mathletica] Service worker registration failed.', error)
 })
 
 createRoot(document.getElementById('root')!).render(
