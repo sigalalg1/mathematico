@@ -132,7 +132,7 @@ export function ShapesOnPlanePage() {
   return (
     <PageLayout
       title={t('shapesOnPlane.gameName')}
-      backTo="/grade/7/coordinate-system"
+      context={t('grades.7')} backTo="/grade/7/coordinate-system"
       backLabel={t('coordinateSystemPage.title')}
     >
       {game.completed ? (

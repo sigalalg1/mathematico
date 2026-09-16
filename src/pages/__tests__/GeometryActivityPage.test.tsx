@@ -39,8 +39,13 @@ describe('Grade 3 geometry unit', () => {
     renderWithProviders(<App />, ['/grade/3']);
     expect(screen.getByText(i18n.t('topics.geometryAnglesTriangles.name'))).toBeInTheDocument();
     renderWithProviders(<App />, ['/grade/3/geometry-angles-triangles']);
+    const tiles = screen.getAllByRole('link').filter((link) => link.classList.contains('atile'));
+    expect(tiles).toHaveLength(GEOMETRY_ACTIVITY_IDS.length);
     GEOMETRY_ACTIVITY_IDS.forEach((activityId, index) => {
-      expect(screen.getByText(`${index + 1}. ${i18n.t(`geometry.activities.${activityId}.name`)}`)).toBeInTheDocument();
+      expect(tiles[index].querySelector('.atile-index')).toHaveTextContent(`${index + 1}.`);
+      expect(tiles[index].querySelector('.atile-title')).toHaveTextContent(
+        i18n.t(`geometry.activities.${activityId}.name`),
+      );
     });
   });
 

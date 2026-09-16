@@ -10,8 +10,12 @@ interface PageLayoutProps {
   subtitle?: string;
   backTo?: string;
   backLabel?: string;
+  /** Small pill in the header bar showing where the learner is (e.g. the grade). */
+  context?: string;
   /** `game` shrinks the page chrome and widens the content so a game scene can own the viewport. */
   variant?: 'default' | 'game';
+  /** Optional decorative mark rendered beside the title. Purely ornamental. */
+  titleAccent?: ReactNode;
   brandTitle?: boolean;
   children: ReactNode;
 }
@@ -21,7 +25,9 @@ export function PageLayout({
   subtitle,
   backTo,
   backLabel,
+  context,
   variant = 'default',
+  titleAccent,
   brandTitle = false,
   children,
 }: PageLayoutProps) {
@@ -29,29 +35,35 @@ export function PageLayout({
     <div className={`page${variant === 'game' ? ' page-game' : ''}`}>
       <header className="page-header">
         <div className="page-header-bar">
-          <div className="page-header-navigation">
-            {backTo ? (
+          <div className="page-header-start">
+            {backTo && (
               <Link className="back-link" to={backTo}>
                 <span className="back-link-arrow" aria-hidden="true">
                   ←
                 </span>
-                {backLabel ?? 'Back'}
+                <span className="back-link-text">{backLabel ?? 'Back'}</span>
               </Link>
-            ) : (
-              <span />
             )}
           </div>
-          {!brandTitle && <BrandHomeLink responsiveMark />}
+          <div className="page-header-center">
+            {!brandTitle && <BrandHomeLink responsiveMark size="sm" />}
+          </div>
           <div className="page-header-actions">
             <HeaderNav />
             <LanguageSwitcher />
           </div>
         </div>
         <div className="page-header-titles">
+          {context && <span className="context-pill">{context}</span>}
           {brandTitle ? (
             <h1 className="page-brand-title" aria-label={title}>
-              <BrandHomeLink />
+              <BrandHomeLink size="lg" tagline />
             </h1>
+          ) : titleAccent ? (
+            <div className="page-title-row">
+              <h1 className="page-title">{title}</h1>
+              {titleAccent}
+            </div>
           ) : (
             <h1 className="page-title">{title}</h1>
           )}

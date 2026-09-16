@@ -47,7 +47,7 @@ describe('install app action', () => {
     });
     fireEvent(window, event);
 
-    const action = await screen.findByRole('button', { name: 'Install Matika' });
+    const action = await screen.findByRole('button', { name: 'Install Mathletica' });
     await userEvent.click(action);
     expect(prompt).toHaveBeenCalledOnce();
     await waitFor(() => expect(action).not.toBeInTheDocument());

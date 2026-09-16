@@ -87,7 +87,7 @@ export function PenaltyShootoutPage() {
 
   if (game.completed) {
     return (
-      <PageLayout title={t('penaltyShootout.gameName')} backTo={GRADE_PATH} backLabel={t('nav.grade4Topics')} variant="game">
+      <PageLayout title={t('penaltyShootout.gameName')} context={t('grades.4')} backTo={GRADE_PATH} backLabel={t('nav.grade4Topics')} variant="game">
         <div className="penalty-shootout">
           <section className="ps-finale">
             <div className="ps-trophy" aria-hidden="true">⚽</div>
@@ -111,7 +111,7 @@ export function PenaltyShootoutPage() {
     question.keeperDive,
   );
   return (
-    <PageLayout title={t('penaltyShootout.gameName')} backTo={GRADE_PATH} backLabel={t('nav.grade4Topics')} variant="game">
+    <PageLayout title={t('penaltyShootout.gameName')} context={t('grades.4')} backTo={GRADE_PATH} backLabel={t('nav.grade4Topics')} variant="game">
       <div className="penalty-shootout">
         <section className={`ps-stadium ps-phase-${phase}`}>
           <header className="ps-scoreboard">

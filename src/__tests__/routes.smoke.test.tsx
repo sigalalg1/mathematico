@@ -111,8 +111,12 @@ describe('routing smoke tests', () => {
 
   it('shows all ten ordered activities on the Fractions Part 1 page', () => {
     renderWithProviders(<App />, ['/grade/4/fractions-part-1']);
+    const tiles = screen.getAllByRole('link').filter((link) => link.classList.contains('atile'));
+    expect(tiles).toHaveLength(fractionsPart1Games.length);
     fractionsPart1Games.forEach((game, index) => {
-      expect(screen.getByText(`${index + 1}. ${i18n.t(game.nameKey)}`)).toBeInTheDocument();
+      expect(tiles[index].querySelector('.atile-index')).toHaveTextContent(`${index + 1}.`);
+      expect(tiles[index].querySelector('.atile-title')).toHaveTextContent(i18n.t(game.nameKey));
+      expect(tiles[index]).toHaveAttribute('href', game.path!);
     });
   });
 

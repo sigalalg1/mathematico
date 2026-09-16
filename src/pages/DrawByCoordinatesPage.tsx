@@ -54,7 +54,7 @@ export function DrawByCoordinatesPage() {
   const hintMessage = game.wrongAttempt ? getHintMessage(t, game.target, game.wrongAttempt) : null;
 
   return (
-    <PageLayout title={t('games.drawByCoordinates.name')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
+    <PageLayout title={t('games.drawByCoordinates.name')} context={t('grades.7')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
       {game.completed ? (
         <DrawByCoordinatesCompletion drawingNameKey={game.drawing.nameKey} emoji={game.drawing.emoji} onNext={game.nextDrawing} />
       ) : (

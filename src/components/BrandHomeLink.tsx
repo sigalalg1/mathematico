@@ -1,12 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { BrandLogo } from './BrandLogo';
 import './BrandHomeLink.css';
 
 interface BrandHomeLinkProps {
+  /** Collapses the lockup to the bare symbol on narrow screens. */
   responsiveMark?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  tagline?: boolean;
 }
 
-export function BrandHomeLink({ responsiveMark = false }: BrandHomeLinkProps) {
+export function BrandHomeLink({ responsiveMark = false, size = 'md', tagline = false }: BrandHomeLinkProps) {
   const { t } = useTranslation();
 
   return (
@@ -15,22 +19,7 @@ export function BrandHomeLink({ responsiveMark = false }: BrandHomeLinkProps) {
       to="/"
       aria-label={t('app.homeLabel')}
     >
-      <img
-        className="brand-logo"
-        src="/brand/matika-logo.png"
-        width="1606"
-        height="476"
-        alt=""
-      />
-      {responsiveMark && (
-        <img
-          className="brand-mark"
-          src="/brand/matika-mark.png"
-          width="406"
-          height="460"
-          alt=""
-        />
-      )}
+      <BrandLogo size={size} tagline={tagline} />
     </Link>
   );
 }

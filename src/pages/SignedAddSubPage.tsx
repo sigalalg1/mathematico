@@ -59,7 +59,7 @@ export function SignedAddSubPage() {
 
   if (game.completed) {
     return (
-      <PageLayout title={t('signedAddSub.gameName')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
+      <PageLayout title={t('signedAddSub.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
         <SignedCompletion
           icon="👣"
           titleKey="signedAddSub.completion.title"
@@ -98,7 +98,7 @@ export function SignedAddSubPage() {
   }
 
   return (
-    <PageLayout title={t('signedAddSub.gameName')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
+    <PageLayout title={t('signedAddSub.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
       <div className="signed-activity">
         <div className="signed-activity-top">
           <QuizProgress current={game.index + 1} total={game.total} labelKey="signedNumbers.progress" />

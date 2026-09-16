@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-4);
   text-align: center;
   padding: var(--space-10) var(--space-5);
   max-width: var(--container-narrow);
@@ -13,8 +13,9 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Per-activity celebration glyph, kept for the games that supply their own. */
 .quiz-completion-icon {
-  font-size: 52px;
+  font-size: 44px;
   line-height: 1;
 }
 
@@ -23,11 +24,11 @@
 }
 
 .quiz-completion-score {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   font-weight: 600;
-  color: var(--primary);
+  color: var(--muted);
 }
 
 .quiz-completion .btn {
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
 }

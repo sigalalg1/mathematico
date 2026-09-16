@@ -70,7 +70,7 @@ export function SignRulesPage() {
 
   if (game.completed) {
     return (
-      <PageLayout title={t('signRules.gameName')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
+      <PageLayout title={t('signRules.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
         <SignedCompletion
           icon="✖️"
           titleKey="signRules.completion.title"
@@ -101,7 +101,7 @@ export function SignRulesPage() {
   }
 
   return (
-    <PageLayout title={t('signRules.gameName')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
+    <PageLayout title={t('signRules.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
       <div className="signed-activity">
         <div className="signed-activity-top">
           <QuizProgress current={game.index + 1} total={game.total} labelKey="signedNumbers.progress" />
