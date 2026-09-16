@@ -51,7 +51,8 @@
     "newPassword": "סיסמה חדשה",
     "setNewPasswordTitle": "בחרו סיסמה חדשה",
     "setNewPasswordAction": "שמירת הסיסמה החדשה",
-    "setNewPasswordSuccess": "הסיסמה עודכנה. אפשר להמשיך לשחק."
+    "setNewPasswordSuccess": "הסיסמה עודכנה. אפשר להמשיך לשחק.",
+    "resetLinkInvalid": "קישור האיפוס לא תקף או שפג תוקפו. אפשר לבקש קישור חדש מדף ההתחברות."
   },
   "activity": {
     "title": "הפעילות שלי",

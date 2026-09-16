@@ -8,16 +8,14 @@ type Mode = 'signIn' | 'signUp' | 'forgotPassword';
 
 export function AccountPage() {
   const { t } = useTranslation();
-  const { user, isConfigured, isPasswordRecovery, signIn, signUp, signOut, resetPassword, updatePassword } = useAuth();
+  const { user, isConfigured, signIn, signUp, signOut, resetPassword } = useAuth();
   const [mode, setMode] = useState<Mode>('signIn');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [resetSent, setResetSent] = useState(false);
-  const [passwordUpdated, setPasswordUpdated] = useState(false);
 
   function describeError(code: string): string {
     if (code === 'unavailable') return t('auth.unavailable');
@@ -62,20 +60,6 @@ export function AccountPage() {
     }
   }
 
-  async function handleSetNewPassword(event: FormEvent) {
-    event.preventDefault();
-    setError(null);
-    setSubmitting(true);
-    const result = await updatePassword(newPassword);
-    setSubmitting(false);
-    if (result.error) {
-      setError(describeError(result.error));
-      return;
-    }
-    setNewPassword('');
-    setPasswordUpdated(true);
-  }
-
   async function handleSignOut() {
     setError(null);
     setMessage(null);
@@ -89,33 +73,7 @@ export function AccountPage() {
     <PageLayout title={t('auth.title')} backTo="/" backLabel={t('app.title')}>
       {!isConfigured && <p className="account-notice">{t('auth.unavailable')}</p>}
 
-      {isPasswordRecovery ? (
-        <div className="account-panel">
-          <h2 className="account-subtitle">{t('auth.setNewPasswordTitle')}</h2>
-          {passwordUpdated ? (
-            <p className="account-message">{t('auth.setNewPasswordSuccess')}</p>
-          ) : (
-            <form className="account-form" onSubmit={handleSetNewPassword}>
-              <label className="account-field">
-                <span>{t('auth.newPassword')}</span>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(event) => setNewPassword(event.target.value)}
-                  required
-                  autoComplete="new-password"
-                />
-              </label>
-
-              {error && <p className="account-error">{error}</p>}
-
-              <button type="submit" className="btn btn-primary" disabled={submitting}>
-                {t('auth.setNewPasswordAction')}
-              </button>
-            </form>
-          )}
-        </div>
-      ) : user ? (
+      {user ? (
         <div className="account-panel">
           <p className="account-email">{user.email}</p>
           {error && <p className="account-error">{error}</p>}
