@@ -9,15 +9,11 @@ export function HomePage() {
   return (
     <PageLayout title={t('app.title')} subtitle={t('app.subtitle')} brandTitle>
       <div className="card-grid">
-        {grades.map((grade) => (
-          <Card
-            key={grade.id}
-            title={t(`grades.${grade.id}`)}
-            icon={<span dir="ltr">{grade.id}</span>}
-            to={grade.enabled ? `/grade/${grade.id}` : undefined}
-            disabled={!grade.enabled}
-          />
-        ))}
+        {grades
+          .filter((grade) => grade.enabled)
+          .map((grade) => (
+            <Card key={grade.id} title={t(`grades.${grade.id}`)} icon="🎓" to={`/grade/${grade.id}`} />
+          ))}
       </div>
     </PageLayout>
   );
