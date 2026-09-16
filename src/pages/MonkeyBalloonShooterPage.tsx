@@ -174,7 +174,13 @@ export function MonkeyBalloonShooterPage() {
 
           <div className="mb-question" data-testid="mb-question">
             <p className="mb-prompt">{t('monkeyBalloonShooter.prompt')}</p>
-            <MathText className="mb-fact">{`${question.fact.left} × ${question.fact.right} = ?`}</MathText>
+            <MathText className="mb-fact">
+              <span>{question.fact.left}</span>
+              <span className="mb-fact-accent">×</span>
+              <span>{question.fact.right}</span>
+              <span>=</span>
+              <span className="mb-fact-accent">?</span>
+            </MathText>
           </div>
 
           <div className="mb-play">
@@ -186,6 +192,7 @@ export function MonkeyBalloonShooterPage() {
               {question.options.map((option, index) => {
                 const rhythm = FLOAT_RHYTHM[index % FLOAT_RHYTHM.length];
                 const classes = ['mb-balloon', `mb-balloon-${index % FLOAT_RHYTHM.length}`];
+                if (shot?.index === index) classes.push('mb-balloon-targeted');
                 if (shot?.index === index && landed) classes.push(shot.correct ? 'mb-balloon-popping' : `mb-balloon-dodging-${shot.seed % 2}`);
 
                 return (
@@ -217,6 +224,22 @@ export function MonkeyBalloonShooterPage() {
               })}
             </div>
           </div>
+
+          {shot && (
+            <span
+              className="mb-trajectory"
+              data-testid="mb-trajectory"
+              aria-hidden="true"
+              style={
+                {
+                  left: `${shot.x}px`,
+                  top: `${shot.y}px`,
+                  width: `${Math.hypot(shot.dx, shot.dy)}px`,
+                  '--mb-trajectory-angle': `${shot.angle}deg`,
+                } as CSSProperties
+              }
+            />
+          )}
 
           {shot && (!landed || !shot.correct) && (
             <span
@@ -268,9 +291,14 @@ function Monkey({ pose }: { pose: MonkeyPose }) {
       <ellipse cx="78" cy="138" rx="12" ry="8" fill="#8a5a34" />
       {/* the popper arm — swings up when the monkey aims */}
       <g className="mb-monkey-arm">
-        <rect x="58" y="88" width="44" height="11" rx="5.5" fill="#8a5a34" />
-        <rect className="mb-popper" x="94" y="80" width="22" height="26" rx="6" fill="#ffb703" stroke="#e07a00" strokeWidth="3" />
-        <circle cx="116" cy="93" r="6" fill="#ff6b9d" />
+        <rect x="57" y="88" width="37" height="11" rx="5.5" fill="#8a5a34" />
+        <g className="mb-popper">
+          <path d="M83 80 h26 q7 0 7 7 v14 q0 7 -7 7 H91 q-8 0 -8 -8z" />
+          <rect className="mb-popper-tank" x="87" y="84" width="18" height="20" rx="8" />
+          <path className="mb-popper-handle" d="M91 104 v12 h12 l-3 -12" />
+          <rect className="mb-popper-nozzle" x="109" y="87" width="10" height="14" rx="5" />
+          <circle className="mb-popper-tip" cx="120" cy="94" r="6" />
+        </g>
       </g>
       {/* head */}
       <g className="mb-monkey-head">
@@ -279,6 +307,8 @@ function Monkey({ pose }: { pose: MonkeyPose }) {
         <circle cx="86" cy="58" r="12" fill="#a9713f" />
         <circle cx="86" cy="58" r="6" fill="#f3d3ac" />
         <circle cx="60" cy="58" r="30" fill="#a9713f" />
+        <path className="mb-monkey-headband" d="M34 51 Q60 34 86 51 L85 58 Q60 43 35 58 Z" />
+        <path className="mb-monkey-headband-tail" d="M84 51 q14 -9 19 1 q-11 1 -16 8" />
         <ellipse cx="60" cy="68" rx="22" ry="18" fill="#f3d3ac" />
         <ellipse cx="60" cy="40" rx="24" ry="12" fill="#c08a52" />
         {/* eyes */}
@@ -333,21 +363,27 @@ function BalloonProgress({ current, total }: { current: number; total: number })
       aria-valuemax={total}
       aria-label={t('monkeyBalloonShooter.progress', { current, total })}
     >
-      {Array.from({ length: total }, (_, i) => {
-        const state = i + 1 < current ? 'done' : i + 1 === current ? 'active' : 'todo';
-        return <span key={i} className={`mb-pip mb-pip-${state}`} aria-hidden="true" />;
-      })}
+      <span className="mb-progress-label">{t('monkeyBalloonShooter.progress', { current, total })}</span>
+      <span className="mb-progress-track" aria-hidden="true">
+        {Array.from({ length: total }, (_, i) => {
+          const state = i + 1 < current ? 'done' : i + 1 === current ? 'active' : 'todo';
+          return <span key={i} className={`mb-pip mb-pip-${state}`} aria-hidden="true" />;
+        })}
+      </span>
     </div>
   );
 }
 
-/** Sky, sun and a few palm fronds — pure decoration behind the play area. */
+/** A quiet moonlit jungle training arena behind the play area. */
 function Jungle() {
   return (
     <div className="mb-jungle" aria-hidden="true">
-      <span className="mb-sun" />
+      <span className="mb-stars" />
+      <span className="mb-moon" />
       <span className="mb-cloud mb-cloud-1" />
       <span className="mb-cloud mb-cloud-2" />
+      <span className="mb-hill mb-hill-1" />
+      <span className="mb-hill mb-hill-2" />
       <span className="mb-leaf mb-leaf-1" />
       <span className="mb-leaf mb-leaf-2" />
       <span className="mb-ground" />
