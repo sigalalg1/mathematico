@@ -101,8 +101,9 @@ export interface TrainingAnswerRecord {
   correctAnswer: string;
   isCorrect: boolean;
   /**
-   * Time from the question becoming interactive to the answer being submitted.
-   * Excludes app-controlled feedback/animation pauses.
+   * Active time from the question becoming interactive to the answer being
+   * submitted. Excludes app-controlled feedback/animation pauses, and any span
+   * the session was paused or the tab was hidden.
    */
   elapsedMs: number;
 }
@@ -114,9 +115,16 @@ export interface TrainingSessionResult {
   mode: TrainingMode;
   startedAt: string;
   completedAt: string;
-  /** Wall-clock start → finish, including feedback pauses. Context only. */
+  /**
+   * Active start → finish, including the short feedback beats but excluding
+   * every span the session was paused or the tab was hidden. Shown as the
+   * session's total time; context only, never a record.
+   */
   totalDurationMs: number;
-  /** Sum of the per-question think times — the fair measure of pace. */
+  /**
+   * Sum of the per-question active think times — the fair measure of pace.
+   * Feedback beats, paused time and hidden time are all outside it.
+   */
   answeringDurationMs: number;
   totalQuestions: number;
   correctCount: number;

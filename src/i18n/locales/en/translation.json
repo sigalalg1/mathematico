@@ -1214,7 +1214,8 @@
     },
     "hud": {
       "progress": "Question {{current}} of {{total}}",
-      "streak": "🔥 Streak {{value}}"
+      "streak": "🔥 Streak {{value}}",
+      "timerLabel": "Time elapsed in this challenge"
     },
     "feedback": {
       "correct": "Correct! ✓",
@@ -1242,7 +1243,8 @@
       "bestAccuracy": "Best accuracy",
       "bestPace": "Fastest pace",
       "bestStreak": "Longest streak",
-      "paceUnit": "sec per question"
+      "paceUnit": "sec per question",
+      "totalTime": "{{time}} total"
     },
     "actions": {
       "tryAgainSame": "Another challenge, same settings",

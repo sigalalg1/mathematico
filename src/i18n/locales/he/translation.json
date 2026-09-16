@@ -1214,7 +1214,8 @@
     },
     "hud": {
       "progress": "שאלה {{current}} מתוך {{total}}",
-      "streak": "🔥 רצף {{value}}"
+      "streak": "🔥 רצף {{value}}",
+      "timerLabel": "הזמן שעבר באתגר"
     },
     "feedback": {
       "correct": "נכון! ✓",
@@ -1242,7 +1243,8 @@
       "bestAccuracy": "הדיוק הכי טוב",
       "bestPace": "הקצב הכי מהיר",
       "bestStreak": "הרצף הכי ארוך",
-      "paceUnit": "שניות לשאלה"
+      "paceUnit": "שניות לשאלה",
+      "totalTime": "סה״כ {{time}}"
     },
     "actions": {
       "tryAgainSame": "עוד אתגר, אותן הגדרות",
