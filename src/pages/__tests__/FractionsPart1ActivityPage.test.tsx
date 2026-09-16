@@ -2,6 +2,7 @@ import { act, fireEvent, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import App from '../../App';
 import { FRACTIONS_PART1_ACTIVITY_IDS } from '../../data/games/fractionsPart1Data';
+import { fractionsPart1Games } from '../../data/games';
 import i18n from '../../i18n';
 import { renderWithProviders } from '../../test/testUtils';
 
@@ -72,12 +73,68 @@ describe('Fractions Part 1 activities', () => {
   it('exposes the complete ordered unit in Hebrew', () => {
     renderWithProviders(<App />, ['/grade/4/fractions-part-1']);
     const tiles = screen.getAllByRole('link').filter((link) => link.classList.contains('atile'));
-    expect(tiles).toHaveLength(FRACTIONS_PART1_ACTIVITY_IDS.length);
-    FRACTIONS_PART1_ACTIVITY_IDS.forEach((activityId, index) => {
+    const listed = fractionsPart1Games.filter((game) => game.enabled).map((game) => game.id);
+    expect(tiles).toHaveLength(listed.length);
+    listed.forEach((activityId, index) => {
       expect(tiles[index].querySelector('.atile-index')).toHaveTextContent(`${index + 1}.`);
       expect(tiles[index].querySelector('.atile-title')).toHaveTextContent(
         i18n.t(`fractionsPart1.activities.${activityId}.name`),
       );
     });
+  });
+
+  it('never prints the marked fraction on the "which fraction is marked?" line', () => {
+    vi.useFakeTimers();
+    const { container } = renderWithProviders(<App />, ['/grade/4/fractions-part-1/fraction-number-line']);
+    let readRounds = 0;
+
+    for (let round = 0; round < 6; round++) {
+      const line = container.querySelector('.fraction-number-line')!;
+      const choiceDock = container.querySelector('.fp-choice-dock');
+
+      if (choiceDock) {
+        // "Which fraction is marked?" — the marker must be visible and unnamed.
+        readRounds += 1;
+        expect(line.querySelector('.fnl-point-marked')).toBeInTheDocument();
+        expect(line.querySelectorAll('[role="math"]')).toHaveLength(0);
+        // Only the 0 and 1 anchors and "?" placeholders — no fraction anywhere.
+        expect(line.textContent).toMatch(/^0\?*1$/);
+
+        for (const choice of [...choiceDock.querySelectorAll('button')]) {
+          fireEvent.click(choice);
+          if (screen.getByRole('status').textContent === i18n.t('fractionsPart1.feedback.correct')) break;
+        }
+      } else {
+        const target = container.querySelector('.fp-prompt [role="math"]')!.getAttribute('aria-label')!;
+        fireEvent.click(screen.getByRole('button', { name: target }));
+      }
+      act(() => vi.advanceTimersByTime(701));
+    }
+
+    expect(readRounds).toBeGreaterThan(0);
+  });
+
+  it.each(['he', 'en'])('keeps the comparison sign exactly as clicked in %s', async (language) => {
+    await i18n.changeLanguage(language);
+    const { container } = renderWithProviders(<App />, ['/grade/4/fractions-part-1/which-is-greater']);
+    const comparison = container.querySelector('.fp-comparison')!;
+
+    // Mathematical signs must never be bidi-mirrored the way a UI chevron is.
+    expect(comparison).toHaveAttribute('dir', 'ltr');
+    // The models carry no numbers: reading them is the task.
+    expect(comparison.querySelectorAll('.fp-visual-fraction [role="math"]')).toHaveLength(0);
+
+    const buttons = [...container.querySelectorAll('.fp-choice-dock button')] as HTMLButtonElement[];
+    expect(buttons.map((button) => button.textContent)).toEqual(['<', '>', '=']);
+
+    for (const button of buttons) {
+      const symbol = button.textContent;
+      fireEvent.click(button);
+      expect(button.textContent).toBe(symbol);
+      expect(buttons.map((other) => other.textContent)).toEqual(['<', '>', '=']);
+      expect(container.querySelector('.fp-comparison-slot')).toHaveTextContent(symbol!);
+      expect(container.querySelector('.fp-comparison-slot .math-text')).toHaveAttribute('dir', 'ltr');
+      if (screen.getByRole('status').textContent === i18n.t('fractionsPart1.feedback.correct')) break;
+    }
   });
 });

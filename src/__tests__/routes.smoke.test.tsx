@@ -6,6 +6,7 @@ import App from '../App';
 import {
   coordinateSystemGames,
   divisionWithRemainderGames,
+  findGame,
   fractionsPart1Games,
   geometryAnglesTrianglesGames,
   multiplicationGames,
@@ -109,11 +110,13 @@ describe('routing smoke tests', () => {
     }
   });
 
-  it('shows all ten ordered activities on the Fractions Part 1 page', () => {
+  it('shows the listed Fractions Part 1 activities in order, without the disabled one', () => {
     renderWithProviders(<App />, ['/grade/4/fractions-part-1']);
     const tiles = screen.getAllByRole('link').filter((link) => link.classList.contains('atile'));
-    expect(tiles).toHaveLength(fractionsPart1Games.length);
-    fractionsPart1Games.forEach((game, index) => {
+    const listed = fractionsPart1Games.filter((game) => game.enabled);
+    expect(listed).toHaveLength(fractionsPart1Games.length - 1);
+    expect(tiles).toHaveLength(listed.length);
+    listed.forEach((game, index) => {
       expect(tiles[index].querySelector('.atile-index')).toHaveTextContent(`${index + 1}.`);
       expect(tiles[index].querySelector('.atile-title')).toHaveTextContent(i18n.t(game.nameKey));
       expect(tiles[index]).toHaveAttribute('href', game.path!);
@@ -152,5 +155,30 @@ describe('routing smoke tests', () => {
     for (const game of coordinateSystemGames) {
       expect(screen.getByText(i18n.t(game.nameKey) as string)).toBeInTheDocument();
     }
+  });
+
+  it('keeps the empty Grade 4 units out of the topic list while their routes survive', () => {
+    const { unmount } = renderWithProviders(<App />, ['/grade/4']);
+    for (const topicId of ['divisionWithRemainder', 'simpleFractions']) {
+      expect(screen.queryByText(i18n.t(`topics.${topicId}.name`) as string)).not.toBeInTheDocument();
+    }
+    expect(screen.getByText(i18n.t('topics.fractionsPart1.name') as string)).toBeInTheDocument();
+    unmount();
+
+    // Hidden, not deleted: the pages still resolve if a stored link points there.
+    for (const path of ['/grade/4/division-with-remainder', '/grade/4/simple-fractions']) {
+      const view = renderWithProviders(<App />, [path]);
+      expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+      view.unmount();
+    }
+  });
+
+  it('hides "Build the Whole" from the Fractions Part 1 list but keeps it resolvable', () => {
+    const buildTheWhole = fractionsPart1Games.find((game) => game.id === 'build-the-whole')!;
+    expect(buildTheWhole.enabled).toBe(false);
+    expect(findGame('build-the-whole')).toBe(buildTheWhole);
+
+    renderWithProviders(<App />, ['/grade/4/fractions-part-1']);
+    expect(screen.queryByText(i18n.t(buildTheWhole.nameKey) as string)).not.toBeInTheDocument();
   });
 });

@@ -11,12 +11,14 @@ export const topics: Topic[] = [
     id: 'divisionWithRemainder',
     gradeId: 4,
     enabled: true,
+    hidden: true,
     path: '/grade/4/division-with-remainder',
   },
   {
     id: 'simpleFractions',
     gradeId: 4,
     enabled: true,
+    hidden: true,
     path: '/grade/4/simple-fractions',
   },
   {
@@ -66,6 +68,7 @@ export const topics: Topic[] = [
   },
 ];
 
+/** Topics a student can see for a grade; hidden units stay routable but unlisted. */
 export function getTopicsForGrade(gradeId: number): Topic[] {
-  return topics.filter((topic) => topic.gradeId === gradeId);
+  return topics.filter((topic) => topic.gradeId === gradeId && !topic.hidden);
 }

@@ -4,6 +4,19 @@ export const RIGHT_ANGLE_TOLERANCE = 0.5;
 export const SIDE_EQUALITY_TOLERANCE = 0.025;
 export const MIN_TRIANGLE_ANGLE = 12;
 
+/**
+ * Visual safety margin around 90°. An acute or obtuse angle that a child has to
+ * classify by eye must be far enough from a right angle that the answer is a
+ * concept question and not a pixel-measuring exercise, so generators must never
+ * produce a non-right angle inside `90 ± NON_RIGHT_ANGLE_MARGIN`.
+ */
+export const NON_RIGHT_ANGLE_MARGIN = 15;
+
+export function isVisuallyUnambiguousAngle(degrees: number, margin = NON_RIGHT_ANGLE_MARGIN): boolean {
+  const difference = Math.abs(degrees - 90);
+  return difference <= RIGHT_ANGLE_TOLERANCE || difference >= margin;
+}
+
 export function distance(a: Point, b: Point): number {
   return Math.hypot(b.x - a.x, b.y - a.y);
 }
@@ -63,6 +76,27 @@ export function triangleAngles(points: readonly [Point, Point, Point]): [number,
     angleFromVertex(points[0], points[1], points[2]),
     angleFromVertex(points[0], points[2], points[1]),
   ];
+}
+
+/**
+ * Whole-degree angle labels for a drawn triangle.
+ *
+ * Rounding each angle on its own can print a set that sums to 179° or 181°,
+ * which contradicts the rule the activity is teaching. Largest-remainder
+ * rounding keeps every label within one degree of the real angle while
+ * guaranteeing the three printed numbers add up to exactly 180.
+ */
+export function displayTriangleAngles(points: readonly [Point, Point, Point]): [number, number, number] {
+  const exact = triangleAngles(points);
+  const rounded = exact.map((angle) => Math.floor(angle));
+  const byRemainder = exact
+    .map((angle, index) => ({ index, remainder: angle - Math.floor(angle) }))
+    .sort((a, b) => b.remainder - a.remainder);
+  let missing = 180 - rounded.reduce((sum, angle) => sum + angle, 0);
+  for (let position = 0; missing > 0 && position < byRemainder.length; position += 1, missing -= 1) {
+    rounded[byRemainder[position].index] += 1;
+  }
+  return rounded as [number, number, number];
 }
 
 function nearlyEqual(a: number, b: number, tolerance: number): boolean {

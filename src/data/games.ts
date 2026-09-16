@@ -173,6 +173,14 @@ export const simpleFractionsGames: Game[] = [];
 
 const FRACTIONS_PART1_PATH = '/grade/4/fractions-part-1';
 
+/**
+ * "Build the Whole" stays in the registry so stored practice history can still
+ * resolve its name and route, but it is disabled: its interaction amounts to
+ * selecting every remaining piece, with no decision for the child to make, so
+ * it is no longer listed as an activity.
+ */
+const DISABLED_FRACTION_ACTIVITIES = new Set(['build-the-whole']);
+
 export const fractionsPart1Games: Game[] = [
   ['build-a-fraction', '½'],
   ['numerator-denominator', '¼'],
@@ -186,7 +194,7 @@ export const fractionsPart1Games: Game[] = [
   ['fractions-challenge', '⅚'],
 ].map(([id, icon]) => ({
   id,
-  enabled: true,
+  enabled: !DISABLED_FRACTION_ACTIVITIES.has(id),
   path: `${FRACTIONS_PART1_PATH}/${id}`,
   nameKey: `fractionsPart1.activities.${id}.name`,
   descriptionKey: `fractionsPart1.activities.${id}.description`,

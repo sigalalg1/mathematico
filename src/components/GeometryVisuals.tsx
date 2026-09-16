@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { PointerEvent } from 'react';
 import type { Point } from '../types/geometry';
-import { classifyAngle, pointFromAngle, triangleAngles, triangleSideLengths } from '../utils/geometry';
+import { classifyAngle, displayTriangleAngles, pointFromAngle, triangleSideLengths } from '../utils/geometry';
 
 export function AngleVisual({
   angle,
@@ -43,7 +43,7 @@ export function AngleVisual({
       <path className="geo-angle-opening" d={`M ${arcStart.x} ${arcStart.y} A 29 29 0 ${largeArc} 1 ${arcEnd.x} ${arcEnd.y}`} />
       <line className="geo-ray" x1="100" y1="100" x2={fixed.x} y2={fixed.y} />
       <line className="geo-ray geo-ray-moving" x1="100" y1="100" x2={moving.x} y2={moving.y} />
-      <circle className="geo-vertex" cx="100" cy="100" r="8" />
+      <circle className="geo-vertex" cx="100" cy="100" r="5" />
       {interactive && <circle className="geo-handle" cx={moving.x} cy={moving.y} r="12" />}
       {classifyAngle(angle) === 'right' && <path className="geo-right-mark" d={rightMarker(rotation)} />}
     </svg>
@@ -63,16 +63,23 @@ export function TriangleVisual({
   label,
   interactive = false,
   onVertexPointer,
-  showMeasures = true,
+  measures = 'both',
 }: {
   points: [Point, Point, Point];
   label: string;
   interactive?: boolean;
   onVertexPointer?: (index: number, point: Point) => void;
-  showMeasures?: boolean;
+  /**
+   * Which labels to print. Activities that classify by angles show only angles
+   * and those that classify by sides show only side lengths, so no number on
+   * screen is beside the point of the question being asked.
+   */
+  measures?: 'both' | 'angles' | 'sides' | 'none';
 }) {
   const [draggedVertex, setDraggedVertex] = useState<number | null>(null);
-  const angles = triangleAngles(points);
+  const showAngles = measures === 'both' || measures === 'angles';
+  const showSides = measures === 'both' || measures === 'sides';
+  const angles = displayTriangleAngles(points);
   const sides = triangleSideLengths(points);
   function eventPoint(event: PointerEvent<SVGSVGElement>): Point {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -106,10 +113,10 @@ export function TriangleVisual({
               setDraggedVertex(index);
             } : undefined}
           />
-          {showMeasures && <text x={point.x} y={point.y - 7}>{Math.round(angles[index])}°</text>}
+          {showAngles && <text x={point.x} y={point.y - 7}>{angles[index]}°</text>}
         </g>
       ))}
-      {showMeasures && sides.map((side, index) => {
+      {showSides && sides.map((side, index) => {
         const a = points[(index + 1) % 3];
         const b = points[(index + 2) % 3];
         return <text key={`side-${index}`} x={(a.x + b.x) / 2} y={(a.y + b.y) / 2}>{Math.round(side)}</text>;

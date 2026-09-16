@@ -11,6 +11,9 @@ import {
 } from '../../data/games';
 import { PASTEL_TONES, toneForIndex } from '../../components/activityTones';
 
+/** Only enabled activities are listed, so hidden ones must not be expected. */
+const listedFractionGames = fractionsPart1Games.filter((game) => game.enabled);
+
 /**
  * The grades 3–4 activity listings use the colourful pastel tiles. Grade 7 and
  * the grade selection screen must keep the dark `Card` rows untouched, so the
@@ -30,9 +33,9 @@ describe('grade 3–4 colourful activity tiles', () => {
     renderWithProviders(<App />, ['/grade/4/fractions-part-1']);
     const cards = tiles();
 
-    expect(cards).toHaveLength(fractionsPart1Games.length);
+    expect(cards).toHaveLength(listedFractionGames.length);
     cards.forEach((card, index) => {
-      const game = fractionsPart1Games[index];
+      const game = listedFractionGames[index];
       expect(card).toHaveAttribute('href', game.path!);
       expect(card.querySelector('.atile-title')).toHaveTextContent(i18n.t(game.nameKey));
       expect(card.querySelector('.atile-description')).toHaveTextContent(i18n.t(game.descriptionKey));
@@ -103,7 +106,7 @@ describe('grade 3–4 colourful activity tiles', () => {
     expect(screen.getByText(i18n.t('activityList.bannerTitle'))).toBeInTheDocument();
     tiles().forEach((card, index) => {
       expect(card.querySelector('.atile-title')).toHaveTextContent(
-        i18n.t(fractionsPart1Games[index].nameKey),
+        i18n.t(listedFractionGames[index].nameKey),
       );
     });
   });
