@@ -26,6 +26,7 @@ import { AbsoluteValuePage } from './pages/AbsoluteValuePage';
 import { SignedAddSubPage } from './pages/SignedAddSubPage';
 import { SignRulesPage } from './pages/SignRulesPage';
 import { AccountPage } from './pages/AccountPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { ActivityPage } from './pages/ActivityPage';
 import { useDocumentDirection } from './i18n/useDocumentDirection';
 import { PenaltyShootoutPage } from './pages/PenaltyShootoutPage';
@@ -76,6 +77,7 @@ function App() {
         <Route path="/grade/7/signed-numbers/steps-on-the-line" element={<SignedAddSubPage />} />
         <Route path="/grade/7/signed-numbers/the-sign-rule" element={<SignRulesPage />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/activity" element={<ActivityPage />} />
       </Routes>
     </>

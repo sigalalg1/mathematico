@@ -51,7 +51,8 @@
     "newPassword": "New password",
     "setNewPasswordTitle": "Choose a new password",
     "setNewPasswordAction": "Save new password",
-    "setNewPasswordSuccess": "Password updated. You're all set to keep playing."
+    "setNewPasswordSuccess": "Password updated. You're all set to keep playing.",
+    "resetLinkInvalid": "This reset link isn't valid or has expired. Ask for a new one from the sign-in page."
   },
   "activity": {
     "title": "My Activity",

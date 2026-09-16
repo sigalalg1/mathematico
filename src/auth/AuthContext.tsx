@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!supabase) return { error: 'unavailable' };
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/account`,
+        redirectTo: `${window.location.origin}/reset-password`,
       });
       return { error: error?.message ?? null };
     } catch {
@@ -96,8 +96,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { error } = await supabase.auth.updateUser({ password: newPassword });
       if (error) return { error: error.message };
-      // Deliberately stay in recovery mode so the success message has time to
-      // show; it clears on sign-out or the student's next real sign-in.
+      // The dedicated reset-password page tracks its own "done" state, so it's
+      // safe to leave recovery mode now rather than sticking for the rest of
+      // the browser session.
+      setIsPasswordRecovery(false);
       return { error: null };
     } catch {
       return { error: 'unexpected' };

@@ -75,6 +75,13 @@ async function renderAccountPage() {
   return result;
 }
 
+async function renderResetPasswordPage() {
+  const { ResetPasswordPage } = await import('../../pages/ResetPasswordPage');
+  const result = renderWithProviders(<ResetPasswordPage />, ['/reset-password']);
+  await act(async () => {});
+  return result;
+}
+
 function submitCredentials(password = '0000') {
   fireEvent.change(screen.getByLabelText(t('auth.email')), { target: { value: 'kid@example.com' } });
   fireEvent.change(screen.getByLabelText(t('auth.password')), { target: { value: password } });
@@ -239,14 +246,13 @@ describe('forgot password — request a reset link', () => {
   });
 });
 
-describe('forgot password — set a new password after following the emailed link', () => {
+describe('reset-password page — set a new password after following the emailed link', () => {
   it('shows the new-password form once a PASSWORD_RECOVERY event fires, and saves the new password', async () => {
     const auth = configureSupabase();
-    await renderAccountPage();
+    await renderResetPasswordPage();
     await act(async () => authStateCallback?.('PASSWORD_RECOVERY', session));
 
-    expect(await screen.findByText(t('auth.setNewPasswordTitle'))).toBeInTheDocument();
-    fireEvent.change(screen.getByLabelText(t('auth.newPassword')), { target: { value: '1234' } });
+    fireEvent.change(await screen.findByLabelText(t('auth.newPassword')), { target: { value: '1234' } });
     fireEvent.click(screen.getByRole('button', { name: t('auth.setNewPasswordAction') }));
 
     expect(await screen.findByText(t('auth.setNewPasswordSuccess'))).toBeInTheDocument();
@@ -255,20 +261,35 @@ describe('forgot password — set a new password after following the emailed lin
 
   it('shows a readable message instead of crashing when updating the password fails', async () => {
     configureSupabase({ updateUser: vi.fn().mockResolvedValue({ data: {}, error: { message: 'Session expired' } }) });
-    await renderAccountPage();
+    await renderResetPasswordPage();
     await act(async () => authStateCallback?.('PASSWORD_RECOVERY', session));
     fireEvent.change(await screen.findByLabelText(t('auth.newPassword')), { target: { value: '1234' } });
     fireEvent.click(screen.getByRole('button', { name: t('auth.setNewPasswordAction') }));
     expect(await screen.findByText('Session expired')).toBeInTheDocument();
   });
 
-  it('leaves recovery mode once signed out', async () => {
+  it('shows an "invalid link" message rather than a form when visited without a recovery session', async () => {
+    configureSupabase();
+    await renderResetPasswordPage();
+    expect(await screen.findByText(t('auth.resetLinkInvalid'))).toBeInTheDocument();
+    expect(screen.queryByLabelText(t('auth.newPassword'))).not.toBeInTheDocument();
+  });
+});
+
+describe('regression — recovery mode never overrides the normal Account page', () => {
+  it('never shows the set-new-password form on /account, even during a recovery session', async () => {
     configureSupabase();
     await renderAccountPage();
     await act(async () => authStateCallback?.('PASSWORD_RECOVERY', session));
-    expect(await screen.findByText(t('auth.setNewPasswordTitle'))).toBeInTheDocument();
-    await act(async () => authStateCallback?.('SIGNED_OUT', null));
-    expect(await screen.findByLabelText(t('auth.email'))).toBeInTheDocument();
+    expect(screen.queryByText(t('auth.setNewPasswordTitle'))).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(t('auth.newPassword'))).not.toBeInTheDocument();
+  });
+
+  it('shows the ordinary sign-in form on /account for a guest with no session at all', async () => {
+    configureSupabase();
+    await renderAccountPage();
+    expect(screen.getByLabelText(t('auth.email'))).toBeInTheDocument();
+    expect(screen.getByLabelText(t('auth.password'))).toBeInTheDocument();
   });
 });
 
