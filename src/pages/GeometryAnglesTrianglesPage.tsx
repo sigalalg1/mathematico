@@ -22,10 +22,17 @@ export function GeometryAnglesTrianglesPage() {
   }, [user?.id]);
 
   return (
-    <PageLayout title={t('geometry.unitName')} subtitle={t('geometry.unitDescription')} backTo="/grade/3" backLabel={t('nav.grade3Topics')}>
-      <div className="card-grid">
+    <PageLayout
+      title={t('geometry.unitName')}
+      subtitle={t('geometry.unitDescription')}
+      context={t('grades.3')}
+      backTo="/grade/3"
+      backLabel={t('nav.grade3Topics')}
+    >
+      <div className="row-list">
         {geometryAnglesTrianglesGames.map((game, index) => (
           <Card
+            layout="row"
             key={game.id}
             title={`${index + 1}. ${t(game.nameKey)}`}
             description={t(game.descriptionKey)}

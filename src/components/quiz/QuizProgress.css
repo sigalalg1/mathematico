@@ -8,9 +8,9 @@
 }
 
 .quiz-progress-track {
-  height: 10px;
+  height: 6px;
   border-radius: var(--radius-pill);
-  background: var(--bg-alt);
+  background: var(--border);
   overflow: hidden;
 }
 
@@ -22,8 +22,16 @@
 }
 
 .quiz-progress-label {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--text);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
   text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-progress-fill {
+    transition: none;
+  }
 }

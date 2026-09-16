@@ -16,6 +16,7 @@
   text-transform: uppercase;
   color: var(--primary);
   background: var(--primary-bg);
+  border: 1px solid var(--primary-tint);
   border-radius: var(--radius-pill);
   padding: 4px 14px;
 }
@@ -28,6 +29,7 @@
   font-size: var(--text-lg);
   color: var(--text);
   max-width: 400px;
+  line-height: 1.5;
 }
 
 .teach-card-pair {
@@ -35,7 +37,8 @@
   font-size: var(--text-2xl);
   font-weight: 800;
   color: var(--text-h);
-  background: var(--bg-alt);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-6);
 }

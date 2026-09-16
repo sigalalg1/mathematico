@@ -82,7 +82,7 @@ function FractionActivity({ activityId }: { activityId: FractionActivityId }) {
 
   if (game.completed) {
     return (
-      <PageLayout title={t(`fractionsPart1.activities.${activityId}.name`)} backTo={TOPIC_PATH} backLabel={t('fractionsPart1.unitName')} variant="game">
+      <PageLayout title={t(`fractionsPart1.activities.${activityId}.name`)} context={t('grades.4')} backTo={TOPIC_PATH} backLabel={t('fractionsPart1.unitName')} variant="game">
         <div className="fp-game">
           <section className="fp-finale">
             <div className="fp-medal" aria-hidden="true">⅝</div>
@@ -99,7 +99,7 @@ function FractionActivity({ activityId }: { activityId: FractionActivityId }) {
   }
 
   return (
-    <PageLayout title={t(`fractionsPart1.activities.${activityId}.name`)} backTo={TOPIC_PATH} backLabel={t('fractionsPart1.unitName')} variant="game">
+    <PageLayout title={t(`fractionsPart1.activities.${activityId}.name`)} context={t('grades.4')} backTo={TOPIC_PATH} backLabel={t('fractionsPart1.unitName')} variant="game">
       <div className="fp-game">
         <section className={`fp-scene fp-scene-${activityId} fp-status-${game.status}`}>
           <FractionScenery activityId={activityId} />

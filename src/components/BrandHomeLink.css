@@ -2,49 +2,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: var(--tap);
+  padding-inline: var(--space-1);
   border-radius: var(--radius-sm);
 }
 
-.brand-logo,
-.brand-mark {
-  display: block;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-}
-
-.brand-logo {
-  max-width: min(260px, 55vw);
-  max-height: 78px;
-}
-
-.brand-mark {
-  display: none;
-  max-width: 34px;
-  max-height: 38px;
-}
-
-.page-header-bar > .brand-home-link {
-  position: absolute;
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
-}
-
-[dir='rtl'] .page-header-bar > .brand-home-link {
-  transform: translateX(50%);
-}
-
-.page-header-bar > .brand-home-link .brand-logo {
-  max-width: 150px;
-  max-height: 44px;
-}
-
-@media (max-width: 760px) {
-  .brand-home-link-responsive .brand-logo {
+/* In the compact header bar the wordmark gives way to the symbol alone. */
+@media (max-width: 560px) {
+  .brand-home-link-responsive .brand-logo-text {
     display: none;
-  }
-
-  .brand-home-link-responsive .brand-mark {
-    display: block;
   }
 }

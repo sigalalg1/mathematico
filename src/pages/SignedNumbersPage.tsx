@@ -30,12 +30,14 @@ export function SignedNumbersPage() {
     <PageLayout
       title={t('signedNumbersPage.title')}
       subtitle={t('signedNumbersPage.subtitle')}
+      context={t('grades.7')}
       backTo="/grade/7"
       backLabel={t('nav.grade7Topics')}
     >
-      <div className="card-grid">
+      <div className="row-list">
         {signedNumbersGames.map((game) => (
           <Card
+            layout="row"
             key={game.id}
             title={t(game.nameKey)}
             description={t(game.descriptionKey)}

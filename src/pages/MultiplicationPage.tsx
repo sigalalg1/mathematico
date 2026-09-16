@@ -30,12 +30,14 @@ export function MultiplicationPage() {
     <PageLayout
       title={t('multiplicationPage.title')}
       subtitle={t('multiplicationPage.subtitle')}
+      context={t('grades.4')}
       backTo="/grade/4"
       backLabel={t('nav.grade4Topics')}
     >
-      <div className="card-grid">
+      <div className="row-list">
         {multiplicationGames.map((game) => (
           <Card
+            layout="row"
             key={game.id}
             title={t(game.nameKey)}
             description={t(game.descriptionKey)}

@@ -3,27 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { PageLayout } from '../components/PageLayout';
 import { useAuth } from '../auth/useAuth';
 import { getActivityHistory } from '../tracking/activityTracker';
-import {
-  coordinateSystemGames,
-  divisionWithRemainderGames,
-  fractionsPart1Games,
-  multiplicationGames,
-  signedNumbersGames,
-  simpleFractionsGames,
-} from '../data/games';
+import { findGame } from '../data/games';
 import type { GameSession } from '../types/activity';
 import './ActivityPage.css';
 
 function useGameName(gameId: string): string {
   const { t } = useTranslation();
-  const game = [
-    ...coordinateSystemGames,
-    ...signedNumbersGames,
-    ...divisionWithRemainderGames,
-    ...simpleFractionsGames,
-    ...fractionsPart1Games,
-    ...multiplicationGames,
-  ].find((entry) => entry.id === gameId);
+  const game = findGame(gameId);
   return game ? t(game.nameKey) : gameId;
 }
 

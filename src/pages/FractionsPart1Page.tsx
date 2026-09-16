@@ -27,12 +27,14 @@ export function FractionsPart1Page() {
     <PageLayout
       title={t('fractionsPart1.unitName')}
       subtitle={t('fractionsPart1.unitDescription')}
+      context={t('grades.4')}
       backTo="/grade/4"
       backLabel={t('nav.grade4Topics')}
     >
-      <div className="card-grid">
+      <div className="row-list">
         {fractionsPart1Games.map((game, index) => (
           <Card
+            layout="row"
             key={game.id}
             title={`${index + 1}. ${t(game.nameKey)}`}
             description={t(game.descriptionKey)}

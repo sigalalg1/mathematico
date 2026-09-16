@@ -1,18 +1,54 @@
 .header-nav {
   display: flex;
-  gap: var(--space-2);
+  align-items: center;
+  gap: var(--space-1);
 }
 
 .header-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  padding-inline: var(--space-3);
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--text);
-  background: var(--bg-alt);
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: var(--radius-pill);
-  padding: var(--space-2) var(--space-4);
-  transition: background 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .header-nav-link:hover {
-  background: var(--border);
+  background: var(--bg-alt);
+  color: var(--text-h);
+}
+
+.header-nav-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+/* Only the icons fit next to the language switcher on a phone. */
+@media (max-width: 560px) {
+  .header-nav-link-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .header-nav-link {
+    padding-inline: var(--space-2);
+    min-width: var(--tap);
+  }
 }

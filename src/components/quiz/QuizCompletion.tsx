@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { ProgressRing } from '../ProgressRing';
 import './QuizCompletion.css';
 
 interface QuizCompletionProps {
@@ -12,9 +13,7 @@ export function QuizCompletion({ score, total, onRetry }: QuizCompletionProps) {
 
   return (
     <div className="quiz-completion">
-      <span className="quiz-completion-icon" aria-hidden="true">
-        🎉
-      </span>
+      <ProgressRing value={score} total={total} />
       <h2 className="quiz-completion-title">{t('quiz.completion.title')}</h2>
       <p className="quiz-completion-score">{t('quiz.completion.score', { score, total })}</p>
       <button type="button" className="btn btn-primary" onClick={onRetry}>

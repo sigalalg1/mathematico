@@ -38,7 +38,7 @@ export function MeetTheAxesPage() {
   const isLastQuestion = index === total - 1;
 
   return (
-    <PageLayout title={t('exercises.meetTheAxes.name')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
+    <PageLayout title={t('exercises.meetTheAxes.name')} context={t('grades.7')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
       {completed ? (
         <QuizCompletion score={score} total={total} onRetry={retry} />
       ) : (

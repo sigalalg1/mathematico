@@ -66,7 +66,7 @@ export function CoordinateScalePage() {
 
   if (game.completed) {
     return (
-      <PageLayout title={t('coordinateScale.gameName')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
+      <PageLayout title={t('coordinateScale.gameName')} context={t('grades.7')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
         <CoordinateScaleCompletion total={game.total} firstTryCount={game.firstAttemptCorrectCount} onRetry={game.retry} />
       </PageLayout>
     );
@@ -90,7 +90,7 @@ export function CoordinateScalePage() {
   }
 
   return (
-    <PageLayout title={t('coordinateScale.gameName')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
+    <PageLayout title={t('coordinateScale.gameName')} context={t('grades.7')} backTo="/grade/7/coordinate-system" backLabel={t('coordinateSystemPage.title')}>
       <div className="coordinate-scale">
         <div className="coordinate-scale-top">
           <QuizProgress current={game.index + 1} total={game.total} labelKey="coordinateScale.progress" />

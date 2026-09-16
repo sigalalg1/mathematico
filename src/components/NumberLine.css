@@ -3,7 +3,7 @@
   max-width: 560px;
   margin: 0 auto;
   padding: var(--space-4);
-  background: var(--surface);
+  background: var(--surface-sunken);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
@@ -24,28 +24,30 @@
 /* --- axis ---------------------------------------------------------------- */
 
 .number-line-axis {
-  stroke: var(--text-h);
-  stroke-width: 2.75;
+  stroke: var(--primary);
+  stroke-width: 2.25;
 }
 
 .number-line-axis-tail {
-  stroke: var(--text-h);
-  stroke-width: 2.75;
+  stroke: var(--primary);
+  stroke-width: 2.25;
   stroke-linecap: round;
 }
 
 .number-line-arrow-head {
-  fill: var(--text-h);
+  fill: var(--primary);
 }
 
 .number-line-tick {
-  stroke: var(--text-h);
+  stroke: var(--primary);
   stroke-width: 1.5;
+  opacity: 0.65;
 }
 
 .number-line-tick-zero {
-  stroke: var(--primary);
+  stroke: var(--secondary);
   stroke-width: 3;
+  opacity: 1;
 }
 
 .number-line-dense .number-line-tick-label {
@@ -55,7 +57,7 @@
 .number-line-tick-label {
   font-size: 13px;
   font-family: var(--sans);
-  fill: var(--text);
+  fill: var(--muted);
   font-variant-numeric: tabular-nums;
 }
 
@@ -64,17 +66,17 @@
 .number-line-region {
   rx: 8;
   fill: var(--primary);
-  opacity: 0.12;
+  opacity: 0.14;
 }
 
 .number-line-region-correct {
   fill: var(--success);
-  opacity: 0.16;
+  opacity: 0.2;
 }
 
 .number-line-region-incorrect {
   fill: var(--error);
-  opacity: 0.12;
+  opacity: 0.18;
 }
 
 /* --- hops ---------------------------------------------------------------- */
@@ -180,12 +182,12 @@
 }
 
 .number-line-marker-ghost .number-line-marker-dot {
-  fill: var(--disabled-text);
+  fill: var(--muted);
   opacity: 0.6;
 }
 
 .number-line-marker-ghost .number-line-marker-label {
-  fill: var(--disabled-text);
+  fill: var(--muted);
 }
 
 .number-line-marker-correct .number-line-marker-dot {
@@ -220,7 +222,7 @@
 
 .number-line-walker-dot {
   fill: var(--accent);
-  stroke: var(--surface);
+  stroke: var(--surface-sunken);
   stroke-width: 2.5;
 }
 
@@ -243,7 +245,7 @@
 }
 
 .number-line-point-dot {
-  fill: var(--surface);
+  fill: var(--surface-sunken);
   stroke: var(--primary);
   stroke-width: 2.5;
   transition:
@@ -265,7 +267,7 @@
 
 .number-line-point:hover .number-line-point-dot,
 .number-line-point:focus-visible .number-line-point-dot {
-  fill: var(--primary-tint);
+  fill: var(--primary-dark);
 }
 
 .number-line-point:focus,

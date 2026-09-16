@@ -9,7 +9,7 @@
 
 .account-notice {
   text-align: center;
-  color: var(--text);
+  color: var(--muted);
   max-width: 380px;
   margin: 0 auto;
 }
@@ -18,15 +18,17 @@
   display: flex;
   gap: 8px;
   background: var(--bg-alt);
-  border-radius: 999px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
   padding: 4px;
 }
 
 .account-tab {
   flex: 1;
+  min-height: 40px;
   padding: 10px 16px;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: transparent;
   font-size: 15px;
   font-weight: 600;
@@ -35,8 +37,8 @@
 }
 
 .account-tab.is-active {
-  background: var(--surface);
-  color: var(--primary);
+  background: var(--surface-raised);
+  color: var(--text-h);
   box-shadow: var(--shadow-sm);
 }
 
@@ -56,10 +58,13 @@
 }
 
 .account-field input {
+  min-height: var(--tap);
   font-size: 16px;
   padding: 10px 14px;
-  border-radius: 12px;
-  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-sunken);
+  color: var(--text-h);
   font-family: inherit;
 }
 
@@ -69,13 +74,13 @@
 }
 
 .account-error {
-  color: #b23127;
+  color: var(--error);
   font-size: 14px;
   margin: 0;
 }
 
 .account-message {
-  color: #167a55;
+  color: var(--success);
   font-size: 14px;
   margin: 0;
 }
@@ -90,5 +95,6 @@
 .account-guest-note {
   text-align: center;
   font-size: 13px;
-  color: var(--disabled-text);
+  color: var(--muted);
+  line-height: 1.5;
 }

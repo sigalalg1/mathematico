@@ -79,7 +79,7 @@ function GeometryActivity({ activityId }: { activityId: GeometryActivityId }) {
 
   if (game.completed) {
     return (
-      <PageLayout title={t(`geometry.activities.${activityId}.name`)} backTo={TOPIC_PATH} backLabel={t('geometry.unitName')} variant="game">
+      <PageLayout title={t(`geometry.activities.${activityId}.name`)} context={t('grades.3')} backTo={TOPIC_PATH} backLabel={t('geometry.unitName')} variant="game">
         <div className="geo-game">
           <section className="geo-finale">
             <div className="geo-trophy" aria-hidden="true">△</div>
@@ -96,7 +96,7 @@ function GeometryActivity({ activityId }: { activityId: GeometryActivityId }) {
   }
 
   return (
-    <PageLayout title={t(`geometry.activities.${activityId}.name`)} backTo={TOPIC_PATH} backLabel={t('geometry.unitName')} variant="game">
+    <PageLayout title={t(`geometry.activities.${activityId}.name`)} context={t('grades.3')} backTo={TOPIC_PATH} backLabel={t('geometry.unitName')} variant="game">
       <div className="geo-game">
         <section className={`geo-scene geo-scene-${activityId} geo-status-${game.status}`}>
           <GeometryScenery />
