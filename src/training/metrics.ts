@@ -68,7 +68,19 @@ export function computeSessionResult({
 
 /** Seconds per question, rounded for display only (e.g. `3.1`). */
 export function secondsPerQuestion(averageMsPerQuestion: number): number {
+  if (!Number.isFinite(averageMsPerQuestion) || averageMsPerQuestion <= 0) return 0;
   return Math.round(averageMsPerQuestion / 100) / 10;
+}
+
+/**
+ * A duration as `M:SS` (`0:34`, `1:08`) — the running-timer and total-time
+ * format. Exact milliseconds are kept everywhere else; rounding happens here.
+ */
+export function formatDuration(ms: number): string {
+  const totalSeconds = Number.isFinite(ms) && ms > 0 ? Math.floor(ms / 1000) : 0;
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
 /** Accuracy as a whole percentage, for display only. */

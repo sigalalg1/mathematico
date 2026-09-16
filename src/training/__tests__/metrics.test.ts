@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { accuracyPercent, computeSessionResult, longestStreakOf, secondsPerQuestion } from '../metrics';
+import {
+  accuracyPercent,
+  computeSessionResult,
+  formatDuration,
+  longestStreakOf,
+  secondsPerQuestion,
+} from '../metrics';
 import type { TrainingAnswerRecord, TrainingConfiguration } from '../../types/training';
 
 const configuration: TrainingConfiguration = {
@@ -79,5 +85,28 @@ describe('training metrics', () => {
     const computed = result([]);
     expect(computed.accuracy).toBe(0);
     expect(computed.averageMsPerQuestion).toBe(0);
+    // Nothing was answered, so there is no pace to show — not `Infinity`, `NaN`
+    // or a nonsense figure on the results screen.
+    expect(secondsPerQuestion(computed.averageMsPerQuestion)).toBe(0);
+  });
+
+  it('shows a pace at one decimal, never at raw precision', () => {
+    expect(secondsPerQuestion(3184.729)).toBe(3.2);
+    expect(secondsPerQuestion(2950)).toBe(3);
+    expect(secondsPerQuestion(0)).toBe(0);
+    expect(secondsPerQuestion(Number.NaN)).toBe(0);
+    expect(secondsPerQuestion(Number.POSITIVE_INFINITY)).toBe(0);
+  });
+
+  it('formats a duration as minutes and padded seconds', () => {
+    expect(formatDuration(0)).toBe('0:00');
+    expect(formatDuration(34_000)).toBe('0:34');
+    expect(formatDuration(34_900)).toBe('0:34');
+    expect(formatDuration(64_000)).toBe('1:04');
+    expect(formatDuration(68_500)).toBe('1:08');
+    expect(formatDuration(3_600_000)).toBe('60:00');
+    // Defensive: a negative or missing duration is shown as zero, not as `-1:59`.
+    expect(formatDuration(-5000)).toBe('0:00');
+    expect(formatDuration(Number.NaN)).toBe('0:00');
   });
 });

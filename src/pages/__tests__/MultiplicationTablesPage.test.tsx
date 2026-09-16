@@ -56,6 +56,12 @@ async function playSession(total: number, { wrongAt = [] as number[], thinkMs = 
   });
 }
 
+/** Backgrounding the tab (phone locked, app switched), as the browser reports it. */
+function setVisibility(state: 'visible' | 'hidden') {
+  Object.defineProperty(document, 'visibilityState', { value: state, configurable: true });
+  document.dispatchEvent(new Event('visibilitychange'));
+}
+
 function start({ mode = 'practice', count = 5, difficulty = 'basic' } = {}) {
   if (mode === 'challenge') fireEvent.click(screen.getByTestId('tr-mode-challenge'));
   fireEvent.click(screen.getByTestId(`tr-difficulty-${difficulty}`));
@@ -111,6 +117,24 @@ describe('Multiplication Tables — practice mode', () => {
     expect(screen.queryByTestId('tr-improvement')).not.toBeInTheDocument();
   });
 
+  it('never puts a clock in front of the child in practice', async () => {
+    start({ count: 5 });
+
+    expect(screen.queryByTestId('tr-timer')).not.toBeInTheDocument();
+    await answer(0, true, 20_000);
+    // Twenty seconds on one question changes nothing on screen: practice is
+    // measured internally, but never timed at the child.
+    expect(screen.queryByTestId('tr-timer')).not.toBeInTheDocument();
+
+    for (let index = 1; index < 5; index += 1) await answer(index, true, 3000);
+    await act(async () => {
+      await Promise.resolve();
+    });
+    // And the summary stays about correctness, with no time anywhere on it.
+    expect(screen.queryByTestId('tr-total-time')).not.toBeInTheDocument();
+    expect(screen.queryByText(t('training.results.paceUnit'))).not.toBeInTheDocument();
+  });
+
   it('runs the same settings again straight from the results screen', async () => {
     start({ count: 5 });
     await playSession(5);
@@ -157,6 +181,75 @@ describe('Multiplication Tables — personal challenge', () => {
     // 17 correct in a row after the mistake is the longest run of the session.
     expect(screen.getByText('17')).toBeInTheDocument();
     expect(screen.getByText('19/20')).toBeInTheDocument();
+  });
+
+  it('runs a small, subtle clock through the challenge and totals it on the summary', async () => {
+    start({ mode: 'challenge', count: 20 });
+    expect(screen.getByTestId('tr-timer')).toHaveTextContent('0:00');
+
+    await answer(0, true, 3000);
+    // 3s of thinking plus the short feedback beat.
+    expect(screen.getByTestId('tr-timer')).toHaveTextContent('0:03');
+
+    await answer(1, true, 3000);
+    expect(screen.getByTestId('tr-timer')).toHaveTextContent('0:06');
+
+    for (let index = 2; index < 20; index += 1) await answer(index, true, 3000);
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    // 20 × 3s of thinking and 20 × 0.45s of feedback: 1:09 in `M:SS`.
+    expect(screen.getByTestId('tr-total-time')).toHaveTextContent('1:09');
+  });
+
+  it('leaves time the app was in the background out of the measured pace', async () => {
+    start({ mode: 'challenge', count: 20 });
+
+    await act(async () => {
+      vi.advanceTimersByTime(2000);
+    });
+    expect(screen.getByTestId('tr-timer')).toHaveTextContent('0:02');
+
+    // The child locks their phone for ten seconds in the middle of question 1.
+    await act(async () => {
+      setVisibility('hidden');
+      vi.advanceTimersByTime(10_000);
+      setVisibility('visible');
+    });
+    expect(screen.getByTestId('tr-timer')).toHaveTextContent('0:02');
+
+    await answer(0, true, 1000);
+    for (let index = 1; index < 20; index += 1) await answer(index, true, 3000);
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    // Every question took 3 active seconds. Counting the ten hidden ones would
+    // have reported 3.5 and quietly spoiled the child's pace.
+    expect(screen.queryByText('3.5')).not.toBeInTheDocument();
+    expect(screen.getByText(t('training.results.paceLabel'))).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
+  });
+
+  it('replays the identical activity, difficulty, length and mode on "try again"', async () => {
+    start({ mode: 'challenge', count: 20, difficulty: 'hard' });
+    await playSession(20, { thinkMs: 3000 });
+    expect(screen.getByText(t('training.results.firstAttempt'))).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText(t('training.actions.tryAgainSame')));
+
+    // Straight back into a challenge — no settings screen in between.
+    expect(screen.queryByTestId('tr-start')).not.toBeInTheDocument();
+    expect(screen.getByTestId('tr-streak')).toBeInTheDocument();
+    expect(screen.getByTestId('tr-timer')).toBeInTheDocument();
+
+    await playSession(20, { thinkMs: 2000 });
+
+    // Judged against the first run, which is only possible if the activity,
+    // difficulty, question count and mode were all carried over unchanged.
+    expect(screen.queryByText(t('training.results.firstAttempt'))).not.toBeInTheDocument();
+    expect(screen.getByText(t('training.results.record.pace', { seconds: 2, improvement: 1 }))).toBeInTheDocument();
   });
 
   it('treats the first result as a saved baseline, not a record', async () => {

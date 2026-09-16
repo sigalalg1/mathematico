@@ -102,6 +102,20 @@ describe('personal bests', () => {
     expect(best?.bestAverageMsPerQuestion).toBeNull();
   });
 
+  it('keeps three sessions to the one dimension each of them actually improved', () => {
+    // A: flawless but slow. B: faster, flawless. C: a long streak, slower, with
+    // one mistake — each should hold only what it genuinely won.
+    const sessionA = makeResult({ correctCount: 20, longestStreak: 12, averageMsPerQuestion: 4000 });
+    const sessionB = makeResult({ correctCount: 20, longestStreak: 13, averageMsPerQuestion: 2800 });
+    const sessionC = makeResult({ correctCount: 19, longestStreak: 19, averageMsPerQuestion: 5000 });
+
+    const best = derivePersonalBest([sessionA, sessionB, sessionC], PACE_MIN_ACCURACY);
+
+    expect(best?.bestAccuracy).toBe(1); // A and B
+    expect(best?.bestAverageMsPerQuestion).toBe(2800); // B only
+    expect(best?.bestLongestStreak).toBe(19); // C only — and it did not disturb the pace record
+  });
+
   it('applies the activity-configured threshold rather than a platform-wide rule', () => {
     const nearlyPerfect = makeResult({ correctCount: 19, longestStreak: 12, averageMsPerQuestion: 1500 });
     expect(isPaceEligible(nearlyPerfect, 1)).toBe(false);
@@ -185,6 +199,47 @@ describe('comparing a result with the previous bests', () => {
     expect(improvement.streak.isRecord).toBe(true);
     expect(improvement.streak.improvement).toBe(4);
     expect(improvement.accuracy.isRecord).toBe(true);
+  });
+
+  it('treats a lower average as better for pace, in both directions', () => {
+    const baseline = derivePersonalBest(
+      [makeResult({ correctCount: 20, longestStreak: 20, averageMsPerQuestion: 3000 })],
+      PACE_MIN_ACCURACY,
+    );
+    const compare = (averageMsPerQuestion: number) =>
+      compareWithPersonalBest(
+        makeResult({ correctCount: 20, longestStreak: 20, averageMsPerQuestion }),
+        baseline,
+        PACE_MIN_ACCURACY,
+      ).pace;
+
+    // Guards the one comparison in the system that runs the other way: a bigger
+    // number here is a worse result, and its "improvement" is never reported.
+    const faster = compare(2000);
+    expect(faster.isRecord).toBe(true);
+    expect(faster.improvement).toBe(1000);
+    expect(faster.improvement).toBeGreaterThan(0);
+
+    const slower = compare(4000);
+    expect(slower.isRecord).toBe(false);
+    expect(slower.improvement).toBeNull();
+  });
+
+  it('keeps a streak record from touching the pace and accuracy records', () => {
+    const previous = derivePersonalBest(
+      [makeResult({ correctCount: 20, longestStreak: 12, averageMsPerQuestion: 2500 })],
+      PACE_MIN_ACCURACY,
+    );
+    const improvement = compareWithPersonalBest(
+      makeResult({ correctCount: 19, longestStreak: 18, averageMsPerQuestion: 4000 }),
+      previous,
+      PACE_MIN_ACCURACY,
+    );
+
+    expect(improvement.streak.isRecord).toBe(true);
+    expect(improvement.accuracy.isRecord).toBe(false);
+    expect(improvement.pace.isRecord).toBe(false);
+    expect(improvement.pace.previousBest).toBe(2500);
   });
 
   it('does not flag an equal result as a new record', () => {
