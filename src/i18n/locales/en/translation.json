@@ -42,7 +42,16 @@
     "signUpSuccess": "Account created. You can sign in now.",
     "unavailable": "Accounts aren't available right now, but you can keep playing as a guest.",
     "unexpectedError": "Something went wrong connecting. Try again — you can keep playing as a guest meanwhile.",
-    "signUpConfirmEmail": "Account created. Check your email for a confirmation link, then sign in."
+    "signUpConfirmEmail": "Account created. Check your email for a confirmation link, then sign in.",
+    "forgotPasswordLink": "Forgot password?",
+    "forgotPasswordTitle": "Reset your password",
+    "resetPasswordAction": "Send reset link",
+    "resetPasswordSent": "If an account exists for that email, we've sent a password reset link.",
+    "backToSignIn": "Back to sign in",
+    "newPassword": "New password",
+    "setNewPasswordTitle": "Choose a new password",
+    "setNewPasswordAction": "Save new password",
+    "setNewPasswordSuccess": "Password updated. You're all set to keep playing."
   },
   "activity": {
     "title": "My Activity",

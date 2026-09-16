@@ -6,6 +6,7 @@ import type { User } from '@supabase/supabase-js';
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isInitializing, setIsInitializing] = useState(Boolean(supabase));
+  const [isPasswordRecovery, setIsPasswordRecovery] = useState(false);
 
   useEffect(() => {
     if (!supabase) return;
@@ -24,10 +25,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (active) setIsInitializing(false);
       });
 
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
       // A session event also means the initial check is settled.
       setIsInitializing(false);
+      // Fired when the student follows the emailed reset link — the session is
+      // valid but only for setting a new password, not general sign-in.
+      if (event === 'PASSWORD_RECOVERY') setIsPasswordRecovery(true);
+      if (event === 'SIGNED_OUT') setIsPasswordRecovery(false);
     });
 
     return () => {
@@ -65,9 +70,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Even when the server rejects (expired/unknown session) the student must
       // end up signed out locally rather than stuck in a half-signed-in state.
       setUser(null);
+      setIsPasswordRecovery(false);
       return { error: error?.message ?? null };
     } catch {
       setUser(null);
+      setIsPasswordRecovery(false);
+      return { error: 'unexpected' };
+    }
+  }, []);
+
+  const resetPassword = useCallback(async (email: string): Promise<AuthResult> => {
+    if (!supabase) return { error: 'unavailable' };
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/account`,
+      });
+      return { error: error?.message ?? null };
+    } catch {
+      return { error: 'unexpected' };
+    }
+  }, []);
+
+  const updatePassword = useCallback(async (newPassword: string): Promise<AuthResult> => {
+    if (!supabase) return { error: 'unavailable' };
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) return { error: error.message };
+      // Deliberately stay in recovery mode so the success message has time to
+      // show; it clears on sign-out or the student's next real sign-in.
+      return { error: null };
+    } catch {
       return { error: 'unexpected' };
     }
   }, []);
@@ -78,11 +110,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       isInitializing,
       isConfigured: Boolean(supabase),
+      isPasswordRecovery,
       signUp,
       signIn,
       signOut,
+      resetPassword,
+      updatePassword,
     }),
-    [user, isInitializing, signUp, signIn, signOut],
+    [user, isInitializing, isPasswordRecovery, signUp, signIn, signOut, resetPassword, updatePassword],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

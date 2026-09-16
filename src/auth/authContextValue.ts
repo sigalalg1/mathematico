@@ -20,9 +20,15 @@ export interface AuthContextValue {
   isInitializing: boolean;
   /** False when Supabase isn't configured — the app stays fully playable as a guest. */
   isConfigured: boolean;
+  /** True once the student has followed a password-reset email link and can now set a new password. */
+  isPasswordRecovery: boolean;
   signUp: (email: string, password: string) => Promise<AuthResult>;
   signIn: (email: string, password: string) => Promise<AuthResult>;
   signOut: () => Promise<AuthResult>;
+  /** Emails the student a password-reset link. */
+  resetPassword: (email: string) => Promise<AuthResult>;
+  /** Sets a new password; only meaningful while `isPasswordRecovery` is true. */
+  updatePassword: (newPassword: string) => Promise<AuthResult>;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
