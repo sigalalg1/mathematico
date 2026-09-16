@@ -65,7 +65,11 @@ describe('routing smoke tests', () => {
     }
     expect(divisionWithRemainderGames).toEqual([]);
     expect(simpleFractionsGames).toEqual([]);
-    expect(multiplicationGames.map((game) => game.id)).toEqual(['multiplicationTables', 'monkeyBalloonShooter']);
+    expect(multiplicationGames.map((game) => game.id)).toEqual([
+      'multiplicationTables',
+      'monkeyBalloonShooter',
+      'basketballMonkey',
+    ]);
     expect(new Set(GAME_ROUTES).size).toBe(GAME_ROUTES.length);
   });
 

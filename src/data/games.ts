@@ -218,6 +218,14 @@ export const multiplicationGames: Game[] = [
     descriptionKey: 'monkeyBalloonShooter.gameDescription',
     icon: '×',
   },
+  {
+    id: 'basketballMonkey',
+    enabled: true,
+    path: '/grade/4/multiplication/basketball-monkey',
+    nameKey: 'basketballMonkey.gameName',
+    descriptionKey: 'basketballMonkey.gameDescription',
+    icon: '●',
+  },
 ];
 
 /**

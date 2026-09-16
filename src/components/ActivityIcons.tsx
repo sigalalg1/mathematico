@@ -238,6 +238,15 @@ const TimesTable: Glyph = ({ className }) => (
   </svg>
 );
 
+/** A basketball dropping through a rim. */
+const BasketballHoop: Glyph = ({ className }) => (
+  <svg className={className} {...BASE}>
+    <circle cx="12" cy="7.6" r="4.4" />
+    <path d="M7.8 7.6h8.4M12 3.2c-2 2.3-2 6.4 0 8.8M12 3.2c2 2.3 2 6.4 0 8.8" />
+    <path d="M4.2 13.2h15.6M6.2 13.2l2 7.2M17.8 13.2l-2 7.2M8.2 20.4h7.6M8.8 13.2l1.2 7.2M15.2 13.2 14 20.4" />
+  </svg>
+);
+
 /** Generic fallback: a star, so a card is never left without a glyph. */
 const Star: Glyph = ({ className }) => (
   <svg className={className} {...BASE}>
@@ -275,6 +284,7 @@ const ACTIVITY_GLYPHS: Record<string, Glyph> = {
   /* Grade 4 — Multiplication */
   multiplicationTables: TimesTable,
   monkeyBalloonShooter: Balloon,
+  basketballMonkey: BasketballHoop,
 };
 
 export { PieHalf as FractionPieGlyph };

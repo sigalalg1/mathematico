@@ -33,6 +33,7 @@ import { FractionsPart1Page } from './pages/FractionsPart1Page';
 import { FractionsPart1ActivityPage } from './pages/FractionsPart1ActivityPage';
 import { GeometryAnglesTrianglesPage } from './pages/GeometryAnglesTrianglesPage';
 import { GeometryActivityPage } from './pages/GeometryActivityPage';
+import { BasketballMonkeyPage } from './pages/BasketballMonkeyPage';
 
 function App() {
   useDocumentDirection();
@@ -50,6 +51,7 @@ function App() {
       <Route path="/grade/4/fractions-part-1/:activityId" element={<FractionsPart1ActivityPage />} />
       <Route path="/grade/4/multiplication" element={<MultiplicationPage />} />
       <Route path="/grade/4/multiplication/multiplication-tables" element={<MultiplicationTablesPage />} />
+      <Route path="/grade/4/multiplication/basketball-monkey" element={<BasketballMonkeyPage />} />
       <Route path="/grade/4/multiplication/monkey-balloon-shooter" element={<MonkeyBalloonShooterPage />} />
       <Route path="/grade/7/coordinate-system" element={<CoordinateSystemPage />} />
       <Route path="/grade/7/coordinate-system/coordinate-vocabulary" element={<CoordinateVocabularyPage />} />
