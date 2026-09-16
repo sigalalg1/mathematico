@@ -7,6 +7,29 @@ import { formatDuration } from '../metrics';
 import type { TrainingPhase, TrainingSessionState } from '../useTrainingSession';
 import './TrainingActivity.css';
 
+/**
+ * What a custom question renderer is handed. Deliberately the same
+ * `submit(answer: string)` contract the built-in choice buttons use, so a
+ * scene that lets the child assemble an answer (shading parts, tapping a
+ * number line, shooting a balloon) needs nothing extra — and generic over the
+ * question's payload, so an activity whose question carries structured data
+ * (e.g. a fraction model) gets it back fully typed.
+ */
+export interface TrainingQuestionRenderProps<TPayload = never> {
+  question: TrainingQuestion<TPayload>;
+  phase: TrainingPhase;
+  /** The answer just given, while `phase` is `feedback`. */
+  lastAnswer: TrainingSessionState<TPayload>['lastAnswer'];
+  mode: TrainingMode;
+  /** 0-based position of the current question, and how many there are. */
+  index: number;
+  total: number;
+  /** Already-translated prompt line for this activity. */
+  promptLabel: string;
+  /** Records the answer. Ignored unless the session is still answering. */
+  submit: (answer: string) => void;
+}
+
 /** How often the displayed time is refreshed. It is re-read, never counted. */
 const TIMER_REFRESH_MS = 500;
 
@@ -33,29 +56,8 @@ function TrainingTimer({ getActiveDurationMs }: { getActiveDurationMs: () => num
   );
 }
 
-/**
- * What a custom question renderer is handed. Everything an activity's own
- * visual could need to draw the question and take an answer — and nothing that
- * would let it interfere with the session itself: timing, streak, progress and
- * completion stay entirely with the engine.
- */
-export interface TrainingQuestionRenderProps {
-  question: TrainingQuestion;
-  phase: TrainingPhase;
-  /** The answer just given, while `phase` is `feedback`. */
-  lastAnswer: TrainingSessionState['lastAnswer'];
-  mode: TrainingMode;
-  /** 0-based position of the current question, and how many there are. */
-  index: number;
-  total: number;
-  /** Already-translated prompt line for this activity. */
-  promptLabel: string;
-  /** Records the answer. Ignored unless the session is still answering. */
-  submit: (answer: string) => void;
-}
-
-interface TrainingPlayScreenProps {
-  session: TrainingSessionState;
+interface TrainingPlayScreenProps<TPayload = never> {
+  session: TrainingSessionState<TPayload>;
   mode: TrainingMode;
   /** i18n key for the activity's own question prompt line. */
   promptKey: string;
@@ -66,7 +68,7 @@ interface TrainingPlayScreenProps {
    * whole session lifecycle around it stay exactly as they are, which is the
    * point: a picture-based activity gets the full engine for free.
    */
-  renderQuestion?: (props: TrainingQuestionRenderProps) => ReactNode;
+  renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
 }
 
 /**
@@ -79,7 +81,12 @@ interface TrainingPlayScreenProps {
  * the fact itself stays the thing being looked at. There is never a countdown:
  * nothing runs out, so the timer informs rather than pressures.
  */
-export function TrainingPlayScreen({ session, mode, promptKey, renderQuestion }: TrainingPlayScreenProps) {
+export function TrainingPlayScreen<TPayload = never>({
+  session,
+  mode,
+  promptKey,
+  renderQuestion,
+}: TrainingPlayScreenProps<TPayload>) {
   const { t } = useTranslation();
   const { question, lastAnswer, phase } = session;
 
@@ -156,12 +163,24 @@ export function TrainingPlayScreen({ session, mode, promptKey, renderQuestion }:
         </>
       )}
 
+      {/*
+        The correct answer is rendered through MathText rather than interpolated
+        into the sentence: `<`, `>` and `a/b` are mathematical notation, and
+        inside the Hebrew RTL line the comparison signs would be bidi-mirrored
+        into their opposite — the feedback would then state the wrong answer.
+      */}
       <p className="tr-feedback" role="status" aria-live="polite">
-        {phase === 'feedback' && lastAnswer
-          ? lastAnswer.isCorrect
-            ? t('training.feedback.correct')
-            : t('training.feedback.wrong', { answer: lastAnswer.correctAnswer })
-          : ' '}
+        {phase === 'feedback' && lastAnswer ? (
+          lastAnswer.isCorrect ? (
+            t('training.feedback.correct')
+          ) : (
+            <>
+              {t('training.feedback.wrongLabel')} <MathText>{lastAnswer.correctAnswer}</MathText>
+            </>
+          )
+        ) : (
+          ' '
+        )}
       </p>
     </div>
   );

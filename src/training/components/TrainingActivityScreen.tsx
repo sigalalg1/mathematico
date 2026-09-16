@@ -32,8 +32,8 @@ export interface TrainingFeedbackTiming {
   wrong: number;
 }
 
-interface TrainingActivityScreenProps {
-  activity: TrainingActivityDefinition;
+interface TrainingActivityScreenProps<TPayload = never> {
+  activity: TrainingActivityDefinition<TPayload>;
   /** Activity title, back link and grade pill for the page shell. */
   titleKey: string;
   contextLabel: string;
@@ -41,8 +41,12 @@ interface TrainingActivityScreenProps {
   backLabel: string;
   /** Shown above the fact on every question. */
   promptKey: string;
-  /** Replaces the default question block with the activity's own visual. */
-  renderQuestion?: (props: TrainingQuestionRenderProps) => ReactNode;
+  /**
+   * Lets an activity draw its own question scene (a game scene, a shaded
+   * model, a number line) in place of the default fact-and-choices layout.
+   * Everything else — setup, session, timing, results — stays shared.
+   */
+  renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
   /**
    * Lengthens the feedback beat for a renderer whose answer animation needs
    * longer than the plain buttons do. Excluded from the child's measured think
@@ -59,7 +63,7 @@ interface TrainingActivityScreenProps {
  * and results. A second activity needs a question generator and its own copy —
  * not another copy of this screen.
  */
-export function TrainingActivityScreen({
+export function TrainingActivityScreen<TPayload = never>({
   activity,
   titleKey,
   contextLabel,
@@ -69,7 +73,7 @@ export function TrainingActivityScreen({
   renderQuestion,
   feedbackTiming,
   clock,
-}: TrainingActivityScreenProps) {
+}: TrainingActivityScreenProps<TPayload>) {
   const { t } = useTranslation();
   const { capabilities } = activity;
 
@@ -137,12 +141,12 @@ export function TrainingActivityScreen({
   );
 }
 
-interface TrainingRunProps {
-  activity: TrainingActivityDefinition;
+interface TrainingRunProps<TPayload> {
+  activity: TrainingActivityDefinition<TPayload>;
   configuration: TrainingConfiguration;
   mode: TrainingMode;
   promptKey: string;
-  renderQuestion?: (props: TrainingQuestionRenderProps) => ReactNode;
+  renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
   feedbackTiming?: TrainingFeedbackTiming;
   backTo: string;
   backLabel: string;
@@ -151,7 +155,7 @@ interface TrainingRunProps {
 }
 
 /** One session of a fixed configuration, with its records and results. */
-function TrainingRun({
+function TrainingRun<TPayload>({
   activity,
   configuration,
   mode,
@@ -162,7 +166,7 @@ function TrainingRun({
   backLabel,
   clock,
   onChangeSettings,
-}: TrainingRunProps) {
+}: TrainingRunProps<TPayload>) {
   const session = useTrainingSession({ activity, configuration, mode, clock });
   const isChallenge = mode === 'challenge';
   const { personalBest, save } = useTrainingRecords(
