@@ -1,4 +1,5 @@
--- Run this once in the Supabase SQL editor for the project.
+-- Run this once in the Supabase SQL editor for the project, then apply
+-- everything in supabase/migrations/ in filename order.
 -- Stores one row per completed (or in-progress) game session.
 
 create table if not exists public.game_sessions (

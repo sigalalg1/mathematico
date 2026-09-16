@@ -65,5 +65,17 @@ With Supabase configured (needs a real project):
 - [ ] Wrong password shows the server's message, not a blank screen.
 - [ ] Go offline (devtools) and try to sign in — a friendly error appears and gameplay keeps working.
 
+## Training mode — Times Tables (`/grade/4/multiplication/multiplication-tables`)
+- [ ] Practice: each of 5 / 10 / 20 / 50 runs to the end; a wrong answer moves straight to the next question
+      (no "disqualified", no repeat) and the round still finishes.
+- [ ] Practice results show correct/total and the longest streak, and no pace figure.
+- [ ] Personal challenge only offers 20 and 50 questions; the streak chip rises and drops back to 0 after a mistake.
+- [ ] First challenge for a configuration says the result is saved as a baseline, without calling it a record.
+- [ ] "Another challenge, same settings" restarts immediately with no re-selection.
+- [ ] A faster flawless retry reports a new speed record; a faster run **with mistakes** does not, and explains why.
+- [ ] Changing difficulty or question count starts a separate record (the baseline message appears again).
+- [ ] Guest records survive a reload; signing in keeps records with the account (needs `training_sessions`, see
+      `supabase/migrations/0001_training_sessions.sql`).
+
 ## Console
 - [ ] No errors or React warnings in the browser console while playing through a game.

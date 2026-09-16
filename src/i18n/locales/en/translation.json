@@ -1186,5 +1186,79 @@
       "title": "All the balloons popped! 🐵",
       "summary": "You solved {{total}} multiplication facts"
     }
+  },
+  "training": {
+    "setup": {
+      "modeLabel": "How do you want to train today?",
+      "difficultyLabel": "Difficulty",
+      "questionCountLabel": "How many questions?",
+      "questions": "questions",
+      "challengeLengthNote": "A personal challenge runs over 20 or 50 questions, so the result really means something.",
+      "startPractice": "Start practising",
+      "startChallenge": "Start the challenge"
+    },
+    "modes": {
+      "practice": {
+        "name": "Practice",
+        "description": "At your own pace — nothing is measured."
+      },
+      "challenge": {
+        "name": "Personal challenge",
+        "description": "Accuracy, pace and streak — try to beat your own best."
+      }
+    },
+    "difficulty": {
+      "basic": "Basic",
+      "intermediate": "Intermediate",
+      "hard": "Hard"
+    },
+    "hud": {
+      "progress": "Question {{current}} of {{total}}",
+      "streak": "🔥 Streak {{value}}"
+    },
+    "feedback": {
+      "correct": "Correct! ✓",
+      "wrong": "The answer is {{answer}}"
+    },
+    "results": {
+      "practiceTitle": "Round finished!",
+      "challengeTitle": "Challenge finished!",
+      "accuracyLabel": "Correct answers",
+      "accuracyDetail": "{{percent}}% accuracy",
+      "paceLabel": "Pace",
+      "paceValue": "{{seconds}} sec per question",
+      "streakLabel": "Longest streak",
+      "streakDetail": "correct in a row",
+      "perfect": "Perfect accuracy — {{total}} out of {{total}}!",
+      "firstAttempt": "This is your first result with these settings. It is saved — next time you can try to beat it.",
+      "noNewRecords": "Nice result! Your previous bests are still ahead — try again whenever you like.",
+      "paceNeedsPerfect": "A speed record only counts on a round with no mistakes.",
+      "record": {
+        "accuracy": "New accuracy record! {{percent}}% correct",
+        "pace": "New speed record! {{seconds}} sec per question — {{improvement}} seconds faster",
+        "streak": "New streak record! {{value}} correct answers in a row",
+        "paceNarrow": "New speed record! {{seconds}} sec per question"
+      },
+      "bestAccuracy": "Best accuracy",
+      "bestPace": "Fastest pace",
+      "bestStreak": "Longest streak",
+      "paceUnit": "sec per question"
+    },
+    "actions": {
+      "tryAgainSame": "Another challenge, same settings",
+      "practiceAgain": "Another round",
+      "changeSettings": "Change settings"
+    }
+  },
+  "multiplicationTables": {
+    "gameName": "Times Tables",
+    "gameDescription": "Fast times-table practice — pick a level and a length, then beat your own best",
+    "intro": "Choose how you want to train, then go.",
+    "prompt": "What is the answer?",
+    "difficulty": {
+      "basic": "The 2, 3, 4, 5 and 10 tables",
+      "intermediate": "The 6–9 tables against the easier ones",
+      "hard": "The 6, 7, 8 and 9 tables against each other"
+    }
   }
 }

@@ -1,5 +1,6 @@
 import type { MultiplicationFact, ShooterQuestion } from '../../types/monkeyBalloonShooter';
 import { shuffle } from '../../utils/shuffle';
+import { meaningfulDistractors, multiplicationFact as fact } from './multiplicationFacts';
 
 /** Questions per session. */
 export const MONKEY_SHOOTER_TOTAL = 8;
@@ -20,10 +21,6 @@ const ALL_FACTORS = [...EASY_FACTORS, ...HARD_FACTORS].sort((a, b) => a - b);
 /** How many of the eight questions come from the easy half. */
 const EASY_QUESTIONS = Math.floor(MONKEY_SHOOTER_TOTAL / 2);
 
-function fact(left: number, right: number): MultiplicationFact {
-  return { left, right, product: left * right };
-}
-
 /** Every fact in the 2-10 tables, split by how hard its factors are. */
 function buildFactPools(): { easy: MultiplicationFact[]; hard: MultiplicationFact[] } {
   const easy: MultiplicationFact[] = [];
@@ -43,36 +40,6 @@ function buildFactPools(): { easy: MultiplicationFact[]; hard: MultiplicationFac
 }
 
 /**
- * Wrong answers a child could plausibly land on: the neighbouring rows and
- * columns of the times table, and the two squares around the fact. Random
- * unrelated numbers would be too easy to rule out.
- */
-function meaningfulDistractors({ left, right, product }: MultiplicationFact): number[] {
-  const neighbours = [
-    (left - 1) * right,
-    (left + 1) * right,
-    left * (right - 1),
-    left * (right + 1),
-    left * left,
-    right * right,
-  ];
-  // Still table-shaped, but further out; only used when the neighbours collide.
-  const backup = [(left + 2) * right, left * (right + 2), (left - 1) * (right + 1), (left + 1) * (right - 1), product + 1, product - 1, product + 2];
-
-  const taken = new Set([product]);
-  const chosen: number[] = [];
-
-  for (const candidate of [...shuffle(neighbours), ...backup]) {
-    if (chosen.length === BALLOONS_PER_QUESTION - 1) break;
-    if (candidate <= 0 || taken.has(candidate)) continue;
-    taken.add(candidate);
-    chosen.push(candidate);
-  }
-
-  return chosen;
-}
-
-/**
  * One session: easier facts first, harder ones later. The ramp is just this
  * ordering — deliberately no stage system, this is a small game-feel prototype.
  */
@@ -83,6 +50,6 @@ export function buildMonkeyShooterQuestions(): ShooterQuestion[] {
   return facts.map((item, index) => ({
     id: `shot-${index}`,
     fact: item,
-    options: shuffle([item.product, ...meaningfulDistractors(item)]),
+    options: shuffle([item.product, ...meaningfulDistractors(item, BALLOONS_PER_QUESTION - 1)]),
   }));
 }

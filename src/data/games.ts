@@ -203,6 +203,14 @@ export const fractionsPart1Games: Game[] = [
 
 export const multiplicationGames: Game[] = [
   {
+    id: 'multiplicationTables',
+    enabled: true,
+    path: '/grade/4/multiplication/multiplication-tables',
+    nameKey: 'multiplicationTables.gameName',
+    descriptionKey: 'multiplicationTables.gameDescription',
+    icon: '×',
+  },
+  {
     id: 'monkeyBalloonShooter',
     enabled: true,
     path: '/grade/4/multiplication/monkey-balloon-shooter',

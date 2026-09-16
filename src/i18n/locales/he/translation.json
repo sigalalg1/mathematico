@@ -1186,5 +1186,79 @@
       "title": "כל הבלונים התפוצצו! 🐵",
       "summary": "פתרתם {{total}} תרגילי כפל"
     }
+  },
+  "training": {
+    "setup": {
+      "modeLabel": "איך מתרגלים היום?",
+      "difficultyLabel": "רמת קושי",
+      "questionCountLabel": "כמה שאלות?",
+      "questions": "שאלות",
+      "challengeLengthNote": "אתגר אישי נמדד על 20 או 50 שאלות, כדי שהתוצאה באמת תגיד משהו.",
+      "startPractice": "מתחילים לתרגל",
+      "startChallenge": "מתחילים אתגר"
+    },
+    "modes": {
+      "practice": {
+        "name": "תרגול",
+        "description": "בקצב שלכם, בלי לחץ ובלי מדידה."
+      },
+      "challenge": {
+        "name": "אתגר אישי",
+        "description": "מודדים דיוק, קצב ורצף — ומנסים לשפר את השיא שלכם."
+      }
+    },
+    "difficulty": {
+      "basic": "בסיסי",
+      "intermediate": "בינוני",
+      "hard": "קשה"
+    },
+    "hud": {
+      "progress": "שאלה {{current}} מתוך {{total}}",
+      "streak": "🔥 רצף {{value}}"
+    },
+    "feedback": {
+      "correct": "נכון! ✓",
+      "wrong": "התשובה הנכונה: {{answer}}"
+    },
+    "results": {
+      "practiceTitle": "סיימתם את הסבב!",
+      "challengeTitle": "סיימתם את האתגר!",
+      "accuracyLabel": "תשובות נכונות",
+      "accuracyDetail": "{{percent}}% דיוק",
+      "paceLabel": "קצב",
+      "paceValue": "{{seconds}} שניות לשאלה",
+      "streakLabel": "הרצף הארוך ביותר",
+      "streakDetail": "נכונות ברצף",
+      "perfect": "דיוק מעולה — {{total}} מתוך {{total}}!",
+      "firstAttempt": "זו התוצאה הראשונה שלכם בהגדרות האלה. שמרנו אותה — בפעם הבאה אפשר לנסות לשפר.",
+      "noNewRecords": "תוצאה יפה! השיאים הקודמים שלכם עדיין מובילים — אפשר לנסות שוב מתי שתרצו.",
+      "paceNeedsPerfect": "שיא מהירות נשמר רק בסבב ללא טעויות.",
+      "record": {
+        "accuracy": "שיא דיוק חדש! {{percent}}% תשובות נכונות",
+        "pace": "שיא מהירות חדש! {{seconds}} שניות לשאלה — שיפור של {{improvement}} שניות",
+        "streak": "שיא רצף חדש! {{value}} תשובות נכונות ברצף",
+        "paceNarrow": "שיא מהירות חדש! {{seconds}} שניות לשאלה"
+      },
+      "bestAccuracy": "הדיוק הכי טוב",
+      "bestPace": "הקצב הכי מהיר",
+      "bestStreak": "הרצף הכי ארוך",
+      "paceUnit": "שניות לשאלה"
+    },
+    "actions": {
+      "tryAgainSame": "עוד אתגר, אותן הגדרות",
+      "practiceAgain": "סבב נוסף",
+      "changeSettings": "שינוי הגדרות"
+    }
+  },
+  "multiplicationTables": {
+    "gameName": "לוח הכפל",
+    "gameDescription": "תרגול מהיר של לוח הכפל — בוחרים רמה ומספר שאלות, ומנסים לשפר את השיא",
+    "intro": "בוחרים איך לתרגל, ויוצאים לדרך.",
+    "prompt": "כמה יוצא?",
+    "difficulty": {
+      "basic": "לוחות 2, 3, 4, 5 ו-10",
+      "intermediate": "לוחות 6–9 מול הלוחות הקלים",
+      "hard": "לוחות 6, 7, 8 ו-9 זה מול זה"
+    }
   }
 }

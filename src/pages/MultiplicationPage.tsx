@@ -44,7 +44,7 @@ export function MultiplicationPage() {
       title={t('multiplicationPage.title')}
       titleAccent={
         <TitleSparkles>
-          <ActivityIcon activityId="monkeyBalloonShooter" />
+          <ActivityIcon activityId="multiplicationTables" />
         </TitleSparkles>
       }
       subtitle={t('multiplicationPage.listIntro')}
