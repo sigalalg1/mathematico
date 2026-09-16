@@ -6,6 +6,7 @@ import { DivisionWithRemainderPage } from './pages/DivisionWithRemainderPage';
 import { SimpleFractionsPage } from './pages/SimpleFractionsPage';
 import { MultiplicationPage } from './pages/MultiplicationPage';
 import { MonkeyBalloonShooterPage } from './pages/MonkeyBalloonShooterPage';
+import { MultiplicationTablesPage } from './pages/MultiplicationTablesPage';
 import { CoordinateVocabularyPage } from './pages/CoordinateVocabularyPage';
 import { MeetTheAxesPage } from './pages/MeetTheAxesPage';
 import { HitTheTargetPage } from './pages/HitTheTargetPage';
@@ -48,6 +49,7 @@ function App() {
       <Route path="/grade/4/fractions-part-1" element={<FractionsPart1Page />} />
       <Route path="/grade/4/fractions-part-1/:activityId" element={<FractionsPart1ActivityPage />} />
       <Route path="/grade/4/multiplication" element={<MultiplicationPage />} />
+      <Route path="/grade/4/multiplication/multiplication-tables" element={<MultiplicationTablesPage />} />
       <Route path="/grade/4/multiplication/monkey-balloon-shooter" element={<MonkeyBalloonShooterPage />} />
       <Route path="/grade/7/coordinate-system" element={<CoordinateSystemPage />} />
       <Route path="/grade/7/coordinate-system/coordinate-vocabulary" element={<CoordinateVocabularyPage />} />

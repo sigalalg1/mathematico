@@ -1,0 +1,487 @@
+/*
+ * Training screens for grades 3–4: the dark Mathletica shell stays, and the
+ * choices/tiles carry the same pastel-on-dark-ink language as the activity
+ * listings. Mobile-first (~390px), everything laid out with logical properties
+ * so Hebrew RTL and English LTR both work without overrides.
+ */
+
+.tr-setup,
+.tr-play,
+.tr-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+/* --- Setup ---------------------------------------------------------------- */
+
+.tr-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.tr-group-title {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tr-mode-choices {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.tr-mode {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-align: start;
+  padding: var(--space-4) var(--space-5);
+  min-height: var(--tap);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.1s ease;
+}
+
+.tr-mode:active {
+  transform: translateY(1px);
+}
+
+.tr-mode-name {
+  font-size: var(--text-md);
+  font-weight: 800;
+  color: var(--text-h);
+}
+
+.tr-mode-text {
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.tr-mode-practice.tr-mode-on {
+  background: var(--pastel-mint);
+  border-color: var(--pastel-mint);
+}
+
+.tr-mode-challenge.tr-mode-on {
+  background: var(--pastel-lavender);
+  border-color: var(--pastel-lavender);
+}
+
+.tr-mode-on .tr-mode-name {
+  color: var(--pastel-ink);
+}
+
+.tr-mode-on .tr-mode-text {
+  color: var(--pastel-ink-muted);
+}
+
+.tr-difficulty-choices {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.tr-choice {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: start;
+  padding: var(--space-3) var(--space-4);
+  min-height: var(--tap);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tr-choice-name {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.tr-choice-text {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.tr-choice-on {
+  background: var(--pastel-sky);
+  border-color: var(--pastel-sky);
+}
+
+.tr-choice-on .tr-choice-name {
+  color: var(--pastel-ink);
+}
+
+.tr-choice-on .tr-choice-text {
+  color: var(--pastel-ink-muted);
+}
+
+.tr-count-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: var(--space-2);
+}
+
+.tr-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 68px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tr-count-number {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--text-h);
+}
+
+.tr-count-unit {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.tr-count-on {
+  background: var(--pastel-yellow);
+  border-color: var(--pastel-yellow);
+}
+
+.tr-count-on .tr-count-number {
+  color: var(--pastel-ink);
+}
+
+.tr-count-on .tr-count-unit {
+  color: var(--pastel-ink-muted);
+}
+
+.tr-note {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.tr-start {
+  align-self: center;
+}
+
+/* --- Playing -------------------------------------------------------------- */
+
+.tr-hud {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.tr-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.tr-progress-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.tr-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  transition: width 0.25s ease;
+}
+
+.tr-progress-text {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.tr-streak {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.tr-streak-on {
+  background: var(--warning-bg);
+  border-color: var(--warning-border);
+  color: var(--warning);
+}
+
+.tr-question {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-4);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.tr-prompt {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.tr-fact {
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  color: var(--text-h);
+  letter-spacing: 0.02em;
+}
+
+.tr-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.tr-option {
+  min-height: 76px;
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  color: var(--pastel-ink);
+  font-family: inherit;
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease,
+    transform 0.1s ease;
+}
+
+.tr-option:active:not(:disabled) {
+  transform: translateY(2px);
+}
+
+.tr-option:disabled {
+  cursor: default;
+}
+
+/* The same pastel palette the grade 3–4 activity tiles use, rotated per slot. */
+.tr-option-mint {
+  background: var(--pastel-mint);
+}
+
+.tr-option-lavender {
+  background: var(--pastel-lavender);
+}
+
+.tr-option-sky {
+  background: var(--pastel-sky);
+}
+
+.tr-option-peach {
+  background: var(--pastel-peach);
+}
+
+.tr-option-yellow {
+  background: var(--pastel-yellow);
+}
+
+.tr-option-pink {
+  background: var(--pastel-pink);
+}
+
+/*
+ * After an answer the tints step back so the outcome is the only thing being
+ * signalled — the right answer is always pointed out, including after a miss.
+ */
+.tr-options:has(.tr-option:disabled) .tr-option {
+  opacity: 0.45;
+}
+
+.tr-options .tr-option-correct,
+.tr-options .tr-option-wrong {
+  opacity: 1;
+}
+
+.tr-option-correct {
+  background: var(--pastel-mint);
+  border-color: var(--success-border);
+  box-shadow: 0 0 0 3px var(--success-bg);
+}
+
+.tr-option-wrong {
+  background: var(--error-bg);
+  border-color: var(--error-border);
+  color: var(--error);
+}
+
+.tr-feedback {
+  margin: 0;
+  min-height: 24px;
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* --- Results -------------------------------------------------------------- */
+
+.tr-results-title {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-2xl);
+  color: var(--text-h);
+}
+
+.tr-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: var(--space-3);
+}
+
+.tr-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-2);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.tr-stat-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.tr-stat-value {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--text-h);
+}
+
+.tr-stat-detail {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.tr-perfect,
+.tr-baseline,
+.tr-neutral {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.tr-improvement {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.tr-records {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tr-record {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--primary-bg);
+  border: 1px solid var(--primary-tint);
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.tr-bests {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+}
+
+.tr-best {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.tr-best dt {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.tr-best dd {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: 800;
+  color: var(--text-h);
+}
+
+.tr-results-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tr-results-actions .btn {
+  width: 100%;
+  max-width: 320px;
+}
+
+@media (min-width: 560px) {
+  .tr-mode-choices {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tr-difficulty-choices {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .tr-options {
+    gap: var(--space-4);
+  }
+}

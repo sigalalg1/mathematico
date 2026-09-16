@@ -229,6 +229,15 @@ const Balloon: Glyph = ({ className }) => (
   </svg>
 );
 
+/** A times-table grid with one cell lit — the multiplication fluency drill. */
+const TimesTable: Glyph = ({ className }) => (
+  <svg className={className} {...BASE}>
+    <rect x="3.4" y="3.4" width="17.2" height="17.2" rx="3" />
+    <path d="M3.4 9.1h17.2M3.4 14.9h17.2M9.1 3.4v17.2M14.9 3.4v17.2" />
+    <path d="M14.9 9.1h5.7v5.8h-5.7z" fill="currentColor" stroke="none" opacity="0.34" />
+  </svg>
+);
+
 /** Generic fallback: a star, so a card is never left without a glyph. */
 const Star: Glyph = ({ className }) => (
   <svg className={className} {...BASE}>
@@ -264,6 +273,7 @@ const ACTIVITY_GLYPHS: Record<string, Glyph> = {
   'geometry-challenge': Trophy,
 
   /* Grade 4 — Multiplication */
+  multiplicationTables: TimesTable,
   monkeyBalloonShooter: Balloon,
 };
 
