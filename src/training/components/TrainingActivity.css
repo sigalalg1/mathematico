@@ -485,3 +485,17 @@
     gap: var(--space-4);
   }
 }
+
+/* --- Activity-drawn questions --------------------------------------------- */
+
+/*
+ * An activity whose question is a picture (a shaded fraction model, a number
+ * line) renders its own scene here. The engine only reserves the space and lets
+ * the scene bring its own card, so the visual language of the unit is kept
+ * exactly as it is on its non-training screens.
+ */
+.tr-custom-question {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

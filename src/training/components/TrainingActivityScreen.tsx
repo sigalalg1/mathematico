@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageLayout } from '../../components/PageLayout';
 import { useGameSessionTracking } from '../../hooks/useGameSessionTracking';
@@ -12,7 +12,7 @@ import { isChallengeEligible, resolveConfiguration } from '../configuration';
 import { useTrainingRecords } from '../useTrainingRecords';
 import { useTrainingSession } from '../useTrainingSession';
 import type { TrainingClock } from '../clock';
-import { TrainingPlayScreen } from './TrainingPlayScreen';
+import { TrainingPlayScreen, type TrainingQuestionRenderContext } from './TrainingPlayScreen';
 import { TrainingResultsScreen } from './TrainingResultsScreen';
 import { TrainingSetupScreen } from './TrainingSetupScreen';
 import './TrainingActivity.css';
@@ -26,8 +26,8 @@ import './TrainingActivity.css';
 const CORRECT_FEEDBACK_MS = 450;
 const WRONG_FEEDBACK_MS = 1200;
 
-interface TrainingActivityScreenProps {
-  activity: TrainingActivityDefinition;
+interface TrainingActivityScreenProps<TPayload> {
+  activity: TrainingActivityDefinition<TPayload>;
   /** Activity title, back link and grade pill for the page shell. */
   titleKey: string;
   contextLabel: string;
@@ -37,6 +37,12 @@ interface TrainingActivityScreenProps {
   promptKey: string;
   /** Injected in tests so timings are exact. */
   clock?: TrainingClock;
+  /**
+   * Lets an activity draw its own question scene (a shaded model, a number
+   * line) in place of the default fact-and-choices layout. Everything else —
+   * setup, session, timing, results — stays shared.
+   */
+  renderQuestion?: (context: TrainingQuestionRenderContext<TPayload>) => ReactNode;
 }
 
 /**
@@ -45,7 +51,7 @@ interface TrainingActivityScreenProps {
  * and results. A second activity needs a question generator and its own copy —
  * not another copy of this screen.
  */
-export function TrainingActivityScreen({
+export function TrainingActivityScreen<TPayload = never>({
   activity,
   titleKey,
   contextLabel,
@@ -53,7 +59,8 @@ export function TrainingActivityScreen({
   backLabel,
   promptKey,
   clock,
-}: TrainingActivityScreenProps) {
+  renderQuestion,
+}: TrainingActivityScreenProps<TPayload>) {
   const { t } = useTranslation();
   const { capabilities } = activity;
 
@@ -112,6 +119,7 @@ export function TrainingActivityScreen({
           backTo={backTo}
           backLabel={backLabel}
           clock={clock}
+          renderQuestion={renderQuestion}
           onChangeSettings={() => setRun(null)}
         />
       )}
@@ -119,19 +127,20 @@ export function TrainingActivityScreen({
   );
 }
 
-interface TrainingRunProps {
-  activity: TrainingActivityDefinition;
+interface TrainingRunProps<TPayload> {
+  activity: TrainingActivityDefinition<TPayload>;
   configuration: TrainingConfiguration;
   mode: TrainingMode;
   promptKey: string;
   backTo: string;
   backLabel: string;
   clock?: TrainingClock;
+  renderQuestion?: (context: TrainingQuestionRenderContext<TPayload>) => ReactNode;
   onChangeSettings: () => void;
 }
 
 /** One session of a fixed configuration, with its records and results. */
-function TrainingRun({
+function TrainingRun<TPayload>({
   activity,
   configuration,
   mode,
@@ -139,8 +148,9 @@ function TrainingRun({
   backTo,
   backLabel,
   clock,
+  renderQuestion,
   onChangeSettings,
-}: TrainingRunProps) {
+}: TrainingRunProps<TPayload>) {
   const session = useTrainingSession({ activity, configuration, mode, clock });
   const isChallenge = mode === 'challenge';
   const { personalBest, save } = useTrainingRecords(
@@ -214,5 +224,5 @@ function TrainingRun({
     );
   }
 
-  return <TrainingPlayScreen session={session} mode={mode} promptKey={promptKey} />;
+  return <TrainingPlayScreen session={session} mode={mode} promptKey={promptKey} renderQuestion={renderQuestion} />;
 }

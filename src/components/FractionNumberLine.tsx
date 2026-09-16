@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { FractionNotation } from './FractionNotation';
 import './FractionLearningVisuals.css';
 
@@ -27,7 +28,16 @@ export function FractionNumberLine({
   label,
 }: FractionNumberLineProps) {
   return (
-    <div className="fraction-number-line" role={interactive ? 'group' : 'img'} aria-label={label} dir="ltr">
+    <div
+      className="fraction-number-line"
+      role={interactive ? 'group' : 'img'}
+      aria-label={label}
+      dir="ltr"
+      // How many intervals the line is cut into, so each point can claim its
+      // own slot and no two tap targets ever overlap — at twelve intervals on a
+      // narrow phone a fixed-width point would cover its neighbour.
+      style={{ '--fnl-slots': denominator } as CSSProperties}
+    >
       <span className="fnl-track" aria-hidden="true" />
       {Array.from({ length: denominator + 1 }, (_, numerator) => {
         const marked = numerator === markedNumerator;
