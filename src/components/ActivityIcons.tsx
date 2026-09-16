@@ -254,7 +254,54 @@ const Star: Glyph = ({ className }) => (
   </svg>
 );
 
+/** A plus and a minus stacked — the two operations practised together. */
+const PlusMinus: Glyph = ({ className }) => (
+  <svg className={className} {...BASE}>
+    <path d="M4.6 8h7.2M8.2 4.4v7.2" />
+    <path d="M12.2 17.2h7.2" />
+    <circle cx="8.2" cy="8" r="6.4" opacity="0.35" />
+    <circle cx="15.8" cy="17.2" r="4.6" opacity="0.35" />
+  </svg>
+);
+
+/** Two columns of digits lined up — tens over tens, ones over ones. */
+const ColumnSum: Glyph = ({ className }) => (
+  <svg className={className} {...BASE}>
+    <rect x="4.2" y="3.6" width="6.2" height="5.4" rx="1.4" />
+    <rect x="13.4" y="3.6" width="6.2" height="5.4" rx="1.4" />
+    <rect x="4.2" y="11" width="6.2" height="5.4" rx="1.4" />
+    <rect x="13.4" y="11" width="6.2" height="5.4" rx="1.4" />
+    <path d="M3.4 19.2h17.2" />
+  </svg>
+);
+
+/** A ten carried up into the next column. */
+const CarryUp: Glyph = ({ className }) => (
+  <svg className={className} {...BASE}>
+    <rect x="4" y="11.4" width="16" height="8.2" rx="2" opacity="0.35" />
+    <path d="M8.4 15.5h7.2M12 11.9v7.2" />
+    <path d="M6.6 8.6 9.4 5l2.8 3.6" />
+    <path d="M9.4 5v5.4" />
+  </svg>
+);
+
+/** A ten broken open and brought down into the ones. */
+const BorrowDown: Glyph = ({ className }) => (
+  <svg className={className} {...BASE}>
+    <rect x="4" y="4.4" width="16" height="8.2" rx="2" opacity="0.35" />
+    <path d="M8.4 8.5h7.2" />
+    <path d="M6.6 15.4 9.4 19l2.8-3.6" />
+    <path d="M9.4 19v-5.4" />
+  </svg>
+);
+
 const ACTIVITY_GLYPHS: Record<string, Glyph> = {
+  /* Grade 2 — Arithmetic fluency */
+  arithmeticFactsTo20: PlusMinus,
+  arithmeticTwoDigitPlain: ColumnSum,
+  arithmeticAdditionRegrouping: CarryUp,
+  arithmeticSubtractionRegrouping: BorrowDown,
+
   /* Grade 4 — Fractions, part 1 */
   'build-a-fraction': PieHalf,
   'numerator-denominator': FractionBar,

@@ -1,5 +1,6 @@
 import type { Game, Topic } from '../types';
 import {
+  arithmeticFluencyGames,
   coordinateSystemGames,
   divisionWithRemainderGames,
   fractionsPart1Games,
@@ -10,6 +11,12 @@ import {
 } from './games';
 
 export const topics: Topic[] = [
+  {
+    id: 'arithmeticFluency',
+    gradeId: 2,
+    enabled: true,
+    path: '/grade/2/arithmetic-fluency',
+  },
   {
     id: 'geometryAnglesTriangles',
     gradeId: 3,
@@ -90,6 +97,7 @@ export function getTopicsForGrade(gradeId: number): Topic[] {
  * flagged enabled.
  */
 const TOPIC_GAMES: Partial<Record<string, Game[]>> = {
+  arithmeticFluency: arithmeticFluencyGames,
   geometryAnglesTriangles: geometryAnglesTrianglesGames,
   divisionWithRemainder: divisionWithRemainderGames,
   simpleFractions: simpleFractionsGames,
