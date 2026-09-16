@@ -1,0 +1,89 @@
+.angle-scene {
+  position: relative;
+  width: min(100%, 620px);
+  aspect-ratio: 400 / 260;
+  border: 3px solid rgba(255, 255, 255, 0.75);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(22, 50, 80, 0.22);
+}
+
+.angle-scene-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.as-sky { fill: #bfe6ff; }
+.as-ground { fill: #8fd08a; }
+.as-wall { fill: #ffe0b8; }
+.as-door { fill: #a86a3d; }
+.as-roof { fill: #e2646f; }
+.as-kite { fill: #7f6ae0; }
+.as-umbrella { fill: #f39a3c; }
+.as-kite-tail { fill: none; stroke: #6f5ac6; stroke-width: 2; }
+
+.as-edge {
+  fill: none;
+  stroke: #27385f;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.as-ground-line { stroke-width: 3.5; }
+.as-pole { stroke-width: 4; }
+.as-table-top { stroke: #8a5a2b; stroke-width: 6; }
+.as-leg { stroke: #8a5a2b; stroke-width: 5; }
+
+.as-reveal-edge {
+  fill: none;
+  stroke: #e8156b;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.as-reveal-arc {
+  fill: none;
+  stroke: #5b46d6;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.as-reveal-vertex { fill: #fff; stroke: #e8156b; stroke-width: 2.5; }
+
+.as-hotspot {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.as-hotspot > span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+  border: 2px dashed rgba(39, 56, 95, 0.45);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.as-hotspot:hover > span,
+.as-hotspot:focus-visible > span {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(39, 56, 95, 0.9);
+}
+
+.as-hotspot.is-picked > span { border-color: #e8156b; background: rgba(255, 255, 255, 0.95); }
+
+.as-hotspot:disabled { cursor: default; }
+
+@media (max-width: 650px) {
+  .as-hotspot { width: 44px; height: 44px; }
+}

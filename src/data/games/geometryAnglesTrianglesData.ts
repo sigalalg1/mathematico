@@ -20,11 +20,21 @@ export const GEOMETRY_ACTIVITY_IDS: GeometryActivityId[] = [
 
 export const GEOMETRY_SESSION_SIZE = 6;
 export const GEOMETRY_CHALLENGE_SESSION_SIZE = 12;
+/**
+ * Angles offered for "what type of angle is this?".
+ *
+ * Every acute value stays at most `90 - NON_RIGHT_ANGLE_MARGIN` and every
+ * obtuse value at least `90 + NON_RIGHT_ANGLE_MARGIN`, so no drawn angle can be
+ * mistaken for a right angle by eye. Only the right-angle bucket uses 90°.
+ */
 const ANGLES: Record<AngleType, readonly number[]> = {
-  acute: [24, 37, 52, 68, 81, 89],
+  acute: [22, 31, 40, 48, 57, 66, 75],
   right: [90],
-  obtuse: [91, 105, 123, 142, 166],
+  obtuse: [105, 116, 127, 138, 149, 160, 168],
 };
+
+const SIDE_TYPES: readonly TriangleSideType[] = ['equilateral', 'isosceles', 'scalene'];
+const TRIANGLE_ANGLE_TYPES: readonly TriangleAngleType[] = ['acute', 'right', 'obtuse'];
 
 const TRIANGLES: Record<string, [Point, Point, Point]> = {
   'equilateral-acute': [{ x: 50, y: 15 }, { x: 12, y: 81 }, { x: 88, y: 81 }],
@@ -51,8 +61,8 @@ function randomAngle(random: () => number, type: AngleType): number {
   return pickRandom(random, ANGLES[type]);
 }
 
-function angleCandidates(random: () => number, target: AngleType, many = false) {
-  const types: AngleType[] = many ? [target, target, 'acute', 'right', 'obtuse'] : ['acute', 'right', 'obtuse'];
+function angleCandidates(random: () => number, target: AngleType) {
+  const types: AngleType[] = [target, target, 'acute', 'right', 'obtuse'];
   return shuffle(types.map((type, index) => ({
     id: `angle-${index}-${type}`,
     angle: randomAngle(random, type),
@@ -61,16 +71,40 @@ function angleCandidates(random: () => number, target: AngleType, many = false) 
   })), random);
 }
 
+/**
+ * Which classifications the three offered triangles carry.
+ *
+ * "Choose the isosceles triangle" never offers an equilateral distractor: this
+ * curriculum treats the three side classes as exclusive, but an equilateral
+ * triangle does have two equal sides, so a child picking it would be
+ * mathematically right and still be marked wrong. Two different scalene
+ * triangles take its place instead.
+ */
+function candidateTypes(dimension: 'sides' | 'angles', target: string): string[] {
+  if (dimension === 'angles') return ['acute', 'right', 'obtuse'];
+  if (target === 'isosceles') return ['isosceles', 'scalene', 'scalene'];
+  return ['equilateral', 'isosceles', 'scalene'];
+}
+
 function triangleCandidates(random: () => number, dimension: 'sides' | 'angles', target: string) {
-  const entries = shuffle([...VALID_DUAL_CLASSIFICATIONS], random);
-  const correct = entries.find((entry) => entry.classification[dimension] === target)!;
-  const wrong = entries.filter((entry) => entry.classification[dimension] !== target).slice(0, 2);
-  return shuffle([correct, ...wrong].map((entry, index) => ({
-    id: `triangle-${index}-${entry.key}`,
-    points: rotateTriangle(entry.points, randomInt(random, 0, 359)),
-    rotation: 0,
-    answer: entry.classification[dimension],
-  })), random);
+  const used = new Set<string>();
+  const entries = candidateTypes(dimension, target).map((type) => {
+    const pool = VALID_DUAL_CLASSIFICATIONS.filter((entry) => entry.classification[dimension] === type);
+    const fresh = pool.filter((entry) => !used.has(entry.key));
+    const entry = pickRandom(random, fresh.length > 0 ? fresh : pool);
+    used.add(entry.key);
+    return entry;
+  });
+  return shuffle(entries.map((entry, index) => {
+    const points = rotateTriangle(entry.points, randomInt(random, 0, 359));
+    return {
+      id: `triangle-${index}-${entry.key}`,
+      points,
+      rotation: 0,
+      // Read back off the very points that get drawn, never asserted separately.
+      answer: classifyTriangle(points)[dimension],
+    };
+  }), random);
 }
 
 function dualCandidates(random: () => number, targetKey: string) {
@@ -116,8 +150,13 @@ function makeChallenge(activityId: GeometryActivityId, index: number, random: ()
   if (interaction === 'select-angle') {
     return { ...base, angle: randomAngle(random, targetAngle), targetAngle, correctAnswer: targetAngle };
   }
-  if (interaction === 'hunt-angle' || interaction === 'find-corners') {
-    return { ...base, targetAngle, candidates: angleCandidates(random, targetAngle, true), correctAnswer: targetAngle };
+  if (interaction === 'hunt-angle') {
+    return { ...base, targetAngle, candidates: angleCandidates(random, targetAngle), correctAnswer: targetAngle };
+  }
+  if (interaction === 'find-corners') {
+    // Answered by clicking a real corner of the illustrated scene, so the
+    // challenge only needs the requested type; the scene owns the geometry.
+    return { ...base, targetAngle, correctAnswer: targetAngle };
   }
   if (interaction === 'build-angle') {
     return { ...base, targetAngle, angle: 45, correctAnswer: targetAngle };
@@ -127,30 +166,37 @@ function makeChallenge(activityId: GeometryActivityId, index: number, random: ()
     return { ...base, points: rotateTriangle(entry.points, rotation), correctAnswer: 'done' };
   }
   const entry = pickRandom(random, VALID_DUAL_CLASSIFICATIONS);
-  if (interaction === 'select-sides') {
-    return { ...base, targetAngle, points: rotateTriangle(entry.points, rotation), candidates: triangleCandidates(random, 'sides', entry.classification.sides), correctAnswer: entry.classification.sides };
-  }
-  if (interaction === 'select-triangle-angle') {
-    return { ...base, points: rotateTriangle(entry.points, rotation), candidates: triangleCandidates(random, 'angles', entry.classification.angles), correctAnswer: entry.classification.angles };
+  if (interaction === 'select-sides' || interaction === 'select-triangle-angle') {
+    const dimension = interaction === 'select-sides' ? 'sides' : 'angles';
+    const target = pickRandom(random, dimension === 'sides' ? SIDE_TYPES : TRIANGLE_ANGLE_TYPES);
+    const candidates = triangleCandidates(random, dimension, target);
+    // The prompt is taken from a candidate that really carries that shape, so
+    // the asked-for class always exists among the drawn options.
+    const correct = candidates.find((candidate) => candidate.answer === target)!;
+    return { ...base, candidates, correctAnswer: correct.answer };
   }
   if (interaction === 'triangle-lab') {
     return { ...base, points: rotateTriangle(entry.points, rotation), correctAnswer: `${entry.classification.sides}-${entry.classification.angles}` };
   }
   if (interaction === 'riddle') {
-    const classification = entry.classification;
+    const riddlePoints = rotateTriangle(entry.points, rotation);
+    const classification = classifyTriangle(riddlePoints);
     return {
       ...base,
-      points: rotateTriangle(entry.points, rotation),
+      points: riddlePoints,
       candidates: dualCandidates(random, entry.key),
       correctAnswer: classification.sides,
       riddleKeys: [`geometry.riddles.sides.${classification.sides}`, `geometry.riddles.angles.${classification.angles}`],
     };
   }
+  // 'rotation': one drawn triangle plus three type buttons. The answer is read
+  // back off the rotated points that are actually shown.
+  const points = rotateTriangle(entry.points, rotation);
+  const classification = classifyTriangle(points);
   return {
     ...base,
-    points: rotateTriangle(entry.points, rotation),
-    candidates: triangleCandidates(random, index % 2 ? 'angles' : 'sides', index % 2 ? entry.classification.angles : entry.classification.sides),
-    correctAnswer: index % 2 ? entry.classification.angles : entry.classification.sides,
+    points,
+    correctAnswer: index % 2 ? classification.angles : classification.sides,
   };
 }
 
@@ -169,5 +215,15 @@ export function isGeometryChallengeCorrect(challenge: GeometryChallenge, answer:
 
 export function validateGeneratedChallenge(challenge: GeometryChallenge): boolean {
   const triangles = [challenge.points, ...(challenge.candidates ?? []).map((candidate) => candidate.points)].filter(Boolean) as [Point, Point, Point][];
-  return triangles.every((points) => isValidTriangle(points)) && (!challenge.candidates || challenge.candidates.some((candidate) => candidate.answer === challenge.correctAnswer));
+  if (!triangles.every((points) => isValidTriangle(points))) return false;
+  if (!challenge.candidates) return true;
+  // Every triangle option must be labelled with the class its own drawn points
+  // really have, and exactly one option may answer the prompt.
+  const dimension = challenge.interaction === 'select-sides' ? 'sides' : challenge.interaction === 'select-triangle-angle' ? 'angles' : null;
+  if (dimension) {
+    const labelled = challenge.candidates.every((candidate) => candidate.points && classifyTriangle(candidate.points)[dimension] === candidate.answer);
+    const matching = challenge.candidates.filter((candidate) => candidate.answer === challenge.correctAnswer);
+    return labelled && matching.length === 1;
+  }
+  return challenge.candidates.some((candidate) => candidate.answer === challenge.correctAnswer);
 }

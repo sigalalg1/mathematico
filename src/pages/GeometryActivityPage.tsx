@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AngleVisual, TriangleVisual } from '../components/GeometryVisuals';
+import { AngleSceneVisual } from '../components/AngleSceneVisual';
 import { PageLayout } from '../components/PageLayout';
 import { SoundToggle } from '../components/SoundToggle';
 import { useSound } from '../audio/useSound';
@@ -64,9 +65,14 @@ function GeometryActivity({ activityId }: { activityId: GeometryActivityId }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [game.completed]);
 
-  function submit(answer: string) {
+  /**
+   * `optionId` identifies the clicked option and defaults to the answer itself.
+   * Option lists can legitimately hold two entries with the same answer, so
+   * highlighting has to follow the clicked option and not the answer string.
+   */
+  function submit(answer: string, optionId: string = answer) {
     if (game.status === 'correct') return;
-    setSelected(answer);
+    setSelected(optionId);
     game.submit(answer);
     play(answer === game.challenge.correctAnswer ? 'select' : 'miss');
   }
@@ -136,12 +142,13 @@ interface SceneProps {
   status: 'unanswered' | 'correct' | 'incorrect';
   onAngle: (angle: number) => void;
   onPoints: (points: [Point, Point, Point]) => void;
-  onSubmit: (answer: string) => void;
+  onSubmit: (answer: string, optionId?: string) => void;
 }
 
 function ChallengeScene({ challenge, angle, points, selected, status, onAngle, onPoints, onSubmit }: SceneProps) {
   const { t } = useTranslation();
   const angleLabel = (value: number) => t('geometry.a11y.angle', { degrees: Math.round(value) });
+  const onSelect = (optionId: string, answer: string) => onSubmit(answer, optionId);
   const interactiveAngle = challenge.interaction === 'explore-angle' || challenge.interaction === 'build-angle';
 
   if (interactiveAngle) {
@@ -173,15 +180,25 @@ function ChallengeScene({ challenge, angle, points, selected, status, onAngle, o
     );
   }
 
-  if (challenge.interaction === 'hunt-angle' || challenge.interaction === 'find-corners') {
+  if (challenge.interaction === 'find-corners') {
     return (
-      <div className={`geo-angle-field ${challenge.interaction === 'find-corners' ? 'is-scene' : ''}`}>
+      <AngleSceneVisual
+        revealedHotspotId={selected}
+        disabled={status === 'correct'}
+        onSelect={(hotspot) => onSelect(hotspot.id, hotspot.type)}
+      />
+    );
+  }
+
+  if (challenge.interaction === 'hunt-angle') {
+    return (
+      <div className="geo-angle-field">
         {challenge.candidates!.map((candidate) => (
           <button
             key={candidate.id}
             type="button"
-            className={`geo-angle-target${selected === candidate.answer ? ' is-selected' : ''}`}
-            onClick={() => onSubmit(candidate.answer)}
+            className={`geo-angle-target${selected === candidate.id ? ' is-selected' : ''}`}
+            onClick={() => onSelect(candidate.id, candidate.answer)}
             aria-label={t('geometry.a11y.selectAngle', { degrees: candidate.angle })}
           >
             <AngleVisual angle={candidate.angle!} rotation={candidate.rotation} label={angleLabel(candidate.angle!)} />
@@ -228,7 +245,7 @@ function ChallengeScene({ challenge, angle, points, selected, status, onAngle, o
     const sideQuestion = ['equilateral', 'isosceles', 'scalene'].includes(challenge.correctAnswer);
     return (
       <div className="geo-workbench">
-        <TriangleVisual points={points!} label={t('geometry.a11y.triangle')} showMeasures={false} />
+        <TriangleVisual points={points!} label={t('geometry.a11y.triangle')} measures="none" />
         <ChoiceButtons
           values={sideQuestion ? ['equilateral', 'isosceles', 'scalene'] : ['acute', 'right', 'obtuse']}
           selected={selected}
@@ -245,13 +262,23 @@ function ChallengeScene({ challenge, angle, points, selected, status, onAngle, o
       {challenge.riddleKeys && <div className="geo-riddle">{challenge.riddleKeys.map((key) => <span key={key}>{t(key)}</span>)}</div>}
       <div className="geo-triangle-dock">
         {challenge.candidates!.map((candidate) => (
-          <button key={candidate.id} type="button" className={`geo-triangle-choice${selected === candidate.answer ? ' is-selected' : ''}`} onClick={() => onSubmit(candidate.answer)}>
-            <TriangleVisual points={candidate.points!} label={t('geometry.a11y.triangle')} showMeasures={challenge.interaction !== 'rotation'} />
+          <button key={candidate.id} type="button" className={`geo-triangle-choice${selected === candidate.id ? ' is-selected' : ''}`} onClick={() => onSelect(candidate.id, candidate.answer)}>
+            <TriangleVisual points={candidate.points!} label={t('geometry.a11y.triangle')} measures={candidateMeasures(challenge.interaction)} />
           </button>
         ))}
       </div>
     </div>
   );
+}
+
+/**
+ * A "choose the triangle" board only labels the measurement the question is
+ * about: side lengths on the by-sides question, angles on the by-angles one.
+ */
+function candidateMeasures(interaction: GeometryChallenge['interaction']): 'both' | 'angles' | 'sides' {
+  if (interaction === 'select-sides') return 'sides';
+  if (interaction === 'select-triangle-angle') return 'angles';
+  return 'both';
 }
 
 function ChoiceButtons({ values, selected, status, onSubmit, translationPrefix }: { values: string[]; selected: string | null; status: string; onSubmit: (value: string) => void; translationPrefix: string }) {

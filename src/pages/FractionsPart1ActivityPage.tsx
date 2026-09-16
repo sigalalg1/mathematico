@@ -276,9 +276,17 @@ function ChallengeScene(props: ChallengeSceneProps) {
   if (challenge.kind === 'compare' && challenge.compareWith) {
     return (
       <>
-        <div className="fp-comparison">
+        {/*
+          Locked to LTR: `<` and `>` are bidi-mirrored characters, so inside the
+          RTL page they would render as their opposite once selected, and the
+          two models would swap sides — making the sign disagree with both the
+          question and the stored answer.
+        */}
+        <div className="fp-comparison" dir="ltr">
           <VisualFraction fraction={challenge.fraction} shape="circle" />
-          <span className="fp-comparison-slot">{selectedAnswer ?? '?'}</span>
+          <span className="fp-comparison-slot">
+            <MathText>{selectedAnswer ?? '?'}</MathText>
+          </span>
           <VisualFraction fraction={challenge.compareWith} shape="bar" />
         </div>
         <ChoiceDock choices={challenge.choices} selected={selectedAnswer} status={status} onSelect={onSubmit} />
@@ -317,11 +325,14 @@ function ChallengeScene(props: ChallengeSceneProps) {
   );
 }
 
+/**
+ * A comparison model, shown without its numeric value: reading the fraction off
+ * the shaded shape is the reasoning step the comparison question is asking for.
+ */
 function VisualFraction({ fraction, shape }: { fraction: FractionValue; shape: 'circle' | 'bar' }) {
   return (
     <div className="fp-visual-fraction">
       <FractionShape shape={shape} pieces={fraction.denominator} selected={Array.from({ length: fraction.numerator }, (_, index) => index)} />
-      <FractionNotation numerator={fraction.numerator} denominator={fraction.denominator} />
     </div>
   );
 }

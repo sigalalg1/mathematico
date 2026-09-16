@@ -1060,9 +1060,17 @@
     "a11y": {
       "angle": "Angle of {{degrees}} degrees",
       "selectAngle": "Select {{degrees}} degree angle",
-      "triangle": "Interactive triangle"
+      "triangle": "Interactive triangle",
+      "sceneAngle": "Select the angle at the {{object}}"
     },
-    "listIntro": "Come open up angles, build triangles, and spot shapes everywhere!"
+    "listIntro": "Come open up angles, build triangles, and spot shapes everywhere!",
+    "sceneObjects": {
+      "roof": "roof",
+      "house": "house",
+      "kite": "kite",
+      "umbrella": "umbrella",
+      "table": "table"
+    }
   },
   "fractionsPart1": {
     "unitName": "Fractions – Part 1",
