@@ -3,6 +3,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PageLayout } from '../components/PageLayout';
 import { Card } from '../components/Card';
+import { Grade4TopicCards } from '../components/Grade4TopicCards';
 import { GridGlyph } from '../components/icons';
 import { grades } from '../data/grades';
 import { getTopicsForGrade } from '../data/topics';
@@ -35,15 +36,16 @@ export function GradePage() {
   }
 
   const topics = getTopicsForGrade(grade.id);
-
-  return (
-    <PageLayout
-      title={t('app.chooseTopic')}
-      subtitle={t('gradePage.subtitle')}
-      context={t(`grades.${grade.id}`)}
-      backTo="/"
-      backLabel={t('nav.allGrades')}
-    >
+  const topicCards =
+    grade.id === 4 ? (
+      <Grade4TopicCards
+        topics={topics}
+        sectionLabel={t('app.chooseTopic')}
+        titleFor={(topicId) => t(`topics.${topicId}.name`)}
+        descriptionFor={(topicId) => t(`topics.${topicId}.description`)}
+        comingSoonLabel={t('common.comingSoon')}
+      />
+    ) : (
       <div className="row-list">
         {topics.map((topic, index) => (
           <Card
@@ -58,6 +60,17 @@ export function GradePage() {
           />
         ))}
       </div>
+    );
+
+  return (
+    <PageLayout
+      title={t('app.chooseTopic')}
+      subtitle={t('gradePage.subtitle')}
+      context={t(`grades.${grade.id}`)}
+      backTo="/"
+      backLabel={t('nav.allGrades')}
+    >
+      {topicCards}
     </PageLayout>
   );
 }
