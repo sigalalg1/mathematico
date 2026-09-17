@@ -183,6 +183,14 @@
   color: var(--muted);
 }
 
+.tr-target {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--accent, var(--primary));
+}
+
 .tr-start {
   align-self: center;
 }

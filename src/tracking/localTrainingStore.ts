@@ -53,6 +53,11 @@ export function getLocalTrainingResults(key: string): TrainingSessionResult[] {
     .sort((a, b) => b.completedAt.localeCompare(a.completedAt));
 }
 
+/** Newest first, across every configuration — the source for records/progress pages. */
+export function getAllLocalTrainingResults(): TrainingSessionResult[] {
+  return readAll().sort((a, b) => b.completedAt.localeCompare(a.completedAt));
+}
+
 export function clearLocalTrainingResults(): void {
   writeAll([]);
 }

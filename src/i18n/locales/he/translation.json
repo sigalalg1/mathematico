@@ -58,7 +58,29 @@
   "activity": {
     "title": "הפעילות שלי",
     "navLabel": "פעילות",
-    "empty": "עדיין אין משחקים שהושלמו — קדימה לשחק!"
+    "empty": "עדיין אין משחקים שהושלמו — קדימה לשחק!",
+    "summary": {
+      "accuracyLabel": "דיוק ממוצע",
+      "paceLabel": "ממוצע לשאלה",
+      "paceValue": "{{seconds}} שנ׳",
+      "challengesLabel": "אתגרים הושלמו"
+    },
+    "records": {
+      "title": "השיאים שלי",
+      "emptyTitle": "עוד אין לך שיאים",
+      "emptyBody": "נסו אתגר אישי כדי לקבוע את השיא הראשון.",
+      "emptyAction": "לצפייה בפעילויות",
+      "configLabel": "{{difficulty}} · {{count}} שאלות",
+      "configLabelNoDifficulty": "{{count}} שאלות",
+      "correctFraction": "{{correct}}/{{total}} נכון",
+      "cta": "לשבור את השיא"
+    },
+    "recent": {
+      "title": "פעילות אחרונה",
+      "empty": "עדיין אין פעילות אחרונה.",
+      "showMore": "הצג עוד",
+      "showLess": "הצג פחות"
+    }
   },
   "activityList": {
     "bannerTitle": "כל תרגול מקדם אתכם צעד אחד!",
@@ -1240,7 +1262,8 @@
       "questions": "שאלות",
       "challengeLengthNote": "אתגר אישי נמדד על 20 או 50 שאלות, כדי שהתוצאה באמת תגיד משהו.",
       "startPractice": "מתחילים לתרגל",
-      "startChallenge": "מתחילים אתגר"
+      "startChallenge": "מתחילים אתגר",
+      "recordTarget": "השיא שלך: {{seconds}} שניות לשאלה"
     },
     "modes": {
       "practice": {

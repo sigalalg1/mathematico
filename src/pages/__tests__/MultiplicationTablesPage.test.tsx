@@ -372,3 +372,59 @@ describe('Multiplication Tables — English', () => {
     expect(screen.getByText('sec per question')).toBeInTheDocument();
   });
 });
+
+describe('Multiplication Tables — launched from a "beat your record" link', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.useFakeTimers();
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it('skips the setup screen and starts the exact challenge configuration the link asked for', () => {
+    renderWithProviders(<MultiplicationTablesPage />, [
+      '/grade/4/multiplication/multiplication-tables?mode=challenge&count=20&start=1&difficulty=hard',
+    ]);
+
+    // Straight into the running challenge — no setup screen in between.
+    expect(screen.queryByTestId('tr-start')).not.toBeInTheDocument();
+    expect(screen.getByTestId('tr-streak')).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', '20');
+  });
+
+  it('preselects the launched difficulty and mode on setup when the link does not also auto-start', () => {
+    renderWithProviders(<MultiplicationTablesPage />, [
+      '/grade/4/multiplication/multiplication-tables?mode=challenge&count=20&difficulty=hard',
+    ]);
+
+    expect(screen.getByTestId('tr-mode-challenge')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('tr-difficulty-hard')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('tr-count-20')).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('ignores an invalid preset question count and falls back to the activity default', () => {
+    renderWithProviders(<MultiplicationTablesPage />, [
+      '/grade/4/multiplication/multiplication-tables?mode=practice&count=999',
+    ]);
+
+    expect(screen.getByTestId('tr-count-10')).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('shows a quiet target-pace note on setup once the child already holds a record for the selected settings', async () => {
+    renderWithProviders(<MultiplicationTablesPage />);
+    start({ mode: 'challenge', count: 20 });
+    await playSession(20, { thinkMs: 3000 });
+    cleanup();
+
+    renderWithProviders(<MultiplicationTablesPage />);
+    fireEvent.click(screen.getByTestId('tr-mode-challenge'));
+    fireEvent.click(screen.getByTestId('tr-difficulty-basic'));
+    fireEvent.click(screen.getByTestId('tr-count-20'));
+    // The personal-best lookup resolves on a microtask, not a timer.
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(screen.getByTestId('tr-target-pace')).toHaveTextContent(t('training.setup.recordTarget', { seconds: 3 }));
+  });
+});
