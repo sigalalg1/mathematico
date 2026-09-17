@@ -11,7 +11,7 @@ import { computeSessionResult, longestStreakOf } from './metrics';
 import { systemTrainingClock, type TrainingClock } from './clock';
 import { createActiveTimeTracker } from './activeTime';
 
-export type TrainingPhase = 'answering' | 'feedback' | 'completed';
+export type TrainingPhase = 'answering' | 'feedback' | 'retry' | 'completed';
 
 interface UseTrainingSessionInput<TPayload> {
   activity: TrainingActivityDefinition<TPayload>;
@@ -41,6 +41,14 @@ export interface TrainingSessionState<TPayload = never> {
   submit: (answer: string) => void;
   /** Leaves feedback and presents the next question — or finishes the session. */
   advance: () => void;
+  /**
+   * Leaves a wrong answer's feedback without moving on: the same question
+   * stays on screen, still showing which answer was wrong and which one is
+   * right, and the child can submit again. Only a correct resubmission during
+   * `retry` advances the session — the mistake already recorded is not
+   * repeated no matter how many further attempts it takes.
+   */
+  retry: () => void;
   /** Runs the identical configuration again from the start. */
   restart: () => void;
   /**
@@ -150,9 +158,18 @@ export function useTrainingSession<TPayload = never>({
 
   const submit = useCallback(
     (value: string) => {
-      if (phase !== 'answering') return;
+      if (phase !== 'answering' && phase !== 'retry') return;
       const question = questions[index];
       const isCorrect = value === question.answer;
+
+      if (phase === 'retry') {
+        // Resolving the same question's earlier mistake — nothing new is
+        // recorded; only a correct resubmission moves the session forward.
+        setLastAnswer({ value, isCorrect, correctAnswer: question.answer });
+        if (isCorrect) setPhase('feedback');
+        return;
+      }
+
       const elapsedMs = Math.max(0, activeTime.elapsedMs() - questionPresentedAtRef.current);
 
       answersRef.current = [
@@ -172,6 +189,12 @@ export function useTrainingSession<TPayload = never>({
     },
     [activeTime, index, phase, questions],
   );
+
+  /** See the `retry` field on `TrainingSessionState`. */
+  const retry = useCallback(() => {
+    if (phase !== 'feedback' || !lastAnswer || lastAnswer.isCorrect) return;
+    setPhase('retry');
+  }, [phase, lastAnswer]);
 
   const advance = useCallback(() => {
     if (phase !== 'feedback') return;
@@ -234,6 +257,7 @@ export function useTrainingSession<TPayload = never>({
     roundKey,
     submit,
     advance,
+    retry,
     restart,
     getActiveDurationMs: activeTime.elapsedMs,
     pause,

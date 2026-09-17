@@ -152,7 +152,9 @@ export function TrainingPlayScreen<TPayload = never>({
                   type="button"
                   className={classes.join(' ')}
                   data-testid={`tr-option-${option}`}
-                  disabled={phase !== 'answering'}
+                  // Disabled only for the brief feedback beat — re-enabled during
+                  // `retry` so a wrong answer can be corrected in place.
+                  disabled={phase === 'feedback'}
                   onClick={() => session.submit(option)}
                 >
                   <MathText>{option}</MathText>
@@ -170,7 +172,7 @@ export function TrainingPlayScreen<TPayload = never>({
         into their opposite — the feedback would then state the wrong answer.
       */}
       <p className="tr-feedback" role="status" aria-live="polite">
-        {phase === 'feedback' && lastAnswer ? (
+        {(phase === 'feedback' || phase === 'retry') && lastAnswer ? (
           lastAnswer.isCorrect ? (
             t('training.feedback.correct')
           ) : (

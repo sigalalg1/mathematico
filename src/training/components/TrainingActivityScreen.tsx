@@ -192,16 +192,19 @@ function TrainingRun<TPayload>({
     roundKey: session.roundKey,
   });
 
-  // The feedback beat, then the next question.
-  const { phase, lastAnswer, advance } = session;
+  // A correct answer's feedback beat, then the next question. A wrong
+  // answer's feedback beat instead hands control back to the child on the
+  // same question — see `retry` — so they get the chance to pick the right
+  // answer themselves rather than being carried past their own mistake.
+  const { phase, lastAnswer, advance, retry: retrySameQuestion } = session;
   useEffect(() => {
     if (phase !== 'feedback' || !lastAnswer) return undefined;
     const beat = lastAnswer.isCorrect
       ? (feedbackTiming?.correct ?? CORRECT_FEEDBACK_MS)
       : (feedbackTiming?.wrong ?? WRONG_FEEDBACK_MS);
-    const timer = window.setTimeout(advance, beat);
+    const timer = window.setTimeout(lastAnswer.isCorrect ? advance : retrySameQuestion, beat);
     return () => window.clearTimeout(timer);
-  }, [phase, lastAnswer, advance, feedbackTiming?.correct, feedbackTiming?.wrong]);
+  }, [phase, lastAnswer, advance, retrySameQuestion, feedbackTiming?.correct, feedbackTiming?.wrong]);
 
   const result = session.result;
   useEffect(() => {

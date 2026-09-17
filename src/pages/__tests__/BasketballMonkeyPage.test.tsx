@@ -92,6 +92,11 @@ describe('Basketball Monkey training activity', () => {
     expect(screen.getByTestId('tr-option-63')).toHaveClass('tr-option-correct');
 
     await act(async () => vi.advanceTimersByTime(1200));
+    // Still the same question — the miss handed it back for a retry.
+    expect(screen.getByTestId('tr-question')).toHaveTextContent('21 × 3');
+
+    fireEvent.click(screen.getByTestId('tr-option-63'));
+    await act(async () => vi.advanceTimersByTime(450));
     expect(screen.getByTestId('tr-question')).toHaveTextContent('22 × 3');
   });
 
