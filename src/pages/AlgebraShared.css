@@ -91,35 +91,6 @@
   font-weight: 800;
 }
 
-/* --- a simple growing visual pattern (dots), no SVG needed ---------------- */
-
-.algebra-stage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.algebra-stage-label {
-  font-size: var(--text-xs);
-  color: var(--muted);
-}
-
-.algebra-stage-dots {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 4px;
-  max-width: 260px;
-}
-
-.algebra-stage-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
-  background: var(--primary);
-}
-
 /* --- comparing two expressions (equivalence) ------------------------------- */
 
 .algebra-compare {

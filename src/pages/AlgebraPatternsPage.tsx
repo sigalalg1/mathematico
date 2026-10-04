@@ -78,26 +78,23 @@ export function AlgebraPatternsPage() {
         </div>
 
         <p className="algebra-activity-prompt">
-          {t(`algebraPatterns.prompt.${challenge.kind}`, { input: challenge.targetInput })}
+          {t(`algebraPatterns.prompt.${challenge.kind}`, { input: challenge.targetInput, stage: challenge.stage })}
         </p>
 
         {challenge.kind === 'visualStage' ? (
+          // Deliberately a plain stage → count table, not a grid of objects
+          // to count: the skill here is reading off the +N rule between
+          // stages, never tallying individual squares.
           <div className="algebra-machine">
             {challenge.knownPairs.map((pair) => (
-              <div key={pair.input} className="algebra-stage">
-                <span className="algebra-stage-label">{t('algebraPatterns.machine.stageLabel', { stage: pair.input })}</span>
-                <div className="algebra-stage-dots">
-                  {Array.from({ length: pair.output }, (_, dotIndex) => (
-                    <span key={dotIndex} className="algebra-stage-dot" aria-hidden="true" />
-                  ))}
-                </div>
-              </div>
+              <MathText key={pair.input} className="algebra-machine-row">
+                {t('algebraPatterns.machine.stageLabel', { stage: pair.input })} <span className="algebra-machine-arrow">→</span> {pair.output}
+              </MathText>
             ))}
-            <div className="algebra-stage">
-              <span className="algebra-stage-label algebra-machine-unknown">
-                {t('algebraPatterns.machine.stageLabel', { stage: challenge.stage })}
-              </span>
-            </div>
+            <MathText className="algebra-machine-row algebra-machine-row-open">
+              {t('algebraPatterns.machine.stageLabel', { stage: challenge.stage })} <span className="algebra-machine-arrow">→</span>{' '}
+              <span className="algebra-machine-unknown">?</span>
+            </MathText>
           </div>
         ) : (
           <div className="algebra-machine">

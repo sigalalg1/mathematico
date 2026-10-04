@@ -950,7 +950,7 @@
       "computeOutput": "What is the machine's rule? What comes out when we put in {{input}}?",
       "computeRule": "What rule does the machine follow — for any number?",
       "computeInput": "What input would give this output?",
-      "visualStage": "The pattern grows by the same amount every stage. How many at this stage?"
+      "visualStage": "What's the pattern? How many will there be at stage {{stage}}?"
     },
     "machine": {
       "stageLabel": "Stage {{stage}}"
