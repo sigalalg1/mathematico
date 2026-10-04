@@ -93,6 +93,71 @@ describe('useTrainingSession', () => {
     expect(result.current.question.id).toBe('q1');
   });
 
+  it('lets a wrong answer be corrected in place via retry, without repeating the mistake', () => {
+    const clock = fakeClock();
+    const { result } = setup(clock);
+
+    act(() => result.current.submit('wrong'));
+    act(() => result.current.retry());
+
+    // Still the same question, re-opened for another attempt.
+    expect(result.current.phase).toBe('retry');
+    expect(result.current.index).toBe(0);
+    expect(result.current.answers).toHaveLength(1);
+    expect(result.current.answers[0].isCorrect).toBe(false);
+
+    // A second wrong guess during retry does not add a second mistake.
+    act(() => result.current.submit('still wrong'));
+    expect(result.current.phase).toBe('retry');
+    expect(result.current.answers).toHaveLength(1);
+    expect(result.current.lastAnswer?.isCorrect).toBe(false);
+
+    // The correct guess resolves it — feedback, then the child can move on.
+    act(() => result.current.submit('1'));
+    expect(result.current.phase).toBe('feedback');
+    expect(result.current.lastAnswer?.isCorrect).toBe(true);
+    expect(result.current.answers).toHaveLength(1);
+
+    act(() => result.current.advance());
+    expect(result.current.index).toBe(1);
+    expect(result.current.phase).toBe('answering');
+  });
+
+  it('only lets retry follow a wrong feedback, never a correct one or mid-answer', () => {
+    const clock = fakeClock();
+    const { result } = setup(clock);
+
+    // No effect before any answer is given.
+    act(() => result.current.retry());
+    expect(result.current.phase).toBe('answering');
+
+    // No effect after a correct answer — there is nothing to retry.
+    act(() => result.current.submit('1'));
+    act(() => result.current.retry());
+    expect(result.current.phase).toBe('feedback');
+  });
+
+  it('keeps a mistake made during retry out of the final accuracy and streak', () => {
+    const clock = fakeClock();
+    const { result } = setup(clock);
+
+    act(() => result.current.submit('wrong'));
+    act(() => result.current.retry());
+    act(() => result.current.submit('also wrong'));
+    act(() => result.current.submit('1'));
+    act(() => result.current.advance());
+
+    act(() => result.current.submit('2'));
+    act(() => result.current.advance());
+    act(() => result.current.submit('3'));
+    act(() => result.current.advance());
+
+    // One mistake recorded for the whole session, however many guesses it took.
+    expect(result.current.answers).toHaveLength(3);
+    expect(result.current.result?.correctCount).toBe(2);
+    expect(result.current.result?.accuracy).toBe(2 / 3);
+  });
+
   it('resets the current streak on a wrong answer and keeps the longest one', () => {
     const clock = fakeClock();
     const { result } = setup(clock);

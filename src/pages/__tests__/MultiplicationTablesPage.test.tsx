@@ -29,15 +29,32 @@ const t = (key: string, options?: Record<string, unknown>) => i18n.t(key, option
 const CORRECT_FEEDBACK_MS = 450;
 const WRONG_FEEDBACK_MS = 1200;
 
-/** Answers question `index`, spending `thinkMs` on it first. */
+/**
+ * Answers question `index`, spending `thinkMs` on it first. A wrong answer no
+ * longer advances by itself — after its feedback beat the child gets the
+ * question back and must tap the correct option to move on.
+ */
 async function answer(index: number, correct: boolean, thinkMs: number) {
   await act(async () => {
     vi.advanceTimersByTime(thinkMs);
   });
-  const value = correct ? (index + 1) * 2 : (index + 1) * 2 + 1;
+  const correctValue = (index + 1) * 2;
+  const value = correct ? correctValue : correctValue + 1;
   fireEvent.click(screen.getByTestId(`tr-option-${value}`));
+
+  if (correct) {
+    await act(async () => {
+      vi.advanceTimersByTime(CORRECT_FEEDBACK_MS);
+    });
+    return;
+  }
+
   await act(async () => {
-    vi.advanceTimersByTime(correct ? CORRECT_FEEDBACK_MS : WRONG_FEEDBACK_MS);
+    vi.advanceTimersByTime(WRONG_FEEDBACK_MS);
+  });
+  fireEvent.click(screen.getByTestId(`tr-option-${correctValue}`));
+  await act(async () => {
+    vi.advanceTimersByTime(CORRECT_FEEDBACK_MS);
   });
 }
 
