@@ -42,6 +42,35 @@ interface ToneOptions {
   gain?: number;
 }
 
+/**
+ * A few pitch-shifted variants of the sounds played on nearly every question
+ * (correct/wrong/shoot/select), so a long practice session doesn't hear the
+ * exact same tone dozens of times in a row. Each entry is a frequency
+ * multiplier applied to that sound's base pitches — same timbre/rhythm
+ * "family", just transposed, so it still reads as the same effect.
+ */
+const VARIANT_PITCH: Record<string, number[]> = {
+  hit: [1, 1.122, 0.891, 1.26], // ~+2 semitones, ~-2 semitones, ~+4 semitones
+  miss: [1, 0.89, 1.09],
+  fire: [1, 1.15, 0.87],
+  select: [1, 1.19, 0.84],
+};
+
+/** Avoids repeating the same variant twice in a row for a given sound. */
+const lastVariant = new Map<string, number>();
+
+function pickVariantPitch(name: string): number {
+  const pitches = VARIANT_PITCH[name];
+  if (!pitches || pitches.length <= 1) return 1;
+  const previous = lastVariant.get(name);
+  let index = Math.floor(Math.random() * pitches.length);
+  if (pitches.length > 1 && index === previous) {
+    index = (index + 1) % pitches.length;
+  }
+  lastVariant.set(name, index);
+  return pitches[index];
+}
+
 function tone(ctx: AudioContext, { freq, freqEnd, start, duration, type = 'sine', gain = 0.15 }: ToneOptions): void {
   const oscillator = ctx.createOscillator();
   const gainNode = ctx.createGain();
@@ -73,17 +102,23 @@ export function playSoundEffect(name: SoundName): void {
   try {
     const now = ctx.currentTime;
     switch (name) {
-      case 'fire':
-        tone(ctx, { freq: 900, freqEnd: 320, start: now, duration: 0.1, type: 'triangle', gain: 0.11 });
+      case 'fire': {
+        const p = pickVariantPitch(name);
+        tone(ctx, { freq: 900 * p, freqEnd: 320 * p, start: now, duration: 0.1, type: 'triangle', gain: 0.11 });
         break;
-      case 'hit':
-        tone(ctx, { freq: 440, start: now, duration: 0.09, type: 'sine', gain: 0.16 });
-        tone(ctx, { freq: 660, start: now + 0.06, duration: 0.14, type: 'sine', gain: 0.15 });
-        tone(ctx, { freq: 880, start: now + 0.12, duration: 0.2, type: 'sine', gain: 0.13 });
+      }
+      case 'hit': {
+        const p = pickVariantPitch(name);
+        tone(ctx, { freq: 440 * p, start: now, duration: 0.09, type: 'sine', gain: 0.16 });
+        tone(ctx, { freq: 660 * p, start: now + 0.06, duration: 0.14, type: 'sine', gain: 0.15 });
+        tone(ctx, { freq: 880 * p, start: now + 0.12, duration: 0.2, type: 'sine', gain: 0.13 });
         break;
-      case 'miss':
-        tone(ctx, { freq: 220, freqEnd: 150, start: now, duration: 0.2, type: 'sine', gain: 0.07 });
+      }
+      case 'miss': {
+        const p = pickVariantPitch(name);
+        tone(ctx, { freq: 220 * p, freqEnd: 150 * p, start: now, duration: 0.2, type: 'sine', gain: 0.07 });
         break;
+      }
       case 'stageComplete':
         tone(ctx, { freq: 523.25, start: now, duration: 0.12, type: 'sine', gain: 0.13 });
         tone(ctx, { freq: 659.25, start: now + 0.1, duration: 0.18, type: 'sine', gain: 0.13 });
@@ -106,9 +141,11 @@ export function playSoundEffect(name: SoundName): void {
         tone(ctx, { freq: 180, start: now + 0.1, duration: 0.09, type: 'triangle', gain: 0.09 });
         break;
       // A soft click for picking a piece up or putting it back.
-      case 'select':
-        tone(ctx, { freq: 760, start: now, duration: 0.06, type: 'sine', gain: 0.08 });
+      case 'select': {
+        const p = pickVariantPitch(name);
+        tone(ctx, { freq: 760 * p, start: now, duration: 0.06, type: 'sine', gain: 0.08 });
         break;
+      }
       case 'footballKick':
         tone(ctx, { freq: 150, freqEnd: 75, start: now, duration: 0.09, type: 'triangle', gain: 0.14 });
         break;

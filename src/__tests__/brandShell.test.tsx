@@ -51,7 +51,9 @@ describe('Mathletica shell', () => {
     renderWithProviders(<App />, ['/']);
 
     const cta = screen.getByRole('link', { name: new RegExp(i18n.t('app.startTraining')) });
-    expect(cta).toHaveAttribute('href', '/grade/3');
+    // Without a last-played activity the call to action opens the first grade
+    // that actually has content — grade 2 since the arithmetic fluency unit.
+    expect(cta).toHaveAttribute('href', '/grade/2');
   });
 
   it('navigates home → grade 7 → coordinate system → an activity', async () => {

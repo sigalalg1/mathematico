@@ -529,3 +529,11 @@
     transition-duration: 1ms !important;
   }
 }
+
+/*
+ * In training mode the shared engine owns the progress bar, so the scene header
+ * carries only the sound toggle and pushes it to the trailing edge.
+ */
+.fp-hud-training {
+  justify-content: flex-end;
+}

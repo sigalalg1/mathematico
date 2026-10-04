@@ -67,8 +67,17 @@ export interface TrainingConfiguration {
   rulesVersion: number;
 }
 
-/** One question as the generic engine sees it. */
-export interface TrainingQuestion {
+/**
+ * One question as the generic engine sees it.
+ *
+ * `TPayload` is the activity's own question model, carried untouched by the
+ * engine and handed back to the activity's renderer. A purely textual activity
+ * leaves it at the default and never sets `payload`; an activity whose question
+ * *is* a picture (a shaded fraction model, a number line) puts everything its
+ * own scene needs there, so a visual activity can reuse the shared session,
+ * setup and results machinery instead of growing a parallel one.
+ */
+export interface TrainingQuestion<TPayload = never> {
   /** Unique within the session. */
   id: string;
   /** The fact itself, e.g. `7 × 8` — rendered LTR through MathText. */
@@ -77,10 +86,12 @@ export interface TrainingQuestion {
   answer: string;
   /** Answer choices in display order; contains exactly one `answer`. */
   options: string[];
+  /** Activity-specific question model, for activities that render their own scene. */
+  payload?: TPayload;
 }
 
 /** Everything activity-specific the training system needs. */
-export interface TrainingActivityDefinition {
+export interface TrainingActivityDefinition<TPayload = never> {
   /** Matches the `Game.id` in the activity registry. */
   id: string;
   capabilities: TrainingCapabilities;
@@ -90,7 +101,7 @@ export interface TrainingActivityDefinition {
    * Builds one session. Must return exactly `count` questions; repeats are
    * allowed when a difficulty's fact pool is smaller than the requested count.
    */
-  generateQuestions: (input: { difficultyId: string | null; count: number }) => TrainingQuestion[];
+  generateQuestions: (input: { difficultyId: string | null; count: number }) => TrainingQuestion<TPayload>[];
 }
 
 /** One answered question, with the time the child actually spent on it. */

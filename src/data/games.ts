@@ -1,4 +1,23 @@
 import type { Game } from '../types';
+import { ARITHMETIC_SKILL_PRESENTATION } from './games/arithmeticFluencyData';
+
+export const ARITHMETIC_FLUENCY_PATH = '/grade/2/arithmetic-fluency';
+
+/**
+ * Grade 2 — arithmetic fluency. Four foundational addition/subtraction skills,
+ * each a separate activity so a child can deliberately choose the one they want
+ * to get faster at, and each keeping its own personal bests. Built from the
+ * skill list itself, so the listing, the routes and the generators cannot drift
+ * apart.
+ */
+export const arithmeticFluencyGames: Game[] = ARITHMETIC_SKILL_PRESENTATION.map(({ skillId, slug, icon }) => ({
+  id: skillId,
+  enabled: true,
+  path: `${ARITHMETIC_FLUENCY_PATH}/${slug}`,
+  nameKey: `arithmeticFluency.skills.${skillId}.gameName`,
+  descriptionKey: `arithmeticFluency.skills.${skillId}.gameDescription`,
+  icon,
+}));
 
 const GEOMETRY_PATH = '/grade/3/geometry-angles-triangles';
 
@@ -234,6 +253,7 @@ export const multiplicationGames: Game[] = [
  * each screen re-assembling the same set.
  */
 export const allGames: Game[] = [
+  ...arithmeticFluencyGames,
   ...geometryAnglesTrianglesGames,
   ...coordinateSystemGames,
   ...signedNumbersGames,

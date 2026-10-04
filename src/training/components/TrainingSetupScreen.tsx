@@ -3,8 +3,8 @@ import type { TrainingActivityDefinition, TrainingMode } from '../../types/train
 import { isChallengeEligible } from '../configuration';
 import './TrainingActivity.css';
 
-interface TrainingSetupScreenProps {
-  activity: TrainingActivityDefinition;
+interface TrainingSetupScreenProps<TPayload> {
+  activity: TrainingActivityDefinition<TPayload>;
   mode: TrainingMode;
   difficultyId: string | null;
   questionCount: number;
@@ -22,7 +22,7 @@ interface TrainingSetupScreenProps {
  * Deliberately large tappable choices in the grade 3–4 pastel language rather
  * than a settings form.
  */
-export function TrainingSetupScreen({
+export function TrainingSetupScreen<TPayload = never>({
   activity,
   mode,
   difficultyId,
@@ -31,7 +31,7 @@ export function TrainingSetupScreen({
   onDifficultyChange,
   onQuestionCountChange,
   onStart,
-}: TrainingSetupScreenProps) {
+}: TrainingSetupScreenProps<TPayload>) {
   const { t } = useTranslation();
   const { capabilities } = activity;
 

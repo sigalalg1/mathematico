@@ -1,31 +1,22 @@
 import type { TrainingActivityDefinition, TrainingQuestion } from '../../types/training';
 import { shuffle } from '../../utils/shuffle';
+import { randomInt as integer, seededRandom, type RandomSource } from '../../utils/random';
 
 export const BASKETBALL_MONKEY_ID = 'basketballMonkey';
 export const BASKETBALL_MONKEY_CHOICES = 4;
 export const BASKETBALL_MONKEY_RULES_VERSION = 1;
 
 export type BasketballDifficultyId = 'basic' | 'intermediate' | 'hard';
-export type RandomSource = () => number;
+
+/** Re-exported so existing callers keep importing the seed helper from here. */
+export { seededRandom };
+export type { RandomSource };
 
 export interface BasketballFact {
   first: number;
   second: number;
   product: number;
   requiresRegrouping: boolean;
-}
-
-/** Small deterministic source for tests, previews and reproducible sessions. */
-export function seededRandom(seed: number): RandomSource {
-  let state = seed >>> 0;
-  return () => {
-    state = (Math.imul(1_664_525, state) + 1_013_904_223) >>> 0;
-    return state / 4_294_967_296;
-  };
-}
-
-function integer(random: RandomSource, min: number, max: number): number {
-  return min + Math.floor(random() * (max - min + 1));
 }
 
 function difficultyOf(value: string | null): BasketballDifficultyId {

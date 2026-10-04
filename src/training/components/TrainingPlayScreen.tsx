@@ -1,11 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MathText } from '../../components/MathText';
 import { toneForIndex } from '../../components/activityTones';
-import type { TrainingMode } from '../../types/training';
+import type { TrainingMode, TrainingQuestion } from '../../types/training';
 import { formatDuration } from '../metrics';
-import type { TrainingSessionState } from '../useTrainingSession';
+import type { TrainingPhase, TrainingSessionState } from '../useTrainingSession';
 import './TrainingActivity.css';
+
+/**
+ * What a custom question renderer is handed. Deliberately the same
+ * `submit(answer: string)` contract the built-in choice buttons use, so a
+ * scene that lets the child assemble an answer (shading parts, tapping a
+ * number line, shooting a balloon) needs nothing extra — and generic over the
+ * question's payload, so an activity whose question carries structured data
+ * (e.g. a fraction model) gets it back fully typed.
+ */
+export interface TrainingQuestionRenderProps<TPayload = never> {
+  question: TrainingQuestion<TPayload>;
+  phase: TrainingPhase;
+  /** The answer just given, while `phase` is `feedback`. */
+  lastAnswer: TrainingSessionState<TPayload>['lastAnswer'];
+  mode: TrainingMode;
+  /** 0-based position of the current question, and how many there are. */
+  index: number;
+  total: number;
+  /** Already-translated prompt line for this activity. */
+  promptLabel: string;
+  /** Records the answer. Ignored unless the session is still answering. */
+  submit: (answer: string) => void;
+}
 
 /** How often the displayed time is refreshed. It is re-read, never counted. */
 const TIMER_REFRESH_MS = 500;
@@ -33,11 +56,19 @@ function TrainingTimer({ getActiveDurationMs }: { getActiveDurationMs: () => num
   );
 }
 
-interface TrainingPlayScreenProps {
-  session: TrainingSessionState;
+interface TrainingPlayScreenProps<TPayload = never> {
+  session: TrainingSessionState<TPayload>;
   mode: TrainingMode;
   /** i18n key for the activity's own question prompt line. */
   promptKey: string;
+  /**
+   * Replaces the default prompt-and-buttons block with the activity's own
+   * visual — a game scene, a diagram, anything that can present a prompt and
+   * take one of the options as an answer. The HUD, the feedback line and the
+   * whole session lifecycle around it stay exactly as they are, which is the
+   * point: a picture-based activity gets the full engine for free.
+   */
+  renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
 }
 
 /**
@@ -50,12 +81,17 @@ interface TrainingPlayScreenProps {
  * the fact itself stays the thing being looked at. There is never a countdown:
  * nothing runs out, so the timer informs rather than pressures.
  */
-export function TrainingPlayScreen({ session, mode, promptKey }: TrainingPlayScreenProps) {
+export function TrainingPlayScreen<TPayload = never>({
+  session,
+  mode,
+  promptKey,
+  renderQuestion,
+}: TrainingPlayScreenProps<TPayload>) {
   const { t } = useTranslation();
   const { question, lastAnswer, phase } = session;
 
   return (
-    <div className="tr-play">
+    <div className={`tr-play${renderQuestion ? ' tr-play-custom' : ''}`}>
       <div className="tr-hud">
         <div
           className="tr-progress"
@@ -83,41 +119,68 @@ export function TrainingPlayScreen({ session, mode, promptKey }: TrainingPlayScr
         )}
       </div>
 
-      <div className="tr-question" data-testid="tr-question">
-        <p className="tr-prompt">{t(promptKey)}</p>
-        <MathText className="tr-fact">{`${question.prompt} = ?`}</MathText>
-      </div>
+      {renderQuestion ? (
+        renderQuestion({
+          question,
+          phase,
+          lastAnswer,
+          mode,
+          index: session.index,
+          total: session.total,
+          promptLabel: t(promptKey),
+          submit: session.submit,
+        })
+      ) : (
+        <>
+          <div className="tr-question" data-testid="tr-question">
+            <p className="tr-prompt">{t(promptKey)}</p>
+            <MathText className="tr-fact">{`${question.prompt} = ?`}</MathText>
+          </div>
 
-      <div className="tr-options">
-        {question.options.map((option, position) => {
-          // Rotating pastel tints, the same device the grade 3–4 activity tiles
-          // use, so the answer choices read as playful rather than as a form.
-          const classes = ['tr-option', `tr-option-${toneForIndex(position)}`];
-          if (phase !== 'answering' && lastAnswer) {
-            if (option === lastAnswer.correctAnswer) classes.push('tr-option-correct');
-            else if (option === lastAnswer.value) classes.push('tr-option-wrong');
-          }
-          return (
-            <button
-              key={option}
-              type="button"
-              className={classes.join(' ')}
-              data-testid={`tr-option-${option}`}
-              disabled={phase !== 'answering'}
-              onClick={() => session.submit(option)}
-            >
-              <MathText>{option}</MathText>
-            </button>
-          );
-        })}
-      </div>
+          <div className="tr-options">
+            {question.options.map((option, position) => {
+              // Rotating pastel tints, the same device the grade 3–4 activity
+              // tiles use, so the answer choices read as playful, not as a form.
+              const classes = ['tr-option', `tr-option-${toneForIndex(position)}`];
+              if (phase !== 'answering' && lastAnswer) {
+                if (option === lastAnswer.correctAnswer) classes.push('tr-option-correct');
+                else if (option === lastAnswer.value) classes.push('tr-option-wrong');
+              }
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  className={classes.join(' ')}
+                  data-testid={`tr-option-${option}`}
+                  disabled={phase !== 'answering'}
+                  onClick={() => session.submit(option)}
+                >
+                  <MathText>{option}</MathText>
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
 
+      {/*
+        The correct answer is rendered through MathText rather than interpolated
+        into the sentence: `<`, `>` and `a/b` are mathematical notation, and
+        inside the Hebrew RTL line the comparison signs would be bidi-mirrored
+        into their opposite — the feedback would then state the wrong answer.
+      */}
       <p className="tr-feedback" role="status" aria-live="polite">
-        {phase === 'feedback' && lastAnswer
-          ? lastAnswer.isCorrect
-            ? t('training.feedback.correct')
-            : t('training.feedback.wrong', { answer: lastAnswer.correctAnswer })
-          : ' '}
+        {phase === 'feedback' && lastAnswer ? (
+          lastAnswer.isCorrect ? (
+            t('training.feedback.correct')
+          ) : (
+            <>
+              {t('training.feedback.wrongLabel')} <MathText>{lastAnswer.correctAnswer}</MathText>
+            </>
+          )
+        ) : (
+          ' '
+        )}
       </p>
     </div>
   );

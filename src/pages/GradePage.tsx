@@ -12,6 +12,7 @@ import { getTopicsForGrade } from '../data/topics';
  * generic educational icon, so the listing reads as mathematics at a glance.
  */
 const TOPIC_MOTIF: Record<string, ReactNode> = {
+  arithmeticFluency: '+',
   geometryAnglesTriangles: '△',
   divisionWithRemainder: '÷',
   simpleFractions: '½',

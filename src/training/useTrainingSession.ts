@@ -13,16 +13,16 @@ import { createActiveTimeTracker } from './activeTime';
 
 export type TrainingPhase = 'answering' | 'feedback' | 'completed';
 
-interface UseTrainingSessionInput {
-  activity: TrainingActivityDefinition;
+interface UseTrainingSessionInput<TPayload> {
+  activity: TrainingActivityDefinition<TPayload>;
   configuration: TrainingConfiguration;
   mode: TrainingMode;
   /** Injected in tests for exact, non-flaky timings. */
   clock?: TrainingClock;
 }
 
-export interface TrainingSessionState {
-  question: TrainingQuestion;
+export interface TrainingSessionState<TPayload = never> {
+  question: TrainingQuestion<TPayload>;
   /** 0-based position of the current question. */
   index: number;
   total: number;
@@ -70,12 +70,12 @@ function trailingStreak(answers: TrainingAnswerRecord[]): number {
  * A wrong answer never ends the session and never repeats the question — the
  * child simply continues, and the mistake costs them only their streak.
  */
-export function useTrainingSession({
+export function useTrainingSession<TPayload = never>({
   activity,
   configuration,
   mode,
   clock = systemTrainingClock,
-}: UseTrainingSessionInput): TrainingSessionState {
+}: UseTrainingSessionInput<TPayload>): TrainingSessionState<TPayload> {
   const buildQuestions = useCallback(
     () =>
       activity.generateQuestions({
@@ -85,10 +85,10 @@ export function useTrainingSession({
     [activity, configuration.difficultyId, configuration.questionCount],
   );
 
-  const [questions, setQuestions] = useState<TrainingQuestion[]>(buildQuestions);
+  const [questions, setQuestions] = useState<TrainingQuestion<TPayload>[]>(buildQuestions);
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<TrainingPhase>('answering');
-  const [lastAnswer, setLastAnswer] = useState<TrainingSessionState['lastAnswer']>(null);
+  const [lastAnswer, setLastAnswer] = useState<TrainingSessionState<TPayload>['lastAnswer']>(null);
   const [answers, setAnswers] = useState<TrainingAnswerRecord[]>([]);
   const [result, setResult] = useState<TrainingSessionResult | null>(null);
   const [roundKey, setRoundKey] = useState(0);
