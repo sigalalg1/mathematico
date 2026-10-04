@@ -1,8 +1,12 @@
 import type { TrainingPersonalBest, TrainingSessionResult } from '../types/training';
 import { configurationKey } from '../training/configuration';
 import { derivePersonalBest } from '../training/personalBests';
-import { getLocalTrainingResults, saveLocalTrainingResult } from './localTrainingStore';
-import { getSupabaseTrainingResults, saveSupabaseTrainingResult } from './supabaseTrainingStore';
+import { getAllLocalTrainingResults, getLocalTrainingResults, saveLocalTrainingResult } from './localTrainingStore';
+import {
+  getAllSupabaseTrainingResults,
+  getSupabaseTrainingResults,
+  saveSupabaseTrainingResult,
+} from './supabaseTrainingStore';
 
 /**
  * The single entry point for training persistence, mirroring
@@ -39,6 +43,19 @@ export async function getTrainingResults(
     }
   }
   return getLocalTrainingResults(configKey);
+}
+
+/** Newest-first history across every activity/configuration a child has played. */
+export async function getAllTrainingResults(userId: string | null): Promise<TrainingSessionResult[]> {
+  if (userId) {
+    try {
+      const remote = await getAllSupabaseTrainingResults(userId);
+      if (remote) return remote;
+    } catch {
+      // Unreachable backend — show whatever was stored locally instead.
+    }
+  }
+  return getAllLocalTrainingResults();
 }
 
 /**

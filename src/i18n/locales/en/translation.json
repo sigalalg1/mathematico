@@ -58,7 +58,29 @@
   "activity": {
     "title": "My Activity",
     "navLabel": "Activity",
-    "empty": "No completed games yet — go play something!"
+    "empty": "No completed games yet — go play something!",
+    "summary": {
+      "accuracyLabel": "Average accuracy",
+      "paceLabel": "Avg. per question",
+      "paceValue": "{{seconds}} sec",
+      "challengesLabel": "Challenges completed"
+    },
+    "records": {
+      "title": "My Records",
+      "emptyTitle": "No records yet",
+      "emptyBody": "Try a Personal Challenge to set your first record.",
+      "emptyAction": "Browse activities",
+      "configLabel": "{{difficulty}} · {{count}} questions",
+      "configLabelNoDifficulty": "{{count}} questions",
+      "correctFraction": "{{correct}}/{{total}} correct",
+      "cta": "Beat your record"
+    },
+    "recent": {
+      "title": "Recent Activity",
+      "empty": "No recent activity yet.",
+      "showMore": "Show more",
+      "showLess": "Show less"
+    }
   },
   "activityList": {
     "bannerTitle": "Every exercise moves you one step forward!",
@@ -1240,7 +1262,8 @@
       "questions": "questions",
       "challengeLengthNote": "A personal challenge runs over 20 or 50 questions, so the result really means something.",
       "startPractice": "Start practising",
-      "startChallenge": "Start the challenge"
+      "startChallenge": "Start the challenge",
+      "recordTarget": "Your record: {{seconds}} sec per question"
     },
     "modes": {
       "practice": {
