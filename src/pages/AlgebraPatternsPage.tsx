@@ -77,7 +77,9 @@ export function AlgebraPatternsPage() {
           <SoundToggle enabled={soundEnabled} onToggle={toggleSound} />
         </div>
 
-        <p className="algebra-activity-prompt">{t(`algebraPatterns.prompt.${challenge.kind}`)}</p>
+        <p className="algebra-activity-prompt">
+          {t(`algebraPatterns.prompt.${challenge.kind}`, { input: challenge.targetInput })}
+        </p>
 
         {challenge.kind === 'visualStage' ? (
           <div className="algebra-machine">

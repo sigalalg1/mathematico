@@ -947,7 +947,7 @@
     "gameName": "Patterns & Variables",
     "gameDescription": "Discover why we use x: the same rule, for any number.",
     "prompt": {
-      "computeOutput": "The machine follows the same rule every time. What does it give for this input?",
+      "computeOutput": "What is the machine's rule? What comes out when we put in {{input}}?",
       "computeRule": "What rule does the machine follow — for any number?",
       "computeInput": "What input would give this output?",
       "visualStage": "The pattern grows by the same amount every stage. How many at this stage?"
