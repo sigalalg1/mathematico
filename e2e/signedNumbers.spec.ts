@@ -92,8 +92,15 @@ test('Which Is Greater plays through to completion', async ({ page }) => {
   await playToCompletion(page, routes.whichIsGreater, he.compareSigned.completion.title);
 });
 
-test('Distance from Zero plays through to completion', async ({ page }) => {
-  await playToCompletion(page, routes.distanceFromZero, he.absoluteValue.completion.title);
+test('Absolute Value offers focused training configuration', async ({ page }) => {
+  await page.goto(routes.distanceFromZero);
+  await expect(page.getByRole('heading', { level: 1, name: he.absoluteValue.gameName })).toBeVisible();
+  await expect(page.getByTestId('tr-count-5')).toBeVisible();
+  await expect(page.getByTestId('tr-count-10')).toBeVisible();
+  await expect(page.getByTestId('tr-count-20')).toBeVisible();
+  await page.getByTestId('tr-start').click();
+  await expect(page.getByText(he.absoluteValue.distancePrinciple)).toBeVisible();
+  await expect(page.locator('.absolute-expression')).toHaveAttribute('dir', 'ltr');
 });
 
 test('Steps on the Line plays through to completion', async ({ page }) => {
@@ -144,6 +151,9 @@ test('the whole unit renders in Hebrew RTL and in English LTR', async ({ page })
   ] as const) {
     await page.goto(route);
     await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible();
+    // Absolute Value now uses the shared Training setup; its number line is
+    // intentionally part of the first Basic question, not the setup screen.
+    if (route === routes.distanceFromZero) await page.getByTestId('tr-start').click();
     // Math notation stays left-to-right wherever it appears.
     await expect(page.locator('.number-line')).toHaveAttribute('dir', 'ltr');
   }
