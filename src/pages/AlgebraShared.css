@@ -1,0 +1,302 @@
+/*
+ * Shared layout for every activity in the Grade 7 Algebra unit.
+ * Same dark, mascot-free "training instrument" shell the rest of grade 7
+ * uses (see SignedNumbersShared.css) — no pastel tints, no decorative scenery.
+ */
+
+.algebra-activity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.algebra-activity-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 560px;
+}
+
+.algebra-activity-top .quiz-progress {
+  flex: 1;
+}
+
+.algebra-activity-prompt {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-h);
+  text-align: center;
+  max-width: 560px;
+}
+
+.algebra-activity-note {
+  font-size: var(--text-sm);
+  color: var(--muted);
+  text-align: center;
+  max-width: 520px;
+}
+
+/* The expression/equation shown as the question's hero line. */
+.algebra-expression {
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  color: var(--text-h);
+  letter-spacing: 0.02em;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-6);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+/* --- the input/output "machine" (worked examples + the open question) ----- */
+
+.algebra-machine {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  width: 100%;
+  max-width: 420px;
+}
+
+.algebra-machine-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.algebra-machine-row-open {
+  color: var(--primary);
+}
+
+.algebra-machine-arrow {
+  color: var(--muted);
+}
+
+.algebra-machine-unknown {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+/* --- a simple growing visual pattern (dots), no SVG needed ---------------- */
+
+.algebra-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.algebra-stage-label {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.algebra-stage-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  max-width: 260px;
+}
+
+.algebra-stage-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--primary);
+}
+
+/* --- comparing two expressions (equivalence) ------------------------------- */
+
+.algebra-compare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 480px;
+  flex-wrap: wrap;
+}
+
+.algebra-compare-side {
+  flex: 1 1 180px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  text-align: center;
+}
+
+.algebra-compare-expr {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--text-h);
+}
+
+.algebra-compare-sign {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.algebra-compare-row {
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.algebra-judge-options {
+  display: flex;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 420px;
+}
+
+.algebra-judge-options .algebra-option {
+  flex: 1;
+}
+
+/* --- term highlighting (combining like terms) ------------------------------ */
+
+.algebra-terms {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+}
+
+.algebra-term-variable {
+  color: var(--primary);
+}
+
+.algebra-term-constant {
+  color: var(--secondary);
+}
+
+/* --- multiple-choice options ------------------------------------------------ */
+
+.algebra-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 420px;
+}
+
+.algebra-option {
+  min-height: var(--tap);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 120ms ease;
+}
+
+.algebra-option:hover:not(:disabled) {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.algebra-option:disabled {
+  cursor: default;
+}
+
+.algebra-option.is-correct {
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.algebra-option.is-wrong {
+  border-color: var(--warning);
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+/* --- feedback -------------------------------------------------------------- */
+
+.algebra-feedback {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.algebra-feedback-correct {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--success);
+}
+
+.algebra-feedback-hint {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--warning);
+  background: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-4);
+  animation: algebra-feedback-in 220ms ease;
+}
+
+@keyframes algebra-feedback-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.algebra-completion-detail {
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.algebra-completion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 430px) {
+  .algebra-expression {
+    font-size: var(--text-2xl);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .algebra-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,5 +1,6 @@
 import type { Game, Topic } from '../types';
 import {
+  algebraGames,
   arithmeticFluencyGames,
   coordinateSystemGames,
   divisionWithRemainderGames,
@@ -80,7 +81,8 @@ export const topics: Topic[] = [
   {
     id: 'algebraBasics',
     gradeId: 7,
-    enabled: false,
+    enabled: true,
+    path: '/grade/7/algebra',
   },
 ];
 
@@ -105,6 +107,7 @@ const TOPIC_GAMES: Partial<Record<string, Game[]>> = {
   multiplication: multiplicationGames,
   coordinateSystem: coordinateSystemGames,
   signedNumbers: signedNumbersGames,
+  algebraBasics: algebraGames,
 };
 
 function topicHasActivity(topic: Topic): boolean {

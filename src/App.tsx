@@ -27,6 +27,15 @@ import { CompareSignedPage } from './pages/CompareSignedPage';
 import { AbsoluteValuePage } from './pages/AbsoluteValuePage';
 import { SignedAddSubPage } from './pages/SignedAddSubPage';
 import { SignRulesPage } from './pages/SignRulesPage';
+import { AlgebraPage } from './pages/AlgebraPage';
+import { AlgebraPatternsPage } from './pages/AlgebraPatternsPage';
+import { AlgebraExpressionsPage } from './pages/AlgebraExpressionsPage';
+import { AlgebraSubstitutionPage } from './pages/AlgebraSubstitutionPage';
+import { AlgebraEquivalentPage } from './pages/AlgebraEquivalentPage';
+import { AlgebraLikeTermsPage } from './pages/AlgebraLikeTermsPage';
+import { AlgebraEquationMeaningPage } from './pages/AlgebraEquationMeaningPage';
+import { AlgebraSolvingPage } from './pages/AlgebraSolvingPage';
+import { AlgebraWordProblemsPage } from './pages/AlgebraWordProblemsPage';
 import { AccountPage } from './pages/AccountPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { ActivityPage } from './pages/ActivityPage';
@@ -80,6 +89,15 @@ function App() {
         <Route path="/grade/7/signed-numbers/distance-from-zero" element={<AbsoluteValuePage />} />
         <Route path="/grade/7/signed-numbers/steps-on-the-line" element={<SignedAddSubPage />} />
         <Route path="/grade/7/signed-numbers/the-sign-rule" element={<SignRulesPage />} />
+        <Route path="/grade/7/algebra" element={<AlgebraPage />} />
+        <Route path="/grade/7/algebra/patterns-and-variables" element={<AlgebraPatternsPage />} />
+        <Route path="/grade/7/algebra/build-an-expression" element={<AlgebraExpressionsPage />} />
+        <Route path="/grade/7/algebra/substitution" element={<AlgebraSubstitutionPage />} />
+        <Route path="/grade/7/algebra/equivalent-expressions" element={<AlgebraEquivalentPage />} />
+        <Route path="/grade/7/algebra/combining-like-terms" element={<AlgebraLikeTermsPage />} />
+        <Route path="/grade/7/algebra/understanding-equations" element={<AlgebraEquationMeaningPage />} />
+        <Route path="/grade/7/algebra/solving-equations" element={<AlgebraSolvingPage />} />
+        <Route path="/grade/7/algebra/from-words-to-equations" element={<AlgebraWordProblemsPage />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/activity" element={<ActivityPage />} />

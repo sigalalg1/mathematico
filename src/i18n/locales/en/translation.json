@@ -141,8 +141,8 @@
       "description": "Coming soon"
     },
     "algebraBasics": {
-      "name": "Algebra Basics",
-      "description": "Coming soon"
+      "name": "Algebra",
+      "description": "From patterns and variables to building and solving equations."
     },
     "arithmeticFluency": {
       "name": "Arithmetic Fluency",
@@ -923,6 +923,181 @@
     },
     "completion": {
       "title": "✖️ You finished The Sign Rule!"
+    }
+  },
+  "algebraPage": {
+    "title": "Algebra",
+    "subtitle": "Pick an activity to practise",
+    "completedBadge": "Done"
+  },
+  "algebra": {
+    "progress": "Question {{current}} of {{total}}",
+    "completion": {
+      "summary": "{{total}} questions completed",
+      "firstTry": "{{count}} solved on the first try"
+    },
+    "actions": {
+      "playAgain": "Play again",
+      "backToTopic": "Back to Algebra",
+      "tryAgain": "Try again",
+      "next": "Next"
+    }
+  },
+  "algebraPatterns": {
+    "gameName": "Patterns & Variables",
+    "gameDescription": "Discover why we use x: the same rule, for any number.",
+    "prompt": {
+      "computeOutput": "The machine follows the same rule every time. What does it give for this input?",
+      "computeRule": "What rule does the machine follow — for any number?",
+      "computeInput": "What input would give this output?",
+      "visualStage": "The pattern grows by the same amount every stage. How many at this stage?"
+    },
+    "machine": {
+      "stageLabel": "Stage {{stage}}"
+    },
+    "feedback": {
+      "correctMessages": [
+        "Nice! That's the rule.",
+        "Exactly right!",
+        "You found it!"
+      ],
+      "hint": "Look at the worked examples above — the same rule applies to every one of them, including this one."
+    },
+    "completion": {
+      "title": "🔎 You found the pattern!"
+    }
+  },
+  "algebraExpressions": {
+    "gameName": "Build an Expression",
+    "gameDescription": "Translate a short phrase into the algebraic expression it describes.",
+    "intro": "Pick the expression that matches the phrase.",
+    "prompt": "Which expression matches the phrase?",
+    "difficulty": {
+      "basic": "x + n or n × x",
+      "intermediate": "two steps: n × x + m",
+      "hard": "also division, and trickier word order"
+    },
+    "phrases": {
+      "plus": "a number plus {{n}}",
+      "minus": "{{n}} less than a number",
+      "minusReversed": "a number minus {{n}}",
+      "timesOnly": "{{n}} times a number",
+      "timesPlus": "{{n}} times a number, then add {{n2}}",
+      "moreThanTimes": "{{n2}} more than {{n}} times a number",
+      "divide": "a number divided by {{n}}"
+    }
+  },
+  "algebraSubstitution": {
+    "gameName": "Substitution",
+    "gameDescription": "Replace x with its value, step by step, then compute.",
+    "intro": "x stands for a number — once you know which one, the expression has a value.",
+    "prompt": "What is the expression's value when x = {{x}}?",
+    "difficulty": {
+      "basic": "one operation: x ± a, or a × x",
+      "intermediate": "two operations: a × x ± b",
+      "hard": "negative x values"
+    }
+  },
+  "algebraEquivalent": {
+    "gameName": "Equivalent Expressions",
+    "gameDescription": "Two expressions, tested at two values — are they really the same?",
+    "prompt": "Test both expressions. Are they equivalent?",
+    "actions": {
+      "equivalent": "Equivalent",
+      "notEquivalent": "Not equivalent"
+    },
+    "feedback": {
+      "missedEquivalent": "Check both rows above — the two expressions give the same value for every x, not just these two.",
+      "missedDifference": "Look closely: one of the two rows above does not match. That's enough to prove they are not equivalent."
+    },
+    "completion": {
+      "title": "⚖️ You can tell equivalent expressions apart!"
+    }
+  },
+  "algebraLikeTerms": {
+    "gameName": "Combining Like Terms",
+    "gameDescription": "x-terms combine with x-terms, numbers combine with numbers — never both together.",
+    "intro": "Simplify the expression by combining its like terms.",
+    "prompt": "Simplify this expression.",
+    "difficulty": {
+      "basic": "only positive x-terms",
+      "intermediate": "x-terms and a number",
+      "hard": "subtraction and negative coefficients"
+    },
+    "feedback": {
+      "combinedUnlikeTerms": "3x and 4 are different kinds of terms — an x-term can only combine with another x-term, and a number only with another number.",
+      "droppedASign": "Look again at the sign in front of that term — it travels with the term when you combine it.",
+      "other": "Combine the x-terms with each other, and the numbers with each other, separately."
+    }
+  },
+  "algebraEquationMeaning": {
+    "gameName": "Understanding Equations",
+    "gameDescription": "What makes an equation true? Test a value and see.",
+    "prompt": {
+      "pickSolution": "Which value of x makes this equation true?",
+      "isSolution": "Does this value make the equation true?"
+    },
+    "testValue": "Test x = {{x}}",
+    "actions": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "feedback": {
+      "testIt": "Substitute the value for x on the left side, and check whether it really equals the right side."
+    },
+    "completion": {
+      "title": "🟰 You know what makes an equation true!"
+    }
+  },
+  "algebraSolving": {
+    "gameName": "Solving Equations",
+    "gameDescription": "Choose the move — the same thing happens to both sides, every time.",
+    "prompt": "What should we do to both sides?",
+    "stepLabel": "Step {{current}} of {{total}}",
+    "operation": {
+      "add": "+{{n}} both sides",
+      "subtract": "−{{n}} both sides",
+      "addX": "+{{term}} both sides",
+      "subtractX": "−{{term}} both sides",
+      "divide": "÷{{n}} both sides"
+    },
+    "feedback": {
+      "wrong": "That move doesn't get x by itself here. Look at what's attached to x and undo that first."
+    },
+    "verify": {
+      "title": "Solved! Let's check it.",
+      "substituting": "Substitute x = {{x}} back into the original equation:",
+      "confirmed": "Both sides equal {{value}} — verified!"
+    },
+    "actions": {
+      "next": "Next equation",
+      "tryAgain": "Try again"
+    },
+    "completion": {
+      "title": "🧮 You can solve equations!"
+    }
+  },
+  "algebraWordProblems": {
+    "gameName": "From Words to Equations",
+    "gameDescription": "Turn a short story into an equation, then solve it.",
+    "pickEquation": "Which equation matches the story?",
+    "story": {
+      "abstractPlus": "{{a}} times a number plus {{b}} equals {{c}}. What is the number?",
+      "storyPlus": "{{name}} has {{b}} more than {{a}} times what {{other}} has. {{name}} has {{c}} in total. How many does {{other}} have?",
+      "abstractMinus": "{{a}} times a number minus {{b}} equals {{c}}. What is the number?",
+      "storyMinus": "{{name}} has {{b}} fewer than {{a}} times what {{other}} has. {{name}} has {{c}} in total. How many does {{other}} have?"
+    },
+    "feedback": {
+      "wrong": "Read the story again, one piece at a time: what is multiplied by the number, and what is added or taken away?"
+    },
+    "interpretation": {
+      "abstractPlus": "The number is {{value}}.",
+      "storyPlus": "{{other}} has {{value}}.",
+      "abstractMinus": "The number is {{value}}.",
+      "storyMinus": "{{other}} has {{value}}."
+    },
+    "completion": {
+      "title": "📖 You can turn a story into an equation!"
     }
   },
   "quiz": {
