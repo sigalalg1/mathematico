@@ -188,6 +188,81 @@ export const signedNumbersGames: Game[] = [
   },
 ];
 
+const ALGEBRA_PATH = '/grade/7/algebra';
+
+/**
+ * Grade 7 — Algebra, in the progression the unit's design calls for: patterns
+ * and variables first, through expressions, substitution and equivalence, to
+ * combining like terms, then the meaning of an equation, solving one, and
+ * finally turning a word problem into one.
+ */
+export const algebraGames: Game[] = [
+  {
+    id: 'algebraPatterns',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/patterns-and-variables`,
+    nameKey: 'algebraPatterns.gameName',
+    descriptionKey: 'algebraPatterns.gameDescription',
+    icon: 'ƒ',
+  },
+  {
+    id: 'algebraExpressions',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/build-an-expression`,
+    nameKey: 'algebraExpressions.gameName',
+    descriptionKey: 'algebraExpressions.gameDescription',
+    icon: 'x+',
+  },
+  {
+    id: 'algebraSubstitution',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/substitution`,
+    nameKey: 'algebraSubstitution.gameName',
+    descriptionKey: 'algebraSubstitution.gameDescription',
+    icon: 'x=',
+  },
+  {
+    id: 'algebraEquivalent',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/equivalent-expressions`,
+    nameKey: 'algebraEquivalent.gameName',
+    descriptionKey: 'algebraEquivalent.gameDescription',
+    icon: '⚖',
+  },
+  {
+    id: 'algebraLikeTerms',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/combining-like-terms`,
+    nameKey: 'algebraLikeTerms.gameName',
+    descriptionKey: 'algebraLikeTerms.gameDescription',
+    icon: '3x',
+  },
+  {
+    id: 'algebraEquationMeaning',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/understanding-equations`,
+    nameKey: 'algebraEquationMeaning.gameName',
+    descriptionKey: 'algebraEquationMeaning.gameDescription',
+    icon: '🟰',
+  },
+  {
+    id: 'algebraSolving',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/solving-equations`,
+    nameKey: 'algebraSolving.gameName',
+    descriptionKey: 'algebraSolving.gameDescription',
+    icon: '🧮',
+  },
+  {
+    id: 'algebraWordProblems',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/from-words-to-equations`,
+    nameKey: 'algebraWordProblems.gameName',
+    descriptionKey: 'algebraWordProblems.gameDescription',
+    icon: '📖',
+  },
+];
+
 export const simpleFractionsGames: Game[] = [];
 
 const FRACTIONS_PART1_PATH = '/grade/4/fractions-part-1';

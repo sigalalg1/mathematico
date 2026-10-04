@@ -141,8 +141,8 @@
       "description": "בקרוב"
     },
     "algebraBasics": {
-      "name": "יסודות באלגברה",
-      "description": "בקרוב"
+      "name": "אלגברה",
+      "description": "מחוקיות ומשתנים ועד בניית פתרון משוואות."
     },
     "arithmeticFluency": {
       "name": "שטף חשבוני",
@@ -923,6 +923,181 @@
     },
     "completion": {
       "title": "✖️ סיימתם את חוק הסימנים!"
+    }
+  },
+  "algebraPage": {
+    "title": "אלגברה",
+    "subtitle": "בחרו תרגיל כדי להתאמן",
+    "completedBadge": "הושלם"
+  },
+  "algebra": {
+    "progress": "שאלה {{current}} מתוך {{total}}",
+    "completion": {
+      "summary": "{{total}} שאלות הושלמו",
+      "firstTry": "{{count}} נפתרו בניסיון ראשון"
+    },
+    "actions": {
+      "playAgain": "לשחק שוב",
+      "backToTopic": "חזרה לאלגברה",
+      "tryAgain": "לנסות שוב",
+      "next": "הבא"
+    }
+  },
+  "algebraPatterns": {
+    "gameName": "חוקיות ומשתנים",
+    "gameDescription": "מגלים למה משתמשים ב-x: אותו חוק, לכל מספר.",
+    "prompt": {
+      "computeOutput": "מה החוק של המכונה? מה ייצא כשנכניס {{input}}?",
+      "computeRule": "לפי איזה חוק פועלת המכונה — לכל מספר?",
+      "computeInput": "איזה קלט ייתן את הפלט הזה?",
+      "visualStage": "מה החוקיות? כמה יהיו בשלב {{stage}}?"
+    },
+    "machine": {
+      "stageLabel": "שלב {{stage}}"
+    },
+    "feedback": {
+      "correctMessages": [
+        "יפה! זה החוק.",
+        "בדיוק נכון!",
+        "מצאתם אותו!"
+      ],
+      "hint": "הסתכלו על הדוגמאות שלמעלה — אותו חוק חל על כולן, כולל זו."
+    },
+    "completion": {
+      "title": "🔎 מצאתם את החוקיות!"
+    }
+  },
+  "algebraExpressions": {
+    "gameName": "בונים ביטוי",
+    "gameDescription": "מתרגמים משפט קצר לביטוי האלגברי שהוא מתאר.",
+    "intro": "בחרו את הביטוי שמתאים למשפט.",
+    "prompt": "איזה ביטוי מתאים למשפט?",
+    "difficulty": {
+      "basic": "x + n או n × x",
+      "intermediate": "שני שלבים: n × x + m",
+      "hard": "גם חילוק, וסדר מילים מורכב יותר"
+    },
+    "phrases": {
+      "plus": "מספר ועוד {{n}}",
+      "minus": "{{n}} פחות ממספר",
+      "minusReversed": "מספר פחות {{n}}",
+      "timesOnly": "{{n}} כפול מספר",
+      "timesPlus": "{{n}} כפול מספר, ועוד {{n2}}",
+      "moreThanTimes": "{{n2}} יותר מ-{{n}} כפול מספר",
+      "divide": "מספר חלקי {{n}}"
+    }
+  },
+  "algebraSubstitution": {
+    "gameName": "הצבה בביטויים",
+    "gameDescription": "מחליפים את x בערך שלו, שלב אחר שלב, ואז מחשבים.",
+    "intro": "x מייצג מספר — ברגע שיודעים איזה, לביטוי יש ערך.",
+    "prompt": "מה הערך של הביטוי כאשר x = {{x}}?",
+    "difficulty": {
+      "basic": "פעולה אחת: x ± a, או a × x",
+      "intermediate": "שתי פעולות: a × x ± b",
+      "hard": "ערכי x שליליים"
+    }
+  },
+  "algebraEquivalent": {
+    "gameName": "ביטויים שווי ערך",
+    "gameDescription": "שני ביטויים, נבדקים בשני ערכים — האם הם באמת שווים?",
+    "prompt": "בדקו את שני הביטויים. האם הם שווי ערך?",
+    "actions": {
+      "equivalent": "שווי ערך",
+      "notEquivalent": "לא שווי ערך"
+    },
+    "feedback": {
+      "missedEquivalent": "בדקו את שתי השורות למעלה — שני הביטויים נותנים את אותו ערך לכל x, לא רק לשני אלה.",
+      "missedDifference": "הסתכלו שוב: אחת משתי השורות למעלה לא תואמת. זה מספיק כדי להוכיח שהם לא שווי ערך."
+    },
+    "completion": {
+      "title": "⚖️ אתם יודעים לזהות ביטויים שווי ערך!"
+    }
+  },
+  "algebraLikeTerms": {
+    "gameName": "איברים דומים",
+    "gameDescription": "איברי x מתחברים עם איברי x, מספרים מתחברים עם מספרים — אף פעם לא יחד.",
+    "intro": "מצמצמים את הביטוי על ידי חיבור האיברים הדומים בו.",
+    "prompt": "צמצמו את הביטוי הזה.",
+    "difficulty": {
+      "basic": "רק איברי x חיוביים",
+      "intermediate": "איברי x ומספר",
+      "hard": "חיסור ומקדמים שליליים"
+    },
+    "feedback": {
+      "combinedUnlikeTerms": "3x ו-4 הם סוגים שונים של איברים — איבר x יכול להתחבר רק עם איבר x אחר, ומספר רק עם מספר אחר.",
+      "droppedASign": "הסתכלו שוב על הסימן שלפני האיבר הזה — הוא עובר איתו כשמחברים אותו.",
+      "other": "מחברים את איברי ה-x זה עם זה, ואת המספרים זה עם זה, בנפרד."
+    }
+  },
+  "algebraEquationMeaning": {
+    "gameName": "מהי משוואה?",
+    "gameDescription": "מה הופך משוואה לנכונה? בודקים ערך ורואים.",
+    "prompt": {
+      "pickSolution": "איזה ערך של x הופך את המשוואה הזו לנכונה?",
+      "isSolution": "האם הערך הזה הופך את המשוואה לנכונה?"
+    },
+    "testValue": "בודקים x = {{x}}",
+    "actions": {
+      "yes": "כן",
+      "no": "לא"
+    },
+    "feedback": {
+      "testIt": "הציבו את הערך במקום x בצד שמאל, ובדקו האם הוא באמת שווה לצד ימין."
+    },
+    "completion": {
+      "title": "🟰 אתם יודעים מה הופך משוואה לנכונה!"
+    }
+  },
+  "algebraSolving": {
+    "gameName": "פותרים משוואות",
+    "gameDescription": "בוחרים את הצעד — אותו דבר קורה לשני הצדדים, בכל פעם.",
+    "prompt": "מה כדאי לעשות לשני הצדדים?",
+    "stepLabel": "שלב {{current}} מתוך {{total}}",
+    "operation": {
+      "add": "+{{n}} לשני הצדדים",
+      "subtract": "−{{n}} לשני הצדדים",
+      "addX": "+{{term}} לשני הצדדים",
+      "subtractX": "−{{term}} לשני הצדדים",
+      "divide": "÷{{n}} לשני הצדדים"
+    },
+    "feedback": {
+      "wrong": "הצעד הזה לא מבודד את x כאן. הסתכלו מה צמוד ל-x ובטלו קודם את זה."
+    },
+    "verify": {
+      "title": "פתרתם! בואו נבדוק.",
+      "substituting": "מציבים x = {{x}} בחזרה במשוואה המקורית:",
+      "confirmed": "שני הצדדים שווים ל-{{value}} — אומת!"
+    },
+    "actions": {
+      "next": "המשוואה הבאה",
+      "tryAgain": "לנסות שוב"
+    },
+    "completion": {
+      "title": "🧮 אתם יודעים לפתור משוואות!"
+    }
+  },
+  "algebraWordProblems": {
+    "gameName": "מבעיה למשוואה",
+    "gameDescription": "הופכים סיפור קצר למשוואה, ואז פותרים אותה.",
+    "pickEquation": "איזו משוואה מתאימה לסיפור?",
+    "story": {
+      "abstractPlus": "{{a}} כפול מספר ועוד {{b}} שווה {{c}}. מהו המספר?",
+      "storyPlus": "ל{{name}} יש {{b}} יותר מפי {{a}} ממה שיש ל{{other}}. ל{{name}} יש בסך הכל {{c}}. כמה יש ל{{other}}?",
+      "abstractMinus": "{{a}} כפול מספר פחות {{b}} שווה {{c}}. מהו המספר?",
+      "storyMinus": "ל{{name}} יש {{b}} פחות מפי {{a}} ממה שיש ל{{other}}. ל{{name}} יש בסך הכל {{c}}. כמה יש ל{{other}}?"
+    },
+    "feedback": {
+      "wrong": "קראו את הסיפור שוב, חלק אחרי חלק: מה כפול המספר, ומה מתווסף או מופחת?"
+    },
+    "interpretation": {
+      "abstractPlus": "המספר הוא {{value}}.",
+      "storyPlus": "ל{{other}} יש {{value}}.",
+      "abstractMinus": "המספר הוא {{value}}.",
+      "storyMinus": "ל{{other}} יש {{value}}."
+    },
+    "completion": {
+      "title": "📖 אתם יודעים להפוך סיפור למשוואה!"
     }
   },
   "quiz": {
