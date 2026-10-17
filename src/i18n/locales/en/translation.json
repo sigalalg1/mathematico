@@ -147,6 +147,10 @@
     "arithmeticFluency": {
       "name": "Arithmetic Fluency",
       "description": "Adding and subtracting until it is fast, accurate and confident."
+    },
+    "decimalPlaceValue": {
+      "name": "Decimal Place Value — Exam Prep",
+      "description": "Eight skills, a diagnostic, and a mock exam covering the base-10 number system up to a million."
     }
   },
   "penaltyShootout": {
@@ -930,6 +934,11 @@
     "subtitle": "Pick an activity to practise",
     "completedBadge": "Done"
   },
+  "decimalExamPrepPage": {
+    "title": "Decimal Place Value — Exam Prep",
+    "subtitle": "Practice any skill on its own, or work through the full diagnostic and mock exam.",
+    "completedBadge": "Done"
+  },
   "algebra": {
     "progress": "Question {{current}} of {{total}}",
     "completion": {
@@ -1572,6 +1581,277 @@
           "hard": "Big numbers, small answers, like 83−47"
         }
       }
+    }
+  },
+  "decimalExamPrep": {
+    "common": {
+      "correct": "Correct!",
+      "incorrect": "Not quite",
+      "check": "Check",
+      "even": "Even",
+      "odd": "Odd"
+    },
+    "skillStatus": {
+      "strong": "Solid",
+      "weak": "Needs practice",
+      "insufficientData": "Too few questions to be sure yet",
+      "noData": "Not covered this round"
+    }
+  },
+  "decimalPlaceValue": {
+    "gameName": "Place Value & Conversions",
+    "gameDescription": "Ones, tens, hundreds, thousands — what each digit is really worth.",
+    "intro": "Every position is worth ten times the one to its right.",
+    "prompt": "Answer based on place value.",
+    "difficulty": {
+      "basic": "tens and hundreds, numbers up to 9,999",
+      "intermediate": "thousands and ten-thousands, numbers up to 99,999",
+      "advanced": "up to 999,999, including remainders"
+    },
+    "promptFor": {
+      "digitValue": {
+        "tens": "What is the value of the tens digit in this number?",
+        "hundreds": "What is the value of the hundreds digit in this number?",
+        "thousands": "What is the value of the thousands digit in this number?",
+        "tenThousands": "What is the value of the ten-thousands digit in this number?",
+        "hundredThousands": "What is the value of the hundred-thousands digit in this number?"
+      },
+      "countUnit": {
+        "tens": "How many tens are in this number?",
+        "hundreds": "How many hundreds are in this number?",
+        "thousands": "How many thousands are in this number?"
+      },
+      "composeUnit": "What number is this?"
+    },
+    "explanation": {
+      "digitValue": "The digit {{digit}} sits in the place worth {{placeValue}}, so its value is {{digit}} × {{placeValue}} = {{value}}.",
+      "countUnit": "{{number}} ÷ {{unit}} = {{count}}.",
+      "composeUnit": "{{count}} × {{unit}} = {{value}}."
+    }
+  },
+  "decimalDecomposition": {
+    "gameName": "Number Construction & Decomposition",
+    "gameDescription": "Take a number apart into place-value pieces, and build it back up.",
+    "intro": "A number can be built from its place-value pieces in more than one way.",
+    "prompt": "Work out the number.",
+    "difficulty": {
+      "basic": "standard expanded form, up to 9,999",
+      "intermediate": "a missing term, and nonstandard groupings",
+      "advanced": "larger numbers, and spotting a true decomposition"
+    },
+    "promptFor": {
+      "expandedSum": "Add up the expanded form.",
+      "missingTerm": "What number belongs in the blank?",
+      "nonstandardCompose": "What number is this?",
+      "recognizeDecomposition": "Which of these is a true decomposition of this number?"
+    },
+    "explanation": {
+      "expandedSum": "{{terms}} = {{value}}.",
+      "missingTerm": "The missing piece is {{missing}} — every piece together makes {{value}}.",
+      "nonstandardCompose": "{{a}} + {{b}} = {{value}}.",
+      "recognizeDecomposition": "{{terms}} is the one that actually adds up to {{value}}."
+    }
+  },
+  "decimalOrdering": {
+    "gameName": "Comparing, Ordering & Sequences",
+    "gameDescription": "Which is bigger, what comes next, and what fits between.",
+    "intro": "Compare the first place where two numbers actually differ.",
+    "prompt": "Compare, order, or continue the pattern.",
+    "difficulty": {
+      "basic": "clearly different numbers, simple steps",
+      "intermediate": "numbers that share leading digits, ordering four",
+      "advanced": "finding a number in a narrow range"
+    },
+    "promptFor": {
+      "compare": "Compare the two numbers.",
+      "sequenceNext": "What comes next?",
+      "numberBetween": "Find a number that fits.",
+      "orderFour": "Which option puts these in order from smallest to largest?"
+    },
+    "explanation": {
+      "compare": "{{left}} {{symbol}} {{right}} — look at the first place where the digits differ.",
+      "sequenceNext": "Each step adds {{step}}, so the next term is {{value}}.",
+      "numberBetween": "Any whole number strictly between {{lower}} and {{upper}} works.",
+      "orderFour": "From smallest to largest: {{sorted}}."
+    }
+  },
+  "decimalRounding": {
+    "gameName": "Rounding & Estimation",
+    "gameDescription": "Find the nearest benchmark, and judge a result without calculating it exactly.",
+    "intro": "Rounding means finding the nearest benchmark, not just changing digits by a rule.",
+    "prompt": "Round or estimate.",
+    "difficulty": {
+      "basic": "round to the nearest ten or hundred",
+      "intermediate": "round to the nearest hundred or thousand, including midpoints",
+      "advanced": "estimate a sum, and judge it against a target"
+    },
+    "promptFor": {
+      "roundTo": {
+        "tens": "Round this number to the nearest ten.",
+        "hundreds": "Round this number to the nearest hundred.",
+        "thousands": "Round this number to the nearest thousand.",
+        "tenThousands": "Round this number to the nearest ten-thousand."
+      },
+      "nearestBenchmark": {
+        "tens": "Which ten is this number closer to?",
+        "hundreds": "Which hundred is this number closer to?",
+        "thousands": "Which thousand is this number closer to?",
+        "tenThousands": "Which ten-thousand is this number closer to?"
+      },
+      "estimateSum": {
+        "hundreds": "Round each number to the nearest hundred, then add.",
+        "thousands": "Round each number to the nearest thousand, then add.",
+        "tenThousands": "Round each number to the nearest ten-thousand, then add."
+      },
+      "rangeJudgment": "Without calculating exactly, is the result above or below the number shown?"
+    },
+    "explanation": {
+      "roundTo": "{{value}} rounds to {{result}} (to the nearest {{place}}).",
+      "nearestBenchmark": "{{value}} is between {{lower}} and {{upper}}, and closer to {{result}}.",
+      "estimateSum": "{{a}} + {{b}} = {{result}}.",
+      "rangeJudgment": "{{a}} + {{b}} = {{exact}}, so the result is on that side of {{threshold}}."
+    }
+  },
+  "decimalArithmetic": {
+    "gameName": "Addition & Subtraction with Regrouping",
+    "gameDescription": "Mental math, multi-digit calculation, and real regrouping — not just round numbers.",
+    "intro": "Watch which places need to carry or borrow, not just the final answer.",
+    "prompt": "Calculate the result.",
+    "difficulty": {
+      "basic": "mental math with round numbers, up to 9,999",
+      "intermediate": "multi-digit calculation that always needs regrouping",
+      "advanced": "crossing zeros, and solving for a missing addend"
+    },
+    "promptFor": {
+      "calculate": "What is the result?",
+      "missingAddend": "What number is missing?"
+    },
+    "explanation": {
+      "calculate": "The result is {{result}}.",
+      "missingAddend": "{{missing}} + {{known}} = {{total}}."
+    }
+  },
+  "decimalParity": {
+    "gameName": "Reasoning Without Calculating",
+    "gameDescription": "Even or odd, which is bigger, build an expression that fits — all without working out the exact number.",
+    "intro": "Only the last digit decides whether a result is even or odd.",
+    "prompt": "Reason about it — don't calculate the exact result.",
+    "difficulty": {
+      "basic": "is the result even or odd?",
+      "intermediate": "also comparing two expressions without evaluating both",
+      "advanced": "build your own expression that fits a condition"
+    },
+    "promptFor": {
+      "parity": "Without calculating the exact result, is it even or odd?",
+      "compareExpressions": "Without calculating both exactly, which is bigger?",
+      "constructEven": "Tap two numbers and an operation to make an even result.",
+      "constructThreshold": "Tap two numbers and subtract to get a result under {{threshold}}."
+    },
+    "explanation": {
+      "parity": "Only the last digits matter: {{leftDigit}} and {{rightDigit}}.",
+      "compareExpressions": "Same starting point, different amount added — compare just the amounts.",
+      "constructEven": "Two numbers with the same parity (both even, or both odd) always add to an even result.",
+      "constructThreshold": "Subtracting two close numbers from the list keeps the result small."
+    }
+  },
+  "decimalConstraints": {
+    "gameName": "Missing Numbers & Puzzles",
+    "gameDescription": "Find a missing digit, pick a number that fits a range and a digit rule, or build a pair that hits a target sum.",
+    "intro": "Some of these puzzles have more than one right answer — any number that fits the rule is correct.",
+    "prompt": "Figure out what fits the rule.",
+    "difficulty": {
+      "basic": "find the missing digit in an addition",
+      "intermediate": "also pick a number that fits a range and a digit rule",
+      "advanced": "also build a pair of numbers that hits a target sum"
+    },
+    "promptFor": {
+      "missingDigit": "What digit is missing?",
+      "rangeAndDigit": "Find a number between the two values whose hundreds digit is {{digit}}.",
+      "targetSum": "Tap two numbers and add them to make exactly {{target}}."
+    },
+    "explanation": {
+      "missingDigit": "The missing digit is {{digit}}, since {{addend}} completes the addition.",
+      "rangeAndDigit": "For example, {{lower}} < n < {{upper}} with hundreds digit {{digit}} — many numbers in this range can work.",
+      "targetSum": "For example, {{a}} + {{b}} = {{target}} — other pairs from the list may also work."
+    }
+  },
+  "decimalWordProblems": {
+    "gameName": "Word Problems",
+    "gameDescription": "Real-life situations that combine place value, rounding and arithmetic into one question.",
+    "intro": "Read carefully — figure out which operation the story is actually asking for.",
+    "prompt": "Read the story and answer the question.",
+    "difficulty": {
+      "basic": "one addition or subtraction story",
+      "intermediate": "also comparing, rounding and finding a missing amount",
+      "advanced": "also two-step stories and place value inside a real quantity"
+    },
+    "promptFor": {
+      "sumScenario": "A class collected {{a}} bottle caps in the first week and {{b}} more in the second week. How many bottle caps did they collect in total?",
+      "differenceScenario": "A warehouse had {{a}} boxes in stock. {{b}} boxes were sold. How many boxes are left?",
+      "compareScenario": "Two friends each collected marbles over the summer. Which amount is bigger?",
+      "roundEstimateScenario": {
+        "hundreds": "A stadium had {{value}} visitors. A news report rounds the number to the nearest hundred. What number appears in the report?",
+        "thousands": "A stadium had {{value}} visitors. A news report rounds the number to the nearest thousand. What number appears in the report?",
+        "tenThousands": "A stadium had {{value}} visitors. A news report rounds the number to the nearest ten thousand. What number appears in the report?"
+      },
+      "missingAddendScenario": "A store had {{before}} products. A new shipment arrived, and now the store has {{after}} products in total. How many products arrived in the shipment?",
+      "multiStepScenario": "A team collected {{firstWeek}} stamps in the first week and {{secondWeek}} more stamps in the second week. They then used {{used}} stamps to post letters. How many stamps are left?",
+      "digitValueScenario": {
+        "hundreds": "A video reached {{value}} views. What value does the digit in the hundreds place represent?",
+        "thousands": "A video reached {{value}} views. What value does the digit in the thousands place represent?",
+        "tenThousands": "A video reached {{value}} views. What value does the digit in the ten-thousands place represent?"
+      }
+    },
+    "explanation": {
+      "sumScenario": "{{a}} + {{b}} = {{result}}.",
+      "differenceScenario": "{{a}} − {{b}} = {{result}}.",
+      "compareScenario": "{{a}} compared with {{b}}.",
+      "roundEstimateScenario": "{{value}} rounds to {{result}}.",
+      "missingAddendScenario": "{{after}} − {{before}} = {{result}} arrived.",
+      "multiStepScenario": "First add the two weeks, then subtract what was used: {{total}} − {{used}} = {{result}}.",
+      "digitValueScenario": "In {{value}}, that digit represents {{result}}."
+    }
+  },
+  "decimalDiagnostic": {
+    "intro": {
+      "title": "Diagnostic Check",
+      "description": "12 quick questions across all eight skills, so we know where to start. No pressure — a single miss never means a skill is weak.",
+      "startButton": "Start the diagnostic"
+    },
+    "results": {
+      "title": "Diagnostic results",
+      "overallLabel": "Overall",
+      "skillsHeading": "By skill",
+      "recommendationHeading": "What to practice next",
+      "recommendationWeak": "Focus on {{skill}} first — that's where the diagnostic showed the most room to grow.",
+      "recommendationMixed": "A few skills could use more practice: {{skills}}.",
+      "recommendationAllGood": "Nice work across the board. Pick any skill below to keep sharp, or try a full mock exam.",
+      "lowDataNote": "Most skills only got one or two questions here — not enough to call a skill \"weak\" on its own. Treat this as a starting point, not a verdict.",
+      "practiceButton": "Practice this skill",
+      "retakeButton": "Retake the diagnostic",
+      "mockExamButton": "Try a mock exam",
+      "backButton": "Back to the unit"
+    }
+  },
+  "decimalMockExam": {
+    "intro": {
+      "title": "Mock Exam",
+      "description": "22 questions mixing all eight skills in random order — just like the real thing. There's no timer pushing you; take the time you need.",
+      "startButton": "Start the mock exam"
+    },
+    "results": {
+      "title": "Mock exam results",
+      "overallLabel": "Overall",
+      "skillsHeading": "By skill",
+      "readinessHeading": "Exam readiness",
+      "readinessReady": "Your last two mock exams both cleared about 85% with no persistent weak spot — a good sign you're ready. This is a guide, not a guarantee.",
+      "readinessNotYet": "Not quite there yet across your last two mock exams. Keep practicing the skills below, then try again.",
+      "readinessNotEnoughAttempts": "Take one more mock exam to get a readiness read — it compares your two most recent attempts.",
+      "reviewHeading": "Review your answers",
+      "reviewYourAnswer": "Your answer",
+      "reviewCorrectAnswer": "A correct answer",
+      "regenerateButton": "Try a different mock exam",
+      "backButton": "Back to the unit"
     }
   }
 }

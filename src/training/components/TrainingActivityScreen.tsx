@@ -54,6 +54,8 @@ interface TrainingActivityScreenProps<TPayload = never> {
    * time either way, so a slower beat can never make their pace look worse.
    */
   feedbackTiming?: TrainingFeedbackTiming;
+  /** See `TrainingPlayScreen`'s prop of the same name. */
+  hideBuiltinFeedback?: boolean;
   /** Injected in tests so timings are exact. */
   clock?: TrainingClock;
 }
@@ -73,6 +75,7 @@ export function TrainingActivityScreen<TPayload = never>({
   promptKey,
   renderQuestion,
   feedbackTiming,
+  hideBuiltinFeedback,
   clock,
 }: TrainingActivityScreenProps<TPayload>) {
   const { t } = useTranslation();
@@ -167,6 +170,7 @@ export function TrainingActivityScreen<TPayload = never>({
           promptKey={promptKey}
           renderQuestion={renderQuestion}
           feedbackTiming={feedbackTiming}
+          hideBuiltinFeedback={hideBuiltinFeedback}
           backTo={backTo}
           backLabel={backLabel}
           clock={clock}
@@ -184,6 +188,7 @@ interface TrainingRunProps<TPayload> {
   promptKey: string;
   renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
   feedbackTiming?: TrainingFeedbackTiming;
+  hideBuiltinFeedback?: boolean;
   backTo: string;
   backLabel: string;
   clock?: TrainingClock;
@@ -198,6 +203,7 @@ function TrainingRun<TPayload>({
   promptKey,
   renderQuestion,
   feedbackTiming,
+  hideBuiltinFeedback,
   backTo,
   backLabel,
   clock,
@@ -282,5 +288,13 @@ function TrainingRun<TPayload>({
     );
   }
 
-  return <TrainingPlayScreen session={session} mode={mode} promptKey={promptKey} renderQuestion={renderQuestion} />;
+  return (
+    <TrainingPlayScreen
+      session={session}
+      mode={mode}
+      promptKey={promptKey}
+      renderQuestion={renderQuestion}
+      hideBuiltinFeedback={hideBuiltinFeedback}
+    />
+  );
 }

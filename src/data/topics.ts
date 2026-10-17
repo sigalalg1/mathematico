@@ -3,6 +3,7 @@ import {
   algebraGames,
   arithmeticFluencyGames,
   coordinateSystemGames,
+  decimalPlaceValueGames,
   divisionWithRemainderGames,
   fractionsPart1Games,
   geometryAnglesTrianglesGames,
@@ -57,6 +58,12 @@ export const topics: Topic[] = [
     path: '/grade/4/penalty-shootout',
   },
   {
+    id: 'decimalPlaceValue',
+    gradeId: 4,
+    enabled: true,
+    path: '/grade/4/decimal-place-value',
+  },
+  {
     id: 'coordinateSystem',
     gradeId: 7,
     enabled: true,
@@ -108,6 +115,7 @@ const TOPIC_GAMES: Partial<Record<string, Game[]>> = {
   coordinateSystem: coordinateSystemGames,
   signedNumbers: signedNumbersGames,
   algebraBasics: algebraGames,
+  decimalPlaceValue: decimalPlaceValueGames,
 };
 
 function topicHasActivity(topic: Topic): boolean {

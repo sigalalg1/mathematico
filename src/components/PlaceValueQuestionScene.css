@@ -1,0 +1,290 @@
+/*
+ * Shared styling for every question in the Grade 4 Decimal Place Value
+ * exam-prep unit, across all four interaction kinds. Dark Grade 4 shell,
+ * colourful but restrained — no new mascot, no scanned-worksheet look.
+ */
+
+.pv-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.pv-prompt {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-h);
+  text-align: center;
+  max-width: 560px;
+}
+
+.pv-prompt--story {
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: start;
+  max-width: 640px;
+}
+
+.pv-display {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--text-h);
+  letter-spacing: 0.01em;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  white-space: pre-line;
+}
+
+/* --- options shared by multipleChoice / compareSymbol / constructChoice op --- */
+
+.pv-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 420px;
+}
+
+.pv-option {
+  min-height: var(--tap);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 120ms ease;
+}
+
+.pv-option:hover:not(:disabled) {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.pv-option:disabled {
+  cursor: default;
+}
+
+.pv-option.is-correct {
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.pv-option.is-wrong {
+  border-color: var(--warning);
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.pv-option.is-selected {
+  border-color: var(--primary);
+}
+
+/* --- numeric input ---------------------------------------------------------- */
+
+.pv-numeric-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 320px;
+}
+
+.pv-numeric-input {
+  flex: 1;
+  /* A flex item's default min-width is its content size, not 0 — without
+     this, the input can refuse to shrink to fit the row (depending on
+     which font is active at first layout), overflowing the page and
+     shoving the submit button off-screen. */
+  min-width: 0;
+  min-height: var(--tap);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  text-align: center;
+}
+
+.pv-numeric-input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+/* --- compare <, =, > --------------------------------------------------------- */
+
+.pv-compare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.pv-compare-number {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--text-h);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-5);
+}
+
+.pv-compare-symbols {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.pv-symbol {
+  min-width: 56px;
+  font-size: var(--text-2xl);
+}
+
+/* --- construct a choice (tap numbers + an operation) ------------------------ */
+
+.pv-construct {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.pv-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  max-width: 420px;
+}
+
+.pv-chip {
+  min-height: var(--tap);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  font-size: var(--text-md);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.pv-chip.is-selected {
+  border-color: var(--primary);
+  background: var(--primary-bg);
+  color: var(--primary);
+}
+
+.pv-op-row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.pv-op {
+  min-width: 56px;
+  font-size: var(--text-xl);
+}
+
+/* --- feedback ---------------------------------------------------------------- */
+
+.pv-feedback {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  animation: pv-feedback-in 220ms ease;
+}
+
+.pv-feedback.is-correct {
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+.pv-feedback.is-wrong {
+  border-color: var(--warning);
+  background: var(--warning-bg);
+}
+
+.pv-feedback-verdict {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  margin: 0;
+}
+
+.pv-feedback.is-correct .pv-feedback-verdict {
+  color: var(--success);
+}
+
+.pv-feedback.is-wrong .pv-feedback-verdict {
+  color: var(--warning);
+}
+
+.pv-feedback-explanation {
+  font-size: var(--text-sm);
+  color: var(--text);
+  margin: 0;
+}
+
+@keyframes pv-feedback-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .pv-display {
+    font-size: var(--text-xl);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .pv-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* A number, the <=> buttons and the other number rarely fit one line at
+     this width (two 2xl-sized number chips plus three symbol buttons), and
+     an uncontrolled `flex-wrap` can strand one number alone on its own
+     line, divorced from the comparison. Stacking on purpose — number, then
+     the symbol row, then the other number — keeps both always grouped with
+     the choice between them instead of leaving that to the wrap algorithm. */
+  .pv-compare {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: var(--space-3);
+  }
+
+  .pv-compare-number {
+    font-size: var(--text-xl);
+  }
+}

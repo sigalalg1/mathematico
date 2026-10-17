@@ -263,6 +263,83 @@ export const algebraGames: Game[] = [
   },
 ];
 
+const DECIMAL_PLACE_VALUE_PATH = '/grade/4/decimal-place-value';
+
+/**
+ * Grade 4 — Decimal Place Value exam-prep unit. Eight skills building one
+ * cohesive base-10 number-sense journey (not eight disconnected mini-games):
+ * place value and conversions, construction and decomposition, ordering and
+ * sequences, rounding and estimation, addition/subtraction with regrouping,
+ * reasoning without full calculation, missing numbers and constraints, and
+ * word problems tying several of the above together.
+ */
+export const decimalPlaceValueGames: Game[] = [
+  {
+    id: 'decimalPlaceValue',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/place-value-and-conversions`,
+    nameKey: 'decimalPlaceValue.gameName',
+    descriptionKey: 'decimalPlaceValue.gameDescription',
+    icon: '#',
+  },
+  {
+    id: 'decimalDecomposition',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/build-and-break-numbers`,
+    nameKey: 'decimalDecomposition.gameName',
+    descriptionKey: 'decimalDecomposition.gameDescription',
+    icon: '🧩',
+  },
+  {
+    id: 'decimalOrdering',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/comparing-and-sequences`,
+    nameKey: 'decimalOrdering.gameName',
+    descriptionKey: 'decimalOrdering.gameDescription',
+    icon: '<>',
+  },
+  {
+    id: 'decimalRounding',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/rounding-and-estimation`,
+    nameKey: 'decimalRounding.gameName',
+    descriptionKey: 'decimalRounding.gameDescription',
+    icon: '≈',
+  },
+  {
+    id: 'decimalArithmetic',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/addition-and-subtraction`,
+    nameKey: 'decimalArithmetic.gameName',
+    descriptionKey: 'decimalArithmetic.gameDescription',
+    icon: '+−',
+  },
+  {
+    id: 'decimalParity',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/reasoning-without-calculating`,
+    nameKey: 'decimalParity.gameName',
+    descriptionKey: 'decimalParity.gameDescription',
+    icon: '🧠',
+  },
+  {
+    id: 'decimalConstraints',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/missing-numbers-and-puzzles`,
+    nameKey: 'decimalConstraints.gameName',
+    descriptionKey: 'decimalConstraints.gameDescription',
+    icon: '?',
+  },
+  {
+    id: 'decimalWordProblems',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/word-problems`,
+    nameKey: 'decimalWordProblems.gameName',
+    descriptionKey: 'decimalWordProblems.gameDescription',
+    icon: '📖',
+  },
+];
+
 export const simpleFractionsGames: Game[] = [];
 
 const FRACTIONS_PART1_PATH = '/grade/4/fractions-part-1';

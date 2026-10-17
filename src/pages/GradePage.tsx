@@ -24,6 +24,7 @@ const TOPIC_MOTIF: Record<string, ReactNode> = {
   fractions: '⅓',
   geometry: '∠',
   algebraBasics: 'x²',
+  decimalPlaceValue: '#',
 };
 
 export function GradePage() {

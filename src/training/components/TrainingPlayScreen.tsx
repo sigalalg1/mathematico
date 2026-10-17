@@ -69,6 +69,14 @@ interface TrainingPlayScreenProps<TPayload = never> {
    * point: a picture-based activity gets the full engine for free.
    */
   renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
+  /**
+   * Suppresses this screen's own generic "Correct! / Wrong, it was X" line.
+   * For a custom `renderQuestion` scene that already shows its own verdict
+   * and explanation (richer than this generic one), showing both would just
+   * duplicate the feedback — the paragraph still renders, reserving its
+   * layout space, just without text.
+   */
+  hideBuiltinFeedback?: boolean;
 }
 
 /**
@@ -86,6 +94,7 @@ export function TrainingPlayScreen<TPayload = never>({
   mode,
   promptKey,
   renderQuestion,
+  hideBuiltinFeedback,
 }: TrainingPlayScreenProps<TPayload>) {
   const { t } = useTranslation();
   const { question, lastAnswer, phase } = session;
@@ -172,7 +181,7 @@ export function TrainingPlayScreen<TPayload = never>({
         into their opposite — the feedback would then state the wrong answer.
       */}
       <p className="tr-feedback" role="status" aria-live="polite">
-        {(phase === 'feedback' || phase === 'retry') && lastAnswer ? (
+        {!hideBuiltinFeedback && (phase === 'feedback' || phase === 'retry') && lastAnswer ? (
           lastAnswer.isCorrect ? (
             t('training.feedback.correct')
           ) : (

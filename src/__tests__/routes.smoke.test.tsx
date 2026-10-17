@@ -6,6 +6,7 @@ import App from '../App';
 import {
   arithmeticFluencyGames,
   coordinateSystemGames,
+  decimalPlaceValueGames,
   divisionWithRemainderGames,
   findGame,
   fractionsPart1Games,
@@ -27,6 +28,9 @@ const STATIC_ROUTES = [
   '/grade/4/simple-fractions',
   '/grade/4/fractions-part-1',
   '/grade/4/penalty-shootout',
+  '/grade/4/decimal-place-value',
+  '/grade/4/decimal-place-value/diagnostic',
+  '/grade/4/decimal-place-value/mock-exam',
   '/grade/7',
   '/grade/7/coordinate-system',
   '/grade/7/signed-numbers',
@@ -42,6 +46,7 @@ const GAME_ROUTES = [
   ...multiplicationGames,
   ...simpleFractionsGames,
   ...fractionsPart1Games,
+  ...decimalPlaceValueGames,
 ].map((game) => game.path!);
 const ALL_ROUTES = [...STATIC_ROUTES, ...GAME_ROUTES];
 
@@ -84,6 +89,11 @@ describe('routing smoke tests', () => {
       'monkeyBalloonShooter',
       'basketballMonkey',
     ]);
+    expect(decimalPlaceValueGames).toHaveLength(8);
+    for (const game of decimalPlaceValueGames) {
+      expect(game.enabled).toBe(true);
+      expect(game.path).toMatch(/^\/grade\/4\/decimal-place-value\//);
+    }
     expect(new Set(GAME_ROUTES).size).toBe(GAME_ROUTES.length);
   });
 
