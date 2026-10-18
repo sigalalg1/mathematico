@@ -16,7 +16,7 @@ export function DecimalParityPage() {
       backTo={DECIMAL_PLACE_VALUE_PATH}
       backLabel={t('decimalExamPrepPage.title')}
       hideBuiltinFeedback
-      feedbackTiming={{ correct: 600, wrong: 2200 }}
+      feedbackTiming={{ correct: 1300, wrong: 2400 }}
       renderQuestion={(props) => <PlaceValueTrainingScene {...props} />}
     />
   );

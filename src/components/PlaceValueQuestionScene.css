@@ -231,6 +231,15 @@
   flex-wrap: wrap;
 }
 
+.pv-compare-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+  flex-wrap: wrap;
+}
+
 .pv-compare-number {
   font-size: var(--text-2xl);
   font-weight: 800;

@@ -1590,7 +1590,10 @@
       "check": "בדקו",
       "even": "זוגי",
       "odd": "אי-זוגי",
-      "skipQuestion": "דלגו על השאלה"
+      "skipQuestion": "דלגו על השאלה",
+      "basketballPlayer": "קוף ידידותי בתלבושת כדורסל, מוכן לזרוק",
+      "soccerTarget": "מטרת שער {{position}}",
+      "soccerPlayer": "קוף ידידותי בחולצת כדורגל, מוכן לבעוט"
     },
     "skillStatus": {
       "strong": "שולט",

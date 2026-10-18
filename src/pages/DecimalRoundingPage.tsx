@@ -16,7 +16,9 @@ export function DecimalRoundingPage() {
       backTo={DECIMAL_PLACE_VALUE_PATH}
       backLabel={t('decimalExamPrepPage.title')}
       hideBuiltinFeedback
-      feedbackTiming={{ correct: 600, wrong: 2200 }}
+      // Long enough for the soccer court's real kick → dive → result
+      // sequence (~1.2s) to finish before the next question replaces it.
+      feedbackTiming={{ correct: 1300, wrong: 2400 }}
       renderQuestion={(props) => <PlaceValueTrainingScene {...props} />}
     />
   );

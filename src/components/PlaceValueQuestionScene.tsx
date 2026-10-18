@@ -1,11 +1,48 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MathText } from './MathText';
+import { SoccerGoalCourt } from './SoccerGoalCourt';
+import { toneForIndex } from './activityTones';
 import type { PlaceValueQuestion } from '../types/placeValue';
 import type { TrainingQuestionRenderProps } from '../training/components/TrainingPlayScreen';
 import './PlaceValueQuestionScene.css';
 
 export type PlaceValueScenePhase = 'answering' | 'feedback' | 'retry';
+
+/**
+ * Which real game (if any) a question's answer picker should play as —
+ * decided automatically from the question itself, never chosen by the
+ * student: there is one training experience, not a mode switch. `'tr-option'`
+ * means "render the same `.tr-option`-classed buttons the generic Training
+ * engine's own default grid produces", which is what lets the real,
+ * unmodified `BasketballMonkeyCourt` (wrapped around the whole page by the
+ * skill page itself, exactly like the existing multiplication game) pick up
+ * the shot animation via its own DOM-reading click handler — see
+ * `pickAnswerStyle`.
+ */
+type AnswerStyle = 'tr-option' | 'soccer' | 'plain';
+
+/**
+ * Only a `multipleChoice`/`compareSymbol`/`evenOddChoice` question with 2–4
+ * short options is small enough for a basket or goal label — long options
+ * (e.g. "order these four numbers", a full comma-separated ordering) stay on
+ * the plain buttons regardless of skill. Within that, `placeValue`'s
+ * digit-value question is always exactly 4 options, a clean fit for the
+ * real basketball court's fixed 4-hoop layout; `rounding`/`ordering`/
+ * `parity` vary between 2 and 4, which only the newly-generalised
+ * `SoccerGoalCourt` (built to take any option count) handles. Every other
+ * skill, and every `numericInput`/`constructChoice` question regardless of
+ * skill, never gets a sports treatment — constructing or typing the answer
+ * is the point there.
+ */
+function pickAnswerStyle(question: PlaceValueQuestion): AnswerStyle {
+  const { kind } = question.interaction;
+  if (kind !== 'multipleChoice' && kind !== 'compareSymbol' && kind !== 'evenOddChoice') return 'plain';
+  if (kind === 'multipleChoice' && !question.interaction.options.every((option) => option.length <= 10)) return 'plain';
+  if (question.skillId === 'placeValue') return 'tr-option';
+  if (question.skillId === 'rounding' || question.skillId === 'ordering' || question.skillId === 'parity') return 'soccer';
+  return 'plain';
+}
 
 interface PlaceValueQuestionSceneProps {
   question: PlaceValueQuestion;
@@ -40,6 +77,7 @@ export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect,
   const { t } = useTranslation();
   const locked = phase === 'feedback';
   const answered = phase !== 'answering';
+  const answerStyle = pickAnswerStyle(question);
 
   function answer(raw: string) {
     if (locked) return;
@@ -66,26 +104,78 @@ export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect,
         </>
       )}
 
-      {question.interaction.kind === 'multipleChoice' && (
-        <MultipleChoiceInput options={question.interaction.options} validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
-      )}
-      {question.interaction.kind === 'compareSymbol' && (
-        <CompareSymbolInput
-          left={question.interaction.left}
-          right={question.interaction.right}
-          validate={question.validate}
-          locked={locked}
-          lastRaw={lastRaw}
-          answered={answered}
-          onAnswer={answer}
-        />
-      )}
+      {question.interaction.kind === 'multipleChoice' &&
+        (answerStyle === 'tr-option' ? (
+          <TrOptionChoiceInput options={question.interaction.options} validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
+        ) : answerStyle === 'soccer' ? (
+          <SoccerGoalCourt
+            options={question.interaction.options.map((option) => ({ value: option, label: option }))}
+            validate={question.validate}
+            locked={locked}
+            lastRaw={lastRaw}
+            answered={answered}
+            onAnswer={answer}
+          />
+        ) : (
+          <MultipleChoiceInput options={question.interaction.options} validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
+        ))}
+      {question.interaction.kind === 'compareSymbol' &&
+        (answerStyle === 'tr-option' || answerStyle === 'soccer' ? (
+          <>
+            <div className="pv-compare-header">
+              <MathText className="pv-compare-number">{question.interaction.left}</MathText>
+              <MathText className="pv-compare-number">{question.interaction.right}</MathText>
+            </div>
+            {answerStyle === 'tr-option' ? (
+              <TrOptionChoiceInput options={['<', '=', '>']} validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
+            ) : (
+              <SoccerGoalCourt
+                options={(['<', '=', '>'] as const).map((symbol) => ({ value: symbol, label: symbol }))}
+                validate={question.validate}
+                locked={locked}
+                lastRaw={lastRaw}
+                answered={answered}
+                onAnswer={answer}
+              />
+            )}
+          </>
+        ) : (
+          <CompareSymbolInput
+            left={question.interaction.left}
+            right={question.interaction.right}
+            validate={question.validate}
+            locked={locked}
+            lastRaw={lastRaw}
+            answered={answered}
+            onAnswer={answer}
+          />
+        ))}
       {question.interaction.kind === 'constructChoice' && (
         <ConstructChoiceInput numbers={question.interaction.numbers} operations={question.interaction.operations} locked={locked} onAnswer={answer} />
       )}
-      {question.interaction.kind === 'evenOddChoice' && (
-        <EvenOddInput validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
-      )}
+      {question.interaction.kind === 'evenOddChoice' &&
+        (answerStyle === 'tr-option' ? (
+          <TrOptionChoiceInput
+            options={['even', 'odd']}
+            labels={{ even: t('decimalExamPrep.common.even'), odd: t('decimalExamPrep.common.odd') }}
+            validate={question.validate}
+            locked={locked}
+            lastRaw={lastRaw}
+            answered={answered}
+            onAnswer={answer}
+          />
+        ) : answerStyle === 'soccer' ? (
+          <SoccerGoalCourt
+            options={(['even', 'odd'] as const).map((parity) => ({ value: parity, label: t(`decimalExamPrep.common.${parity}`) }))}
+            validate={question.validate}
+            locked={locked}
+            lastRaw={lastRaw}
+            answered={answered}
+            onAnswer={answer}
+          />
+        ) : (
+          <EvenOddInput validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
+        ))}
 
       {answered && (
         <div className={`pv-feedback${lastCorrect ? ' is-correct' : ' is-wrong'}`} data-testid="pv-feedback">
@@ -300,6 +390,53 @@ function VerticalArithmeticInput({ display, locked, onAnswer }: { display: strin
         {t('decimalExamPrep.common.check')}
       </button>
     </>
+  );
+}
+
+/**
+ * Renders the exact same `.tr-option`/`tr-option-<tone>`/`tr-option-correct`/
+ * `tr-option-wrong`/`data-testid="tr-option-<value>"` markup `TrainingPlayScreen`'s
+ * own default (non-custom) option grid produces — not a lookalike, the
+ * literal same classes and structure — so the real, unmodified
+ * `BasketballMonkeyCourt` (which works by reading exactly these classes off
+ * whatever it wraps, the same way it already does for the multiplication
+ * game) can wrap the page this renders on and the real shot animation plays,
+ * with zero changes to that shared component. `labels` lets a value with a
+ * translated display differ from the raw answer string (even/odd); omitted
+ * for plain numeric/symbol options, where the two are the same.
+ */
+function TrOptionChoiceInput({
+  options,
+  labels,
+  validate,
+  locked,
+  lastRaw,
+  answered,
+  onAnswer,
+}: {
+  options: string[];
+  labels?: Record<string, string>;
+  validate: (raw: string) => boolean;
+  locked: boolean;
+  lastRaw: string | null;
+  answered: boolean;
+  onAnswer: (raw: string) => void;
+}) {
+  return (
+    <div className="tr-options">
+      {options.map((option, position) => {
+        const classes = ['tr-option', `tr-option-${toneForIndex(position)}`];
+        if (answered) {
+          if (validate(option)) classes.push('tr-option-correct');
+          else if (option === lastRaw) classes.push('tr-option-wrong');
+        }
+        return (
+          <button key={option} type="button" className={classes.join(' ')} data-testid={`tr-option-${option}`} disabled={locked} onClick={() => onAnswer(option)}>
+            <MathText>{labels?.[option] ?? option}</MathText>
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
