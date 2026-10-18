@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MathText } from './MathText';
+import { PlaceValueSportsChoice } from './PlaceValueSportsChoice';
 import type { PlaceValueQuestion } from '../types/placeValue';
 import type { TrainingQuestionRenderProps } from '../training/components/TrainingPlayScreen';
 import './PlaceValueQuestionScene.css';
+
+/** The three interaction kinds a 2–4-option sports picker can stand in for — never `numericInput`/`constructChoice`, where constructing or typing the answer is the point. */
+export type SportsGameMode = 'basketball' | 'soccer';
 
 export type PlaceValueScenePhase = 'answering' | 'feedback' | 'retry';
 
@@ -22,6 +26,16 @@ interface PlaceValueQuestionSceneProps {
    * itself), so there is nothing to skip past.
    */
   onSkip?: () => void;
+  /**
+   * Swaps the plain option buttons for a basketball/soccer picker on
+   * `multipleChoice`/`compareSymbol`/`evenOddChoice` questions — every other
+   * part of the scene (prompt, display, feedback, explanation, scoring)
+   * renders identically either way. Silently has no effect on a question
+   * whose interaction isn't one of those three (e.g. `numericInput`), so a
+   * page can turn this on without needing to know which template is coming
+   * up next.
+   */
+  gameMode?: SportsGameMode;
 }
 
 /**
@@ -36,7 +50,7 @@ interface PlaceValueQuestionSceneProps {
  * state resets automatically — nothing here resets it on its own, which
  * also means a selection made mid-feedback is never silently wiped.
  */
-export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect, onAnswer, onSkip }: PlaceValueQuestionSceneProps) {
+export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect, onAnswer, onSkip, gameMode }: PlaceValueQuestionSceneProps) {
   const { t } = useTranslation();
   const locked = phase === 'feedback';
   const answered = phase !== 'answering';
@@ -45,6 +59,14 @@ export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect,
     if (locked) return;
     onAnswer(raw, question.validate(raw));
   }
+
+  // A basket or goal is a small, fixed-size label — fine for a short number
+  // or symbol, not for a long option like a full ordering of four numbers
+  // ("35,350, 62,191, 84,588, 86,362"). Falls back to the plain buttons for
+  // any multipleChoice question whose options don't actually fit one,
+  // rather than special-casing specific skills or templates by name.
+  const sportsFitsOptions = question.interaction.kind !== 'multipleChoice' || question.interaction.options.every((option) => option.length <= 10);
+  const sportsGameMode = sportsFitsOptions ? gameMode : undefined;
 
   return (
     <div className="pv-scene">
@@ -66,26 +88,65 @@ export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect,
         </>
       )}
 
-      {question.interaction.kind === 'multipleChoice' && (
-        <MultipleChoiceInput options={question.interaction.options} validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
-      )}
-      {question.interaction.kind === 'compareSymbol' && (
-        <CompareSymbolInput
-          left={question.interaction.left}
-          right={question.interaction.right}
-          validate={question.validate}
-          locked={locked}
-          lastRaw={lastRaw}
-          answered={answered}
-          onAnswer={answer}
-        />
-      )}
+      {question.interaction.kind === 'multipleChoice' &&
+        (sportsGameMode ? (
+          <PlaceValueSportsChoice
+            sport={sportsGameMode}
+            options={question.interaction.options.map((option) => ({ value: option, label: <MathText>{option}</MathText> }))}
+            validate={question.validate}
+            locked={locked}
+            lastRaw={lastRaw}
+            answered={answered}
+            onAnswer={answer}
+          />
+        ) : (
+          <MultipleChoiceInput options={question.interaction.options} validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
+        ))}
+      {question.interaction.kind === 'compareSymbol' &&
+        (sportsGameMode ? (
+          <>
+            <div className="pv-compare-header">
+              <MathText className="pv-compare-number">{question.interaction.left}</MathText>
+              <MathText className="pv-compare-number">{question.interaction.right}</MathText>
+            </div>
+            <PlaceValueSportsChoice
+              sport={sportsGameMode}
+              options={(['<', '=', '>'] as const).map((symbol) => ({ value: symbol, label: symbol }))}
+              validate={question.validate}
+              locked={locked}
+              lastRaw={lastRaw}
+              answered={answered}
+              onAnswer={answer}
+            />
+          </>
+        ) : (
+          <CompareSymbolInput
+            left={question.interaction.left}
+            right={question.interaction.right}
+            validate={question.validate}
+            locked={locked}
+            lastRaw={lastRaw}
+            answered={answered}
+            onAnswer={answer}
+          />
+        ))}
       {question.interaction.kind === 'constructChoice' && (
         <ConstructChoiceInput numbers={question.interaction.numbers} operations={question.interaction.operations} locked={locked} onAnswer={answer} />
       )}
-      {question.interaction.kind === 'evenOddChoice' && (
-        <EvenOddInput validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
-      )}
+      {question.interaction.kind === 'evenOddChoice' &&
+        (sportsGameMode ? (
+          <PlaceValueSportsChoice
+            sport={sportsGameMode}
+            options={(['even', 'odd'] as const).map((parity) => ({ value: parity, label: t(`decimalExamPrep.common.${parity}`) }))}
+            validate={question.validate}
+            locked={locked}
+            lastRaw={lastRaw}
+            answered={answered}
+            onAnswer={answer}
+          />
+        ) : (
+          <EvenOddInput validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
+        ))}
 
       {answered && (
         <div className={`pv-feedback${lastCorrect ? ' is-correct' : ' is-wrong'}`} data-testid="pv-feedback">
@@ -110,7 +171,14 @@ export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect,
  * explanation; without it the engine's own generic feedback line would
  * duplicate it underneath.
  */
-export function PlaceValueTrainingScene({ question, phase, lastAnswer, submit, advance }: TrainingQuestionRenderProps<PlaceValueQuestion>) {
+export function PlaceValueTrainingScene({
+  question,
+  phase,
+  lastAnswer,
+  submit,
+  advance,
+  gameMode,
+}: TrainingQuestionRenderProps<PlaceValueQuestion> & { gameMode?: SportsGameMode }) {
   return (
     <PlaceValueQuestionScene
       key={question.id}
@@ -120,6 +188,7 @@ export function PlaceValueTrainingScene({ question, phase, lastAnswer, submit, a
       lastCorrect={lastAnswer?.isCorrect ?? null}
       onAnswer={(raw) => submit(raw)}
       onSkip={advance}
+      gameMode={gameMode}
     />
   );
 }

@@ -1,0 +1,204 @@
+/*
+ * A compact basketball/soccer answer-picker, meant to drop into
+ * `PlaceValueQuestionScene` in place of a plain option-button grid — not a
+ * full-page takeover like `BasketballMonkeyCourt`/`PenaltyShootoutPage`, so
+ * it stays small enough to sit inside the existing scene's prompt/display/
+ * feedback layout. Visual language (warm orange for basketball, green pitch
+ * for soccer) deliberately echoes those two pages without literally reusing
+ * their markup.
+ */
+
+.psc-field {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 480px;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.psc-basketball {
+  background: linear-gradient(180deg, var(--surface) 0%, #2a1a10 100%);
+}
+
+.psc-soccer {
+  background: linear-gradient(180deg, var(--surface) 0%, #123a1f 100%);
+}
+
+.psc-launcher {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 64px;
+}
+
+/*
+ * `MonkeyFigure` reuses `BasketballMonkeyCourt.css`'s `.bm-player` class for
+ * its internal SVG part styling — but that stylesheet also sets `.bm-player`
+ * to `display: none` by default, only shown via a `:has(.tr-play)` selector
+ * scoped to that page's own shell (Vite bundles all imported CSS globally,
+ * so that rule is in effect here too, not just on the basketball page).
+ * `.psc-launcher .bm-player` (two classes deep) outranks the single-class
+ * `.bm-player { display: none }` rule regardless of which stylesheet Vite
+ * happens to concatenate first.
+ */
+.psc-launcher .bm-player {
+  display: block;
+  position: static;
+  width: 64px;
+  filter: drop-shadow(0 6px 6px rgb(0 0 0 / 40%));
+}
+
+.psc-kicker {
+  font-size: 40px;
+  line-height: 1;
+  filter: drop-shadow(0 6px 6px rgb(0 0 0 / 40%));
+}
+
+.psc-targets {
+  display: grid;
+  gap: var(--space-3);
+  flex: 1 1 auto;
+}
+
+.psc-targets-2,
+.psc-targets-3 {
+  grid-template-columns: repeat(var(--psc-count, 2), minmax(0, 1fr));
+}
+
+.psc-targets-2 {
+  --psc-count: 2;
+}
+
+.psc-targets-3 {
+  --psc-count: 3;
+}
+
+.psc-targets-4 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.psc-target {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: var(--tap);
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  background: var(--surface-raised);
+  color: var(--text-h);
+  font-weight: 800;
+  font-size: var(--text-lg);
+  cursor: pointer;
+  overflow: visible;
+  --psc-shot-x: 0px;
+  --psc-shot-y: 0px;
+}
+
+.psc-target:disabled {
+  cursor: default;
+}
+
+.psc-target-basketball {
+  border-radius: 999px;
+  border-color: #e08a3e;
+}
+
+.psc-target-soccer {
+  border-radius: var(--radius-sm);
+}
+
+.psc-target-visual {
+  position: absolute;
+  inset: 6px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.psc-target-basketball .psc-target-visual {
+  border: 3px solid #e08a3e;
+  border-radius: 999px;
+}
+
+.psc-target-soccer .psc-target-visual {
+  background-image:
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 25%) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 25%) 0 1px, transparent 1px 8px);
+}
+
+.psc-target-label {
+  position: relative;
+  z-index: 1;
+}
+
+.psc-target.is-correct {
+  border-color: var(--success-border);
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.psc-target.is-wrong {
+  border-color: var(--error-border);
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+@keyframes psc-shoot {
+  from {
+    transform: translate(var(--psc-shot-x), var(--psc-shot-y)) scale(0.6);
+    box-shadow: 0 0 0 4px rgb(255 255 255 / 0%);
+  }
+  40% {
+    box-shadow: 0 0 0 4px rgb(255 255 255 / 35%);
+  }
+  to {
+    transform: translate(0, 0) scale(1);
+    box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
+  }
+}
+
+.psc-shooting-a,
+.psc-shooting-b {
+  animation: psc-shoot 360ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .psc-shooting-a,
+  .psc-shooting-b {
+    animation: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .psc-field {
+    gap: var(--space-2);
+    padding: var(--space-3);
+  }
+
+  .psc-launcher {
+    width: 48px;
+  }
+
+  .psc-monkey {
+    width: 48px;
+  }
+
+  .psc-kicker {
+    font-size: 30px;
+  }
+
+  .psc-target {
+    font-size: var(--text-base);
+    padding: var(--space-2);
+  }
+}

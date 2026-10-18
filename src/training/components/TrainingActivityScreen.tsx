@@ -56,6 +56,13 @@ interface TrainingActivityScreenProps<TPayload = never> {
   feedbackTiming?: TrainingFeedbackTiming;
   /** See `TrainingPlayScreen`'s prop of the same name. */
   hideBuiltinFeedback?: boolean;
+  /**
+   * Extra controls rendered on the setup screen only, above the Start
+   * button — e.g. a practice/game-mode switch. Chosen once before a run
+   * starts, same as difficulty or question count; this screen has no
+   * opinion on what it renders or does.
+   */
+  setupExtra?: ReactNode;
   /** Injected in tests so timings are exact. */
   clock?: TrainingClock;
 }
@@ -76,6 +83,7 @@ export function TrainingActivityScreen<TPayload = never>({
   renderQuestion,
   feedbackTiming,
   hideBuiltinFeedback,
+  setupExtra,
   clock,
 }: TrainingActivityScreenProps<TPayload>) {
   const { t } = useTranslation();
@@ -149,17 +157,20 @@ export function TrainingActivityScreen<TPayload = never>({
       variant="game"
     >
       {run === null ? (
-        <TrainingSetupScreen
-          activity={activity}
-          mode={mode}
-          difficultyId={difficultyId}
-          questionCount={questionCount}
-          onModeChange={chooseMode}
-          onDifficultyChange={setDifficultyId}
-          onQuestionCountChange={setQuestionCount}
-          onStart={start}
-          targetPaceMs={mode === 'challenge' ? (previewBest?.bestAverageMsPerQuestion ?? null) : null}
-        />
+        <>
+          <TrainingSetupScreen
+            activity={activity}
+            mode={mode}
+            difficultyId={difficultyId}
+            questionCount={questionCount}
+            onModeChange={chooseMode}
+            onDifficultyChange={setDifficultyId}
+            onQuestionCountChange={setQuestionCount}
+            onStart={start}
+            targetPaceMs={mode === 'challenge' ? (previewBest?.bestAverageMsPerQuestion ?? null) : null}
+          />
+          {setupExtra}
+        </>
       ) : (
         <TrainingRun
           // A fresh configuration is a fresh run, never a mutated one.

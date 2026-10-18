@@ -1590,7 +1590,12 @@
       "check": "Check",
       "even": "Even",
       "odd": "Odd",
-      "skipQuestion": "Skip this one"
+      "skipQuestion": "Skip this one",
+      "playModeLabel": "How do you want to practice?",
+      "standardMode": "Standard",
+      "gameMode": "Game mode",
+      "basketballPlayer": "A friendly monkey in a basketball uniform, ready to shoot",
+      "soccerPlayer": "A soccer ball, ready to be kicked toward the goal"
     },
     "skillStatus": {
       "strong": "Solid",
