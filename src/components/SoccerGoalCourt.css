@@ -2,10 +2,15 @@
  * `PenaltyShootoutPage.css` is written for a full-page stadium (`.ps-stadium`
  * forces a ~730px minimum height, `.ps-pitch` a ~525px one) — correct for
  * its own page, far too tall for a court embedded inside a question card.
- * Everything else (goal, net, keeper, ball, target corners, kick/dive/
- * result timing and animation) is reused completely unmodified; only the
- * overall height is scoped down here, and only within `.psc2-embedded`, so
- * the real penalty-shootout page's own sizing is untouched.
+ * Everything else (goal, net, keeper, target corners, kick/dive/result
+ * timing and animation) is reused completely unmodified; only the overall
+ * height is scoped down here, and only within `.psc2-embedded`, so the real
+ * penalty-shootout page's own sizing is untouched.
+ *
+ * The pitch is kept tall enough that the goal (however it's clamped) always
+ * leaves real room below it for the kicker and ball — the original bug here
+ * was shrinking the pitch without shrinking the goal proportionally, so the
+ * kicker ended up standing inside the goal, on top of the target buttons.
  */
 .psc2-embedded {
   max-width: 420px;
@@ -23,53 +28,94 @@
 }
 
 .psc2-embedded .ps-pitch {
-  min-height: 300px;
-  padding-bottom: 12px;
+  min-height: 420px;
+  padding-bottom: 16px;
 }
 
 .psc2-embedded .ps-goal {
-  width: min(80vw, 340px);
-  height: clamp(180px, 42vw, 240px);
+  width: min(78vw, 320px);
+  height: clamp(160px, 36vw, 205px);
 }
 
 .psc2-embedded .ps-penalty-arc {
+  bottom: 56px;
   width: 220px;
-  height: 100px;
+  height: 90px;
 }
 
-.psc2-embedded .ps-player {
-  transform: scale(0.72) rotate(6deg);
+/* `MonkeyFigure` reuses `.bm-player`, which is `display: none` by default
+   (see the same fix in `PlaceValueSportsChoice.css`'s predecessor/basketball
+   embedding) — two classes deep outranks that single-class rule regardless
+   of stylesheet order. Positioned below the goal with real clearance, where
+   `.ps-player` used to be before the goal was shrunk out from under it. */
+.psc2-embedded .sgc-kicker {
+  display: block;
+  position: absolute;
+  z-index: 4;
+  bottom: 8px;
+  left: 50%;
+  width: 78px;
+  transform: translateX(-50%) rotate(-4deg);
+  filter: drop-shadow(0 8px 6px rgb(0 0 0 / 30%));
+}
+
+.sgc-kicker-kick {
+  animation: sgc-kick-bump 300ms ease-out;
+}
+
+.psc2-embedded .sgc-ball {
+  bottom: 30px;
+  left: calc(50% + 34px);
+}
+
+.psc2-embedded .ps-ball-flight.sgc-ball {
+  animation: ps-ball-spin 350ms linear;
 }
 
 /* The real page's ball-flight offsets are sized for its ~650px-wide goal;
    scaled down to match this court's smaller one so the ball lands in the
    actual corner instead of overshooting it. */
 .psc2-embedded .ps-ball-topLeft {
-  transform: translate(-95px, -195px) scale(0.55);
+  transform: translate(-90px, -230px) scale(0.55);
 }
 
 .psc2-embedded .ps-ball-topRight {
-  transform: translate(95px, -195px) scale(0.55);
+  transform: translate(90px, -230px) scale(0.55);
 }
 
 .psc2-embedded .ps-ball-bottomLeft {
-  transform: translate(-95px, -115px) scale(0.68);
+  transform: translate(-90px, -140px) scale(0.68);
 }
 
 .psc2-embedded .ps-ball-bottomRight {
-  transform: translate(95px, -115px) scale(0.68);
+  transform: translate(90px, -140px) scale(0.68);
 }
 
 .psc2-embedded .ps-keeper {
-  width: clamp(60px, 17%, 85px);
+  width: clamp(55px, 16%, 80px);
 }
+
+@keyframes sgc-kick-bump {
+  40% {
+    transform: translateX(-50%) rotate(14deg) scale(1.08);
+  }
+}
+
+/* Reduced-motion is already handled globally for every `.penalty-shootout`
+   descendant (see `PenaltyShootoutPage.css`'s `prefers-reduced-motion`
+   block, which this component is wrapped in), so `.sgc-kicker-kick` needs
+   no override of its own here. */
 
 @media (max-width: 430px) {
   .psc2-embedded .ps-pitch {
-    min-height: 260px;
+    min-height: 370px;
   }
 
   .psc2-embedded .ps-goal {
-    height: 190px;
+    height: 170px;
+  }
+
+  .psc2-embedded .sgc-kicker {
+    width: 64px;
   }
 }

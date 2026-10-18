@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MathText } from './MathText';
 import { Goalkeeper, type KeeperState } from './Goalkeeper';
+import { MonkeyFigure } from './MonkeyFigure';
 import { useSound } from '../audio/useSound';
 import '../pages/PenaltyShootoutPage.css';
 import './SoccerGoalCourt.css';
@@ -133,12 +134,8 @@ export function SoccerGoalCourt({ options, validate, locked, lastRaw, answered, 
           </div>
 
           <div className="ps-penalty-arc" aria-hidden="true" />
-          <div className="ps-player" aria-hidden="true">
-            <span className="ps-player-head" />
-            <span className="ps-player-body" />
-            <span className="ps-player-leg" />
-          </div>
-          <div className={`ps-ball${selected ? ` ps-ball-${selected.corner}` : ''}${phase !== 'ready' ? ' ps-ball-flight' : ''}`} aria-hidden="true">
+          <MonkeyFigure label={t('decimalExamPrep.common.soccerPlayer')} className={`sgc-kicker${phase === 'kicking' ? ' sgc-kicker-kick' : ''}`} />
+          <div className={`ps-ball sgc-ball${selected ? ` ps-ball-${selected.corner}` : ''}${phase !== 'ready' ? ' ps-ball-flight' : ''}`} aria-hidden="true">
             ⚽
           </div>
           {(phase === 'goal' || phase === 'save') && <div className={`ps-result ps-result-${phase}`} role="status">{t(`penaltyShootout.results.${phase}`)}</div>}

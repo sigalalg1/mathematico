@@ -1592,7 +1592,8 @@
       "odd": "Odd",
       "skipQuestion": "Skip this one",
       "basketballPlayer": "A friendly monkey in a basketball uniform, ready to shoot",
-      "soccerTarget": "{{position}} goal target"
+      "soccerTarget": "{{position}} goal target",
+      "soccerPlayer": "A friendly monkey in a soccer jersey, ready to kick"
     },
     "skillStatus": {
       "strong": "Solid",
