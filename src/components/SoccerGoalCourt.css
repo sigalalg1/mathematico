@@ -92,7 +92,26 @@
 }
 
 .psc2-embedded .ps-keeper {
-  width: clamp(55px, 16%, 80px);
+  /* The real page's `left: calc(50% - 60px)` is a fixed pixel offset tuned
+     for its ~650px-wide goal — in this court's much narrower one it pushed
+     the keeper off-center, squarely onto one target instead of standing
+     between them. `calc()` against this element's own width instead —
+     deliberately *not* `transform: translateX(-50%)`, which would outrank
+     (via the extra `.psc2-embedded` class) the dive/save states' own
+     `transform` declarations in `PenaltyShootoutPage.css` and break the
+     dive animation outright.
+     Also dropped below the targets (the real page puts it *above* them,
+     z-index 6 vs 5, which only reads fine there because its much larger
+     goal leaves real gaps around the targets for the keeper to stand in)
+     — a small goal has no such gap, so the keeper must stay behind the
+     clickable, opaque target buttons rather than covering one's number.
+     The mid-kick dive still reads correctly either way: it moves the
+     keeper well outside the target grid's bounds, where stacking order no
+     longer matters. */
+  --sgc-keeper-width: clamp(55px, 16%, 80px);
+  z-index: 3;
+  left: calc(50% - (var(--sgc-keeper-width) / 2));
+  width: var(--sgc-keeper-width);
 }
 
 @keyframes sgc-kick-bump {
