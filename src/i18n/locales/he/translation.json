@@ -1591,11 +1591,8 @@
       "even": "זוגי",
       "odd": "אי-זוגי",
       "skipQuestion": "דלגו על השאלה",
-      "playModeLabel": "איך תרצו להתאמן?",
-      "standardMode": "רגיל",
-      "gameMode": "מצב משחק",
       "basketballPlayer": "קוף ידידותי בתלבושת כדורסל, מוכן לזרוק",
-      "soccerPlayer": "כדורגל, מוכן לבעיטה לעבר השער"
+      "soccerTarget": "מטרת שער {{position}}"
     },
     "skillStatus": {
       "strong": "שולט",

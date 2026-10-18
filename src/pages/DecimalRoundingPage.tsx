@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PlaceValueTrainingScene } from '../components/PlaceValueQuestionScene';
-import { PlayModeToggle } from '../components/PlayModeToggle';
 import { decimalRoundingActivity } from '../data/games/decimalRoundingData';
 import { TrainingActivityScreen } from '../training/components/TrainingActivityScreen';
 
@@ -9,7 +7,6 @@ const DECIMAL_PLACE_VALUE_PATH = '/grade/4/decimal-place-value';
 
 export function DecimalRoundingPage() {
   const { t } = useTranslation();
-  const [playful, setPlayful] = useState(false);
   return (
     <TrainingActivityScreen
       activity={decimalRoundingActivity}
@@ -19,9 +16,10 @@ export function DecimalRoundingPage() {
       backTo={DECIMAL_PLACE_VALUE_PATH}
       backLabel={t('decimalExamPrepPage.title')}
       hideBuiltinFeedback
-      feedbackTiming={{ correct: 600, wrong: 2200 }}
-      setupExtra={<PlayModeToggle playful={playful} onChange={setPlayful} />}
-      renderQuestion={(props) => <PlaceValueTrainingScene {...props} gameMode={playful ? 'soccer' : undefined} />}
+      // Long enough for the soccer court's real kick → dive → result
+      // sequence (~1.2s) to finish before the next question replaces it.
+      feedbackTiming={{ correct: 1300, wrong: 2400 }}
+      renderQuestion={(props) => <PlaceValueTrainingScene {...props} />}
     />
   );
 }

@@ -1,15 +1,48 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MathText } from './MathText';
-import { PlaceValueSportsChoice } from './PlaceValueSportsChoice';
+import { SoccerGoalCourt } from './SoccerGoalCourt';
+import { toneForIndex } from './activityTones';
 import type { PlaceValueQuestion } from '../types/placeValue';
 import type { TrainingQuestionRenderProps } from '../training/components/TrainingPlayScreen';
 import './PlaceValueQuestionScene.css';
 
-/** The three interaction kinds a 2–4-option sports picker can stand in for — never `numericInput`/`constructChoice`, where constructing or typing the answer is the point. */
-export type SportsGameMode = 'basketball' | 'soccer';
-
 export type PlaceValueScenePhase = 'answering' | 'feedback' | 'retry';
+
+/**
+ * Which real game (if any) a question's answer picker should play as —
+ * decided automatically from the question itself, never chosen by the
+ * student: there is one training experience, not a mode switch. `'tr-option'`
+ * means "render the same `.tr-option`-classed buttons the generic Training
+ * engine's own default grid produces", which is what lets the real,
+ * unmodified `BasketballMonkeyCourt` (wrapped around the whole page by the
+ * skill page itself, exactly like the existing multiplication game) pick up
+ * the shot animation via its own DOM-reading click handler — see
+ * `pickAnswerStyle`.
+ */
+type AnswerStyle = 'tr-option' | 'soccer' | 'plain';
+
+/**
+ * Only a `multipleChoice`/`compareSymbol`/`evenOddChoice` question with 2–4
+ * short options is small enough for a basket or goal label — long options
+ * (e.g. "order these four numbers", a full comma-separated ordering) stay on
+ * the plain buttons regardless of skill. Within that, `placeValue`'s
+ * digit-value question is always exactly 4 options, a clean fit for the
+ * real basketball court's fixed 4-hoop layout; `rounding`/`ordering`/
+ * `parity` vary between 2 and 4, which only the newly-generalised
+ * `SoccerGoalCourt` (built to take any option count) handles. Every other
+ * skill, and every `numericInput`/`constructChoice` question regardless of
+ * skill, never gets a sports treatment — constructing or typing the answer
+ * is the point there.
+ */
+function pickAnswerStyle(question: PlaceValueQuestion): AnswerStyle {
+  const { kind } = question.interaction;
+  if (kind !== 'multipleChoice' && kind !== 'compareSymbol' && kind !== 'evenOddChoice') return 'plain';
+  if (kind === 'multipleChoice' && !question.interaction.options.every((option) => option.length <= 10)) return 'plain';
+  if (question.skillId === 'placeValue') return 'tr-option';
+  if (question.skillId === 'rounding' || question.skillId === 'ordering' || question.skillId === 'parity') return 'soccer';
+  return 'plain';
+}
 
 interface PlaceValueQuestionSceneProps {
   question: PlaceValueQuestion;
@@ -26,16 +59,6 @@ interface PlaceValueQuestionSceneProps {
    * itself), so there is nothing to skip past.
    */
   onSkip?: () => void;
-  /**
-   * Swaps the plain option buttons for a basketball/soccer picker on
-   * `multipleChoice`/`compareSymbol`/`evenOddChoice` questions — every other
-   * part of the scene (prompt, display, feedback, explanation, scoring)
-   * renders identically either way. Silently has no effect on a question
-   * whose interaction isn't one of those three (e.g. `numericInput`), so a
-   * page can turn this on without needing to know which template is coming
-   * up next.
-   */
-  gameMode?: SportsGameMode;
 }
 
 /**
@@ -50,23 +73,16 @@ interface PlaceValueQuestionSceneProps {
  * state resets automatically — nothing here resets it on its own, which
  * also means a selection made mid-feedback is never silently wiped.
  */
-export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect, onAnswer, onSkip, gameMode }: PlaceValueQuestionSceneProps) {
+export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect, onAnswer, onSkip }: PlaceValueQuestionSceneProps) {
   const { t } = useTranslation();
   const locked = phase === 'feedback';
   const answered = phase !== 'answering';
+  const answerStyle = pickAnswerStyle(question);
 
   function answer(raw: string) {
     if (locked) return;
     onAnswer(raw, question.validate(raw));
   }
-
-  // A basket or goal is a small, fixed-size label — fine for a short number
-  // or symbol, not for a long option like a full ordering of four numbers
-  // ("35,350, 62,191, 84,588, 86,362"). Falls back to the plain buttons for
-  // any multipleChoice question whose options don't actually fit one,
-  // rather than special-casing specific skills or templates by name.
-  const sportsFitsOptions = question.interaction.kind !== 'multipleChoice' || question.interaction.options.every((option) => option.length <= 10);
-  const sportsGameMode = sportsFitsOptions ? gameMode : undefined;
 
   return (
     <div className="pv-scene">
@@ -89,10 +105,11 @@ export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect,
       )}
 
       {question.interaction.kind === 'multipleChoice' &&
-        (sportsGameMode ? (
-          <PlaceValueSportsChoice
-            sport={sportsGameMode}
-            options={question.interaction.options.map((option) => ({ value: option, label: <MathText>{option}</MathText> }))}
+        (answerStyle === 'tr-option' ? (
+          <TrOptionChoiceInput options={question.interaction.options} validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
+        ) : answerStyle === 'soccer' ? (
+          <SoccerGoalCourt
+            options={question.interaction.options.map((option) => ({ value: option, label: option }))}
             validate={question.validate}
             locked={locked}
             lastRaw={lastRaw}
@@ -103,21 +120,24 @@ export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect,
           <MultipleChoiceInput options={question.interaction.options} validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
         ))}
       {question.interaction.kind === 'compareSymbol' &&
-        (sportsGameMode ? (
+        (answerStyle === 'tr-option' || answerStyle === 'soccer' ? (
           <>
             <div className="pv-compare-header">
               <MathText className="pv-compare-number">{question.interaction.left}</MathText>
               <MathText className="pv-compare-number">{question.interaction.right}</MathText>
             </div>
-            <PlaceValueSportsChoice
-              sport={sportsGameMode}
-              options={(['<', '=', '>'] as const).map((symbol) => ({ value: symbol, label: symbol }))}
-              validate={question.validate}
-              locked={locked}
-              lastRaw={lastRaw}
-              answered={answered}
-              onAnswer={answer}
-            />
+            {answerStyle === 'tr-option' ? (
+              <TrOptionChoiceInput options={['<', '=', '>']} validate={question.validate} locked={locked} lastRaw={lastRaw} answered={answered} onAnswer={answer} />
+            ) : (
+              <SoccerGoalCourt
+                options={(['<', '=', '>'] as const).map((symbol) => ({ value: symbol, label: symbol }))}
+                validate={question.validate}
+                locked={locked}
+                lastRaw={lastRaw}
+                answered={answered}
+                onAnswer={answer}
+              />
+            )}
           </>
         ) : (
           <CompareSymbolInput
@@ -134,9 +154,18 @@ export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect,
         <ConstructChoiceInput numbers={question.interaction.numbers} operations={question.interaction.operations} locked={locked} onAnswer={answer} />
       )}
       {question.interaction.kind === 'evenOddChoice' &&
-        (sportsGameMode ? (
-          <PlaceValueSportsChoice
-            sport={sportsGameMode}
+        (answerStyle === 'tr-option' ? (
+          <TrOptionChoiceInput
+            options={['even', 'odd']}
+            labels={{ even: t('decimalExamPrep.common.even'), odd: t('decimalExamPrep.common.odd') }}
+            validate={question.validate}
+            locked={locked}
+            lastRaw={lastRaw}
+            answered={answered}
+            onAnswer={answer}
+          />
+        ) : answerStyle === 'soccer' ? (
+          <SoccerGoalCourt
             options={(['even', 'odd'] as const).map((parity) => ({ value: parity, label: t(`decimalExamPrep.common.${parity}`) }))}
             validate={question.validate}
             locked={locked}
@@ -171,14 +200,7 @@ export function PlaceValueQuestionScene({ question, phase, lastRaw, lastCorrect,
  * explanation; without it the engine's own generic feedback line would
  * duplicate it underneath.
  */
-export function PlaceValueTrainingScene({
-  question,
-  phase,
-  lastAnswer,
-  submit,
-  advance,
-  gameMode,
-}: TrainingQuestionRenderProps<PlaceValueQuestion> & { gameMode?: SportsGameMode }) {
+export function PlaceValueTrainingScene({ question, phase, lastAnswer, submit, advance }: TrainingQuestionRenderProps<PlaceValueQuestion>) {
   return (
     <PlaceValueQuestionScene
       key={question.id}
@@ -188,7 +210,6 @@ export function PlaceValueTrainingScene({
       lastCorrect={lastAnswer?.isCorrect ?? null}
       onAnswer={(raw) => submit(raw)}
       onSkip={advance}
-      gameMode={gameMode}
     />
   );
 }
@@ -369,6 +390,53 @@ function VerticalArithmeticInput({ display, locked, onAnswer }: { display: strin
         {t('decimalExamPrep.common.check')}
       </button>
     </>
+  );
+}
+
+/**
+ * Renders the exact same `.tr-option`/`tr-option-<tone>`/`tr-option-correct`/
+ * `tr-option-wrong`/`data-testid="tr-option-<value>"` markup `TrainingPlayScreen`'s
+ * own default (non-custom) option grid produces — not a lookalike, the
+ * literal same classes and structure — so the real, unmodified
+ * `BasketballMonkeyCourt` (which works by reading exactly these classes off
+ * whatever it wraps, the same way it already does for the multiplication
+ * game) can wrap the page this renders on and the real shot animation plays,
+ * with zero changes to that shared component. `labels` lets a value with a
+ * translated display differ from the raw answer string (even/odd); omitted
+ * for plain numeric/symbol options, where the two are the same.
+ */
+function TrOptionChoiceInput({
+  options,
+  labels,
+  validate,
+  locked,
+  lastRaw,
+  answered,
+  onAnswer,
+}: {
+  options: string[];
+  labels?: Record<string, string>;
+  validate: (raw: string) => boolean;
+  locked: boolean;
+  lastRaw: string | null;
+  answered: boolean;
+  onAnswer: (raw: string) => void;
+}) {
+  return (
+    <div className="tr-options">
+      {options.map((option, position) => {
+        const classes = ['tr-option', `tr-option-${toneForIndex(position)}`];
+        if (answered) {
+          if (validate(option)) classes.push('tr-option-correct');
+          else if (option === lastRaw) classes.push('tr-option-wrong');
+        }
+        return (
+          <button key={option} type="button" className={classes.join(' ')} data-testid={`tr-option-${option}`} disabled={locked} onClick={() => onAnswer(option)}>
+            <MathText>{labels?.[option] ?? option}</MathText>
+          </button>
+        );
+      })}
+    </div>
   );
 }
 

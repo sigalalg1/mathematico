@@ -1,0 +1,75 @@
+/*
+ * `PenaltyShootoutPage.css` is written for a full-page stadium (`.ps-stadium`
+ * forces a ~730px minimum height, `.ps-pitch` a ~525px one) — correct for
+ * its own page, far too tall for a court embedded inside a question card.
+ * Everything else (goal, net, keeper, ball, target corners, kick/dive/
+ * result timing and animation) is reused completely unmodified; only the
+ * overall height is scoped down here, and only within `.psc2-embedded`, so
+ * the real penalty-shootout page's own sizing is untouched.
+ */
+.psc2-embedded {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.psc2-embedded .ps-stadium {
+  min-height: 0;
+  border-radius: var(--radius-lg);
+}
+
+.psc2-embedded .ps-crowd {
+  height: 70px;
+  opacity: 0.35;
+}
+
+.psc2-embedded .ps-pitch {
+  min-height: 300px;
+  padding-bottom: 12px;
+}
+
+.psc2-embedded .ps-goal {
+  width: min(80vw, 340px);
+  height: clamp(180px, 42vw, 240px);
+}
+
+.psc2-embedded .ps-penalty-arc {
+  width: 220px;
+  height: 100px;
+}
+
+.psc2-embedded .ps-player {
+  transform: scale(0.72) rotate(6deg);
+}
+
+/* The real page's ball-flight offsets are sized for its ~650px-wide goal;
+   scaled down to match this court's smaller one so the ball lands in the
+   actual corner instead of overshooting it. */
+.psc2-embedded .ps-ball-topLeft {
+  transform: translate(-95px, -195px) scale(0.55);
+}
+
+.psc2-embedded .ps-ball-topRight {
+  transform: translate(95px, -195px) scale(0.55);
+}
+
+.psc2-embedded .ps-ball-bottomLeft {
+  transform: translate(-95px, -115px) scale(0.68);
+}
+
+.psc2-embedded .ps-ball-bottomRight {
+  transform: translate(95px, -115px) scale(0.68);
+}
+
+.psc2-embedded .ps-keeper {
+  width: clamp(60px, 17%, 85px);
+}
+
+@media (max-width: 430px) {
+  .psc2-embedded .ps-pitch {
+    min-height: 260px;
+  }
+
+  .psc2-embedded .ps-goal {
+    height: 190px;
+  }
+}
