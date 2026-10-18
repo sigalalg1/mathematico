@@ -11,7 +11,7 @@
  */
 import type { TrainingActivityDefinition, TrainingQuestion } from '../../types/training';
 import { randomInt, randomOf, type RandomSource } from '../../utils/random';
-import { numericMultipleChoice, toTrainingQuestion } from '../../utils/placeValueQuestion';
+import { toTrainingQuestion } from '../../utils/placeValueQuestion';
 import { formatNumber, placeNameFor, roundingBenchmarks, roundTo, type PlaceValue } from '../../utils/placeValue';
 import { shuffle } from '../../utils/shuffle';
 import type { PlaceValueDifficulty, PlaceValueQuestion } from '../../types/placeValue';
@@ -49,11 +49,30 @@ const DIFFICULTY_SPECS: Record<PlaceValueDifficulty, DifficultySpec> = {
   },
 };
 
+/**
+ * Always includes both round-number benchmarks (the multiple of `place`
+ * just below `n`, and just above it) — one of the two is `correct` by
+ * definition, and the other is the exact "rounded the wrong way" mistake, not
+ * just a generic nearby number. Padded to 4 with filler only if needed.
+ */
+function buildRoundToOptions(random: RandomSource, correct: number, lower: number, upper: number, place: PlaceValue): string[] {
+  const values = new Set<number>([lower, upper]);
+  let guard = 0;
+  while (values.size < 4 && guard < 500) {
+    guard += 1;
+    const delta = randomInt(random, 1, Math.max(1, place)) * randomOf(random, [-1, 1]);
+    const candidate = correct + delta;
+    if (candidate >= 0) values.add(candidate);
+  }
+  return shuffle([...values].map(String), random);
+}
+
 function buildRoundToQuestion(spec: DifficultySpec, difficulty: PlaceValueDifficulty, random: RandomSource): PlaceValueQuestion {
   const place = randomOf(random, spec.roundingPlaces);
   const n = randomInt(random, spec.numberRange[0], spec.numberRange[1]);
   const correct = roundTo(n, place);
-  const options = numericMultipleChoice(random, correct, place);
+  const { lower, upper } = roundingBenchmarks(n, place);
+  const options = buildRoundToOptions(random, correct, lower, upper, place);
 
   return {
     id: `round-to-${n}-${place}-${Math.floor(random() * 1_000_000)}`,

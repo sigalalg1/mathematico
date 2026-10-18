@@ -68,6 +68,16 @@ export interface PlaceValueQuestion {
   interaction: PlaceValueInteraction;
   /** The math shown as the question's hero line, e.g. "46,205 − 2,000". Rendered via MathText (LTR). */
   display: string;
+  /**
+   * `'vertical'` renders `display` (which must be exactly `"A + B"` or
+   * `"A − B"`) as a column-addition/subtraction layout — digits right-
+   * aligned by place, a rule under the operands — instead of the plain
+   * inline hero line. Grade 4 students work multi-digit regrouping this
+   * way in their textbook; reading the same problem off one flat horizontal
+   * line is a meaningfully harder ask that has nothing to do with the
+   * arithmetic itself. Omitted (not `false`) everywhere else.
+   */
+  displayMode?: 'vertical';
   /** i18n key for the short instruction line above the math, e.g. "What is the result?". */
   promptKey: string;
   promptParams?: Record<string, string | number>;

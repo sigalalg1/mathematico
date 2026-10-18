@@ -42,6 +42,100 @@
   white-space: pre-line;
 }
 
+/*
+ * Every row (carry/borrow scratch marks, both operands, the rule, the
+ * answer) is built from the exact same fixed-size cell — `--pv-cell-size`
+ * wide with `--pv-cell-gap` between cells — so a digit in any row sits in
+ * precisely the same column as the matching place-value digit in every
+ * other row. Right-aligning the block as a whole (`align-items: flex-end`)
+ * then aligns every column automatically, since each row is padded with
+ * leading blank cells up to the same total column count — no row is ever
+ * narrower than another's content area.
+ */
+.pv-vertical-arith {
+  --pv-cell-size: 1.5em;
+  --pv-cell-gap: 4px;
+  --pv-gutter-size: 0.7em;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.pv-vertical-grid-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pv-vertical-gutter {
+  flex: 0 0 var(--pv-gutter-size);
+  width: var(--pv-gutter-size);
+  text-align: center;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+.pv-vertical-cells {
+  display: flex;
+  gap: var(--pv-cell-gap);
+}
+
+.pv-vertical-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--pv-cell-size);
+}
+
+.pv-vertical-cell-group {
+  margin-inline-start: var(--space-2);
+}
+
+.pv-vertical-rule {
+  display: block;
+  border-top: 3px solid var(--text-h);
+}
+
+.pv-vertical-scratch-box,
+.pv-vertical-answer-box {
+  width: var(--pv-cell-size);
+  height: var(--pv-cell-size);
+  padding: 0;
+  text-align: center;
+  font: inherit;
+  font-size: inherit;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-h);
+  background: var(--surface-sunken);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.pv-vertical-scratch-box {
+  /* Same box size as every other row, on purpose: an `em`-based width/height
+     computed from a smaller `font-size` on this element would resolve
+     against ITS OWN (smaller) font-size, not the shared one, throwing off
+     this row's column pitch relative to every other row — the exact bug
+     this comment is here to stop someone from reintroducing. */
+  opacity: 0.85;
+}
+
+.pv-vertical-scratch-box:focus,
+.pv-vertical-answer-box:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
 /* --- options shared by multipleChoice / compareSymbol / constructChoice op --- */
 
 .pv-options {
@@ -251,6 +345,10 @@
   margin: 0;
 }
 
+.pv-skip {
+  margin-top: var(--space-3);
+}
+
 @keyframes pv-feedback-in {
   from {
     opacity: 0;
@@ -264,6 +362,11 @@
 
 @media (max-width: 430px) {
   .pv-display {
+    font-size: var(--text-xl);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .pv-vertical-arith {
     font-size: var(--text-xl);
     padding: var(--space-2) var(--space-4);
   }

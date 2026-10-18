@@ -28,6 +28,13 @@ export interface TrainingQuestionRenderProps<TPayload = never> {
   promptLabel: string;
   /** Records the answer. Ignored unless the session is still answering. */
   submit: (answer: string) => void;
+  /**
+   * Moves on without a correct resubmission. A no-op outside `feedback`/
+   * `retry` — most scenes never call this (the built-in choice buttons
+   * don't offer it at all); it exists for a scene that wants to let a child
+   * stuck on one question move on rather than retry it indefinitely.
+   */
+  advance: () => void;
 }
 
 /** How often the displayed time is refreshed. It is re-read, never counted. */
@@ -138,6 +145,7 @@ export function TrainingPlayScreen<TPayload = never>({
           total: session.total,
           promptLabel: t(promptKey),
           submit: session.submit,
+          advance: session.advance,
         })
       ) : (
         <>

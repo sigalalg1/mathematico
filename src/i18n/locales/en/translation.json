@@ -1589,7 +1589,8 @@
       "incorrect": "Not quite",
       "check": "Check",
       "even": "Even",
-      "odd": "Odd"
+      "odd": "Odd",
+      "skipQuestion": "Skip this one"
     },
     "skillStatus": {
       "strong": "Solid",

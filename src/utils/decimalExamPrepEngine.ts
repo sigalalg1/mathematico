@@ -123,9 +123,14 @@ export function classifySkillStat(stat: SkillStat): SkillReadStatus {
  * assessment spanning eight skills, not a bug to paper over).
  */
 export function buildDiagnosticSlots(random: RandomSource): ExamSlot[] {
+  // All twelve stay at basic difficulty on purpose: the diagnostic is meant
+  // to be a quick, low-pressure baseline check (see its own intro copy), not
+  // a test of range — an unannounced jump to a harder difficulty partway
+  // through would read as a difficulty spike, not a baseline read. The full
+  // basic/intermediate/advanced range is the mock exam's job, not this one's.
   const baseline: ExamSlot[] = PLACE_VALUE_SKILL_IDS.map((skillId) => ({ skillId, difficulty: 'basic' as const }));
   const bonusSkills = shuffle([...PLACE_VALUE_SKILL_IDS], random).slice(0, 4);
-  const bonus: ExamSlot[] = bonusSkills.map((skillId) => ({ skillId, difficulty: 'intermediate' as const }));
+  const bonus: ExamSlot[] = bonusSkills.map((skillId) => ({ skillId, difficulty: 'basic' as const }));
   return shuffle([...baseline, ...bonus], random);
 }
 

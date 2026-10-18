@@ -1589,7 +1589,8 @@
       "incorrect": "לא בדיוק",
       "check": "בדקו",
       "even": "זוגי",
-      "odd": "אי-זוגי"
+      "odd": "אי-זוגי",
+      "skipQuestion": "דלגו על השאלה"
     },
     "skillStatus": {
       "strong": "שולט",

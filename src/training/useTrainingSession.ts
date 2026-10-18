@@ -197,7 +197,11 @@ export function useTrainingSession<TPayload = never>({
   }, [phase, lastAnswer]);
 
   const advance = useCallback(() => {
-    if (phase !== 'feedback') return;
+    // Also allowed during `retry`: nothing calls this automatically while
+    // retrying (the auto-timer only fires `retry()` again on another wrong
+    // answer), so this only takes effect if a scene offers its own explicit
+    // "skip this one" control — existing activities are unaffected either way.
+    if (phase !== 'feedback' && phase !== 'retry') return;
     setLastAnswer(null);
 
     if (index === questions.length - 1) {

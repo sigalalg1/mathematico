@@ -123,6 +123,24 @@ describe('useTrainingSession', () => {
     expect(result.current.phase).toBe('answering');
   });
 
+  it('lets advance() move on directly from retry, without a correct resubmission first', () => {
+    const clock = fakeClock();
+    const { result } = setup(clock);
+
+    act(() => result.current.submit('wrong'));
+    act(() => result.current.retry());
+    expect(result.current.phase).toBe('retry');
+
+    // A scene offering an explicit "skip this one" control calls advance()
+    // while still mid-retry — no further answer is ever given.
+    act(() => result.current.advance());
+    expect(result.current.phase).toBe('answering');
+    expect(result.current.index).toBe(1);
+    // The one mistake already recorded is not duplicated by skipping past it.
+    expect(result.current.answers).toHaveLength(1);
+    expect(result.current.answers[0].isCorrect).toBe(false);
+  });
+
   it('only lets retry follow a wrong feedback, never a correct one or mid-answer', () => {
     const clock = fakeClock();
     const { result } = setup(clock);
