@@ -87,14 +87,15 @@ function FractionTrainingScene({
   }, [status]);
 
   function submit(answer: string) {
-    if (phase !== 'answering') return;
+    if (phase !== 'answering' && phase !== 'retry') return;
     setSelectedAnswer(answer);
     play('select');
     context.submit(answer);
   }
 
   function togglePiece(index: number) {
-    if (phase !== 'answering') return;
+    // Re-enabled during `retry` so a wrong shading can be corrected in place.
+    if (phase !== 'answering' && phase !== 'retry') return;
     play('select');
     setSelectedPieces((current) =>
       current.includes(index) ? current.filter((value) => value !== index) : [...current, index],

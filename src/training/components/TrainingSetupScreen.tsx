@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { TrainingActivityDefinition, TrainingMode } from '../../types/training';
 import { isChallengeEligible } from '../configuration';
+import { secondsPerQuestion } from '../metrics';
 import './TrainingActivity.css';
 
 interface TrainingSetupScreenProps<TPayload> {
@@ -12,6 +13,11 @@ interface TrainingSetupScreenProps<TPayload> {
   onDifficultyChange: (difficultyId: string) => void;
   onQuestionCountChange: (count: number) => void;
   onStart: () => void;
+  /**
+   * The child's existing pace record for the settings currently selected, if
+   * any — shown as a quiet fact, never a live "you're behind" comparison.
+   */
+  targetPaceMs?: number | null;
 }
 
 /**
@@ -31,6 +37,7 @@ export function TrainingSetupScreen<TPayload = never>({
   onDifficultyChange,
   onQuestionCountChange,
   onStart,
+  targetPaceMs,
 }: TrainingSetupScreenProps<TPayload>) {
   const { t } = useTranslation();
   const { capabilities } = activity;
@@ -111,6 +118,12 @@ export function TrainingSetupScreen<TPayload = never>({
         </div>
         {mode === 'challenge' && <p className="tr-note">{t('training.setup.challengeLengthNote')}</p>}
       </section>
+
+      {mode === 'challenge' && targetPaceMs != null && (
+        <p className="tr-target" data-testid="tr-target-pace">
+          {t('training.setup.recordTarget', { seconds: secondsPerQuestion(targetPaceMs) })}
+        </p>
+      )}
 
       <button type="button" className="btn btn-primary btn-cta tr-start" data-testid="tr-start" onClick={onStart}>
         {t(mode === 'challenge' ? 'training.setup.startChallenge' : 'training.setup.startPractice')}

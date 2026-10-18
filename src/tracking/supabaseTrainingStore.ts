@@ -91,6 +91,9 @@ export async function saveSupabaseTrainingResult(
 /** How far back records are derived from — far more than a child will ever play. */
 const HISTORY_LIMIT = 200;
 
+/** Far more than a child will accumulate across every activity/config combined. */
+const ALL_HISTORY_LIMIT = 1000;
+
 export async function getSupabaseTrainingResults(
   userId: string,
   configurationKey: string,
@@ -103,6 +106,19 @@ export async function getSupabaseTrainingResults(
     .eq('configuration_key', configurationKey)
     .order('completed_at', { ascending: false })
     .limit(HISTORY_LIMIT);
+  if (error || !data) return null;
+  return (data as TrainingSessionRow[]).map(fromRow);
+}
+
+/** Newest-first history across every configuration — for records/progress pages. */
+export async function getAllSupabaseTrainingResults(userId: string): Promise<TrainingSessionResult[] | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from('training_sessions')
+    .select()
+    .eq('user_id', userId)
+    .order('completed_at', { ascending: false })
+    .limit(ALL_HISTORY_LIMIT);
   if (error || !data) return null;
   return (data as TrainingSessionRow[]).map(fromRow);
 }

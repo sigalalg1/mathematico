@@ -188,6 +188,158 @@ export const signedNumbersGames: Game[] = [
   },
 ];
 
+const ALGEBRA_PATH = '/grade/7/algebra';
+
+/**
+ * Grade 7 — Algebra, in the progression the unit's design calls for: patterns
+ * and variables first, through expressions, substitution and equivalence, to
+ * combining like terms, then the meaning of an equation, solving one, and
+ * finally turning a word problem into one.
+ */
+export const algebraGames: Game[] = [
+  {
+    id: 'algebraPatterns',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/patterns-and-variables`,
+    nameKey: 'algebraPatterns.gameName',
+    descriptionKey: 'algebraPatterns.gameDescription',
+    icon: 'ƒ',
+  },
+  {
+    id: 'algebraExpressions',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/build-an-expression`,
+    nameKey: 'algebraExpressions.gameName',
+    descriptionKey: 'algebraExpressions.gameDescription',
+    icon: 'x+',
+  },
+  {
+    id: 'algebraSubstitution',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/substitution`,
+    nameKey: 'algebraSubstitution.gameName',
+    descriptionKey: 'algebraSubstitution.gameDescription',
+    icon: 'x=',
+  },
+  {
+    id: 'algebraEquivalent',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/equivalent-expressions`,
+    nameKey: 'algebraEquivalent.gameName',
+    descriptionKey: 'algebraEquivalent.gameDescription',
+    icon: '⚖',
+  },
+  {
+    id: 'algebraLikeTerms',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/combining-like-terms`,
+    nameKey: 'algebraLikeTerms.gameName',
+    descriptionKey: 'algebraLikeTerms.gameDescription',
+    icon: '3x',
+  },
+  {
+    id: 'algebraEquationMeaning',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/understanding-equations`,
+    nameKey: 'algebraEquationMeaning.gameName',
+    descriptionKey: 'algebraEquationMeaning.gameDescription',
+    icon: '🟰',
+  },
+  {
+    id: 'algebraSolving',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/solving-equations`,
+    nameKey: 'algebraSolving.gameName',
+    descriptionKey: 'algebraSolving.gameDescription',
+    icon: '🧮',
+  },
+  {
+    id: 'algebraWordProblems',
+    enabled: true,
+    path: `${ALGEBRA_PATH}/from-words-to-equations`,
+    nameKey: 'algebraWordProblems.gameName',
+    descriptionKey: 'algebraWordProblems.gameDescription',
+    icon: '📖',
+  },
+];
+
+const DECIMAL_PLACE_VALUE_PATH = '/grade/4/decimal-place-value';
+
+/**
+ * Grade 4 — Decimal Place Value exam-prep unit. Eight skills building one
+ * cohesive base-10 number-sense journey (not eight disconnected mini-games):
+ * place value and conversions, construction and decomposition, ordering and
+ * sequences, rounding and estimation, addition/subtraction with regrouping,
+ * reasoning without full calculation, missing numbers and constraints, and
+ * word problems tying several of the above together.
+ */
+export const decimalPlaceValueGames: Game[] = [
+  {
+    id: 'decimalPlaceValue',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/place-value-and-conversions`,
+    nameKey: 'decimalPlaceValue.gameName',
+    descriptionKey: 'decimalPlaceValue.gameDescription',
+    icon: '#',
+  },
+  {
+    id: 'decimalDecomposition',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/build-and-break-numbers`,
+    nameKey: 'decimalDecomposition.gameName',
+    descriptionKey: 'decimalDecomposition.gameDescription',
+    icon: '🧩',
+  },
+  {
+    id: 'decimalOrdering',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/comparing-and-sequences`,
+    nameKey: 'decimalOrdering.gameName',
+    descriptionKey: 'decimalOrdering.gameDescription',
+    icon: '<>',
+  },
+  {
+    id: 'decimalRounding',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/rounding-and-estimation`,
+    nameKey: 'decimalRounding.gameName',
+    descriptionKey: 'decimalRounding.gameDescription',
+    icon: '≈',
+  },
+  {
+    id: 'decimalArithmetic',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/addition-and-subtraction`,
+    nameKey: 'decimalArithmetic.gameName',
+    descriptionKey: 'decimalArithmetic.gameDescription',
+    icon: '+−',
+  },
+  {
+    id: 'decimalParity',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/reasoning-without-calculating`,
+    nameKey: 'decimalParity.gameName',
+    descriptionKey: 'decimalParity.gameDescription',
+    icon: '🧠',
+  },
+  {
+    id: 'decimalConstraints',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/missing-numbers-and-puzzles`,
+    nameKey: 'decimalConstraints.gameName',
+    descriptionKey: 'decimalConstraints.gameDescription',
+    icon: '?',
+  },
+  {
+    id: 'decimalWordProblems',
+    enabled: true,
+    path: `${DECIMAL_PLACE_VALUE_PATH}/word-problems`,
+    nameKey: 'decimalWordProblems.gameName',
+    descriptionKey: 'decimalWordProblems.gameDescription',
+    icon: '📖',
+  },
+];
+
 export const simpleFractionsGames: Game[] = [];
 
 const FRACTIONS_PART1_PATH = '/grade/4/fractions-part-1';

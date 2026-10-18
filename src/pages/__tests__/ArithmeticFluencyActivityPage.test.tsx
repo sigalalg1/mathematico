@@ -90,7 +90,7 @@ describe('grade 2 arithmetic fluency — the balloon scene as a training rendere
     expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '2');
   });
 
-  it('counts a wrong balloon as incorrect and carries on — it never eliminates', () => {
+  it('counts a wrong balloon as incorrect, then lets a retry carry the round on — it never eliminates', () => {
     renderWithProviders(<App />, [BALLOON_ROUTE]);
     start(5);
 
@@ -106,7 +106,12 @@ describe('grade 2 arithmetic fluency — the balloon scene as a training rendere
     expect(screen.getByRole('status')).toHaveTextContent(String(answer));
 
     settleBalloon();
-    // The session moved on rather than ending or repeating the question.
+    // Still the same question — the miss handed it back for a retry rather
+    // than eliminating anything or carrying the child past their own mistake.
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
+
+    fireEvent.click(screen.getByTestId(`mb-balloon-${answer}`));
+    settleBalloon();
     expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '2');
   });
 

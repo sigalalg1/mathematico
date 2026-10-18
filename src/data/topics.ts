@@ -1,7 +1,9 @@
 import type { Game, Topic } from '../types';
 import {
+  algebraGames,
   arithmeticFluencyGames,
   coordinateSystemGames,
+  decimalPlaceValueGames,
   divisionWithRemainderGames,
   fractionsPart1Games,
   geometryAnglesTrianglesGames,
@@ -56,6 +58,12 @@ export const topics: Topic[] = [
     path: '/grade/4/penalty-shootout',
   },
   {
+    id: 'decimalPlaceValue',
+    gradeId: 4,
+    enabled: true,
+    path: '/grade/4/decimal-place-value',
+  },
+  {
     id: 'coordinateSystem',
     gradeId: 7,
     enabled: true,
@@ -80,7 +88,8 @@ export const topics: Topic[] = [
   {
     id: 'algebraBasics',
     gradeId: 7,
-    enabled: false,
+    enabled: true,
+    path: '/grade/7/algebra',
   },
 ];
 
@@ -105,6 +114,8 @@ const TOPIC_GAMES: Partial<Record<string, Game[]>> = {
   multiplication: multiplicationGames,
   coordinateSystem: coordinateSystemGames,
   signedNumbers: signedNumbersGames,
+  algebraBasics: algebraGames,
+  decimalPlaceValue: decimalPlaceValueGames,
 };
 
 function topicHasActivity(topic: Topic): boolean {

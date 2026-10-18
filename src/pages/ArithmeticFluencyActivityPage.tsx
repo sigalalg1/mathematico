@@ -69,7 +69,8 @@ function BalloonSkill({ skill }: { skill: ArithmeticSkillPresentation }) {
         resetKey={`${index}-${question.id}`}
         // The session, not the scene, decides when to move on: the scene just
         // finishes its animation while the shared feedback beat plays out.
-        locked={phase !== 'answering'}
+        // Unlocked again during `retry` so a miss can be corrected in place.
+        locked={phase === 'feedback'}
         onShoot={submit}
         // Progress lives in the shared HUD above, so the scene's own bar is
         // left off and the top strip carries only the sound control.

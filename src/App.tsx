@@ -27,6 +27,26 @@ import { CompareSignedPage } from './pages/CompareSignedPage';
 import { AbsoluteValuePage } from './pages/AbsoluteValuePage';
 import { SignedAddSubPage } from './pages/SignedAddSubPage';
 import { SignRulesPage } from './pages/SignRulesPage';
+import { AlgebraPage } from './pages/AlgebraPage';
+import { AlgebraPatternsPage } from './pages/AlgebraPatternsPage';
+import { AlgebraExpressionsPage } from './pages/AlgebraExpressionsPage';
+import { AlgebraSubstitutionPage } from './pages/AlgebraSubstitutionPage';
+import { AlgebraEquivalentPage } from './pages/AlgebraEquivalentPage';
+import { AlgebraLikeTermsPage } from './pages/AlgebraLikeTermsPage';
+import { AlgebraEquationMeaningPage } from './pages/AlgebraEquationMeaningPage';
+import { AlgebraSolvingPage } from './pages/AlgebraSolvingPage';
+import { AlgebraWordProblemsPage } from './pages/AlgebraWordProblemsPage';
+import { DecimalExamPrepPage } from './pages/DecimalExamPrepPage';
+import { DecimalPlaceValuePage } from './pages/DecimalPlaceValuePage';
+import { DecimalDecompositionPage } from './pages/DecimalDecompositionPage';
+import { DecimalOrderingPage } from './pages/DecimalOrderingPage';
+import { DecimalRoundingPage } from './pages/DecimalRoundingPage';
+import { DecimalArithmeticPage } from './pages/DecimalArithmeticPage';
+import { DecimalParityPage } from './pages/DecimalParityPage';
+import { DecimalConstraintsPage } from './pages/DecimalConstraintsPage';
+import { DecimalWordProblemsPage } from './pages/DecimalWordProblemsPage';
+import { DecimalDiagnosticPage } from './pages/DecimalDiagnosticPage';
+import { DecimalMockExamPage } from './pages/DecimalMockExamPage';
 import { AccountPage } from './pages/AccountPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { ActivityPage } from './pages/ActivityPage';
@@ -80,6 +100,26 @@ function App() {
         <Route path="/grade/7/signed-numbers/distance-from-zero" element={<AbsoluteValuePage />} />
         <Route path="/grade/7/signed-numbers/steps-on-the-line" element={<SignedAddSubPage />} />
         <Route path="/grade/7/signed-numbers/the-sign-rule" element={<SignRulesPage />} />
+        <Route path="/grade/7/algebra" element={<AlgebraPage />} />
+        <Route path="/grade/7/algebra/patterns-and-variables" element={<AlgebraPatternsPage />} />
+        <Route path="/grade/7/algebra/build-an-expression" element={<AlgebraExpressionsPage />} />
+        <Route path="/grade/7/algebra/substitution" element={<AlgebraSubstitutionPage />} />
+        <Route path="/grade/7/algebra/equivalent-expressions" element={<AlgebraEquivalentPage />} />
+        <Route path="/grade/7/algebra/combining-like-terms" element={<AlgebraLikeTermsPage />} />
+        <Route path="/grade/7/algebra/understanding-equations" element={<AlgebraEquationMeaningPage />} />
+        <Route path="/grade/7/algebra/solving-equations" element={<AlgebraSolvingPage />} />
+        <Route path="/grade/7/algebra/from-words-to-equations" element={<AlgebraWordProblemsPage />} />
+        <Route path="/grade/4/decimal-place-value" element={<DecimalExamPrepPage />} />
+        <Route path="/grade/4/decimal-place-value/place-value-and-conversions" element={<DecimalPlaceValuePage />} />
+        <Route path="/grade/4/decimal-place-value/build-and-break-numbers" element={<DecimalDecompositionPage />} />
+        <Route path="/grade/4/decimal-place-value/comparing-and-sequences" element={<DecimalOrderingPage />} />
+        <Route path="/grade/4/decimal-place-value/rounding-and-estimation" element={<DecimalRoundingPage />} />
+        <Route path="/grade/4/decimal-place-value/addition-and-subtraction" element={<DecimalArithmeticPage />} />
+        <Route path="/grade/4/decimal-place-value/reasoning-without-calculating" element={<DecimalParityPage />} />
+        <Route path="/grade/4/decimal-place-value/missing-numbers-and-puzzles" element={<DecimalConstraintsPage />} />
+        <Route path="/grade/4/decimal-place-value/word-problems" element={<DecimalWordProblemsPage />} />
+        <Route path="/grade/4/decimal-place-value/diagnostic" element={<DecimalDiagnosticPage />} />
+        <Route path="/grade/4/decimal-place-value/mock-exam" element={<DecimalMockExamPage />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/activity" element={<ActivityPage />} />

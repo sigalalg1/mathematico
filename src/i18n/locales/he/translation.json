@@ -58,7 +58,29 @@
   "activity": {
     "title": "הפעילות שלי",
     "navLabel": "פעילות",
-    "empty": "עדיין אין משחקים שהושלמו — קדימה לשחק!"
+    "empty": "עדיין אין משחקים שהושלמו — קדימה לשחק!",
+    "summary": {
+      "accuracyLabel": "דיוק ממוצע",
+      "paceLabel": "ממוצע לשאלה",
+      "paceValue": "{{seconds}} שנ׳",
+      "challengesLabel": "אתגרים הושלמו"
+    },
+    "records": {
+      "title": "השיאים שלי",
+      "emptyTitle": "עוד אין לך שיאים",
+      "emptyBody": "נסו אתגר אישי כדי לקבוע את השיא הראשון.",
+      "emptyAction": "לצפייה בפעילויות",
+      "configLabel": "{{difficulty}} · {{count}} שאלות",
+      "configLabelNoDifficulty": "{{count}} שאלות",
+      "correctFraction": "{{correct}}/{{total}} נכון",
+      "cta": "לשבור את השיא"
+    },
+    "recent": {
+      "title": "פעילות אחרונה",
+      "empty": "עדיין אין פעילות אחרונה.",
+      "showMore": "הצג עוד",
+      "showLess": "הצג פחות"
+    }
   },
   "activityList": {
     "bannerTitle": "כל תרגול מקדם אתכם צעד אחד!",
@@ -119,12 +141,16 @@
       "description": "בקרוב"
     },
     "algebraBasics": {
-      "name": "יסודות באלגברה",
-      "description": "בקרוב"
+      "name": "אלגברה",
+      "description": "מחוקיות ומשתנים ועד בניית פתרון משוואות."
     },
     "arithmeticFluency": {
       "name": "שטף חשבוני",
       "description": "חיבור וחיסור עד שיהיו מהירים, מדויקים ובטוחים."
+    },
+    "decimalPlaceValue": {
+      "name": "המבנה העשרוני — הכנה למבחן",
+      "description": "שמונה מיומנויות, אבחון ומבחן תרגול שמכסים את המבנה העשרוני עד מיליון."
     }
   },
   "penaltyShootout": {
@@ -903,6 +929,186 @@
       "title": "✖️ סיימתם את חוק הסימנים!"
     }
   },
+  "algebraPage": {
+    "title": "אלגברה",
+    "subtitle": "בחרו תרגיל כדי להתאמן",
+    "completedBadge": "הושלם"
+  },
+  "decimalExamPrepPage": {
+    "title": "המבנה העשרוני — הכנה למבחן",
+    "subtitle": "תרגלו כל מיומנות בנפרד, או עברו את האבחון והמבחן המלא.",
+    "completedBadge": "הושלם"
+  },
+  "algebra": {
+    "progress": "שאלה {{current}} מתוך {{total}}",
+    "completion": {
+      "summary": "{{total}} שאלות הושלמו",
+      "firstTry": "{{count}} נפתרו בניסיון ראשון"
+    },
+    "actions": {
+      "playAgain": "לשחק שוב",
+      "backToTopic": "חזרה לאלגברה",
+      "tryAgain": "לנסות שוב",
+      "next": "הבא"
+    }
+  },
+  "algebraPatterns": {
+    "gameName": "חוקיות ומשתנים",
+    "gameDescription": "מגלים למה משתמשים ב-x: אותו חוק, לכל מספר.",
+    "prompt": {
+      "computeOutput": "מה החוק של המכונה? מה ייצא כשנכניס {{input}}?",
+      "computeRule": "לפי איזה חוק פועלת המכונה — לכל מספר?",
+      "computeInput": "איזה קלט ייתן את הפלט הזה?",
+      "visualStage": "מה החוקיות? כמה יהיו בשלב {{stage}}?"
+    },
+    "machine": {
+      "stageLabel": "שלב {{stage}}"
+    },
+    "feedback": {
+      "correctMessages": [
+        "יפה! זה החוק.",
+        "בדיוק נכון!",
+        "מצאתם אותו!"
+      ],
+      "hint": "הסתכלו על הדוגמאות שלמעלה — אותו חוק חל על כולן, כולל זו."
+    },
+    "completion": {
+      "title": "🔎 מצאתם את החוקיות!"
+    }
+  },
+  "algebraExpressions": {
+    "gameName": "בונים ביטוי",
+    "gameDescription": "מתרגמים משפט קצר לביטוי האלגברי שהוא מתאר.",
+    "intro": "בחרו את הביטוי שמתאים למשפט.",
+    "prompt": "איזה ביטוי מתאים למשפט?",
+    "difficulty": {
+      "basic": "x + n או n × x",
+      "intermediate": "שני שלבים: n × x + m",
+      "hard": "גם חילוק, וסדר מילים מורכב יותר"
+    },
+    "phrases": {
+      "plus": "מספר ועוד {{n}}",
+      "minus": "{{n}} פחות ממספר",
+      "minusReversed": "מספר פחות {{n}}",
+      "timesOnly": "{{n}} כפול מספר",
+      "timesPlus": "{{n}} כפול מספר, ועוד {{n2}}",
+      "moreThanTimes": "{{n2}} יותר מ-{{n}} כפול מספר",
+      "divide": "מספר חלקי {{n}}"
+    }
+  },
+  "algebraSubstitution": {
+    "gameName": "הצבה בביטויים",
+    "gameDescription": "מחליפים את x בערך שלו, שלב אחר שלב, ואז מחשבים.",
+    "intro": "x מייצג מספר — ברגע שיודעים איזה, לביטוי יש ערך.",
+    "prompt": "מה הערך של הביטוי כאשר x = {{x}}?",
+    "difficulty": {
+      "basic": "פעולה אחת: x ± a, או a × x",
+      "intermediate": "שתי פעולות: a × x ± b",
+      "hard": "ערכי x שליליים"
+    }
+  },
+  "algebraEquivalent": {
+    "gameName": "ביטויים שווי ערך",
+    "gameDescription": "שני ביטויים, נבדקים בשני ערכים — האם הם באמת שווים?",
+    "prompt": "בדקו את שני הביטויים. האם הם שווי ערך?",
+    "actions": {
+      "equivalent": "שווי ערך",
+      "notEquivalent": "לא שווי ערך"
+    },
+    "feedback": {
+      "missedEquivalent": "בדקו את שתי השורות למעלה — שני הביטויים נותנים את אותו ערך לכל x, לא רק לשני אלה.",
+      "missedDifference": "הסתכלו שוב: אחת משתי השורות למעלה לא תואמת. זה מספיק כדי להוכיח שהם לא שווי ערך."
+    },
+    "completion": {
+      "title": "⚖️ אתם יודעים לזהות ביטויים שווי ערך!"
+    }
+  },
+  "algebraLikeTerms": {
+    "gameName": "איברים דומים",
+    "gameDescription": "איברי x מתחברים עם איברי x, מספרים מתחברים עם מספרים — אף פעם לא יחד.",
+    "intro": "מצמצמים את הביטוי על ידי חיבור האיברים הדומים בו.",
+    "prompt": "צמצמו את הביטוי הזה.",
+    "difficulty": {
+      "basic": "רק איברי x חיוביים",
+      "intermediate": "איברי x ומספר",
+      "hard": "חיסור ומקדמים שליליים"
+    },
+    "feedback": {
+      "combinedUnlikeTerms": "3x ו-4 הם סוגים שונים של איברים — איבר x יכול להתחבר רק עם איבר x אחר, ומספר רק עם מספר אחר.",
+      "droppedASign": "הסתכלו שוב על הסימן שלפני האיבר הזה — הוא עובר איתו כשמחברים אותו.",
+      "other": "מחברים את איברי ה-x זה עם זה, ואת המספרים זה עם זה, בנפרד."
+    }
+  },
+  "algebraEquationMeaning": {
+    "gameName": "מהי משוואה?",
+    "gameDescription": "מה הופך משוואה לנכונה? בודקים ערך ורואים.",
+    "prompt": {
+      "pickSolution": "איזה ערך של x הופך את המשוואה הזו לנכונה?",
+      "isSolution": "האם הערך הזה הופך את המשוואה לנכונה?"
+    },
+    "testValue": "בודקים x = {{x}}",
+    "actions": {
+      "yes": "כן",
+      "no": "לא"
+    },
+    "feedback": {
+      "testIt": "הציבו את הערך במקום x בצד שמאל, ובדקו האם הוא באמת שווה לצד ימין."
+    },
+    "completion": {
+      "title": "🟰 אתם יודעים מה הופך משוואה לנכונה!"
+    }
+  },
+  "algebraSolving": {
+    "gameName": "פותרים משוואות",
+    "gameDescription": "בוחרים את הצעד — אותו דבר קורה לשני הצדדים, בכל פעם.",
+    "prompt": "מה כדאי לעשות לשני הצדדים?",
+    "stepLabel": "שלב {{current}} מתוך {{total}}",
+    "operation": {
+      "add": "+{{n}} לשני הצדדים",
+      "subtract": "−{{n}} לשני הצדדים",
+      "addX": "+{{term}} לשני הצדדים",
+      "subtractX": "−{{term}} לשני הצדדים",
+      "divide": "÷{{n}} לשני הצדדים"
+    },
+    "feedback": {
+      "wrong": "הצעד הזה לא מבודד את x כאן. הסתכלו מה צמוד ל-x ובטלו קודם את זה."
+    },
+    "verify": {
+      "title": "פתרתם! בואו נבדוק.",
+      "substituting": "מציבים x = {{x}} בחזרה במשוואה המקורית:",
+      "confirmed": "שני הצדדים שווים ל-{{value}} — אומת!"
+    },
+    "actions": {
+      "next": "המשוואה הבאה",
+      "tryAgain": "לנסות שוב"
+    },
+    "completion": {
+      "title": "🧮 אתם יודעים לפתור משוואות!"
+    }
+  },
+  "algebraWordProblems": {
+    "gameName": "מבעיה למשוואה",
+    "gameDescription": "הופכים סיפור קצר למשוואה, ואז פותרים אותה.",
+    "pickEquation": "איזו משוואה מתאימה לסיפור?",
+    "story": {
+      "abstractPlus": "{{a}} כפול מספר ועוד {{b}} שווה {{c}}. מהו המספר?",
+      "storyPlus": "ל{{name}} יש {{b}} יותר מפי {{a}} ממה שיש ל{{other}}. ל{{name}} יש בסך הכל {{c}}. כמה יש ל{{other}}?",
+      "abstractMinus": "{{a}} כפול מספר פחות {{b}} שווה {{c}}. מהו המספר?",
+      "storyMinus": "ל{{name}} יש {{b}} פחות מפי {{a}} ממה שיש ל{{other}}. ל{{name}} יש בסך הכל {{c}}. כמה יש ל{{other}}?"
+    },
+    "feedback": {
+      "wrong": "קראו את הסיפור שוב, חלק אחרי חלק: מה כפול המספר, ומה מתווסף או מופחת?"
+    },
+    "interpretation": {
+      "abstractPlus": "המספר הוא {{value}}.",
+      "storyPlus": "ל{{other}} יש {{value}}.",
+      "abstractMinus": "המספר הוא {{value}}.",
+      "storyMinus": "ל{{other}} יש {{value}}."
+    },
+    "completion": {
+      "title": "📖 אתם יודעים להפוך סיפור למשוואה!"
+    }
+  },
   "quiz": {
     "progress": "{{current}} / {{total}}",
     "progressLabel": "שאלה {{current}} מתוך {{total}}",
@@ -1240,7 +1446,8 @@
       "questions": "שאלות",
       "challengeLengthNote": "אתגר אישי נמדד על 20 או 50 שאלות, כדי שהתוצאה באמת תגיד משהו.",
       "startPractice": "מתחילים לתרגל",
-      "startChallenge": "מתחילים אתגר"
+      "startChallenge": "מתחילים אתגר",
+      "recordTarget": "השיא שלך: {{seconds}} שניות לשאלה"
     },
     "modes": {
       "practice": {
@@ -1374,6 +1581,278 @@
           "hard": "מספרים גדולים ותוצאה קטנה, למשל 83−47"
         }
       }
+    }
+  },
+  "decimalExamPrep": {
+    "common": {
+      "correct": "נכון!",
+      "incorrect": "לא בדיוק",
+      "check": "בדקו",
+      "even": "זוגי",
+      "odd": "אי-זוגי",
+      "skipQuestion": "דלגו על השאלה"
+    },
+    "skillStatus": {
+      "strong": "שולט",
+      "weak": "צריך תרגול",
+      "insufficientData": "מעט מדי שאלות כדי להיות בטוחים",
+      "noData": "לא נבדק הפעם"
+    }
+  },
+  "decimalPlaceValue": {
+    "gameName": "המבנה העשרוני והמרות",
+    "gameDescription": "יחידות, עשרות, מאות, אלפים — כמה באמת שווה כל ספרה.",
+    "intro": "כל מקום שווה פי עשרה מהמקום שמימינו.",
+    "prompt": "ענו לפי המבנה העשרוני.",
+    "difficulty": {
+      "basic": "עשרות ומאות, מספרים עד 9,999",
+      "intermediate": "אלפים ועשרות אלפים, מספרים עד 99,999",
+      "advanced": "עד 999,999, כולל שאריות"
+    },
+    "promptFor": {
+      "digitValue": {
+        "tens": "מה הערך של ספרת העשרות במספר?",
+        "hundreds": "מה הערך של ספרת המאות במספר?",
+        "thousands": "מה הערך של ספרת האלפים במספר?",
+        "tenThousands": "מה הערך של ספרת עשרות האלפים במספר?",
+        "hundredThousands": "מה הערך של ספרת מאות האלפים במספר?"
+      },
+      "countUnit": {
+        "tens": "כמה עשרות יש במספר?",
+        "hundreds": "כמה מאות יש במספר?",
+        "thousands": "כמה אלפים יש במספר?"
+      },
+      "composeUnit": "איזה מספר זה?"
+    },
+    "explanation": {
+      "digitValue": "הספרה {{digit}} נמצאת במקום ששווה {{placeValue}}, ולכן ערכה הוא {{digit}} × {{placeValue}} = {{value}}.",
+      "countUnit": "{{number}} ÷ {{unit}} = {{count}}.",
+      "composeUnit": "{{count}} × {{unit}} = {{value}}."
+    }
+  },
+  "decimalDecomposition": {
+    "gameName": "פירוק והרכבת מספרים",
+    "gameDescription": "מפרקים מספר לחלקים לפי ערך המקום, ומרכיבים אותו בחזרה.",
+    "intro": "אפשר להרכיב מספר מהחלקים שלו ביותר מדרך אחת.",
+    "prompt": "חשבו את המספר.",
+    "difficulty": {
+      "basic": "פירוק רגיל, עד 9,999",
+      "intermediate": "איבר חסר, וקיבוץ לא רגיל",
+      "advanced": "מספרים גדולים יותר, וזיהוי פירוק נכון"
+    },
+    "promptFor": {
+      "expandedSum": "חברו את הפירוק.",
+      "missingTerm": "איזה מספר שייך במקום החסר?",
+      "nonstandardCompose": "איזה מספר זה?",
+      "recognizeDecomposition": "איזה מהם הוא פירוק נכון של המספר הזה?"
+    },
+    "explanation": {
+      "expandedSum": "{{terms}} = {{value}}.",
+      "missingTerm": "החלק החסר הוא {{missing}} — כל החלקים יחד נותנים {{value}}.",
+      "nonstandardCompose": "{{a}} + {{b}} = {{value}}.",
+      "recognizeDecomposition": "{{terms}} הוא זה שבאמת מצטבר ל-{{value}}."
+    }
+  },
+  "decimalOrdering": {
+    "gameName": "השוואה, סדר וסדרות",
+    "gameDescription": "מה גדול יותר, מה בא אחר כך, ומה מתאים באמצע.",
+    "intro": "משווים לפי המקום הראשון שבו שני המספרים באמת שונים.",
+    "prompt": "השוו, סדרו או השלימו את הסדרה.",
+    "difficulty": {
+      "basic": "מספרים שונים בבירור, צעדים פשוטים",
+      "intermediate": "מספרים עם ספרות מובילות משותפות, סידור ארבעה מספרים",
+      "advanced": "מציאת מספר בטווח צר"
+    },
+    "promptFor": {
+      "compare": "השוו בין שני המספרים.",
+      "sequenceNext": "מה בא אחר כך?",
+      "numberBetween": "מצאו מספר שמתאים.",
+      "orderFour": "איזו אפשרות מסדרת אותם מהקטן לגדול?"
+    },
+    "explanation": {
+      "compare": "{{left}} {{symbol}} {{right}} — הסתכלו על המקום הראשון שבו הספרות שונות.",
+      "sequenceNext": "כל צעד מוסיף {{step}}, ולכן האיבר הבא הוא {{value}}.",
+      "numberBetween": "כל מספר שלם שבין {{lower}} ל-{{upper}} ממש מתאים.",
+      "orderFour": "מהקטן לגדול: {{sorted}}."
+    }
+  },
+  "decimalRounding": {
+    "gameName": "עיגול ואומדן",
+    "gameDescription": "מוצאים את קנה המידה הקרוב ביותר, ושופטים תוצאה בלי לחשב אותה במדויק.",
+    "intro": "עיגול הוא מציאת קנה המידה הקרוב ביותר, לא רק שינוי ספרות לפי כלל.",
+    "prompt": "עגלו או אמדו.",
+    "difficulty": {
+      "basic": "עיגול לעשרות או מאות הקרובות",
+      "intermediate": "עיגול למאות או אלפים הקרובים, כולל אמצע הדרך",
+      "advanced": "אומדן סכום, ושיפוט שלו מול יעד"
+    },
+    "promptFor": {
+      "roundTo": {
+        "tens": "עגלו את המספר הזה לעשרת הקרובה.",
+        "hundreds": "עגלו את המספר הזה למאה הקרובה.",
+        "thousands": "עגלו את המספר הזה לאלף הקרוב.",
+        "tenThousands": "עגלו את המספר הזה לעשרת האלפים הקרובה."
+      },
+      "nearestBenchmark": {
+        "tens": "לאיזו עשרת המספר הזה קרוב יותר?",
+        "hundreds": "לאיזו מאה המספר הזה קרוב יותר?",
+        "thousands": "לאיזה אלף המספר הזה קרוב יותר?",
+        "tenThousands": "לאיזו עשרת אלפים המספר הזה קרוב יותר?"
+      },
+      "estimateSum": {
+        "hundreds": "עגלו כל מספר למאה הקרובה, ואז חברו.",
+        "thousands": "עגלו כל מספר לאלף הקרוב, ואז חברו.",
+        "tenThousands": "עגלו כל מספר לעשרת האלפים הקרובה, ואז חברו."
+      },
+      "rangeJudgment": "בלי לחשב במדויק, האם התוצאה מעל או מתחת למספר שמוצג?"
+    },
+    "explanation": {
+      "roundTo": "{{value}} מתעגל ל-{{result}} (לקרוב {{place}}).",
+      "nearestBenchmark": "{{value}} נמצא בין {{lower}} ל-{{upper}}, וקרוב יותר ל-{{result}}.",
+      "estimateSum": "{{a}} + {{b}} = {{result}}.",
+      "rangeJudgment": "{{a}} + {{b}} = {{exact}}, ולכן התוצאה בצד הזה של {{threshold}}."
+    }
+  },
+  "decimalArithmetic": {
+    "gameName": "חיבור וחיסור במבנה העשרוני",
+    "gameDescription": "חישוב בעל פה, חישוב רב-ספרתי, ופריטה/העברה אמיתיות — לא רק מספרים עגולים.",
+    "intro": "שימו לב באילו מקומות צריך להעביר או לפרוט, לא רק לתשובה הסופית.",
+    "prompt": "חשבו את התוצאה.",
+    "difficulty": {
+      "basic": "חישוב בעל פה עם מספרים עגולים, עד 9,999",
+      "intermediate": "חישוב רב-ספרתי שתמיד דורש העברה או פריטה",
+      "advanced": "חציית אפסים, ופתרון עבור מחובר חסר"
+    },
+    "promptFor": {
+      "calculate": "מה התוצאה?",
+      "missingAddend": "איזה מספר חסר?"
+    },
+    "explanation": {
+      "calculate": "התוצאה היא {{result}}.",
+      "missingAddend": "{{missing}} + {{known}} = {{total}}."
+    }
+  },
+  "decimalParity": {
+    "gameName": "חושבים בלי לחשב",
+    "gameDescription": "זוגי או אי-זוגי, מה גדול יותר, בונים ביטוי שמתאים — הכול בלי לחשב את המספר המדויק.",
+    "intro": "רק הספרה האחרונה קובעת אם תוצאה זוגית או אי-זוגית.",
+    "prompt": "חשבו על זה — אל תחשבו את התוצאה המדויקת.",
+    "difficulty": {
+      "basic": "האם התוצאה זוגית או אי-זוגית?",
+      "intermediate": "גם השוואת שני ביטויים בלי לחשב את שניהם",
+      "advanced": "בונים ביטוי משלכם שמתאים לתנאי"
+    },
+    "promptFor": {
+      "parity": "בלי לחשב את התוצאה המדויקת, האם היא זוגית או אי-זוגית?",
+      "compareExpressions": "בלי לחשב את שניהם במדויק, איזה גדול יותר?",
+      "constructEven": "הקישו על שני מספרים ופעולה כדי לקבל תוצאה זוגית.",
+      "constructThreshold": "הקישו על שני מספרים וחסרו כדי לקבל תוצאה מתחת ל-{{threshold}}."
+    },
+    "explanation": {
+      "parity": "רק הספרות האחרונות חשובות: {{leftDigit}} ו-{{rightDigit}}.",
+      "compareExpressions": "אותה נקודת התחלה, תוספת שונה — משווים רק את התוספות.",
+      "constructEven": "שני מספרים מאותה זוגיות (שניהם זוגיים, או שניהם אי-זוגיים) תמיד מצטברים לתוצאה זוגית.",
+      "constructThreshold": "חיסור בין שני מספרים קרובים מהרשימה שומר על תוצאה קטנה."
+    }
+  },
+  "decimalConstraints": {
+    "gameName": "מספרים חסרים וחידות",
+    "gameDescription": "מוצאים ספרה חסרה, בוחרים מספר שמתאים לטווח ולספרה מסוימת, או בונים זוג שמגיע בדיוק לסכום יעד.",
+    "intro": "בחלק מהחידות האלה יש יותר מתשובה אחת נכונה — כל מספר שמתאים לכלל נחשב נכון.",
+    "prompt": "מצאו מה מתאים לכלל.",
+    "difficulty": {
+      "basic": "מוצאים את הספרה החסרה בתרגיל חיבור",
+      "intermediate": "גם בוחרים מספר שמתאים לטווח ולספרה מסוימת",
+      "advanced": "גם בונים זוג מספרים שמגיע בדיוק לסכום יעד"
+    },
+    "promptFor": {
+      "missingDigit": "איזו ספרה חסרה?",
+      "rangeAndDigit": "מצאו מספר בין שני הערכים שספרת המאות שלו היא {{digit}}.",
+      "targetSum": "הקישו על שני מספרים וחברו אותם כדי לקבל בדיוק {{target}}."
+    },
+    "explanation": {
+      "missingDigit": "הספרה החסרה היא {{digit}}, כי {{addend}} משלים את החיבור.",
+      "rangeAndDigit": "לדוגמה, {{lower}} < n < {{upper}} עם ספרת מאות {{digit}} — מספרים רבים בטווח הזה יכולים להתאים.",
+      "targetSum": "לדוגמה, {{a}} + {{b}} = {{target}} — זוגות נוספים מהרשימה עשויים גם הם להתאים."
+    }
+  },
+  "decimalWordProblems": {
+    "gameName": "בעיות מילוליות",
+    "gameDescription": "מצבים מהחיים האמיתיים שמשלבים מבנה עשרוני, עיגול וחשבון בשאלה אחת.",
+    "intro": "קראו בעיון — חשבו באיזו פעולה הסיפור באמת צריך.",
+    "prompt": "קראו את הסיפור וענו על השאלה.",
+    "difficulty": {
+      "basic": "סיפור אחד של חיבור או חיסור",
+      "intermediate": "גם השוואה, עיגול ומציאת כמות חסרה",
+      "advanced": "גם סיפורים דו-שלביים והמבנה העשרוני בתוך כמות אמיתית"
+    },
+    "promptFor": {
+      "sumScenario": "כיתה אספה {{a}} פקקים בשבוע הראשון ו-{{b}} פקקים נוספים בשבוע השני. כמה פקקים הם אספו בסך הכול?",
+      "differenceScenario": "במחסן היו {{a}} ארגזים. נמכרו {{b}} ארגזים. כמה ארגזים נשארו?",
+      "compareScenario": "שני חברים אספו כל אחד חרוזים לאורך הקיץ. איזו כמות גדולה יותר?",
+      "roundEstimateScenario": {
+        "hundreds": "באצטדיון היו {{value}} צופים. בכתבה בעיתון המספר מעוגל למאות הקרובות. איזה מספר מופיע בכתבה?",
+        "thousands": "באצטדיון היו {{value}} צופים. בכתבה בעיתון המספר מעוגל לאלפים הקרובים. איזה מספר מופיע בכתבה?",
+        "tenThousands": "באצטדיון היו {{value}} צופים. בכתבה בעיתון המספר מעוגל לעשרות האלפים הקרובות. איזה מספר מופיע בכתבה?"
+      },
+      "missingAddendScenario": "בחנות היו {{before}} מוצרים. הגיע משלוח חדש, ועכשיו יש בחנות {{after}} מוצרים בסך הכול. כמה מוצרים הגיעו במשלוח?",
+      "multiStepScenario": "קבוצה אספה {{firstWeek}} בולים בשבוע הראשון ו-{{secondWeek}} בולים נוספים בשבוע השני. לאחר מכן הם השתמשו ב-{{used}} בולים כדי לשלוח מכתבים. כמה בולים נשארו?",
+      "digitValueScenario": {
+        "hundreds": "סרטון הגיע ל-{{value}} צפיות. איזה ערך מייצגת הספרה שבמקום המאות?",
+        "thousands": "סרטון הגיע ל-{{value}} צפיות. איזה ערך מייצגת הספרה שבמקום האלפים?",
+        "tenThousands": "סרטון הגיע ל-{{value}} צפיות. איזה ערך מייצגת הספרה שבמקום עשרות האלפים?"
+      }
+    },
+    "explanation": {
+      "sumScenario": "{{a}} + {{b}} = {{result}}.",
+      "differenceScenario": "{{a}} − {{b}} = {{result}}.",
+      "compareScenario": "{{a}} לעומת {{b}}.",
+      "roundEstimateScenario": "{{value}} מתעגל ל-{{result}}.",
+      "missingAddendScenario": "{{after}} − {{before}} = {{result}} הגיעו.",
+      "multiStepScenario": "קודם מחברים את שני השבועות, ואז מחסרים את מה שהשתמשו בו: {{total}} − {{used}} = {{result}}.",
+      "digitValueScenario": "ב-{{value}}, הספרה הזו מייצגת {{result}}."
+    }
+  },
+  "decimalDiagnostic": {
+    "intro": {
+      "title": "בדיקת אבחון",
+      "description": "12 שאלות קצרות על פני שמונה המיומנויות, כדי שנדע מאיפה להתחיל. בלי לחץ — טעות אחת לא אומרת שמיומנות חלשה.",
+      "startButton": "התחילו את האבחון"
+    },
+    "results": {
+      "title": "תוצאות האבחון",
+      "overallLabel": "סך הכול",
+      "skillsHeading": "לפי מיומנות",
+      "recommendationHeading": "מה לתרגל עכשיו",
+      "recommendationWeak": "כדאי להתמקד קודם ב{{skill}} — שם האבחון הראה הכי הרבה מקום לשיפור.",
+      "recommendationMixed": "כמה מיומנויות יכולות להרוויח מתרגול נוסף: {{skills}}.",
+      "recommendationAllGood": "עבודה יפה בכל התחומים. אפשר לבחור כל מיומנות למטה כדי לשמור על חדות, או לנסות מבחן תרגול מלא.",
+      "lowDataNote": "ברוב המיומנויות הייתה רק שאלה אחת או שתיים — לא מספיק כדי לקבוע שמיומנות \"חלשה\". התייחסו לזה כנקודת פתיחה, לא כפסק דין.",
+      "practiceButton": "תרגלו את המיומנות הזו",
+      "retakeButton": "עברו את האבחון שוב",
+      "mockExamButton": "נסו מבחן תרגול",
+      "backButton": "חזרה ליחידה"
+    }
+  },
+  "decimalMockExam": {
+    "intro": {
+      "title": "מבחן תרגול",
+      "description": "22 שאלות שמשלבות את כל שמונה המיומנויות בסדר אקראי — בדיוק כמו במבחן האמיתי. אין טיימר בולט שדוחק בכם; קחו את הזמן שצריך.",
+      "startButton": "התחילו את מבחן התרגול"
+    },
+    "results": {
+      "title": "תוצאות מבחן התרגול",
+      "overallLabel": "סך הכול",
+      "skillsHeading": "לפי מיומנות",
+      "readinessHeading": "מוכנות למבחן",
+      "readinessReady": "שני מבחני התרגול האחרונים שלכם עברו את רף ה-85% בלי נקודת חולשה קבועה — סימן טוב שאתם מוכנים. זו המלצה, לא הבטחה.",
+      "readinessNotYet": "עדיין לא ממש שם על פני שני מבחני התרגול האחרונים. המשיכו לתרגל את המיומנויות למטה ונסו שוב.",
+      "readinessNotEnoughAttempts": "עברו עוד מבחן תרגול אחד כדי לקבל הערכת מוכנות — היא משווה בין שני הניסיונות האחרונים שלכם.",
+      "reviewHeading": "סקרו את התשובות שלכם",
+      "reviewYourAnswer": "התשובה שלכם",
+      "reviewCorrectAnswer": "תשובה נכונה",
+      "regenerateButton": "נסו מבחן תרגול אחר",
+      "backButton": "חזרה ליחידה"
     }
   }
 }

@@ -31,25 +31,53 @@ function startTraining(
 }
 
 /**
- * Answers whatever the current fraction question happens to be, without knowing
- * the right answer — these tests are about the flow and the leak rules, never
- * about guessing correctly.
+ * Answers whatever the current fraction question happens to be, without
+ * knowing the right answer — these tests are about the flow and the leak
+ * rules, never about guessing correctly. A wrong guess no longer ends the
+ * question by itself (the child gets it back to correct in place), so this
+ * keeps trying a fresh candidate each round until the session actually moves
+ * on — guaranteed within a few attempts since every question has a small,
+ * fixed set of candidates and none of them are ever removed by a miss.
  */
-function answerAnyhow(container: HTMLElement) {
-  const dock = container.querySelector('.fp-choice-dock button, .fp-model-dock button');
-  if (dock) {
-    fireEvent.click(dock);
-    return;
+async function answerAnyhow(container: HTMLElement) {
+  const progress = () => screen.queryByRole('progressbar')?.getAttribute('aria-valuenow');
+  const before = progress();
+
+  for (let attempt = 0; attempt < 15; attempt += 1) {
+    const dockButtons = Array.from(
+      container.querySelectorAll<HTMLButtonElement>('.fp-choice-dock button, .fp-model-dock button'),
+    ).filter((button) => !button.disabled);
+
+    if (dockButtons.length > 0) {
+      fireEvent.click(dockButtons[attempt % dockButtons.length]);
+    } else {
+      const check = container.querySelector<HTMLButtonElement>('.fp-check');
+      if (check) {
+        // Clear any current shading, then shade exactly `attempt + 1` pieces —
+        // only the count is ever submitted, never which pieces were chosen.
+        const pieces = Array.from(
+          container.querySelectorAll<HTMLElement>('[data-testid^="fraction-piece-"], .fraction-collection button'),
+        );
+        pieces.forEach((piece) => {
+          if (piece.getAttribute('aria-pressed') === 'true') fireEvent.click(piece);
+        });
+        for (let i = 0; i <= attempt && i < pieces.length; i += 1) fireEvent.click(pieces[i]);
+        if (!check.disabled) fireEvent.click(check);
+      } else {
+        const points = Array.from(container.querySelectorAll<HTMLButtonElement>('.fraction-number-line button'));
+        if (points.length === 0) return; // Nothing interactive on screen to answer.
+        fireEvent.click(points[attempt % points.length]);
+      }
+    }
+
+    await act(async () => {
+      vi.advanceTimersByTime(FEEDBACK_MS);
+    });
+
+    if (progress() !== before || screen.queryByTestId('tr-results')) return;
   }
-  const check = container.querySelector<HTMLButtonElement>('.fp-check');
-  if (check) {
-    const piece = container.querySelector('[data-testid^="fraction-piece-"], .fraction-collection button');
-    if (piece) fireEvent.click(piece);
-    fireEvent.click(container.querySelector<HTMLButtonElement>('.fp-check')!);
-    return;
-  }
-  const point = container.querySelector('.fraction-number-line button');
-  if (point) fireEvent.click(point);
+
+  throw new Error('answerAnyhow: exhausted attempts without the session advancing');
 }
 
 describe('Fractions Part 1 activities', () => {
@@ -89,7 +117,7 @@ describe('Fractions Part 1 activities', () => {
     expect(container.querySelector('.fp-scene')).toBeInTheDocument();
   });
 
-  it('scores a wrong answer, moves on, and reports accuracy at the end', () => {
+  it('scores a wrong answer, requires a retry, and reports accuracy at the end', async () => {
     vi.useFakeTimers();
     const { container } = startTraining('build-a-fraction', { count: 5 });
 
@@ -101,11 +129,15 @@ describe('Fractions Part 1 activities', () => {
 
     expect(screen.getByRole('status')).toHaveTextContent(i18n.t('training.feedback.wrongLabel'));
     act(() => vi.advanceTimersByTime(FEEDBACK_MS));
-    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '2');
 
-    for (let question = 2; question <= 5; question++) {
-      answerAnyhow(container);
-      act(() => vi.advanceTimersByTime(FEEDBACK_MS));
+    // Still question 1 — the mistake handed it back for a retry instead of
+    // carrying the child past their own wrong answer.
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
+    expect(screen.getByRole('status')).toHaveTextContent(i18n.t('training.feedback.wrongLabel'));
+
+    // Resolving that retry and the remaining four questions is five advances.
+    for (let advance = 0; advance < 5; advance++) {
+      await answerAnyhow(container);
     }
 
     const results = screen.getByTestId('tr-results');
@@ -115,14 +147,13 @@ describe('Fractions Part 1 activities', () => {
     expect(results.textContent).not.toContain(i18n.t('training.results.paceUnit'));
   });
 
-  it.each([5, 10, 20])('runs a full %i-question session', (count) => {
+  it.each([5, 10, 20])('runs a full %i-question session', async (count) => {
     vi.useFakeTimers();
     const { container } = startTraining('find-the-fraction', { difficulty: 'intermediate', count });
 
     for (let question = 1; question <= count; question++) {
       expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', String(count));
-      answerAnyhow(container);
-      act(() => vi.advanceTimersByTime(FEEDBACK_MS));
+      await answerAnyhow(container);
     }
 
     expect(screen.getByTestId('tr-results').textContent).toContain(`/${count}`);
@@ -137,7 +168,7 @@ describe('Fractions Part 1 activities', () => {
 
   it.each(['basic', 'intermediate', 'hard'])(
     'never prints the marked fraction on the number line at %s',
-    (difficulty) => {
+    async (difficulty) => {
       vi.useFakeTimers();
       const { container } = startTraining('fraction-number-line', { difficulty, count: 20 });
       let readRounds = 0;
@@ -155,8 +186,7 @@ describe('Fractions Part 1 activities', () => {
           expect(line.textContent).toMatch(/^0\?*1$/);
         }
 
-        answerAnyhow(container);
-        act(() => vi.advanceTimersByTime(FEEDBACK_MS));
+        await answerAnyhow(container);
       }
 
       expect(readRounds).toBeGreaterThan(0);
@@ -185,7 +215,7 @@ describe('Fractions Part 1 activities', () => {
 
   it.each(['basic', 'intermediate', 'hard'])(
     'never labels the two compared models at %s',
-    (difficulty) => {
+    async (difficulty) => {
       vi.useFakeTimers();
       const { container } = startTraining('which-is-greater', { difficulty, count: 20 });
 
@@ -196,8 +226,7 @@ describe('Fractions Part 1 activities', () => {
         expect(comparison.querySelectorAll('[role="math"]')).toHaveLength(0);
         expect(comparison.textContent).toBe('?');
         expect(container.querySelector('.fp-comparison-slot')).toHaveTextContent('?');
-        answerAnyhow(container);
-        act(() => vi.advanceTimersByTime(FEEDBACK_MS));
+        await answerAnyhow(container);
       }
     },
   );

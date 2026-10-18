@@ -3,6 +3,9 @@ import { multiplicationTablesActivity } from '../data/games/multiplicationTables
 import { fractionsPart1TrainingActivities } from '../data/games/fractionsPart1Training';
 import { basketballMonkeyActivity } from '../data/games/basketballMonkeyData';
 import { arithmeticFluencyActivities } from '../data/games/arithmeticFluencyData';
+import { algebraExpressionsActivity } from '../data/games/algebraExpressionsData';
+import { algebraSubstitutionActivity } from '../data/games/algebraSubstitutionData';
+import { algebraLikeTermsActivity } from '../data/games/algebraLikeTermsData';
 
 /**
  * Every activity that opts into the training system. Adding a new one is a
@@ -13,6 +16,9 @@ const TRAINING_ACTIVITIES: TrainingActivityDefinition<unknown>[] = [
   basketballMonkeyActivity,
   ...fractionsPart1TrainingActivities,
   ...arithmeticFluencyActivities,
+  algebraExpressionsActivity,
+  algebraSubstitutionActivity,
+  algebraLikeTermsActivity,
 ];
 
 export function getTrainingActivity(activityId: string): TrainingActivityDefinition<unknown> | undefined {

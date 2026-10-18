@@ -28,6 +28,13 @@ export interface TrainingQuestionRenderProps<TPayload = never> {
   promptLabel: string;
   /** Records the answer. Ignored unless the session is still answering. */
   submit: (answer: string) => void;
+  /**
+   * Moves on without a correct resubmission. A no-op outside `feedback`/
+   * `retry` — most scenes never call this (the built-in choice buttons
+   * don't offer it at all); it exists for a scene that wants to let a child
+   * stuck on one question move on rather than retry it indefinitely.
+   */
+  advance: () => void;
 }
 
 /** How often the displayed time is refreshed. It is re-read, never counted. */
@@ -69,6 +76,14 @@ interface TrainingPlayScreenProps<TPayload = never> {
    * point: a picture-based activity gets the full engine for free.
    */
   renderQuestion?: (props: TrainingQuestionRenderProps<TPayload>) => ReactNode;
+  /**
+   * Suppresses this screen's own generic "Correct! / Wrong, it was X" line.
+   * For a custom `renderQuestion` scene that already shows its own verdict
+   * and explanation (richer than this generic one), showing both would just
+   * duplicate the feedback — the paragraph still renders, reserving its
+   * layout space, just without text.
+   */
+  hideBuiltinFeedback?: boolean;
 }
 
 /**
@@ -86,6 +101,7 @@ export function TrainingPlayScreen<TPayload = never>({
   mode,
   promptKey,
   renderQuestion,
+  hideBuiltinFeedback,
 }: TrainingPlayScreenProps<TPayload>) {
   const { t } = useTranslation();
   const { question, lastAnswer, phase } = session;
@@ -129,6 +145,7 @@ export function TrainingPlayScreen<TPayload = never>({
           total: session.total,
           promptLabel: t(promptKey),
           submit: session.submit,
+          advance: session.advance,
         })
       ) : (
         <>
@@ -152,7 +169,9 @@ export function TrainingPlayScreen<TPayload = never>({
                   type="button"
                   className={classes.join(' ')}
                   data-testid={`tr-option-${option}`}
-                  disabled={phase !== 'answering'}
+                  // Disabled only for the brief feedback beat — re-enabled during
+                  // `retry` so a wrong answer can be corrected in place.
+                  disabled={phase === 'feedback'}
                   onClick={() => session.submit(option)}
                 >
                   <MathText>{option}</MathText>
@@ -170,7 +189,7 @@ export function TrainingPlayScreen<TPayload = never>({
         into their opposite — the feedback would then state the wrong answer.
       */}
       <p className="tr-feedback" role="status" aria-live="polite">
-        {phase === 'feedback' && lastAnswer ? (
+        {!hideBuiltinFeedback && (phase === 'feedback' || phase === 'retry') && lastAnswer ? (
           lastAnswer.isCorrect ? (
             t('training.feedback.correct')
           ) : (

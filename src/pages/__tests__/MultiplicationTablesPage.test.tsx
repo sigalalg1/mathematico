@@ -29,15 +29,32 @@ const t = (key: string, options?: Record<string, unknown>) => i18n.t(key, option
 const CORRECT_FEEDBACK_MS = 450;
 const WRONG_FEEDBACK_MS = 1200;
 
-/** Answers question `index`, spending `thinkMs` on it first. */
+/**
+ * Answers question `index`, spending `thinkMs` on it first. A wrong answer no
+ * longer advances by itself — after its feedback beat the child gets the
+ * question back and must tap the correct option to move on.
+ */
 async function answer(index: number, correct: boolean, thinkMs: number) {
   await act(async () => {
     vi.advanceTimersByTime(thinkMs);
   });
-  const value = correct ? (index + 1) * 2 : (index + 1) * 2 + 1;
+  const correctValue = (index + 1) * 2;
+  const value = correct ? correctValue : correctValue + 1;
   fireEvent.click(screen.getByTestId(`tr-option-${value}`));
+
+  if (correct) {
+    await act(async () => {
+      vi.advanceTimersByTime(CORRECT_FEEDBACK_MS);
+    });
+    return;
+  }
+
   await act(async () => {
-    vi.advanceTimersByTime(correct ? CORRECT_FEEDBACK_MS : WRONG_FEEDBACK_MS);
+    vi.advanceTimersByTime(WRONG_FEEDBACK_MS);
+  });
+  fireEvent.click(screen.getByTestId(`tr-option-${correctValue}`));
+  await act(async () => {
+    vi.advanceTimersByTime(CORRECT_FEEDBACK_MS);
   });
 }
 
@@ -370,5 +387,61 @@ describe('Multiplication Tables — English', () => {
     expect(screen.getByText('Challenge finished!')).toBeInTheDocument();
     expect(screen.getByText('Pace')).toBeInTheDocument();
     expect(screen.getByText('sec per question')).toBeInTheDocument();
+  });
+});
+
+describe('Multiplication Tables — launched from a "beat your record" link', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.useFakeTimers();
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it('skips the setup screen and starts the exact challenge configuration the link asked for', () => {
+    renderWithProviders(<MultiplicationTablesPage />, [
+      '/grade/4/multiplication/multiplication-tables?mode=challenge&count=20&start=1&difficulty=hard',
+    ]);
+
+    // Straight into the running challenge — no setup screen in between.
+    expect(screen.queryByTestId('tr-start')).not.toBeInTheDocument();
+    expect(screen.getByTestId('tr-streak')).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', '20');
+  });
+
+  it('preselects the launched difficulty and mode on setup when the link does not also auto-start', () => {
+    renderWithProviders(<MultiplicationTablesPage />, [
+      '/grade/4/multiplication/multiplication-tables?mode=challenge&count=20&difficulty=hard',
+    ]);
+
+    expect(screen.getByTestId('tr-mode-challenge')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('tr-difficulty-hard')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('tr-count-20')).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('ignores an invalid preset question count and falls back to the activity default', () => {
+    renderWithProviders(<MultiplicationTablesPage />, [
+      '/grade/4/multiplication/multiplication-tables?mode=practice&count=999',
+    ]);
+
+    expect(screen.getByTestId('tr-count-10')).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('shows a quiet target-pace note on setup once the child already holds a record for the selected settings', async () => {
+    renderWithProviders(<MultiplicationTablesPage />);
+    start({ mode: 'challenge', count: 20 });
+    await playSession(20, { thinkMs: 3000 });
+    cleanup();
+
+    renderWithProviders(<MultiplicationTablesPage />);
+    fireEvent.click(screen.getByTestId('tr-mode-challenge'));
+    fireEvent.click(screen.getByTestId('tr-difficulty-basic'));
+    fireEvent.click(screen.getByTestId('tr-count-20'));
+    // The personal-best lookup resolves on a microtask, not a timer.
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(screen.getByTestId('tr-target-pace')).toHaveTextContent(t('training.setup.recordTarget', { seconds: 3 }));
   });
 });
