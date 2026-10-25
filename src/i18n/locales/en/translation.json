@@ -896,33 +896,49 @@
     }
   },
   "signRules": {
-    "gameName": "The Sign Rule",
-    "gameDescription": "Discover for yourself when a product is positive and when it is negative, then click the result.",
-    "prompt": {
-      "continuePattern": "Continue the pattern — click the result on the line.",
-      "solve": "Click the result on the line."
+    "gameName": "Multiplying & Dividing Signed Numbers",
+    "gameDescription": "Discover why the sign rules work, then practise multiplication, division, and short expressions.",
+    "intro": "Choose a level and practise signed multiplication and division.",
+    "practicePrompt": "Solve the signed-number question.",
+    "difficulty": {
+      "basic": "Patterns, signs, and familiar multiplication facts.",
+      "intermediate": "Multiplication and exact division with every sign combination.",
+      "hard": "Mixed operations, larger sign reasoning, and short two-step expressions."
     },
-    "ladderTitle": "Look at the pattern:",
-    "rulesTitle": "Sign rules you have found:",
-    "rules": {
-      "posPos": "(+) · (+) = +",
-      "posNeg": "(+) · (−) = −",
-      "negPos": "(−) · (+) = −",
-      "negNeg": "(−) · (−) = +"
+    "discovery": {
+      "progress": "Discovery {{current}} of 3",
+      "continue": "Continue",
+      "startPractice": "Choose practice",
+      "step1": {
+        "title": "Follow the pattern",
+        "note": "The first factor drops by 1, so the result drops by 4 each time."
+      },
+      "step2": {
+        "title": "Keep the pattern going",
+        "note": "Now each step adds 4. Past zero, negative × negative becomes positive."
+      },
+      "step3": {
+        "title": "One rule for every case"
+      },
+      "rule": "Same signs → positive. Different signs → negative."
     },
+    "questionPrompt": {
+      "signFirst": "Decide the sign first.",
+      "multiply": "Multiply.",
+      "inverseDivision": "Use inverse multiplication.",
+      "divide": "Divide.",
+      "signOnly": "Will the result be positive or negative?",
+      "mixed": "Solve.",
+      "expression": "Do multiplication or division first."
+    },
+    "sign": {
+      "positive": "positive",
+      "negative": "negative"
+    },
+    "inverseNote": "Which number makes the multiplication sentence true?",
     "feedback": {
-      "correctMessages": [
-        "Sign rule mastered!",
-        "Exactly!",
-        "Very nice!"
-      ],
-      "youClicked": "You clicked:",
       "signError": "The size is right — check the sign. Two matching signs give a positive result; different signs give a negative one.",
-      "magnitudeError": "Work the numbers out without their signs first, then decide whether the result is positive or negative.",
-      "ladderHint": "Look at the pattern above — it keeps going at the same rate."
-    },
-    "completion": {
-      "title": "✖️ You finished The Sign Rule!"
+      "magnitudeError": "The sign may be right. Work out the unsigned fact again."
     }
   },
   "quiz": {
