@@ -154,6 +154,7 @@ export function GeoAngleArc({
   radiusIndex = 0,
   label,
   testId,
+  filled,
 }: {
   vertex: Point;
   fromThrough: Point;
@@ -164,6 +165,18 @@ export function GeoAngleArc({
   radiusIndex?: number;
   label?: ReactNode;
   testId?: string;
+  /**
+   * Shades the angle's interior as a translucent pie slice, not just its
+   * boundary arc. An angle's stroke-only arc reads fine up to roughly a
+   * right angle, but a wide obtuse angle's minor arc sweeps nearly the
+   * whole circle — a thin gap becomes the eye's most salient feature, and a
+   * child (or adult) can misread "almost a full circle" as small rather
+   * than large. A filled wedge makes magnitude read as area, which stays
+   * unambiguous at any angle up to 180°. Opt-in (not every exercise needs
+   * the extra visual weight), used by the size-comparison activity where
+   * misjudging a near-straight angle directly produces a wrong answer.
+   */
+  filled?: boolean;
 }) {
   const startDeg = normalizeDegrees(directionDegrees(vertex, fromThrough));
   const rawSweep = normalizeDegrees(directionDegrees(vertex, toThrough) - startDeg);
@@ -191,12 +204,23 @@ export function GeoAngleArc({
           strokeWidth={style.strokeWidth}
         />
       ) : (
-        <path
-          d={`M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} ${sweepFlag} ${end.x} ${end.y}`}
-          fill="none"
-          stroke={color}
-          strokeWidth={style.strokeWidth}
-        />
+        <>
+          {filled && (
+            <path
+              d={`M ${vertex.x} ${vertex.y} L ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} ${sweepFlag} ${end.x} ${end.y} Z`}
+              fill={color}
+              fillOpacity={0.22}
+              stroke="none"
+              data-testid={testId ? `${testId}-wedge` : undefined}
+            />
+          )}
+          <path
+            d={`M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} ${sweepFlag} ${end.x} ${end.y}`}
+            fill="none"
+            stroke={color}
+            strokeWidth={style.strokeWidth}
+          />
+        </>
       )}
       {label !== undefined && (
         <text

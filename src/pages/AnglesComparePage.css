@@ -1,3 +1,13 @@
+/*
+ * Plain `display: flex` follows the document's writing direction, and this
+ * page's host document is RTL (Hebrew) — so without this, the row's first
+ * child (the "left" angle, the one `question.answer` is computed against as
+ * the left-hand side of <, =, >) renders on the user's visual RIGHT, and
+ * vice versa. The data/answer were always correct; the on-screen left/right
+ * the child actually sees was silently swapped relative to them. Forced LTR
+ * here (same fix `MathText` applies per-element for notation) makes DOM
+ * order and visual order match regardless of the active UI language.
+ */
 .angles7-compare-row {
   display: flex;
   align-items: center;
@@ -5,6 +15,13 @@
   gap: var(--space-4);
   width: 100%;
   flex-wrap: wrap;
+  direction: ltr;
+}
+
+/* Same reasoning as above: the <, =, > options must sit in that literal
+   reading order, not reversed by the page's RTL direction. */
+.angles7-scene[data-kind='compare'] .angles7-options {
+  direction: ltr;
 }
 
 .angles7-compare-side {

@@ -20,6 +20,8 @@ export interface AngleArcSpec {
   colorIndex?: number;
   radiusIndex?: number;
   label?: ReactNode;
+  /** See `GeoAngleArc`'s `filled` prop — shades the angle as a wedge so its size reads unambiguously even near 180°. */
+  filled?: boolean;
 }
 
 export interface PointHandleSpec {
@@ -98,6 +100,7 @@ export function VertexSceneView({
             radiusIndex={angle.radiusIndex ?? index}
             label={angle.label}
             testId={`geo-angle-${angle.id}`}
+            filled={angle.filled}
           />
         );
       })}

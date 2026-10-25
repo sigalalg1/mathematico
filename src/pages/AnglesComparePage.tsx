@@ -42,12 +42,12 @@ function AnglesCompareQuestion({ question, phase, lastAnswer, submit }: Training
       <div className="angles7-compare-row">
         <div className="angles7-compare-side">
           <MathText className="angles7-compare-label">{`∠${leftName}`}</MathText>
-          <VertexSceneView scene={challenge.left.scene} style={grade7GeometryStyle} label={`∠${leftName}`} angles={[{ id: 'left', ref: challenge.left.ref }]} />
+          <VertexSceneView scene={challenge.left.scene} style={grade7GeometryStyle} label={`∠${leftName}`} angles={[{ id: 'left', ref: challenge.left.ref, filled: true }]} />
         </div>
         <div className="angles7-compare-sign">{answered ? <MathText>{question.answer}</MathText> : '?'}</div>
         <div className="angles7-compare-side">
           <MathText className="angles7-compare-label">{`∠${rightName}`}</MathText>
-          <VertexSceneView scene={challenge.right.scene} style={grade7GeometryStyle} label={`∠${rightName}`} angles={[{ id: 'right', ref: challenge.right.ref, colorIndex: 1 }]} />
+          <VertexSceneView scene={challenge.right.scene} style={grade7GeometryStyle} label={`∠${rightName}`} angles={[{ id: 'right', ref: challenge.right.ref, colorIndex: 1, filled: true }]} />
         </div>
       </div>
 
