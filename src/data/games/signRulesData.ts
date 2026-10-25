@@ -1,247 +1,233 @@
+import type { TrainingActivityDefinition, TrainingQuestion } from '../../types/training';
 import type {
-  SignLadderRow,
-  SignRuleChallenge,
+  SignRuleDifficulty,
   SignRuleFamily,
   SignRuleMistake,
   SignRuleOperator,
+  SignRuleQuestionPayload,
+  SignRuleQuestionType,
 } from '../../types/signRules';
+import { randomInt, seededRandom, type RandomSource } from '../../utils/random';
+import { shuffle } from '../../utils/shuffle';
+import { formatSigned, formatTerm } from '../../utils/signedNumbers';
 
-const MAX_ATTEMPTS = 4000;
+export const SIGN_RULES_ID = 'signRules';
+export const SIGN_RULES_RULES_VERSION = 2;
+export const SIGN_RULES_CHOICES = 4;
 
-export const SIGN_RULES_MIN = -12;
-export const SIGN_RULES_MAX = 12;
-export const SIGN_RULES_STEP = 1;
-const LADDER_ROWS = 3;
-const LADDER_MAX_RESULT = 40;
+const FAMILIES: SignRuleFamily[] = ['posPos', 'negPos', 'posNeg', 'negNeg'];
 
-interface LevelSpec {
-  id: string;
-  operator: SignRuleOperator;
-  family: SignRuleFamily;
-  /** Discovery questions show the pattern up-front instead of only as a hint. */
-  showLadder: boolean;
-}
-
-/**
- * Three discovery questions that walk a multiplication pattern down through
- * zero into the negatives — which is where the sign rule comes from — and then
- * five questions that apply the rule, ending with division.
- */
-const LEVELS: LevelSpec[] = [
-  { id: 'q1', operator: '×', family: 'posNeg', showLadder: true },
-  { id: 'q2', operator: '×', family: 'negPos', showLadder: true },
-  { id: 'q3', operator: '×', family: 'negNeg', showLadder: true },
-  { id: 'q4', operator: '×', family: 'posPos', showLadder: false },
-  { id: 'q5', operator: '×', family: 'negNeg', showLadder: false },
-  { id: 'q6', operator: '×', family: 'posNeg', showLadder: false },
-  { id: 'q7', operator: ':', family: 'negPos', showLadder: false },
-  { id: 'q8', operator: ':', family: 'negNeg', showLadder: false },
-];
-
-export const SIGN_RULES_TOTAL = LEVELS.length;
-
-// --- helpers ----------------------------------------------------------------
-
-function randomInt(min: number, max: number): number {
-  return min + Math.floor(Math.random() * (max - min + 1));
-}
-
-export function tickValues(min: number, max: number, step: number): number[] {
-  const values: number[] = [];
-  for (let value = min; value <= max; value += step) values.push(value);
-  return values;
+function difficultyOf(value: string | null): SignRuleDifficulty {
+  return value === 'intermediate' || value === 'hard' ? value : 'basic';
 }
 
 export function familyOf(left: number, right: number): SignRuleFamily {
-  const leftSign = left < 0 ? 'neg' : 'pos';
-  const rightSign = right < 0 ? 'Neg' : 'Pos';
-  return `${leftSign}${rightSign}` as SignRuleFamily;
+  return `${left < 0 ? 'neg' : 'pos'}${right < 0 ? 'Neg' : 'Pos'}` as SignRuleFamily;
 }
-
-/** The result the sign rule predicts: same signs give a plus, different signs give a minus. */
-export function applyOperation(left: number, operator: SignRuleOperator, right: number): number {
-  return operator === '×' ? left * right : left / right;
-}
-
-/** Names the misconception behind a wrong click so the feedback can address it. */
-export function classifySignRule(challenge: SignRuleChallenge, clicked: number): SignRuleMistake {
-  return clicked === -challenge.result ? 'signError' : 'magnitudeError';
-}
-
-function inRange(value: number): boolean {
-  return value >= SIGN_RULES_MIN && value <= SIGN_RULES_MAX;
-}
-
-// --- generation -------------------------------------------------------------
 
 function signsFor(family: SignRuleFamily): [number, number] {
-  switch (family) {
-    case 'posPos':
-      return [1, 1];
-    case 'posNeg':
-      return [1, -1];
-    case 'negPos':
-      return [-1, 1];
-    case 'negNeg':
-      return [-1, -1];
-  }
+  return [
+    family === 'negPos' || family === 'negNeg' ? -1 : 1,
+    family === 'posNeg' || family === 'negNeg' ? -1 : 1,
+  ];
 }
 
-/**
- * The three rows immediately above the question, made by stepping the first
- * number down by one each time. Walking that pattern is what makes the sign
- * rule feel inevitable rather than arbitrary.
- */
-function buildLadder(left: number, right: number): SignLadderRow[] | null {
-  const rows: SignLadderRow[] = [];
-  for (let offset = LADDER_ROWS; offset >= 1; offset--) {
-    const rowLeft = left + offset;
-    const result = rowLeft * right;
-    // Rows are written out, not plotted, so they may leave the drawn line —
-    // but they still have to stay small enough to read at a glance.
-    if (Math.abs(result) > LADDER_MAX_RESULT) return null;
-    rows.push({ left: rowLeft, right, result });
-  }
-  return rows;
+export function applyOperation(left: number, operator: SignRuleOperator, right: number): number {
+  if (operator === '÷' && right === 0) throw new Error('sign rules: divisor cannot be zero');
+  const result = operator === '×' ? left * right : left / right;
+  // Avoid a literal "-0" ever reaching the UI or an answer comparison.
+  return result === 0 ? 0 : result;
 }
 
-function tryBuildMultiplication(level: LevelSpec): SignRuleChallenge | null {
-  const [leftSign, rightSign] = signsFor(level.family);
-  // Discovery questions want a first number close to zero so the pattern can
-  // start on the other side of it; applied questions want real numbers.
-  const left = leftSign * (level.showLadder ? randomInt(1, 3) : randomInt(2, 6));
-  const right = rightSign * randomInt(2, 6);
-  const result = left * right;
+function expression(left: number, operator: SignRuleOperator, right: number): string {
+  return `${formatTerm(left)} ${operator} ${formatTerm(right)}`;
+}
 
-  if (!inRange(result) || !inRange(-result)) return null;
-  if (result === 0) return null;
+function signedAdd(intermediate: number, addend: number): string {
+  return `${formatSigned(intermediate)} ${addend < 0 ? '−' : '+'} ${Math.abs(addend)}`;
+}
 
-  const ladder = buildLadder(left, right);
-  if (!ladder) return null;
+function typeFor(difficulty: SignRuleDifficulty, index: number): SignRuleQuestionType {
+  if (difficulty === 'basic') return index < 2 ? 'signFirst' : 'multiply';
+  if (difficulty === 'intermediate') {
+    return (['multiply', 'inverseDivision', 'divide', 'signOnly', 'mixed'] as const)[index % 5];
+  }
+  return (['mixed', 'signOnly', 'expression', 'divide', 'multiply'] as const)[index % 5];
+}
 
-  const challenge: SignRuleChallenge = {
-    id: level.id,
-    min: SIGN_RULES_MIN,
-    max: SIGN_RULES_MAX,
-    step: SIGN_RULES_STEP,
-    operator: '×',
+function numericDistractors(payload: SignRuleQuestionPayload): number[] {
+  const { left, right, result } = payload;
+  const sign = result < 0 ? -1 : 1;
+  const additionSlip = sign * (Math.abs(left) + Math.abs(right));
+  const candidates = [
+    result === 0 ? Math.abs(left || right) : -result,
+    additionSlip,
+    result + 1,
+    result - 1,
+    result + sign * Math.max(2, Math.abs(right)),
+    result - sign * Math.max(2, Math.abs(left)),
+  ];
+  const chosen: number[] = [];
+  const used = new Set([result]);
+  for (const candidate of candidates) {
+    if (!Number.isInteger(candidate) || used.has(candidate)) continue;
+    used.add(candidate);
+    chosen.push(candidate);
+    if (chosen.length === SIGN_RULES_CHOICES - 1) return chosen;
+  }
+  for (let offset = 2; chosen.length < SIGN_RULES_CHOICES - 1; offset += 1) {
+    for (const candidate of [result + offset, result - offset]) {
+      if (used.has(candidate)) continue;
+      used.add(candidate);
+      chosen.push(candidate);
+      if (chosen.length === SIGN_RULES_CHOICES - 1) break;
+    }
+  }
+  return chosen;
+}
+
+function buildPayload(
+  difficulty: SignRuleDifficulty,
+  type: SignRuleQuestionType,
+  family: SignRuleFamily,
+  random: RandomSource,
+  forceZero: boolean,
+): SignRuleQuestionPayload {
+  const maxFactor = difficulty === 'basic' ? 9 : difficulty === 'intermediate' ? 12 : 15;
+  const minFactor = difficulty === 'hard' && type === 'signOnly' ? 11 : 2;
+  const [leftSign, rightSign] = signsFor(family);
+  let left = leftSign * randomInt(random, minFactor, maxFactor);
+  let right = rightSign * randomInt(random, 2, difficulty === 'basic' ? 9 : 12);
+  let operator: SignRuleOperator = '×';
+
+  if (forceZero) left = 0;
+  if (type === 'divide' || type === 'inverseDivision' || (type === 'mixed' && random() < 0.5)) {
+    operator = '÷';
+    const quotient = forceZero ? 0 : leftSign * rightSign * randomInt(random, minFactor, maxFactor);
+    const divisor = rightSign * randomInt(random, 2, difficulty === 'hard' ? 12 : 10);
+    left = quotient * divisor;
+    right = divisor;
+  }
+
+  const intermediate = applyOperation(left, operator, right);
+  if (!Number.isInteger(intermediate)) throw new Error('sign rules: generated a non-integer result');
+  const addend =
+    type === 'expression'
+      ? (random() < 0.5 ? -1 : 1) * randomInt(random, 2, difficulty === 'hard' ? 12 : 8)
+      : undefined;
+  const result = intermediate + (addend ?? 0);
+
+  return {
+    type,
+    difficulty,
     left,
     right,
+    operator,
     result,
-    family: level.family,
-    showLadder: level.showLadder,
-    ladder,
+    family: left === 0 ? 'zero' : familyOf(left, right),
+    addend,
+    intermediate: type === 'expression' ? intermediate : undefined,
+    inversePrompt: type === 'inverseDivision' ? `${formatTerm(right)} × ? = ${formatSigned(left)}` : undefined,
   };
-
-  assertSignRuleChallengeIsSound(challenge);
-  return challenge;
 }
 
-function tryBuildDivision(level: LevelSpec): SignRuleChallenge | null {
-  const [leftSign, rightSign] = signsFor(level.family);
-  const divisor = rightSign * randomInt(2, 6);
-  // Choose the quotient first so the division always comes out exactly.
-  const quotient = randomInt(2, 6) * (leftSign * rightSign);
-  const dividend = quotient * divisor;
-
-  if (!inRange(dividend) || !inRange(quotient) || !inRange(-quotient)) return null;
-  if (Math.sign(dividend) !== leftSign) return null;
-
-  const challenge: SignRuleChallenge = {
-    id: level.id,
-    min: SIGN_RULES_MIN,
-    max: SIGN_RULES_MAX,
-    step: SIGN_RULES_STEP,
-    operator: ':',
-    left: dividend,
-    right: divisor,
-    result: quotient,
-    family: level.family,
-    showLadder: false,
-    ladder: [],
-  };
-
-  assertSignRuleChallengeIsSound(challenge);
-  return challenge;
-}
-
-function tryBuildChallenge(level: LevelSpec): SignRuleChallenge | null {
-  return level.operator === '×' ? tryBuildMultiplication(level) : tryBuildDivision(level);
-}
-
-// --- invariants -------------------------------------------------------------
-
-function fail(challenge: SignRuleChallenge, reason: string): never {
-  throw new Error(`Invalid sign-rule question (${challenge.id}): ${reason}`);
-}
-
-export function assertSignRuleChallengeIsSound(challenge: SignRuleChallenge): void {
-  const { min, max, step, operator, left, right, result, family, ladder, showLadder } = challenge;
-
-  if (!(step > 0) || !Number.isInteger(step)) fail(challenge, 'the tick step must be a positive whole number');
-  if (!(min < 0 && max > 0)) fail(challenge, 'the line must show both sides of zero');
-
-  if (left === 0 || right === 0) fail(challenge, 'zero has no sign, so it cannot appear here');
-  if (!Number.isInteger(left) || !Number.isInteger(right)) fail(challenge, 'both numbers must be whole');
-  if (!Number.isInteger(result)) fail(challenge, 'the result must be a whole number');
-  if (result !== applyOperation(left, operator, right)) fail(challenge, 'the stored result does not match the operation');
-  if (result === 0) fail(challenge, 'a zero result would have no sign to reason about');
-
-  // The sign rule itself, checked on every single question.
-  if (Math.sign(result) !== Math.sign(left) * Math.sign(right)) fail(challenge, 'the result breaks the sign rule');
-  if (family !== familyOf(left, right)) fail(challenge, 'the stored family does not match the signs');
-
-  const ticks = tickValues(min, max, step);
-  if (!ticks.includes(result)) fail(challenge, 'the result cannot be clicked on this line');
-  // The sign-flipped answer is the mistake this activity exists to catch, so it
-  // has to be clickable too — otherwise the trap could not be sprung.
-  if (!ticks.includes(-result)) fail(challenge, 'the sign-flipped answer is off the drawn line');
-
-  if (operator === ':') {
-    if (Math.abs(right) < 2) fail(challenge, 'dividing by 1 or -1 is not worth asking');
-    if (left !== result * right) fail(challenge, 'the division does not come out exactly');
-    if (ladder.length !== 0) fail(challenge, 'division questions carry no pattern ladder');
-    if (showLadder) fail(challenge, 'there is no pattern to show for a division');
-    return;
+function promptFor(payload: SignRuleQuestionPayload): string {
+  if (payload.type === 'inverseDivision') return payload.inversePrompt!;
+  if (payload.type === 'expression') {
+    return `${expression(payload.left, payload.operator, payload.right)} ${payload.addend! < 0 ? '−' : '+'} ${Math.abs(payload.addend!)}`;
   }
+  return expression(payload.left, payload.operator, payload.right);
+}
 
-  if (ladder.length !== 3) fail(challenge, 'a multiplication question needs three pattern rows');
-  for (let index = 0; index < ladder.length; index++) {
-    const row = ladder[index];
-    if (row.right !== right) fail(challenge, 'a pattern row changes the wrong number');
-    if (row.left !== left + (ladder.length - index)) fail(challenge, 'the pattern does not step down by one');
-    if (row.result !== row.left * row.right) fail(challenge, 'a pattern row has the wrong result');
-    if (Math.abs(row.result) > LADDER_MAX_RESULT) fail(challenge, 'a pattern row is too big to read');
-    if (row.left === left) fail(challenge, 'the pattern gives the question away');
+export function assertSignRuleQuestionIsSound(question: TrainingQuestion<SignRuleQuestionPayload>): void {
+  const payload = question.payload!;
+  const operationResult = applyOperation(payload.left, payload.operator, payload.right);
+  const expected = operationResult + (payload.addend ?? 0);
+  if (!Number.isInteger(operationResult) || question.answer !== String(payload.type === 'signFirst' || payload.type === 'signOnly'
+    ? (expected > 0 ? 'positive' : 'negative')
+    : expected)) {
+    throw new Error(`sign rules: incorrect answer for ${question.prompt}`);
   }
-  // Each row must differ from the next by exactly the second number: that
-  // constant step is the pattern the student is asked to continue.
-  for (let index = 1; index < ladder.length; index++) {
-    if (ladder[index - 1].result - ladder[index].result !== right) fail(challenge, 'the pattern is not a constant step');
+  if (payload.operator === '÷' && payload.right === 0) throw new Error('sign rules: zero divisor');
+  if (payload.operator === '÷' && payload.left !== operationResult * payload.right) throw new Error('sign rules: inexact division');
+  if (payload.family !== (payload.left === 0 ? 'zero' : familyOf(payload.left, payload.right))) {
+    throw new Error('sign rules: incorrect sign family');
   }
-  if (ladder[ladder.length - 1].result - result !== right) fail(challenge, 'the question does not continue the pattern');
-}
-
-// --- public API -------------------------------------------------------------
-
-export function signRuleQuestionSignature(challenge: SignRuleChallenge): string {
-  return [challenge.operator, challenge.left, challenge.right].join('|');
-}
-
-function buildChallenge(level: LevelSpec, taken: Set<string>): SignRuleChallenge {
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-    const challenge = tryBuildChallenge(level);
-    if (!challenge) continue;
-    const signature = signRuleQuestionSignature(challenge);
-    if (taken.has(signature)) continue;
-    taken.add(signature);
-    return challenge;
+  if (new Set(question.options).size !== question.options.length) throw new Error('sign rules: duplicate options');
+  if (question.options.filter((option) => option === question.answer).length !== 1) {
+    throw new Error('sign rules: answer must appear exactly once');
   }
-  throw new Error(`Could not build a sound sign-rule question for level ${level.id}`);
+  if (payload.type === 'expression' && payload.intermediate !== operationResult) {
+    throw new Error('sign rules: incorrect intermediate step');
+  }
 }
 
-/** One full session: eight questions, discovery first and division last. */
-export function buildSignRulesChallenges(): SignRuleChallenge[] {
-  const taken = new Set<string>();
-  return LEVELS.map((level) => buildChallenge(level, taken));
+export function classifySignRule(payload: SignRuleQuestionPayload, answer: string): SignRuleMistake {
+  const numeric = Number(answer);
+  if (Number.isFinite(numeric) && numeric === -payload.result && payload.result !== 0) return 'signError';
+  return 'magnitudeError';
 }
+
+export function expressionSteps(payload: SignRuleQuestionPayload): string[] {
+  if (payload.type !== 'expression' || payload.intermediate === undefined || payload.addend === undefined) return [];
+  return [
+    `${expression(payload.left, payload.operator, payload.right)} = ${formatSigned(payload.intermediate)}`,
+    `${signedAdd(payload.intermediate, payload.addend)} = ${formatSigned(payload.result)}`,
+  ];
+}
+
+export function buildSignRulesQuestions(
+  input: { difficultyId: string | null; count: number },
+  random: RandomSource = Math.random,
+): TrainingQuestion<SignRuleQuestionPayload>[] {
+  const difficulty = difficultyOf(input.difficultyId);
+  const questions: TrainingQuestion<SignRuleQuestionPayload>[] = [];
+  for (let index = 0; index < input.count; index += 1) {
+    const type = typeFor(difficulty, index);
+    const forceZero = index === 4 || (input.count > 10 && index % 11 === 10);
+    const payload = buildPayload(difficulty, type, FAMILIES[index % FAMILIES.length], random, forceZero);
+    const signQuestion = (type === 'signFirst' || type === 'signOnly') && payload.result !== 0;
+    if (!signQuestion && (type === 'signFirst' || type === 'signOnly')) payload.type = difficulty === 'basic' ? 'multiply' : 'mixed';
+    const answer = signQuestion ? (payload.result > 0 ? 'positive' : 'negative') : String(payload.result);
+    const options = signQuestion
+      ? shuffle(['positive', 'negative'], random)
+      : shuffle([payload.result, ...numericDistractors(payload)], random).map(String);
+    const question = {
+      id: `sign-rules-${index}`,
+      prompt: promptFor(payload),
+      answer,
+      options,
+      payload,
+    };
+    assertSignRuleQuestionIsSound(question);
+    questions.push(question);
+  }
+  return questions;
+}
+
+export function buildSignRulesQuestionsForSeed(
+  input: { difficultyId: string | null; count: number },
+  seed: number,
+): TrainingQuestion<SignRuleQuestionPayload>[] {
+  return buildSignRulesQuestions(input, seededRandom(seed));
+}
+
+export const signRulesActivity: TrainingActivityDefinition<SignRuleQuestionPayload> = {
+  id: SIGN_RULES_ID,
+  i18nPrefix: 'signRules',
+  capabilities: {
+    questionCounts: [5, 10, 20, 50],
+    defaultQuestionCount: 10,
+    difficulties: (['basic', 'intermediate', 'hard'] as const).map((id) => ({
+      id,
+      labelKey: `training.difficulty.${id}`,
+      descriptionKey: `signRules.difficulty.${id}`,
+    })),
+    defaultDifficultyId: 'basic',
+    supportsChallenge: true,
+    challengeQuestionCounts: [20, 50],
+    paceRecordMinAccuracy: 1,
+    rulesVersion: SIGN_RULES_RULES_VERSION,
+  },
+  generateQuestions: buildSignRulesQuestions,
+};

@@ -40,6 +40,34 @@ async function solveCurrentQuestion(page: Page): Promise<void> {
   throw new Error('no clickable point was ever accepted');
 }
 
+/**
+ * Tries each `.tr-option` in turn. A wrong pick locks the options briefly
+ * (the engine's `feedback` phase), then unlocks them again for a plain
+ * `retry` — no option is marked, so this just moves on to the next one,
+ * the same honest "keep trying" walk `solveCurrentQuestion` does for the
+ * number line.
+ */
+async function solveTrOptionQuestion(page: Page, question: number, total: number): Promise<void> {
+  const options = page.locator('.tr-option');
+  const count = await options.count();
+  for (let i = 0; i < count; i++) {
+    await options.nth(i).click();
+    try {
+      if (question < total) {
+        await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', String(question + 1), {
+          timeout: 2000,
+        });
+      } else {
+        await expect(page.getByTestId('tr-results')).toBeVisible({ timeout: 2000 });
+      }
+      return;
+    } catch {
+      // Wrong guess — the engine moved to a retry phase; try the next option.
+    }
+  }
+  throw new Error('no option was ever accepted across a full retry cycle');
+}
+
 async function playToCompletion(page: Page, route: string, completionTitle: string): Promise<void> {
   test.setTimeout(120_000);
   await page.goto(route);
@@ -107,8 +135,27 @@ test('Steps on the Line plays through to completion', async ({ page }) => {
   await playToCompletion(page, routes.stepsOnTheLine, he.signedAddSub.completion.title);
 });
 
-test('The Sign Rule plays through to completion', async ({ page }) => {
-  await playToCompletion(page, routes.theSignRule, he.signRules.completion.title);
+test('The Sign Rule plays through discovery and a full training round', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto(routes.theSignRule);
+
+  // Three discovery screens precede practice; the last button reads differently.
+  await page.getByRole('button', { name: he.signRules.discovery.continue }).click();
+  await page.getByRole('button', { name: he.signRules.discovery.continue }).click();
+  await page.getByRole('button', { name: he.signRules.discovery.startPractice }).click();
+
+  await page.getByTestId('tr-count-5').click();
+  await page.getByTestId('tr-start').click();
+
+  const total = Number(await page.getByRole('progressbar').getAttribute('aria-valuemax'));
+  expect(total).toBeGreaterThan(1);
+
+  for (let question = 1; question <= total; question++) {
+    await expectProgress(page, question);
+    await solveTrOptionQuestion(page, question, total);
+  }
+
+  await expect(page.getByTestId('tr-results')).toBeVisible({ timeout: 10_000 });
 });
 
 test('a wrong answer explains itself without locking the line or advancing', async ({ page }) => {
@@ -142,12 +189,14 @@ test('the whole unit renders in Hebrew RTL and in English LTR', async ({ page })
   await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
   await expect(page.getByRole('heading', { level: 1, name: en.signedNumbersPage.title })).toBeVisible();
 
-  for (const [route, title] of [
-    [routes.findTheSpot, en.numberLinePlace.gameName],
-    [routes.whichIsGreater, en.compareSigned.gameName],
-    [routes.distanceFromZero, en.absoluteValue.gameName],
-    [routes.stepsOnTheLine, en.signedAddSub.gameName],
-    [routes.theSignRule, en.signRules.gameName],
+  for (const [route, title, ltrSelector] of [
+    [routes.findTheSpot, en.numberLinePlace.gameName, '.number-line'],
+    [routes.whichIsGreater, en.compareSigned.gameName, '.number-line'],
+    [routes.distanceFromZero, en.absoluteValue.gameName, '.number-line'],
+    [routes.stepsOnTheLine, en.signedAddSub.gameName, '.number-line'],
+    // The Sign Rule has no number line — its expressions are plain math
+    // notation, shown on its discovery screen before practice even starts.
+    [routes.theSignRule, en.signRules.gameName, '.math-text'],
   ] as const) {
     await page.goto(route);
     await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible();
@@ -155,6 +204,6 @@ test('the whole unit renders in Hebrew RTL and in English LTR', async ({ page })
     // intentionally part of the first Basic question, not the setup screen.
     if (route === routes.distanceFromZero) await page.getByTestId('tr-start').click();
     // Math notation stays left-to-right wherever it appears.
-    await expect(page.locator('.number-line')).toHaveAttribute('dir', 'ltr');
+    await expect(page.locator(ltrSelector).first()).toHaveAttribute('dir', 'ltr');
   }
 });
