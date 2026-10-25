@@ -145,10 +145,10 @@ describe('regression: screens outside grades 3–4 keep the dark card', () => {
     expect(container.querySelectorAll('.card').length).toBeGreaterThan(0);
   });
 
-  it('leaves the Grade 4 topic selector on the dark row cards', () => {
+  it('keeps the Grade 4 topic treatment scoped away from activity tiles', () => {
     const { container } = renderWithProviders(<App />, ['/grade/4']);
 
     expect(container.querySelectorAll('.atile')).toHaveLength(0);
-    expect(container.querySelectorAll('.card.card-row').length).toBeGreaterThan(0);
+    expect(container.querySelectorAll('.g4-topic-card').length).toBeGreaterThan(0);
   });
 });
