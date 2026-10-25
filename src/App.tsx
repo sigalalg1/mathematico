@@ -56,6 +56,12 @@ import { FractionsPart1Page } from './pages/FractionsPart1Page';
 import { FractionsPart1ActivityPage } from './pages/FractionsPart1ActivityPage';
 import { GeometryAnglesTrianglesPage } from './pages/GeometryAnglesTrianglesPage';
 import { GeometryActivityPage } from './pages/GeometryActivityPage';
+import { GeometryGrade7Page } from './pages/GeometryGrade7Page';
+import { AnglesIdentifyPage } from './pages/AnglesIdentifyPage';
+import { AnglesTypesPage } from './pages/AnglesTypesPage';
+import { AnglesNotationPage } from './pages/AnglesNotationPage';
+import { AnglesComparePage } from './pages/AnglesComparePage';
+import { AnglesConstructPage } from './pages/AnglesConstructPage';
 import { BasketballMonkeyPage } from './pages/BasketballMonkeyPage';
 import { DevEnvironmentBanner } from './components/DevEnvironmentBanner';
 
@@ -109,6 +115,12 @@ function App() {
         <Route path="/grade/7/algebra/understanding-equations" element={<AlgebraEquationMeaningPage />} />
         <Route path="/grade/7/algebra/solving-equations" element={<AlgebraSolvingPage />} />
         <Route path="/grade/7/algebra/from-words-to-equations" element={<AlgebraWordProblemsPage />} />
+        <Route path="/grade/7/geometry" element={<GeometryGrade7Page />} />
+        <Route path="/grade/7/geometry/rays-and-angles" element={<AnglesIdentifyPage />} />
+        <Route path="/grade/7/geometry/angle-types" element={<AnglesTypesPage />} />
+        <Route path="/grade/7/geometry/angle-notation" element={<AnglesNotationPage />} />
+        <Route path="/grade/7/geometry/compare-angles" element={<AnglesComparePage />} />
+        <Route path="/grade/7/geometry/construct-an-angle" element={<AnglesConstructPage />} />
         <Route path="/grade/4/decimal-place-value" element={<DecimalExamPrepPage />} />
         <Route path="/grade/4/decimal-place-value/place-value-and-conversions" element={<DecimalPlaceValuePage />} />
         <Route path="/grade/4/decimal-place-value/build-and-break-numbers" element={<DecimalDecompositionPage />} />

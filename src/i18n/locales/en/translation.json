@@ -137,8 +137,8 @@
       "description": "Coming soon"
     },
     "geometry": {
-      "name": "Geometry",
-      "description": "Coming soon"
+      "name": "Geometry – Angles",
+      "description": "Rays, vertices, angle types, notation, comparison and construction."
     },
     "algebraBasics": {
       "name": "Algebra",
@@ -1873,6 +1873,138 @@
       "reviewCorrectAnswer": "A correct answer",
       "regenerateButton": "Try a different mock exam",
       "backButton": "Back to the unit"
+    }
+  },
+  "geometryGrade7Page": {
+    "title": "Geometry – Angles",
+    "subtitle": "Rays, vertices, angle types, notation, comparison and a construction lab.",
+    "completedBadge": "Completed"
+  },
+  "anglesGrade7": {
+    "identify": {
+      "gameName": "Rays & Angles",
+      "gameDescription": "Find the vertex, pick the right pair of rays, and spot a named angle.",
+      "intro": "An angle is the union of two rays that share one starting point — that shared point is the vertex.",
+      "prompt": {
+        "vertex": "Tap the vertex — the point where both rays start.",
+        "rays": "Which two rays form the colored angle?",
+        "angle": "Tap the angle named {{name}}."
+      },
+      "feedback": {
+        "vertex": "The vertex is the one shared starting point of both rays — every other point is just along a ray, not where they meet.",
+        "rays": "The colored angle is bounded by exactly those two rays — any other pair of rays makes a different angle.",
+        "angle": "In a three-letter name the middle letter is always the vertex, so that name points at one specific angle."
+      },
+      "difficulty": {
+        "basic": "A simple vertex with a few rays, in friendly rotations.",
+        "intermediate": "More rays per vertex and freer rotation.",
+        "advanced": "Many rays per vertex, arbitrary rotation, and non-adjacent angles."
+      },
+      "angleOptionLabel": "Angle option {{index}}"
+    },
+    "types": {
+      "gameName": "Angle Types",
+      "gameDescription": "Classify acute, right, obtuse and straight angles — and order them by size.",
+      "intro": "Every angle is acute, right, obtuse or straight — classify by the real angle, never by how it happens to be turned.",
+      "prompt": {
+        "classify": "What type of angle is this?",
+        "order": {
+          "smallest": "Tap the smallest angle.",
+          "largest": "Tap the largest angle."
+        }
+      },
+      "feedback": {
+        "acute": "An acute angle is smaller than 90°.",
+        "right": "A right angle is exactly 90° — shown with a small square marker.",
+        "obtuse": "An obtuse angle is bigger than 90° and smaller than 180°.",
+        "straight": "A straight angle is exactly 180° — its two rays form one straight line through the vertex.",
+        "order": {
+          "smallest": "Compare the real angle measures, not how the diagrams happen to be rotated.",
+          "largest": "Compare the real angle measures, not how the diagrams happen to be rotated."
+        }
+      },
+      "difficulty": {
+        "basic": "Angles clearly away from every boundary, in simple rotations.",
+        "intermediate": "More angles to order, with a closer size gap between them.",
+        "advanced": "The closest size gaps, demanding real reasoning instead of a glance."
+      },
+      "typeLabel": {
+        "acute": "Acute",
+        "right": "Right",
+        "obtuse": "Obtuse",
+        "straight": "Straight"
+      },
+      "orderOptionLabel": "Angle diagram option"
+    },
+    "notation": {
+      "gameName": "Angle Notation",
+      "gameDescription": "Name an angle with three letters — the middle one is always the vertex.",
+      "intro": "A three-letter angle name always puts the vertex in the middle — the two outer letters can switch places.",
+      "prompt": {
+        "selectName": "Choose a correct name for the highlighted angle.",
+        "selectNameGreek": "The highlighted angle is marked {{letter}}. Choose its correct three-letter name.",
+        "selectInvalid": "Which of these is NOT a correct name for the highlighted angle?",
+        "triangleInterior": "Choose a correct name for the interior angle at vertex {{vertex}}."
+      },
+      "feedback": {
+        "selectName": "The middle letter of a correct name is always the vertex — the two outer letters are the rays, in either order.",
+        "selectInvalid": "That name puts the vertex in the wrong position — the middle letter of a valid name is always the vertex.",
+        "triangleInterior": "An interior angle of a triangle is named the same way: the vertex in the middle, the other two vertices on the outside."
+      },
+      "difficulty": {
+        "basic": "Two rays at a vertex, so only one angle to name.",
+        "intermediate": "Several rays at a vertex, the Greek-letter shorthand, and a light triangle-naming task.",
+        "advanced": "Many rays, non-adjacent angles, and more triangle-naming."
+      }
+    },
+    "compare": {
+      "gameName": "Compare Angles",
+      "gameDescription": "Decide whether one angle is smaller, equal, or bigger — without measuring.",
+      "intro": "Two angles can be compared by their real size alone — how long their rays happen to be drawn never matters.",
+      "prompt": {
+        "compare": "Compare the two angles: <, = or >?"
+      },
+      "feedback": {
+        "less": "The left angle is the smaller one — ray length never changes an angle's real size.",
+        "greater": "The left angle is the bigger one — ray length never changes an angle's real size.",
+        "equal": "Both angles have the exact same measure, even though they are drawn at different sizes and rotations."
+      },
+      "difficulty": {
+        "basic": "A big, easy-to-see difference in size.",
+        "intermediate": "A moderate difference — look carefully.",
+        "advanced": "A small difference that takes real reasoning, not a glance."
+      }
+    },
+    "construct": {
+      "gameName": "Construct an Angle",
+      "gameDescription": "Drag a ray to build the requested angle, then check your work.",
+      "intro": "Drag the moving ray until the angle matches what's asked, then press Check.",
+      "prompt": {
+        "degrees": "Drag the ray to build an angle of about {{degrees}}°.",
+        "type": {
+          "acute": "Drag the ray to build an acute angle.",
+          "right": "Drag the ray to build a right angle.",
+          "obtuse": "Drag the ray to build an obtuse angle.",
+          "straight": "Drag the ray to build a straight angle."
+        }
+      },
+      "feedback": {
+        "degrees": "Watch the live reading below the diagram and get within a few degrees of the target before checking.",
+        "type": {
+          "acute": "An acute angle is smaller than 90° — drag the ray further from the fixed one.",
+          "right": "A right angle is exactly 90° — watch for the square marker to appear.",
+          "obtuse": "An obtuse angle is bigger than 90° and smaller than 180°.",
+          "straight": "A straight angle is exactly 180° — the two rays form one straight line."
+        }
+      },
+      "difficulty": {
+        "basic": "Build one of the four angle types.",
+        "intermediate": "Build one of the four angle types, starting further from the target.",
+        "advanced": "Sometimes an exact degree target instead of just a type."
+      },
+      "handleLabel": "Drag to change the angle",
+      "liveReadout": "Current angle: {{degrees}}° ({{type}})",
+      "checkButton": "Check"
     }
   }
 }

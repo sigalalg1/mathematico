@@ -8,6 +8,11 @@ import { algebraSubstitutionActivity } from '../data/games/algebraSubstitutionDa
 import { algebraLikeTermsActivity } from '../data/games/algebraLikeTermsData';
 import { absoluteValueActivity } from '../data/games/absoluteValueData';
 import { signRulesActivity } from '../data/games/signRulesData';
+import { anglesIdentifyActivity } from '../data/games/anglesIdentifyData';
+import { anglesTypesActivity } from '../data/games/anglesTypesData';
+import { anglesNotationActivity } from '../data/games/anglesNotationData';
+import { anglesCompareActivity } from '../data/games/anglesCompareData';
+import { anglesConstructActivity } from '../data/games/anglesConstructData';
 
 /**
  * Every activity that opts into the training system. Adding a new one is a
@@ -23,6 +28,11 @@ const TRAINING_ACTIVITIES: TrainingActivityDefinition<unknown>[] = [
   algebraLikeTermsActivity,
   absoluteValueActivity,
   signRulesActivity,
+  anglesIdentifyActivity,
+  anglesTypesActivity,
+  anglesNotationActivity,
+  anglesCompareActivity,
+  anglesConstructActivity,
 ];
 
 export function getTrainingActivity(activityId: string): TrainingActivityDefinition<unknown> | undefined {

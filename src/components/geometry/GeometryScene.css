@@ -1,0 +1,63 @@
+/*
+ * The geometry engine's shared visual shell: a clean, spacious, high-contrast
+ * drawing surface inside the app's existing dark shell. Deliberately minimal
+ * decoration — no sports/character theming anywhere in here, a departure from
+ * the playful grade 3–4 games on purpose (see the mission brief).
+ */
+
+.geo-stage-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.geo-stage {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1 / 1;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.5rem;
+  touch-action: none;
+}
+
+.geo-ray,
+.geo-segment {
+  vector-effect: non-scaling-stroke;
+}
+
+.geo-point circle {
+  stroke: var(--surface-sunken);
+  stroke-width: 1.5px;
+}
+
+.geo-label,
+.geo-angle-label {
+  font-weight: 600;
+  user-select: none;
+}
+
+.geo-handle-hit {
+  cursor: grab;
+}
+
+.geo-handle-group.is-selected .geo-handle-hit {
+  cursor: pointer;
+}
+
+.geo-handle {
+  pointer-events: none;
+  stroke: var(--surface-sunken);
+  stroke-width: 1.5px;
+}
+
+.geo-polygon {
+  vector-effect: non-scaling-stroke;
+}
+
+.geo-angle-arc path {
+  vector-effect: non-scaling-stroke;
+}

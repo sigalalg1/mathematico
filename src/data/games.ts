@@ -144,6 +144,61 @@ export const coordinateSystemGames: Game[] = [
 
 export const divisionWithRemainderGames: Game[] = [];
 
+const GEOMETRY_GRADE7_PATH = '/grade/7/geometry';
+
+/**
+ * Grade 7 — Angles. Sourced from the attached textbook excerpt (chapters
+ * 20–22): rays/vertex/angle identification, the four angle types, angle
+ * notation (three-letter names + Greek-letter shorthand), and comparing
+ * angle sizes. The construct-an-angle drag lab is this build's own addition
+ * (the excerpt only gestures at construction) — see the final report.
+ * `anglesConstruct` is deliberately last: it asks a child to *build* an
+ * angle only after they can already identify, classify, name and compare
+ * one.
+ */
+export const geometryGrade7Games: Game[] = [
+  {
+    id: 'anglesIdentify',
+    enabled: true,
+    path: `${GEOMETRY_GRADE7_PATH}/rays-and-angles`,
+    nameKey: 'anglesGrade7.identify.gameName',
+    descriptionKey: 'anglesGrade7.identify.gameDescription',
+    icon: '∠',
+  },
+  {
+    id: 'anglesTypes',
+    enabled: true,
+    path: `${GEOMETRY_GRADE7_PATH}/angle-types`,
+    nameKey: 'anglesGrade7.types.gameName',
+    descriptionKey: 'anglesGrade7.types.gameDescription',
+    icon: '⌐',
+  },
+  {
+    id: 'anglesNotation',
+    enabled: true,
+    path: `${GEOMETRY_GRADE7_PATH}/angle-notation`,
+    nameKey: 'anglesGrade7.notation.gameName',
+    descriptionKey: 'anglesGrade7.notation.gameDescription',
+    icon: 'α',
+  },
+  {
+    id: 'anglesCompare',
+    enabled: true,
+    path: `${GEOMETRY_GRADE7_PATH}/compare-angles`,
+    nameKey: 'anglesGrade7.compare.gameName',
+    descriptionKey: 'anglesGrade7.compare.gameDescription',
+    icon: '≷',
+  },
+  {
+    id: 'anglesConstruct',
+    enabled: true,
+    path: `${GEOMETRY_GRADE7_PATH}/construct-an-angle`,
+    nameKey: 'anglesGrade7.construct.gameName',
+    descriptionKey: 'anglesGrade7.construct.gameDescription',
+    icon: '✎',
+  },
+];
+
 /** Grade 7 — Signed Numbers, in teaching order: the line, then order, then distance, then the four operations. */
 export const signedNumbersGames: Game[] = [
   {

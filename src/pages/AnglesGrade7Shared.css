@@ -1,0 +1,141 @@
+/* Shared layout for every activity in the Grade 7 Angles unit. */
+
+.angles7-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.angles7-prompt {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-h);
+  text-align: center;
+  max-width: 560px;
+}
+
+.angles7-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  max-width: 560px;
+}
+
+.angles7-option {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-h);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-5);
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.angles7-option:hover:not(:disabled) {
+  border-color: var(--secondary);
+}
+
+.angles7-option:disabled {
+  cursor: default;
+}
+
+.angles7-option.is-correct {
+  border-color: var(--success-border);
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.angles7-option.is-wrong {
+  border-color: var(--error);
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+.angles7-feedback {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.angles7-feedback.is-correct {
+  color: var(--success);
+}
+
+.angles7-feedback.is-wrong {
+  color: var(--error);
+}
+
+/* The construct-an-angle drag lab's own controls. */
+.angles7-construct-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.angles7-check-button {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--primary-contrast);
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-6);
+  cursor: pointer;
+}
+
+.angles7-check-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.angles7-live-readout {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* The "order these angles" exercise: several small diagrams, each its own tappable option. */
+.angles7-order-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.angles7-order-option {
+  background: transparent;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+  cursor: pointer;
+  width: 150px;
+}
+
+.angles7-order-option .geo-stage {
+  max-width: 100%;
+}
+
+.angles7-order-option:hover:not(:disabled) {
+  border-color: var(--secondary);
+}
+
+.angles7-order-option:disabled {
+  cursor: default;
+}
+
+.angles7-order-option.is-correct {
+  border-color: var(--success-border);
+}
+
+.angles7-order-option.is-wrong {
+  border-color: var(--error);
+}

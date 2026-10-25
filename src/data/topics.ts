@@ -7,6 +7,7 @@ import {
   divisionWithRemainderGames,
   fractionsPart1Games,
   geometryAnglesTrianglesGames,
+  geometryGrade7Games,
   multiplicationGames,
   signedNumbersGames,
   simpleFractionsGames,
@@ -83,7 +84,8 @@ export const topics: Topic[] = [
   {
     id: 'geometry',
     gradeId: 7,
-    enabled: false,
+    enabled: true,
+    path: '/grade/7/geometry',
   },
   {
     id: 'algebraBasics',
@@ -116,6 +118,7 @@ const TOPIC_GAMES: Partial<Record<string, Game[]>> = {
   signedNumbers: signedNumbersGames,
   algebraBasics: algebraGames,
   decimalPlaceValue: decimalPlaceValueGames,
+  geometry: geometryGrade7Games,
 };
 
 function topicHasActivity(topic: Topic): boolean {
