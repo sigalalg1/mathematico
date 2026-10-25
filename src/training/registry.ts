@@ -6,6 +6,7 @@ import { arithmeticFluencyActivities } from '../data/games/arithmeticFluencyData
 import { algebraExpressionsActivity } from '../data/games/algebraExpressionsData';
 import { algebraSubstitutionActivity } from '../data/games/algebraSubstitutionData';
 import { algebraLikeTermsActivity } from '../data/games/algebraLikeTermsData';
+import { absoluteValueActivity } from '../data/games/absoluteValueData';
 
 /**
  * Every activity that opts into the training system. Adding a new one is a
@@ -19,6 +20,7 @@ const TRAINING_ACTIVITIES: TrainingActivityDefinition<unknown>[] = [
   algebraExpressionsActivity,
   algebraSubstitutionActivity,
   algebraLikeTermsActivity,
+  absoluteValueActivity,
 ];
 
 export function getTrainingActivity(activityId: string): TrainingActivityDefinition<unknown> | undefined {

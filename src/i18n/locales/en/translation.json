@@ -846,30 +846,31 @@
     }
   },
   "absoluteValue": {
-    "gameName": "Distance from Zero",
-    "gameDescription": "Absolute value is a distance. Measure it on the line and click the answer.",
+    "gameName": "Absolute Value",
+    "gameDescription": "Build absolute value as distance from zero, then compare and calculate with it.",
+    "intro": "Absolute value measures distance from zero. Choose a level and practise without time pressure.",
+    "distancePrinciple": "Absolute value is distance from zero",
+    "difficulty": {
+      "basic": "Visual number lines and direct values from −10 to 10.",
+      "intermediate": "Direct notation, opposites and comparisons over a wider range.",
+      "hard": "Short expressions and the scope of a minus outside the bars."
+    },
     "prompt": {
-      "evaluate": "What is",
-      "findFromDistance": "Which negative number is {{distance}} away from 0?",
-      "findFromDistancePositive": "Which positive number is {{distance}} away from 0?",
-      "distanceBetween": "How far is it from point A to point B? Click the answer on the line.",
-      "trailing": "? Click the answer on the line."
+      "solve": "Choose the mathematically correct answer",
+      "distance": "Measure the distance from zero.",
+      "direct": "Evaluate the absolute value.",
+      "opposites": "Which expression has the same absolute value?",
+      "compare": "Choose the comparison operator.",
+      "expression": "Evaluate in steps.",
+      "scope": "The minus is outside the bars. Evaluate the bars first."
     },
     "feedback": {
-      "correctMessages": [
-        "Exactly!",
-        "Measured perfectly!",
-        "Nice!"
-      ],
-      "youClicked": "You clicked:",
-      "neverNegative": "A distance can never be negative — an absolute value is always 0 or more.",
-      "wrongSide": "The distance is right, but you were asked about the other side of 0.",
-      "countTheGap": "Count how many ticks lie between the two points — that is the distance between them.",
-      "measureFromZero": "Measure from 0 to the number and count the ticks.",
-      "recapLabel": "Measured on the line:"
-    },
-    "completion": {
-      "title": "📏 You finished Distance from Zero!"
+      "correct": "Correct — the notation and distance agree.",
+      "distance": "Measure from zero. Distance is never negative.",
+      "opposites": "Opposite numbers are equally far from zero, so their absolute values are equal.",
+      "compare": "Evaluate both distances first, then compare those non-negative values.",
+      "steps": "Work inside each pair of bars first, then perform the operation.",
+      "scope": "The outside minus is not inside the absolute-value bars: evaluate the bars, then apply it."
     }
   },
   "signedAddSub": {
