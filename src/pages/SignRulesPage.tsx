@@ -1,201 +1,147 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageLayout } from '../components/PageLayout';
-import { NumberLine, type NumberLineSpan } from '../components/NumberLine';
-import { QuizProgress } from '../components/quiz/QuizProgress';
-import { SoundToggle } from '../components/SoundToggle';
 import { MathText } from '../components/MathText';
-import { SignedCompletion } from '../components/SignedCompletion';
-import { SIGN_RULES_TOTAL_COUNT, useSignRulesGame } from '../hooks/useSignRulesGame';
-import { useGameSessionTracking } from '../hooks/useGameSessionTracking';
-import { useSound } from '../audio/useSound';
-import { classifySignRule, tickValues } from '../data/games/signRulesData';
-import { formatExpression, formatSigned } from '../utils/signedNumbers';
-import { SIGN_RULE_FAMILIES, type SignRuleChallenge, type SignRuleFamily } from '../types/signRules';
+import { TrainingActivityScreen } from '../training/components/TrainingActivityScreen';
+import type { TrainingQuestionRenderProps } from '../training/components/TrainingPlayScreen';
+import { classifySignRule, expressionSteps, signRulesActivity } from '../data/games/signRulesData';
+import type { SignRuleQuestionPayload } from '../types/signRules';
 import './SignedNumbersShared.css';
 
-const GAME_ID = 'signRules';
 const SIGNED_NUMBERS_PATH = '/grade/7/signed-numbers';
-
-const pointId = (value: number) => `tick-${value}`;
 
 export function SignRulesPage() {
   const { t } = useTranslation();
-  const { enabled: soundEnabled, play, toggle: toggleSound } = useSound();
-  const game = useSignRulesGame();
-  const [correctMessage, setCorrectMessage] = useState('');
-  const [discovered, setDiscovered] = useState<SignRuleFamily[]>([]);
+  const [discoveryStep, setDiscoveryStep] = useState(0);
 
-  useGameSessionTracking(GAME_ID, {
-    total: SIGN_RULES_TOTAL_COUNT,
-    score: game.firstAttemptCorrectCount,
-    completed: game.completed,
-    mistakes: game.mistakes,
-    roundKey: game.roundKey,
-  });
-
-  const family = game.completed ? null : game.challenge.family;
-
-  useEffect(() => {
-    if (game.status === 'correct') {
-      play('hit');
-      const messages = t('signRules.feedback.correctMessages', { returnObjects: true }) as string[];
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- paired with the sound, not derived state
-      setCorrectMessage(messages[Math.floor(Math.random() * messages.length)]);
-      // A running log of what the student has proved for themselves.
-      if (family) setDiscovered((current) => (current.includes(family) ? current : [...current, family]));
-    } else if (game.status === 'incorrect') {
-      play('miss');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [game.status, game.attemptSeed]);
-
-  useEffect(() => {
-    if (game.completed) play('gameComplete');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [game.completed]);
-
-  useEffect(() => {
-    if (game.status !== 'correct') return;
-    const timer = window.setTimeout(() => game.next(), 1200);
-    return () => window.clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [game.status, game.index]);
-
-  // A replay starts the discovery board from scratch.
-  function handleRetry() {
-    setDiscovered([]);
-    game.retry();
-  }
-
-  if (game.completed) {
+  if (discoveryStep >= 3) {
     return (
-      <PageLayout title={t('signRules.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
-        <SignedCompletion
-          icon="✖️"
-          titleKey="signRules.completion.title"
-          total={game.total}
-          firstTryCount={game.firstAttemptCorrectCount}
-          onRetry={handleRetry}
-        />
-      </PageLayout>
+      <TrainingActivityScreen
+        activity={signRulesActivity}
+        titleKey="signRules.gameName"
+        contextLabel={t('grades.7')}
+        backTo={SIGNED_NUMBERS_PATH}
+        backLabel={t('signedNumbersPage.title')}
+        promptKey="signRules.prompt"
+        renderQuestion={(props) => <SignRuleQuestion {...props} />}
+      />
     );
   }
 
-  const challenge = game.challenge;
-  const clicked = game.status === 'incorrect' ? game.lastAnswer : null;
-  const mistake = clicked === null ? null : classifySignRule(challenge, clicked);
-  const solved = game.status === 'correct';
-  // The pattern is the lesson for the discovery questions and the hint for the rest.
-  const ladderVisible = challenge.ladder.length > 0 && (challenge.showLadder || clicked !== null);
-
-  const spans: NumberLineSpan[] = solved
-    ? [{ id: 'result', from: 0, to: challenge.result, label: String(Math.abs(challenge.result)), variant: 'correct' }]
-    : [];
-
-  function handleSelect(id: string) {
-    if (solved) return;
-    const value = Number(id.replace('tick-', ''));
-    if (!Number.isFinite(value)) return;
-    game.submit(value);
-  }
-
   return (
-    <PageLayout title={t('signRules.gameName')} context={t('grades.7')} backTo={SIGNED_NUMBERS_PATH} backLabel={t('signedNumbersPage.title')}>
-      <div className="signed-activity">
-        <div className="signed-activity-top">
-          <QuizProgress current={game.index + 1} total={game.total} labelKey="signedNumbers.progress" />
-          <SoundToggle enabled={soundEnabled} onToggle={toggleSound} />
+    <PageLayout
+      title={t('signRules.gameName')}
+      context={t('grades.7')}
+      backTo={SIGNED_NUMBERS_PATH}
+      backLabel={t('signedNumbersPage.title')}
+      variant="game"
+    >
+      <div className="signed-discovery">
+        <div
+          className="signed-discovery-progress"
+          role="progressbar"
+          aria-valuemin={1}
+          aria-valuemax={3}
+          aria-valuenow={discoveryStep + 1}
+          aria-label={t('signRules.discovery.progress', { current: discoveryStep + 1 })}
+        >
+          {t('signRules.discovery.progress', { current: discoveryStep + 1 })}
         </div>
-
-        {ladderVisible && <SignLadder challenge={challenge} />}
-
-        <MathText className="signed-activity-expression">
-          {formatExpression(challenge.left, challenge.operator, challenge.right)} = ?
-        </MathText>
-
-        <p className="signed-activity-prompt">
-          {t(challenge.showLadder ? 'signRules.prompt.continuePattern' : 'signRules.prompt.solve')}
-        </p>
-
-        <NumberLine
-          size="lg"
-          min={challenge.min}
-          max={challenge.max}
-          step={challenge.step}
-          spans={spans}
-          clickablePoints={tickValues(challenge.min, challenge.max, challenge.step).map((value) => ({
-            id: pointId(value),
-            value,
-          }))}
-          onSelectPoint={handleSelect}
-          selectedPointId={clicked !== null ? pointId(clicked) : solved ? pointId(challenge.result) : null}
-          correctPointId={solved ? pointId(challenge.result) : null}
-          pointsAnswered={game.status !== 'unanswered'}
-          pointsLocked={solved}
-        />
-
-        <RuleStrip discovered={discovered} />
-
-        {solved && (
-          <div className="signed-activity-feedback">
-            <p className="feedback-correct-text">{correctMessage}</p>
-            <p className="signed-activity-recap">
-              <MathText>
-                {formatExpression(challenge.left, challenge.operator, challenge.right)} = {formatSigned(challenge.result)}
-              </MathText>
-            </p>
-          </div>
+        <p className="signed-activity-prompt">{t(`signRules.discovery.step${discoveryStep + 1}.title`)}</p>
+        {discoveryStep === 0 && (
+          <Pattern
+            rows={['3 × 4 = 12', '2 × 4 = 8', '1 × 4 = 4', '0 × 4 = 0', '(−1) × 4 = −4', '(−2) × 4 = −8', '(−3) × 4 = −12']}
+            note={t('signRules.discovery.step1.note')}
+          />
         )}
-
-        {clicked !== null && (
-          <div className="signed-activity-feedback feedback-hint-text">
-            <p>
-              {t('signRules.feedback.youClicked')} <MathText>{formatSigned(clicked)}</MathText>
-            </p>
-            {mistake === 'signError' && <p>{t('signRules.feedback.signError')}</p>}
-            {mistake === 'magnitudeError' && <p>{t('signRules.feedback.magnitudeError')}</p>}
-            {ladderVisible && !challenge.showLadder && <p>{t('signRules.feedback.ladderHint')}</p>}
-          </div>
+        {discoveryStep === 1 && (
+          <Pattern
+            rows={['3 × (−4) = −12', '2 × (−4) = −8', '1 × (−4) = −4', '0 × (−4) = 0', '(−1) × (−4) = 4', '(−2) × (−4) = 8']}
+            note={t('signRules.discovery.step2.note')}
+          />
         )}
+        {discoveryStep === 2 && <RuleSummary />}
+        <button type="button" className="btn btn-primary" onClick={() => setDiscoveryStep((step) => step + 1)}>
+          {discoveryStep === 2 ? t('signRules.discovery.startPractice') : t('signRules.discovery.continue')}
+        </button>
       </div>
     </PageLayout>
   );
 }
 
-/** The already-solved rows that lead into the question, so the pattern is visible. */
-function SignLadder({ challenge }: { challenge: SignRuleChallenge }) {
+function Pattern({ rows, note }: { rows: string[]; note: string }) {
+  return (
+    <div className="signed-pattern">
+      {rows.map((row, index) => (
+        <MathText key={row} className={`signed-pattern-row${index >= rows.length - 2 ? ' is-new' : ''}`}>
+          {row}
+        </MathText>
+      ))}
+      <p className="signed-pattern-note">{note}</p>
+    </div>
+  );
+}
+
+function RuleSummary() {
   const { t } = useTranslation();
   return (
-    <div className="signed-ladder">
-      <p className="signed-activity-note">{t('signRules.ladderTitle')}</p>
-      {challenge.ladder.map((row) => (
-        <MathText key={`ladder-${row.left}`} className="signed-ladder-row">
-          {formatExpression(row.left, '×', row.right)} = {formatSigned(row.result)}
-        </MathText>
+    <div className="signed-rule-summary">
+      <p className="signed-rule-main">{t('signRules.discovery.rule')}</p>
+      {['3 × 4 = 12', '(−3) × (−4) = 12', '(−3) × 4 = −12', '3 × (−4) = −12'].map((example) => (
+        <MathText key={example} className="signed-rule-example">{example}</MathText>
       ))}
     </div>
   );
 }
 
-/** The four sign rules, each lighting up once the student has proved it themselves. */
-function RuleStrip({ discovered }: { discovered: SignRuleFamily[] }) {
+function SignRuleQuestion({
+  question,
+  phase,
+  lastAnswer,
+  submit,
+}: TrainingQuestionRenderProps<SignRuleQuestionPayload>) {
   const { t } = useTranslation();
+  const payload = question.payload!;
+  const wrong = (phase === 'feedback' || phase === 'retry') && lastAnswer && !lastAnswer.isCorrect;
+  const steps = (phase === 'feedback' || phase === 'retry') ? expressionSteps(payload) : [];
+
   return (
-    <div>
-      <p className="signed-activity-note">{t('signRules.rulesTitle')}</p>
-      <div className="signed-rule-strip">
-        {SIGN_RULE_FAMILIES.map((rule) => (
-          <span
-            key={rule}
-            className={`signed-rule-chip ${discovered.includes(rule) ? 'is-discovered' : ''}`}
-            dir="ltr"
-            aria-label={t(`signRules.rules.${rule}`)}
-          >
-            {t(`signRules.rules.${rule}`)}
-          </span>
-        ))}
+    <div className="signed-training-question">
+      <p className="tr-prompt">{t(`signRules.questionPrompt.${payload.type}`)}</p>
+      <MathText className="tr-fact">{question.prompt}{payload.type === 'signOnly' || payload.type === 'signFirst' ? '' : ' = ?'}</MathText>
+      {payload.type === 'inverseDivision' && (
+        <p className="signed-inverse-note">{t('signRules.inverseNote')}</p>
+      )}
+      <div className="tr-options">
+        {question.options.map((option) => {
+          const classes = ['tr-option'];
+          if (phase === 'feedback' && lastAnswer) {
+            if (option === lastAnswer.correctAnswer) classes.push('tr-option-correct');
+            else if (option === lastAnswer.value) classes.push('tr-option-wrong');
+          }
+          return (
+            <button
+              key={option}
+              type="button"
+              className={classes.join(' ')}
+              disabled={phase === 'feedback'}
+              onClick={() => submit(option)}
+            >
+              <MathText>{option === 'positive' || option === 'negative' ? t(`signRules.sign.${option}`) : option}</MathText>
+            </button>
+          );
+        })}
       </div>
+      {wrong && payload.type !== 'signFirst' && payload.type !== 'signOnly' && (
+        <p className="signed-diagnostic feedback-hint-text">
+          {t(`signRules.feedback.${classifySignRule(payload, lastAnswer.value)}`)}
+        </p>
+      )}
+      {steps.length > 0 && (
+        <div className="signed-expression-steps">
+          {steps.map((step) => <MathText key={step}>{step}</MathText>)}
+        </div>
+      )}
     </div>
   );
 }
