@@ -4,7 +4,7 @@ import {
   assertAngleNotationChallengeIsSound,
   buildAnglesNotationQuestions,
 } from '../anglesNotationData';
-import { isValidAngleName, namesReferToSameAngle } from '../../../geometry/angleNotation';
+import { canUseVertexOnlyName, isValidAngleName, namesReferToSameAngle } from '../../../geometry/angleNotation';
 import { interiorAngleArmLabels } from '../../../geometry/polygon';
 import type { AnglesDifficultyId } from '../../../types/anglesGrade7';
 
@@ -87,5 +87,85 @@ describe('anglesNotationData generator', () => {
 
   it('is registered with three difficulty levels', () => {
     expect(anglesNotationActivity.capabilities.difficulties.map((d) => d.id)).toEqual(['basic', 'intermediate', 'advanced']);
+  });
+
+  describe('selectAllNames', () => {
+    it('every option is genuinely valid or genuinely invalid, matching isValidAngleName/canUseVertexOnlyName exactly', () => {
+      let sawSelectAllNames = 0;
+      for (const difficulty of DIFFICULTIES) {
+        for (let seed = 0; seed < 150; seed += 1) {
+          const questions = buildAnglesNotationQuestions({ difficultyId: difficulty, count: 8, seed });
+          for (const question of questions) {
+            const challenge = question.payload!;
+            if (challenge.kind !== 'selectAllNames') continue;
+            sawSelectAllNames += 1;
+            const ref = challenge.highlightedRef!;
+            const vertexLabel = challenge.scene!.vertex.label;
+            const rayA = challenge.scene!.rays.find((r) => r.id === ref.rayAId)!;
+            const rayB = challenge.scene!.rays.find((r) => r.id === ref.rayBId)!;
+            const armLabels: [string, string] = [rayA.label, rayB.label];
+            const rayCountAtVertex = challenge.scene!.rays.length;
+
+            for (const option of challenge.nameOptions!) {
+              const isVertexOnly = option.name === vertexLabel;
+              const expectedValid = isVertexOnly ? canUseVertexOnlyName(rayCountAtVertex) : isValidAngleName(option.name, vertexLabel, armLabels);
+              expect(option.valid).toBe(expectedValid);
+            }
+          }
+        }
+      }
+      expect(sawSelectAllNames).toBeGreaterThan(50);
+    });
+
+    it('the number of correct names actually varies across a generated sample — never silently collapsing to always 2', () => {
+      const correctCounts = new Set<number>();
+      for (let seed = 0; seed < 300; seed += 1) {
+        const questions = buildAnglesNotationQuestions({ difficultyId: 'basic', count: 8, seed });
+        for (const question of questions) {
+          const challenge = question.payload!;
+          if (challenge.kind !== 'selectAllNames') continue;
+          correctCounts.add(challenge.nameOptions!.filter((o) => o.valid).length);
+        }
+      }
+      expect(correctCounts.has(2)).toBe(true);
+      expect(correctCounts.has(3)).toBe(true);
+      expect(correctCounts.size).toBe(2);
+    });
+
+    it('a vertex-only name is only ever offered when canUseVertexOnlyName says it is unambiguous (exactly 2 rays at the vertex)', () => {
+      for (const difficulty of DIFFICULTIES) {
+        for (let seed = 0; seed < 150; seed += 1) {
+          const questions = buildAnglesNotationQuestions({ difficultyId: difficulty, count: 8, seed });
+          for (const question of questions) {
+            const challenge = question.payload!;
+            if (challenge.kind !== 'selectAllNames') continue;
+            const vertexLabel = challenge.scene!.vertex.label;
+            const vertexOnlyOption = challenge.nameOptions!.find((o) => o.name === vertexLabel);
+            if (vertexOnlyOption) {
+              expect(vertexOnlyOption.valid).toBe(true);
+              expect(canUseVertexOnlyName(challenge.scene!.rays.length)).toBe(true);
+              expect(challenge.scene!.rays.length).toBe(2);
+            }
+          }
+        }
+      }
+    });
+
+    it('the canonical answer string always equals the sorted, comma-joined ids of exactly the valid options', () => {
+      for (let seed = 0; seed < 200; seed += 1) {
+        const questions = buildAnglesNotationQuestions({ difficultyId: 'intermediate', count: 8, seed });
+        for (const question of questions) {
+          const challenge = question.payload!;
+          if (challenge.kind !== 'selectAllNames') continue;
+          const expected = challenge
+            .nameOptions!.filter((o) => o.valid)
+            .map((o) => o.id)
+            .sort()
+            .join(',');
+          expect(challenge.answer).toBe(expected);
+          expect(question.answer).toBe(expected);
+        }
+      }
+    });
   });
 });

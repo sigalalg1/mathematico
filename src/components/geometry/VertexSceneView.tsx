@@ -4,6 +4,7 @@ import type { GeometryStyleTokens } from '../../geometry/style';
 import { directionDegrees, rayEndpoint, resolveAngle } from '../../geometry/angleMath';
 import { GeometryStage } from './GeometryStage';
 import { GeoAngleArc, GeoHandle, GeoPoint, GeoRay } from './GeometryPrimitives';
+import { Protractor } from './Protractor';
 
 /**
  * The one shared renderer behind every "rays fan out from a vertex" exercise
@@ -40,6 +41,19 @@ export interface AngleHandleSpec {
   onClick: () => void;
 }
 
+/**
+ * Overlays a reusable digital-protractor scale on the scene, auto-aligned to
+ * one of its own rays — never a free-floating control. See `Protractor` for
+ * the rendering itself; this just resolves `baselineRayId` into the real
+ * drawn direction of that ray, so the overlay can never drift from what the
+ * scene actually draws.
+ */
+export interface ProtractorOverlaySpec {
+  baselineRayId: string;
+  radius?: number;
+  sweep?: 1 | -1;
+}
+
 interface VertexSceneViewProps {
   scene: VertexScene;
   style: GeometryStyleTokens;
@@ -51,6 +65,7 @@ interface VertexSceneViewProps {
   showRayLabels?: boolean;
   showVertexLabel?: boolean;
   className?: string;
+  protractor?: ProtractorOverlaySpec;
 }
 
 function pointForRay(scene: VertexScene, rayId: string, style: GeometryStyleTokens) {
@@ -71,6 +86,7 @@ export function VertexSceneView({
   showRayLabels = true,
   showVertexLabel = true,
   className,
+  protractor,
 }: VertexSceneViewProps) {
   const interactive = clickablePoints.length > 0 || clickableAngles.length > 0;
 
@@ -80,8 +96,26 @@ export function VertexSceneView({
     scene.rays.reduce((sum, ray) => sum + directionDegrees(scene.vertex.point, ray.through), 0) / Math.max(1, scene.rays.length);
   const vertexLabelAngle = averageRayDeg + 180;
 
+  // Resolved from the *same* `scene.rays` data `GeoRay` itself draws from —
+  // never a separately-tracked angle — so the overlay's baseline can never
+  // disagree with where the reference ray is actually drawn on screen.
+  const protractorBaselineRay = protractor ? scene.rays.find((ray) => ray.id === protractor.baselineRayId) : undefined;
+  if (protractor && !protractorBaselineRay) {
+    throw new Error(`VertexSceneView: unknown protractor baseline ray id "${protractor.baselineRayId}"`);
+  }
+
   return (
     <GeometryStage style={style} label={label} grid={grid} interactive={interactive} className={className}>
+      {protractorBaselineRay && (
+        <Protractor
+          vertex={scene.vertex.point}
+          baselineDeg={directionDegrees(scene.vertex.point, protractorBaselineRay.through)}
+          radius={protractor?.radius ?? style.rayLength * 0.78}
+          sweep={protractor?.sweep}
+          style={style}
+        />
+      )}
+
       {scene.rays.map((ray) => (
         <GeoRay key={ray.id} vertex={scene.vertex.point} through={ray.through} style={style} testId={`geo-ray-${ray.id}`} />
       ))}

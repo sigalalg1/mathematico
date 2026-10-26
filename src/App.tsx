@@ -62,6 +62,7 @@ import { AnglesTypesPage } from './pages/AnglesTypesPage';
 import { AnglesNotationPage } from './pages/AnglesNotationPage';
 import { AnglesComparePage } from './pages/AnglesComparePage';
 import { AnglesConstructPage } from './pages/AnglesConstructPage';
+import { AnglesMeasurePage } from './pages/AnglesMeasurePage';
 import { BasketballMonkeyPage } from './pages/BasketballMonkeyPage';
 import { DevEnvironmentBanner } from './components/DevEnvironmentBanner';
 
@@ -121,6 +122,7 @@ function App() {
         <Route path="/grade/7/geometry/angle-notation" element={<AnglesNotationPage />} />
         <Route path="/grade/7/geometry/compare-angles" element={<AnglesComparePage />} />
         <Route path="/grade/7/geometry/construct-an-angle" element={<AnglesConstructPage />} />
+        <Route path="/grade/7/geometry/measure-an-angle" element={<AnglesMeasurePage />} />
         <Route path="/grade/4/decimal-place-value" element={<DecimalExamPrepPage />} />
         <Route path="/grade/4/decimal-place-value/place-value-and-conversions" element={<DecimalPlaceValuePage />} />
         <Route path="/grade/4/decimal-place-value/build-and-break-numbers" element={<DecimalDecompositionPage />} />
