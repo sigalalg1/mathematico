@@ -1944,17 +1944,27 @@
         "selectName": "Choose a correct name for the highlighted angle.",
         "selectNameGreek": "The highlighted angle is marked {{letter}}. Choose its correct three-letter name.",
         "selectInvalid": "Which of these is NOT a correct name for the highlighted angle?",
-        "triangleInterior": "Choose a correct name for the interior angle at vertex {{vertex}}."
+        "triangleInterior": "Choose a correct name for the interior angle at vertex {{vertex}}.",
+        "selectAllNames": "Select ALL correct names for the highlighted angle — there may be more than one."
       },
       "feedback": {
         "selectName": "The middle letter of a correct name is always the vertex — the two outer letters are the rays, in either order.",
         "selectInvalid": "That name puts the vertex in the wrong position — the middle letter of a valid name is always the vertex.",
-        "triangleInterior": "An interior angle of a triangle is named the same way: the vertex in the middle, the other two vertices on the outside."
+        "triangleInterior": "An interior angle of a triangle is named the same way: the vertex in the middle, the other two vertices on the outside.",
+        "selectAllNames": "Every valid name has the vertex in the middle and both rays of this exact angle on the outside, in either order — a name built from a different ray, or with the vertex out of place, is not valid."
       },
       "difficulty": {
         "basic": "Two rays at a vertex, so only one angle to name.",
         "intermediate": "Several rays at a vertex, the Greek-letter shorthand, and a light triangle-naming task.",
         "advanced": "Many rays, non-adjacent angles, and more triangle-naming."
+      },
+      "selectAllNames": {
+        "checkButton": "Check my answer",
+        "status": {
+          "correct": "correct",
+          "missed": "missed",
+          "incorrect": "not valid"
+        }
       }
     },
     "compare": {
@@ -2005,6 +2015,22 @@
       "handleLabel": "Drag to change the angle",
       "liveReadout": "Current angle: {{degrees}}° ({{type}})",
       "checkButton": "Check"
+    },
+    "measure": {
+      "gameName": "Measure an Angle",
+      "gameDescription": "Line a digital protractor up with the angle and read off its measure.",
+      "intro": "The protractor's own baseline is already lined up with one ray — read the number where the other ray crosses the scale.",
+      "prompt": "Read the angle using the protractor, then type its measure in degrees.",
+      "inputLabel": "Angle measure:",
+      "checkButton": "Check",
+      "feedback": {
+        "wrong": "You read {{given}}° — the correct measure is {{correct}}°."
+      },
+      "difficulty": {
+        "basic": "The target always lands on a major tick (a multiple of 5°).",
+        "intermediate": "Any whole-degree measure, not just the major ticks.",
+        "advanced": "Any whole-degree measure, with the whole diagram rotated too — the protractor still lines up correctly."
+      }
     }
   }
 }

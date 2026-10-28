@@ -3,6 +3,7 @@ import type { AngleNotationChallenge, AngleNotationKind, AnglesDifficultyId } fr
 import type { LabeledTriangle } from '../../geometry/types';
 import {
   allValidThreeLetterNames,
+  canUseVertexOnlyName,
   greekLetterForIndex,
   isValidAngleName,
   threeLetterName,
@@ -29,10 +30,14 @@ const RAY_COUNT_BY_DIFFICULTY: Record<AnglesDifficultyId, number> = {
   advanced: 4,
 };
 
+// Index 0 of every pool is deliberately kept as a plain single-select kind
+// ('selectName'): the first question of a session is what a handful of
+// existing page tests interact with directly, and only a single-select
+// question answers immediately on one button click.
 const KIND_POOL: Record<AnglesDifficultyId, AngleNotationKind[]> = {
-  basic: ['selectName', 'selectName', 'selectName', 'selectInvalid'],
-  intermediate: ['selectName', 'selectInvalid', 'selectName', 'triangleInterior'],
-  advanced: ['selectInvalid', 'triangleInterior', 'selectName', 'triangleInterior'],
+  basic: ['selectName', 'selectAllNames', 'selectName', 'selectInvalid'],
+  intermediate: ['selectName', 'selectInvalid', 'selectAllNames', 'triangleInterior'],
+  advanced: ['selectInvalid', 'triangleInterior', 'selectAllNames', 'selectName'],
 };
 
 const GREEK_CHANCE_BY_DIFFICULTY: Record<AnglesDifficultyId, number> = { basic: 0, intermediate: 0.35, advanced: 0.5 };
@@ -169,9 +174,94 @@ function makeTriangleInteriorChallenge(difficulty: AnglesDifficultyId, index: nu
   };
 }
 
+/**
+ * Scene ray counts a `selectAllNames` question draws from, per difficulty.
+ * Basic occasionally uses just 2 rays — the *only* scene shape where
+ * `canUseVertexOnlyName` is true (exactly one angle exists at the vertex), so
+ * it is the sole mechanism that ever produces a 3-correct-name question (the
+ * two letter orderings plus the unambiguous vertex-only name). With 3+ rays
+ * at the vertex a vertex-only name is always ambiguous, so only the two
+ * orderings are ever valid — this is a deliberate, reasoned reading of the
+ * textbook's "2 or 3 correct names" variation against what this engine's
+ * one-label-per-ray model can actually produce; see the final report.
+ */
+const SELECT_ALL_RAY_COUNT_OPTIONS: Record<AnglesDifficultyId, number[]> = {
+  basic: [2, 3, 3],
+  intermediate: [3, 4, 4],
+  advanced: [4, 5, 5],
+};
+
+/** Total options offered (correct + distractors) — always achievable; see the generator's design notes on distractor-pool size. */
+const SELECT_ALL_TOTAL_OPTIONS = 5;
+
+function makeSelectAllNamesChallenge(difficulty: AnglesDifficultyId, index: number, random: () => number): AngleNotationChallenge {
+  const rayCount = pickRandom(random, SELECT_ALL_RAY_COUNT_OPTIONS[difficulty]);
+  const labels = pickLabels(random, rayCount + 2); // vertex + rayCount arms + 1 spare unrelated label
+  const [vertexLabel, ...rest] = labels;
+  const armLabels = rest.slice(0, rayCount);
+  const unrelatedLabel = rest[rayCount];
+  const degrees = pickSpreadDegrees(random, rayCount);
+  const scene = buildVertexScene(random, vertexLabel, degrees, armLabels, { baseRotationDeg: randomBaseRotation(random, difficulty) });
+
+  const pairIndex = rayCount === 2 ? 0 : randomInt(random, 0, rayCount - 2);
+  const armPair: [string, string] = [scene.rays[pairIndex].label, scene.rays[pairIndex + 1].label];
+  const [orderingA, orderingB] = allValidThreeLetterNames(vertexLabel, armPair);
+
+  const correctNames = [orderingA, orderingB];
+  if (canUseVertexOnlyName(rayCount)) correctNames.push(vertexLabel);
+
+  // Distractor pool: the classic wrong-vertex mistake (both slots), a point
+  // not in this diagram at all, and — the genuinely tricky one — a real
+  // *other* ray in the scene swapped in for one arm, which looks exactly
+  // like a valid name's shape but actually names a different angle.
+  const otherRays = scene.rays.filter((_, i) => i !== pairIndex && i !== pairIndex + 1);
+  const distractorPool = new Set<string>([
+    threeLetterName(vertexLabel, armPair[0], armPair[1]),
+    threeLetterName(armPair[0], armPair[1], vertexLabel),
+    threeLetterName(unrelatedLabel, vertexLabel, armPair[1]),
+  ]);
+  for (const otherRay of otherRays) {
+    distractorPool.add(threeLetterName(armPair[0], vertexLabel, otherRay.label));
+    distractorPool.add(threeLetterName(otherRay.label, vertexLabel, armPair[1]));
+  }
+  // Defensive, not merely trusted: a "distractor" that is secretly a valid
+  // name (or literally the vertex-only name) would make the question unsound.
+  for (const candidate of [...distractorPool]) {
+    if (candidate === vertexLabel || isValidAngleName(candidate, vertexLabel, armPair)) distractorPool.delete(candidate);
+  }
+
+  const neededDistractors = Math.max(0, SELECT_ALL_TOTAL_OPTIONS - correctNames.length);
+  const distractors = shuffle([...distractorPool], random).slice(0, neededDistractors);
+
+  const combined = [
+    ...correctNames.map((name, i) => ({ id: `correct-${i}`, name, valid: true })),
+    ...distractors.map((name, i) => ({ id: `distractor-${i}`, name, valid: false })),
+  ];
+  const nameOptions = shuffle(combined, random);
+  const correctOptionIds = nameOptions
+    .filter((option) => option.valid)
+    .map((option) => option.id)
+    .sort();
+  const answer = correctOptionIds.join(',');
+
+  return {
+    id: `angles-notation-selectall-${difficulty}-${index}`,
+    kind: 'selectAllNames',
+    difficulty,
+    scene,
+    highlightedRef: { vertexId: 'vertex', rayAId: scene.rays[pairIndex].id, rayBId: scene.rays[pairIndex + 1].id },
+    nameOptions,
+    promptKey: 'anglesGrade7.notation.prompt.selectAllNames',
+    answer,
+    options: [answer],
+    feedbackKey: 'anglesGrade7.notation.feedback.selectAllNames',
+  };
+}
+
 function makeChallenge(difficulty: AnglesDifficultyId, kind: AngleNotationKind, index: number, random: () => number): AngleNotationChallenge {
   if (kind === 'selectName') return makeSelectNameChallenge(difficulty, index, random);
   if (kind === 'selectInvalid') return makeSelectInvalidChallenge(difficulty, index, random);
+  if (kind === 'selectAllNames') return makeSelectAllNamesChallenge(difficulty, index, random);
   return makeTriangleInteriorChallenge(difficulty, index, random);
 }
 
@@ -213,6 +303,36 @@ export function assertAngleNotationChallengeIsSound(challenge: AngleNotationChal
     const armLabels = interiorAngleArmLabels(challenge.triangle!, challenge.highlightedVertexIndex!);
     if (!isValidAngleName(challenge.answer, vertexLabel, armLabels)) {
       throw new Error('triangleInterior answer is not a valid name for the highlighted interior angle');
+    }
+  }
+
+  if (challenge.kind === 'selectAllNames') {
+    const options = challenge.nameOptions!;
+    if (options.length < 4) throw new Error('selectAllNames needs at least 4 options');
+    const names = options.map((option) => option.name);
+    if (new Set(names).size !== names.length) throw new Error('selectAllNames has duplicate name options');
+
+    const ref = challenge.highlightedRef!;
+    const rayA = challenge.scene!.rays.find((ray) => ray.id === ref.rayAId)!;
+    const rayB = challenge.scene!.rays.find((ray) => ref.rayBId === ray.id)!;
+    const vertexLabel = challenge.scene!.vertex.label;
+    const armLabels: [string, string] = [rayA.label, rayB.label];
+    const rayCountAtVertex = challenge.scene!.rays.length;
+    const vertexOnlyUnambiguous = canUseVertexOnlyName(rayCountAtVertex);
+
+    const correctIds: string[] = [];
+    for (const option of options) {
+      const isVertexOnlyName = option.name === vertexLabel;
+      const actuallyValid = isVertexOnlyName ? vertexOnlyUnambiguous : isValidAngleName(option.name, vertexLabel, armLabels);
+      if (actuallyValid !== option.valid) {
+        throw new Error(`selectAllNames option "${option.name}" is marked valid=${option.valid} but is actually ${actuallyValid}`);
+      }
+      if (option.valid) correctIds.push(option.id);
+    }
+    if (correctIds.length < 2) throw new Error('selectAllNames must have at least two correct names (both letter orders)');
+    const expectedAnswer = [...correctIds].sort().join(',');
+    if (challenge.answer !== expectedAnswer) {
+      throw new Error('selectAllNames answer does not match the sorted-and-joined set of correct option ids');
     }
   }
 }

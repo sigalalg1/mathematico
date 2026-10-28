@@ -8,7 +8,7 @@ describe('Grade 7 Geometry (Angles) topic listing', () => {
     await resetLanguage();
   });
 
-  it('lists all five Angles activities with working links', async () => {
+  it('lists all six Angles activities with working links', async () => {
     await useLanguage('en');
     renderWithProviders(<GeometryGrade7Page />);
     expect(screen.getByText('Geometry – Angles')).toBeInTheDocument();
@@ -18,6 +18,7 @@ describe('Grade 7 Geometry (Angles) topic listing', () => {
       ['Angle Notation', '/grade/7/geometry/angle-notation'],
       ['Compare Angles', '/grade/7/geometry/compare-angles'],
       ['Construct an Angle', '/grade/7/geometry/construct-an-angle'],
+      ['Measure an Angle', '/grade/7/geometry/measure-an-angle'],
     ];
     for (const [name, path] of expected) {
       expect(screen.getByRole('link', { name: new RegExp(name) })).toHaveAttribute('href', path);

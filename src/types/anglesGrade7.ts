@@ -65,21 +65,46 @@ export type AngleTypeChallenge = AngleClassifyChallenge | AngleOrderChallenge;
 
 // --- 3. Angle notation (Skill D — chapter 21; `triangleInterior` is light Skill-E enrichment) --------
 
-export type AngleNotationKind = 'selectName' | 'selectInvalid' | 'triangleInterior';
+export type AngleNotationKind = 'selectName' | 'selectInvalid' | 'triangleInterior' | 'selectAllNames';
+
+/**
+ * One candidate three-letter (or vertex-only) name offered by a
+ * `selectAllNames` question — `valid` is the ground truth the generator
+ * computed via `isValidAngleName`/`canUseVertexOnlyName`, never derived from
+ * the option's position or id.
+ */
+export interface AngleNotationNameOption {
+  id: string;
+  name: string;
+  valid: boolean;
+}
 
 export interface AngleNotationChallenge {
   id: string;
   kind: AngleNotationKind;
   difficulty: AnglesDifficultyId;
-  /** Present for 'selectName' / 'selectInvalid'. */
+  /** Present for 'selectName' / 'selectInvalid' / 'selectAllNames'. */
   scene?: VertexScene;
   highlightedRef?: AngleRef;
   /** Present for 'triangleInterior' — enrichment beyond the textbook excerpt, see i18n copy. */
   triangle?: LabeledTriangle;
   highlightedVertexIndex?: 0 | 1 | 2;
   usesGreekLetter?: boolean;
+  /**
+   * Present only for 'selectAllNames' — the textbook's own "pick every
+   * correct name" format. The number of `valid` options deliberately varies
+   * per question (2, or 3 when a vertex-only name is also unambiguous) —
+   * that variation is the whole pedagogical point, see the generator.
+   */
+  nameOptions?: AngleNotationNameOption[];
   promptKey: string;
   promptValues?: Record<string, string>;
+  /**
+   * For every other kind, one of `options`. For 'selectAllNames' this is
+   * instead the canonical sorted/joined `nameOptions` ids that are correct
+   * (e.g. "correct-0,correct-1") — the single combined answer the page
+   * submits once the student has toggled their full selection.
+   */
   answer: string;
   options: string[];
   feedbackKey: string;
@@ -121,5 +146,24 @@ export interface AngleConstructChallenge {
   options: string[];
   promptKey: string;
   promptValues?: Record<string, string>;
+  feedbackKey: string;
+}
+
+// --- 6. Measure-the-angle digital protractor (the exam's third skill: measuring — own build, see report) --------
+
+export interface AngleMeasureChallenge {
+  id: string;
+  kind: 'measure';
+  difficulty: AnglesDifficultyId;
+  vertex: { x: number; y: number };
+  /** The one fixed reference ray the protractor's own baseline auto-aligns to. */
+  fixedThrough: { x: number; y: number };
+  /** The ray whose measure (from `fixedThrough`) the student reads off the protractor. */
+  measuredThrough: { x: number; y: number };
+  targetDegrees: number;
+  toleranceDeg: number;
+  answer: string;
+  options: string[];
+  promptKey: string;
   feedbackKey: string;
 }

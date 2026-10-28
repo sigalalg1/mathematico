@@ -13,6 +13,7 @@ import { anglesTypesActivity } from '../data/games/anglesTypesData';
 import { anglesNotationActivity } from '../data/games/anglesNotationData';
 import { anglesCompareActivity } from '../data/games/anglesCompareData';
 import { anglesConstructActivity } from '../data/games/anglesConstructData';
+import { anglesMeasureActivity } from '../data/games/anglesMeasureData';
 
 /**
  * Every activity that opts into the training system. Adding a new one is a
@@ -33,6 +34,7 @@ const TRAINING_ACTIVITIES: TrainingActivityDefinition<unknown>[] = [
   anglesNotationActivity,
   anglesCompareActivity,
   anglesConstructActivity,
+  anglesMeasureActivity,
 ];
 
 export function getTrainingActivity(activityId: string): TrainingActivityDefinition<unknown> | undefined {

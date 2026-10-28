@@ -149,12 +149,14 @@ const GEOMETRY_GRADE7_PATH = '/grade/7/geometry';
 /**
  * Grade 7 — Angles. Sourced from the attached textbook excerpt (chapters
  * 20–22): rays/vertex/angle identification, the four angle types, angle
- * notation (three-letter names + Greek-letter shorthand), and comparing
- * angle sizes. The construct-an-angle drag lab is this build's own addition
- * (the excerpt only gestures at construction) — see the final report.
- * `anglesConstruct` is deliberately last: it asks a child to *build* an
- * angle only after they can already identify, classify, name and compare
- * one.
+ * notation (three-letter names, the "select all valid names" format, and
+ * Greek-letter shorthand), and comparing angle sizes. The construct-an-angle
+ * drag lab and the measure-an-angle digital protractor are this build's own
+ * additions (the excerpt only gestures at construction, and has no
+ * interactive-protractor mechanic at all) — see the final report.
+ * `anglesConstruct` and `anglesMeasure` are deliberately last: they ask a
+ * child to *build* or *measure* an angle only after they can already
+ * identify, classify, name and compare one.
  */
 export const geometryGrade7Games: Game[] = [
   {
@@ -196,6 +198,14 @@ export const geometryGrade7Games: Game[] = [
     nameKey: 'anglesGrade7.construct.gameName',
     descriptionKey: 'anglesGrade7.construct.gameDescription',
     icon: '✎',
+  },
+  {
+    id: 'anglesMeasure',
+    enabled: true,
+    path: `${GEOMETRY_GRADE7_PATH}/measure-an-angle`,
+    nameKey: 'anglesGrade7.measure.gameName',
+    descriptionKey: 'anglesGrade7.measure.gameDescription',
+    icon: '∡',
   },
 ];
 

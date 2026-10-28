@@ -56,6 +56,29 @@
   color: var(--error);
 }
 
+/* The "select all valid names" exercise: a toggleable option, before it is submitted. */
+.angles7-option.is-selected {
+  border-color: var(--secondary);
+  background: var(--secondary-bg);
+}
+
+/* A genuinely correct name the student did not select — shown only after a wrong attempt. */
+.angles7-option.is-missed {
+  border-color: var(--warning-border);
+  border-style: dashed;
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.angles7-option-status {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
 .angles7-feedback {
   width: 100%;
   max-width: 520px;
