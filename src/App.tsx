@@ -63,6 +63,12 @@ import { AnglesNotationPage } from './pages/AnglesNotationPage';
 import { AnglesComparePage } from './pages/AnglesComparePage';
 import { AnglesConstructPage } from './pages/AnglesConstructPage';
 import { BasketballMonkeyPage } from './pages/BasketballMonkeyPage';
+import { Grade4GeometryFoundationsPage } from './pages/Grade4GeometryFoundationsPage';
+import { Geo4PointsSegmentsPage } from './pages/Geo4PointsSegmentsPage';
+import { Geo4AnglesPage } from './pages/Geo4AnglesPage';
+import { Geo4RelationsPage } from './pages/Geo4RelationsPage';
+import { Geo4FamilyPage } from './pages/Geo4FamilyPage';
+import { Geo4MeasurementPage } from './pages/Geo4MeasurementPage';
 import { DevEnvironmentBanner } from './components/DevEnvironmentBanner';
 
 function App() {
@@ -132,6 +138,12 @@ function App() {
         <Route path="/grade/4/decimal-place-value/word-problems" element={<DecimalWordProblemsPage />} />
         <Route path="/grade/4/decimal-place-value/diagnostic" element={<DecimalDiagnosticPage />} />
         <Route path="/grade/4/decimal-place-value/mock-exam" element={<DecimalMockExamPage />} />
+        <Route path="/grade/4/geometry-foundations" element={<Grade4GeometryFoundationsPage />} />
+        <Route path="/grade/4/geometry-foundations/points-segments-polygons" element={<Geo4PointsSegmentsPage />} />
+        <Route path="/grade/4/geometry-foundations/angles" element={<Geo4AnglesPage />} />
+        <Route path="/grade/4/geometry-foundations/sides-vertices-diagonals" element={<Geo4RelationsPage />} />
+        <Route path="/grade/4/geometry-foundations/polygon-family" element={<Geo4FamilyPage />} />
+        <Route path="/grade/4/geometry-foundations/perimeter-area-units" element={<Geo4MeasurementPage />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/activity" element={<ActivityPage />} />

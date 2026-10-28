@@ -1,4 +1,4 @@
-import type { ReactNode, PointerEventHandler } from 'react';
+import { useId, type ReactNode, type PointerEventHandler } from 'react';
 import type { Point } from '../../types/geometry';
 import type { AngleType7 } from '../../geometry/types';
 import type { GeometryStyleTokens } from '../../geometry/style';
@@ -321,5 +321,183 @@ export function GeoHandle({
         className="geo-handle"
       />
     </g>
+  );
+}
+
+/**
+ * The Grade 4 "Learning the Language of Geometry" unit's own primitives.
+ * Everything below is still plain, grade-agnostic SVG rendering of generic
+ * points — nothing here is specific to Grade 4 — so it is just as reusable by
+ * any future geometry content as the primitives above it.
+ */
+
+/**
+ * An *open* chain of straight segments: `points[0]` to `points[1]` to ... but
+ * never closed back to the first point. This is the deliberate non-example
+ * rendering for "not a polygon because the shape never closes" — a plain
+ * `GeoPolygon` cannot represent it, since an SVG `<polygon>` always closes
+ * itself automatically.
+ */
+export function GeoOpenChain({ points, style, color }: { points: Point[]; style: GeometryStyleTokens; color?: string }) {
+  return (
+    <polyline
+      className="geo-open-chain"
+      points={points.map((p) => `${p.x},${p.y}`).join(' ')}
+      stroke={color ?? style.colors.polygon}
+      strokeWidth={style.strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    />
+  );
+}
+
+/** A smooth (quadratic-through-midpoints) path through `points` — the deliberate non-example of "sides must be straight," closed or open. */
+export function GeoCurvedChain({
+  points,
+  style,
+  color,
+  closed,
+  fill,
+}: {
+  points: Point[];
+  style: GeometryStyleTokens;
+  color?: string;
+  closed?: boolean;
+  fill?: boolean;
+}) {
+  if (points.length < 2) return null;
+  const loop = closed ? [...points, points[0]] : points;
+  let d = `M ${loop[0].x} ${loop[0].y}`;
+  for (let i = 1; i < loop.length; i += 1) {
+    const prev = loop[i - 1];
+    const curr = loop[i];
+    const control = { x: (prev.x + curr.x) / 2 + (curr.y - prev.y) * 0.18, y: (prev.y + curr.y) / 2 - (curr.x - prev.x) * 0.18 };
+    d += ` Q ${control.x} ${control.y} ${curr.x} ${curr.y}`;
+  }
+  if (closed) d += ' Z';
+  return (
+    <path
+      className="geo-curved-chain"
+      d={d}
+      stroke={color ?? style.colors.polygon}
+      strokeWidth={style.strokeWidth}
+      strokeLinecap="round"
+      fill={fill && closed ? style.colors.polygonFill : 'none'}
+    />
+  );
+}
+
+/**
+ * Small "arrow" tick marks placed at a segment's midpoint, perpendicular to
+ * it — the standard notation for "these sides are parallel." Two segments
+ * drawn with the *same* `count` are claiming to be parallel to each other;
+ * generators must keep that in sync with `segmentsAreParallel`.
+ */
+export function GeoParallelTicks({
+  a,
+  b,
+  style,
+  count = 1,
+  color,
+}: {
+  a: Point;
+  b: Point;
+  style: GeometryStyleTokens;
+  count?: number;
+  color?: string;
+}) {
+  const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+  const segDeg = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
+  const tickLength = style.vertexRadius * 1.8;
+  const spacing = style.vertexRadius * 1.1;
+  const tickColor = color ?? style.colors.handleActive;
+  return (
+    <g className="geo-parallel-ticks">
+      {Array.from({ length: count }, (_, i) => {
+        const offset = (i - (count - 1) / 2) * spacing;
+        const center = pointFromAngle(mid, segDeg, offset);
+        const p1 = pointFromAngle(center, segDeg + 60, tickLength / 2);
+        const p2 = pointFromAngle(center, segDeg - 120, tickLength / 2);
+        return <line key={i} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke={tickColor} strokeWidth={style.strokeWidth} strokeLinecap="round" />;
+      })}
+    </g>
+  );
+}
+
+/**
+ * Fills a closed shape's interior with a grid of colored unit squares — the
+ * "area is the region covered, measured in square units" visual from the
+ * brief's measurement-vocabulary group. Purely illustrative (no count is
+ * exposed as a gradable answer by this primitive); it exists so area reads as
+ * *tiled area*, not as an abstract color wash.
+ */
+export function GeoAreaFill({ points, style, cellSize = 16, color }: { points: Point[]; style: GeometryStyleTokens; cellSize?: number; color?: string }) {
+  const reactId = useId();
+  const clipId = `geo-area-clip-${reactId}`;
+  const { width, height } = style.viewBox;
+  const cols = Math.ceil(width / cellSize);
+  const rows = Math.ceil(height / cellSize);
+  const fill = color ?? style.colors.polygon;
+  return (
+    <g className="geo-area-fill" data-testid="geo-area-fill">
+      <clipPath id={clipId}>
+        <polygon points={points.map((p) => `${p.x},${p.y}`).join(' ')} />
+      </clipPath>
+      <g clipPath={`url(#${clipId})`}>
+        {Array.from({ length: rows }, (_, row) =>
+          Array.from({ length: cols }, (_, col) => (
+            <rect
+              key={`${row}-${col}`}
+              x={col * cellSize}
+              y={row * cellSize}
+              width={cellSize}
+              height={cellSize}
+              fill={fill}
+              fillOpacity={(row + col) % 2 === 0 ? 0.3 : 0.16}
+              stroke={style.colors.grid}
+              strokeWidth={0.5}
+            />
+          )),
+        )}
+      </g>
+    </g>
+  );
+}
+
+/**
+ * Traces a shape's boundary in an accent stroke, optionally animated as a
+ * dash tracing around it (a line "traveling around the edge") — the
+ * perimeter-vocabulary visual. The animation is a decorative CSS class only
+ * (`geo-perimeter-animated`, scoped in `GeometryScene.css`) and is disabled
+ * under `prefers-reduced-motion`, consistent with the rest of the app's
+ * scoped-CSS motion convention.
+ */
+export function GeoPerimeterTrace({
+  points,
+  style,
+  closed = true,
+  animated,
+  color,
+}: {
+  points: Point[];
+  style: GeometryStyleTokens;
+  closed?: boolean;
+  animated?: boolean;
+  color?: string;
+}) {
+  const loop = closed ? [...points, points[0]] : points;
+  const d = `M ${loop.map((p) => `${p.x} ${p.y}`).join(' L ')}`;
+  return (
+    <path
+      className={`geo-perimeter-trace${animated ? ' geo-perimeter-animated' : ''}`}
+      data-testid="geo-perimeter-trace"
+      d={d}
+      fill="none"
+      stroke={color ?? style.colors.handleActive}
+      strokeWidth={style.strokeWidth * 2.2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   );
 }

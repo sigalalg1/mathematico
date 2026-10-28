@@ -69,3 +69,20 @@ export interface GridLabeledPoint extends LabeledPoint {
   x: number;
   y: number;
 }
+
+/**
+ * The core reusable primitive behind the Grade 4 "Learning the Language of
+ * Geometry" unit: an ordered chain of labeled points, which may be a genuine
+ * closed polygon or a deliberate non-example (an open chain, or one with
+ * curved rather than straight sides — see `closed`/`curved`). Side `i` runs
+ * from `vertices[i]` to `vertices[i + 1]`, wrapping to `vertices[0]` only
+ * when `closed` is true. Grade-agnostic: nothing here assumes Grade 4.
+ */
+export interface PolygonScene {
+  id: string;
+  vertices: LabeledPoint[];
+  /** False = an open chain (a non-example of a polygon), not wrapped back to the first vertex. */
+  closed: boolean;
+  /** True = sides are drawn as smooth curves rather than straight segments (a non-example: not made of straight sides). */
+  curved?: boolean;
+}

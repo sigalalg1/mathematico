@@ -61,3 +61,31 @@
 .geo-angle-arc path {
   vector-effect: non-scaling-stroke;
 }
+
+.geo-open-chain,
+.geo-curved-chain,
+.geo-perimeter-trace {
+  vector-effect: non-scaling-stroke;
+}
+
+/*
+ * The "line traveling around the shape" perimeter animation: a moving dash
+ * pattern along the traced boundary. Purely decorative, so it is switched
+ * off under prefers-reduced-motion (see below) rather than only slowed down.
+ */
+.geo-perimeter-animated {
+  stroke-dasharray: 10 8;
+  animation: geo-perimeter-travel 2.4s linear infinite;
+}
+
+@keyframes geo-perimeter-travel {
+  to {
+    stroke-dashoffset: -72;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .geo-perimeter-animated {
+    animation: none;
+  }
+}

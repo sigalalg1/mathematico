@@ -8,6 +8,7 @@ import {
   fractionsPart1Games,
   geometryAnglesTrianglesGames,
   geometryGrade7Games,
+  grade4GeometryFoundationsGames,
   multiplicationGames,
   signedNumbersGames,
   simpleFractionsGames,
@@ -65,6 +66,12 @@ export const topics: Topic[] = [
     path: '/grade/4/decimal-place-value',
   },
   {
+    id: 'grade4GeometryFoundations',
+    gradeId: 4,
+    enabled: true,
+    path: '/grade/4/geometry-foundations',
+  },
+  {
     id: 'coordinateSystem',
     gradeId: 7,
     enabled: true,
@@ -119,6 +126,7 @@ const TOPIC_GAMES: Partial<Record<string, Game[]>> = {
   algebraBasics: algebraGames,
   decimalPlaceValue: decimalPlaceValueGames,
   geometry: geometryGrade7Games,
+  grade4GeometryFoundations: grade4GeometryFoundationsGames,
 };
 
 function topicHasActivity(topic: Topic): boolean {
