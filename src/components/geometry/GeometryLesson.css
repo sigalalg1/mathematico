@@ -1,0 +1,119 @@
+/*
+ * Shared shell for the Grade 4 geometry-foundations unit's guided lesson step
+ * (`ConceptIntro` + `GeometryLessonFlow`). Bright, uncluttered, large touch
+ * targets — the "friendly, not childish" visual language from the mission
+ * brief, no sports/character theming.
+ */
+
+.concept-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.concept-intro-term {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--text-h);
+  margin: 0;
+}
+
+.concept-intro-definition {
+  font-size: var(--text-lg);
+  color: var(--text);
+  margin: 0;
+  max-width: 440px;
+}
+
+.concept-intro-diagram {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.concept-intro-diagram .geo-stage {
+  max-width: 320px;
+}
+
+.concept-intro-tryit {
+  font-size: var(--text-md, var(--text-lg));
+  font-weight: 700;
+  color: var(--secondary);
+  min-height: 1.6em;
+}
+
+.concept-intro-tryit.is-complete {
+  color: var(--success);
+}
+
+.geo-lesson-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.geo-lesson-progress {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.geo-lesson-step {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.geo-lesson-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 480px;
+  gap: var(--space-3);
+}
+
+.geo-lesson-skip {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2);
+  text-decoration: underline;
+}
+
+.geo-lesson-nav {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.geo-lesson-back,
+.geo-lesson-next {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-6);
+  cursor: pointer;
+  min-height: 48px;
+}
+
+.geo-lesson-back {
+  background: var(--surface);
+  color: var(--text-h);
+  border: 2px solid var(--border);
+}
+
+.geo-lesson-next {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border: none;
+}

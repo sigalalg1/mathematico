@@ -1,0 +1,176 @@
+/*
+ * Shared practice-screen layout for every activity in the Grade 4 "Learning
+ * the Language of Geometry" unit. Mirrors `AnglesGrade7Shared.css`'s
+ * structure (the Grade 7 Angles unit's own shared layout) but with larger
+ * touch targets and a friendlier accent, consistent with `grade4GeometryStyle`.
+ */
+
+.geo4-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.geo4-prompt {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-h);
+  text-align: center;
+  max-width: 560px;
+}
+
+.geo4-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  max-width: 560px;
+}
+
+.geo4-option {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-h);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  cursor: pointer;
+  min-height: 52px;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.geo4-option:hover:not(:disabled) {
+  border-color: var(--secondary);
+}
+
+.geo4-option:disabled {
+  cursor: default;
+}
+
+.geo4-option.is-correct {
+  border-color: var(--success-border);
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.geo4-option.is-wrong {
+  border-color: var(--error);
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+.geo4-feedback {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  min-height: 1.6em;
+}
+
+.geo4-feedback.is-correct {
+  color: var(--success);
+}
+
+.geo4-feedback.is-wrong {
+  color: var(--error);
+}
+
+.geo4-feedback-explain {
+  font-size: var(--text-md, var(--text-sm));
+  font-weight: 500;
+  color: var(--muted);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Multi-select ("select all matching") controls: the diagram handles toggle
+   on/off, and a single confirm button submits the whole set at once. */
+.geo4-select-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.geo4-confirm-button {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--primary-contrast);
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-7, var(--space-6));
+  cursor: pointer;
+  min-height: 52px;
+}
+
+.geo4-confirm-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.geo4-select-hint {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Compare / gallery layouts: two or more small diagrams side by side. Forced
+   LTR, the same fix the Grade 7 Compare Angles activity needed — a plain
+   `display: flex` row follows the document's writing direction, and this
+   page's host document is RTL (Hebrew), which would otherwise silently swap
+   which diagram renders on the user's visual left vs. right relative to what
+   the data/options describe. */
+.geo4-gallery-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+  direction: ltr;
+}
+
+.geo4-gallery-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  background: transparent;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+  cursor: pointer;
+  width: 160px;
+  direction: ltr;
+}
+
+.geo4-gallery-item .geo-stage {
+  max-width: 100%;
+}
+
+.geo4-gallery-item:hover:not(:disabled) {
+  border-color: var(--secondary);
+}
+
+.geo4-gallery-item:disabled {
+  cursor: default;
+}
+
+.geo4-gallery-item.is-correct {
+  border-color: var(--success-border);
+}
+
+.geo4-gallery-item.is-wrong {
+  border-color: var(--error);
+}
+
+.geo4-gallery-caption {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-h);
+}

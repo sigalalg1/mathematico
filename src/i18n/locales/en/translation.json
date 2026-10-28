@@ -151,6 +151,10 @@
     "decimalPlaceValue": {
       "name": "Decimal Place Value — Exam Prep",
       "description": "Eight skills, a diagnostic, and a mock exam covering the base-10 number system up to a million."
+    },
+    "grade4GeometryFoundations": {
+      "name": "Learning the Language of Geometry",
+      "description": "Learn basic geometry vocabulary through play"
     }
   },
   "penaltyShootout": {
@@ -2005,6 +2009,358 @@
       "handleLabel": "Drag to change the angle",
       "liveReadout": "Current angle: {{degrees}}° ({{type}})",
       "checkButton": "Check"
+    }
+  },
+  "grade4GeometryFoundationsPage": {
+    "title": "Learning the Language of Geometry",
+    "subtitle": "Learn the vocabulary of shapes: points, angles, polygons and more",
+    "completedBadge": "Completed"
+  },
+  "grade4Geometry": {
+    "concepts": {
+      "point": {
+        "term": "Point",
+        "definition": "A point marks an exact location. It has no length or width."
+      },
+      "segment": {
+        "term": "Segment",
+        "definition": "A segment is a straight path connecting two points, called its endpoints."
+      },
+      "line": {
+        "term": "Line",
+        "definition": "A line is a straight path that goes on forever in both directions."
+      },
+      "ray": {
+        "term": "Ray",
+        "definition": "A ray starts at one point and goes on forever in just one direction."
+      },
+      "vertex": {
+        "term": "Vertex",
+        "definition": "A vertex is the point where two sides of a polygon meet.",
+        "tryIt": "Tap a different vertex of the polygon",
+        "success": "Great! That's another vertex of the shape."
+      },
+      "side": {
+        "term": "Side",
+        "definition": "A side is one of the straight segments that form a polygon's boundary.",
+        "tryIt": "Tap a side of the polygon",
+        "success": "Nice! That's one of the shape's sides."
+      },
+      "polygon": {
+        "term": "Polygon",
+        "definition": "A polygon is a closed shape made only of straight segments."
+      },
+      "angle": {
+        "term": "Angle",
+        "definition": "An angle is formed when two rays start from the same point."
+      },
+      "angleVertex": {
+        "term": "Angle vertex",
+        "definition": "The angle's vertex is the point its two arms start from.",
+        "tryIt": "Tap the angle's vertex",
+        "success": "Right! That's the angle's vertex."
+      },
+      "angleArms": {
+        "term": "Angle arms",
+        "definition": "The angle's arms are the two rays coming out of its vertex.",
+        "tryIt": "Tap both arms of the angle",
+        "success": "Great! You found both arms."
+      },
+      "angleTypes": {
+        "term": "Angle types",
+        "definition": "Angles can be acute, right, or obtuse, depending on how 'open' they are."
+      },
+      "acuteAngle": {
+        "term": "Acute angle",
+        "definition": "An acute angle is smaller than a right angle (less than 90°)."
+      },
+      "rightAngle": {
+        "term": "Right angle",
+        "definition": "A right angle is exactly 90° — like the corner of a page."
+      },
+      "obtuseAngle": {
+        "term": "Obtuse angle",
+        "definition": "An obtuse angle is bigger than a right angle (more than 90°)."
+      },
+      "adjacentSides": {
+        "term": "Adjacent sides",
+        "definition": "Adjacent sides are two sides that share a common vertex.",
+        "tryIt": "Tap a side next to the highlighted one",
+        "success": "Well done! That's an adjacent side."
+      },
+      "oppositeSides": {
+        "term": "Opposite sides",
+        "definition": "In a quadrilateral, opposite sides are a pair that never meet — they share no vertex."
+      },
+      "diagonal": {
+        "term": "Diagonal",
+        "definition": "A diagonal connects two vertices of a polygon that are not next to each other.",
+        "tryIt": "Connect two non-adjacent vertices to make a diagonal",
+        "success": "Great! You drew a diagonal."
+      },
+      "parallelLines": {
+        "term": "Parallel lines",
+        "definition": "Parallel lines never meet, even if you extend them forever."
+      },
+      "perpendicularLines": {
+        "term": "Perpendicular lines",
+        "definition": "Perpendicular lines meet and form a right angle (90°)."
+      },
+      "polygonFamily": {
+        "term": "Polygon families",
+        "definition": "A polygon's name depends on how many sides it has.",
+        "tryIt": "Tap a shape to reveal its name",
+        "success": "Nice! Now you know its name."
+      },
+      "quadrilateralFamily": {
+        "term": "Special quadrilaterals",
+        "definition": "Some quadrilaterals have their own names: square, rectangle, rhombus, parallelogram and trapezoid."
+      },
+      "perimeter": {
+        "term": "Perimeter",
+        "definition": "The perimeter is the total length all the way around a shape.",
+        "tryIt": "Tap to watch a line travel around the shape",
+        "success": "That's the perimeter — the path all the way around."
+      },
+      "area": {
+        "term": "Area",
+        "definition": "The area is the size of the region the shape covers on the inside."
+      },
+      "sideLength": {
+        "term": "Side length",
+        "definition": "A side's length is the distance between its two endpoints — just that one side.",
+        "tryIt": "Tap another side to see it highlighted",
+        "success": "That's a different side — each side has its own length."
+      },
+      "units": {
+        "term": "Units of measurement",
+        "definition": "Length and perimeter use length units (like cm); area uses square units (like cm²)."
+      }
+    },
+    "lesson": {
+      "skip": "Skip to practice",
+      "next": "Next",
+      "back": "Back",
+      "startPractice": "Start practice"
+    },
+    "points": {
+      "gameName": "Points, Segments & Polygons",
+      "gameDescription": "Learn points, segments, rays, lines and polygons",
+      "intro": "A polygon is a closed shape made only of straight segments. Let's learn its parts and tell it apart from shapes that aren't polygons.",
+      "prompt": {
+        "default": "Answer the question",
+        "tapVertex": "Tap any vertex of the polygon",
+        "tapVertexNotDecoy": "Tap a point that is really a vertex — not just a point on a side",
+        "tapSide": "Tap any side of the polygon",
+        "selectAllVertices": "Select every vertex of the polygon",
+        "selectAllSides": "Select every side of the polygon",
+        "isPolygon": "Is this a polygon?",
+        "countSides": "How many sides does this shape have?",
+        "galleryPick": "Tap the shape that is a real polygon"
+      },
+      "feedback": {
+        "tapVertex": "A vertex is the point where two sides meet.",
+        "tapVertexNotDecoy": "A point partway along a side is not a vertex — a vertex is only where two sides actually meet.",
+        "tapSide": "A side is a straight segment that forms the polygon's boundary.",
+        "selectAllVertices": "You need every vertex — every corner of the shape.",
+        "selectAllSides": "You need every side — every segment that forms the boundary.",
+        "isPolygon": {
+          "polygon": "This is a polygon: a closed shape made only of straight segments.",
+          "open": "This is not a polygon: the shape never closes — it has open ends.",
+          "curved": "This is not a polygon: its boundary is curved, not made of straight segments."
+        },
+        "countSides": "Count the straight segments that make up the shape's boundary.",
+        "galleryPick": "A real polygon is closed with straight sides only — not open, not curved."
+      },
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "decoyLabel": "Point on a side",
+      "selectHint": "{{count}} selected",
+      "confirmSelection": "Confirm selection",
+      "difficulty": {
+        "basic": "One simple shape, direct vertex or side recognition",
+        "intermediate": "Several objects in one shape, rotated shapes, select every vertex or side",
+        "advanced": "Irregular, unusual shapes; telling an example from a non-example"
+      }
+    },
+    "angles": {
+      "gameName": "Learning About Angles",
+      "gameDescription": "Learn what an angle, its vertex and its arms are",
+      "intro": "An angle is formed when two rays start from the same point. Let's learn its parts and the different angle types.",
+      "prompt": {
+        "default": "Answer the question",
+        "tapVertex": "Tap the angle's vertex",
+        "tapArm": "Tap one of the angle's arms",
+        "classify": "What type of angle is this?",
+        "selectAllRight": "Select every right angle",
+        "misconceptionTrue": "True or false: an angle's size depends on how open it is between the arms, not on their length.",
+        "misconceptionFalse": "True or false: longer arms always make a bigger angle."
+      },
+      "feedback": {
+        "tapVertex": "The angle's vertex is the point its two arms start from.",
+        "tapArm": "The angle's arms are the two rays coming out of the vertex.",
+        "classify": {
+          "acute": "This is an acute angle — smaller than a right angle.",
+          "right": "This is a right angle — exactly 90°.",
+          "obtuse": "This is an obtuse angle — bigger than a right angle.",
+          "straight": "This is a straight angle — exactly 180°, like a straight line."
+        },
+        "selectAllRight": "A right angle is exactly 90° — like the corner of a page.",
+        "misconception": "An angle's size depends only on how open it is between the arms — never on how long the drawn lines are."
+      },
+      "typeLabel": {
+        "acute": "Acute",
+        "right": "Right",
+        "obtuse": "Obtuse",
+        "straight": "Straight"
+      },
+      "boolLabel": {
+        "true": "True",
+        "false": "False"
+      },
+      "selectHint": "{{count}} selected",
+      "confirmSelection": "Confirm selection",
+      "difficulty": {
+        "basic": "One angle, three types: acute, right and obtuse",
+        "intermediate": "Includes straight angles; select every right angle among a few",
+        "advanced": "Heavily rotated angles; questions about arm length vs. angle size"
+      }
+    },
+    "relations": {
+      "gameName": "Sides, Vertices & Diagonals",
+      "gameDescription": "Learn about adjacent and opposite sides, diagonals, parallel and perpendicular lines",
+      "intro": "Adjacent sides share a vertex, and a diagonal connects two vertices that are not adjacent. Let's explore how a polygon's sides and vertices relate to each other.",
+      "prompt": {
+        "default": "Answer the question",
+        "tapAdjacentSide": "The highlighted side is colored. Tap a side next to it",
+        "constructDiagonal": "Tap a line that makes a diagonal from vertex {{vertex}}",
+        "selectAllDiagonals": "Select every diagonal that can be drawn from vertex {{vertex}}",
+        "compareSideVsDiagonal": "Two segments are highlighted. Tap the one that is a diagonal",
+        "parallelOrPerpendicular": "The two colored segments — are they parallel, perpendicular, or neither?",
+        "misconceptionDiagonal": "The highlighted segment in the shape — is it really a diagonal?"
+      },
+      "feedback": {
+        "tapAdjacentSide": "Adjacent sides are sides that share a common vertex.",
+        "constructDiagonal": "A diagonal connects two vertices that are not adjacent — not two vertices that touch.",
+        "selectAllDiagonals": "From one vertex you can draw a diagonal to every vertex that isn't adjacent to it (and not to itself or its two neighbors).",
+        "compareSideVsDiagonal": "A side connects two adjacent vertices; a diagonal connects two non-adjacent vertices.",
+        "parallelOrPerpendicular": {
+          "parallel": "The segments are parallel — they never meet, even if extended.",
+          "perpendicular": "The segments are perpendicular — they meet and form a right angle (90°).",
+          "neither": "These segments are neither parallel nor perpendicular."
+        },
+        "misconceptionDiagonal": {
+          "true": "Correct! This is a real diagonal — it connects two non-adjacent vertices.",
+          "false": "Not every segment inside a polygon is a diagonal — this one is a side, since it connects two adjacent vertices."
+        }
+      },
+      "relationLabel": {
+        "parallel": "Parallel",
+        "perpendicular": "Perpendicular",
+        "neither": "Neither"
+      },
+      "boolLabel": {
+        "true": "Yes, it's a diagonal",
+        "false": "No, it's not a diagonal"
+      },
+      "selectHint": "{{count}} selected",
+      "confirmSelection": "Confirm selection",
+      "difficulty": {
+        "basic": "Identify an adjacent side and tell a side from a diagonal, simple quadrilaterals",
+        "intermediate": "Construct a diagonal, check parallel/perpendicular, rotated shapes",
+        "advanced": "Select every diagonal from a vertex, irregular many-sided shapes"
+      }
+    },
+    "family": {
+      "gameName": "The Polygon Family",
+      "gameDescription": "Learn polygon names by side count, and the names of special quadrilaterals",
+      "intro": "A polygon's name depends on its number of sides — triangle, quadrilateral, pentagon, hexagon, heptagon and octagon. Let's practice recognizing them at any size or orientation.",
+      "prompt": {
+        "default": "Answer the question",
+        "nameByCount": "What is this polygon called?",
+        "countThenName": "How many sides does this polygon have?",
+        "tapInGallery": "Tap the {{name}}",
+        "selectAllOfFamily": "Select every {{name}} shape",
+        "orientationTrue": "True or false: you can rotate a polygon any way, and it's still a {{name}}.",
+        "orientationFalse": "True or false: a {{name}} must look exactly like in the textbook, with a vertex pointing straight up.",
+        "quadrilateralVocab": "What is this shape called?"
+      },
+      "feedback": {
+        "nameByCount": "A polygon's name depends on its number of sides, not how it's drawn.",
+        "countThenName": "Count the sides to find out which polygon family this is.",
+        "tapInGallery": "A polygon's name depends on its side count, no matter which way it's drawn.",
+        "selectAllOfFamily": "Every shape with the same number of sides belongs to the same family — even if it looks different or is rotated.",
+        "orientation": "Rotating a shape doesn't change its name — a polygon stays the same kind no matter which way it's drawn.",
+        "quadrilateralVocab": "Each of the special quadrilaterals — square, rectangle, rhombus, parallelogram and trapezoid — looks a little different."
+      },
+      "name": {
+        "triangle": "Triangle",
+        "quadrilateral": "Quadrilateral",
+        "pentagon": "Pentagon",
+        "hexagon": "Hexagon",
+        "heptagon": "Heptagon",
+        "octagon": "Octagon",
+        "square": "Square",
+        "rectangle": "Rectangle",
+        "rhombus": "Rhombus",
+        "parallelogram": "Parallelogram",
+        "trapezoid": "Trapezoid"
+      },
+      "boolLabel": {
+        "true": "True",
+        "false": "False"
+      },
+      "selectHint": "{{count}} selected",
+      "confirmSelection": "Confirm selection",
+      "difficulty": {
+        "basic": "Simple triangles and quadrilaterals, direct side counting",
+        "intermediate": "Up to hexagons, rotated shapes, special quadrilaterals, select the whole family",
+        "advanced": "Up to octagons, irregular shapes, recognizing special quadrilaterals at any orientation"
+      }
+    },
+    "measurement": {
+      "gameName": "Perimeter, Area & Measurement",
+      "gameDescription": "Learn the meanings of perimeter, area, side length and units of measurement",
+      "intro": "The perimeter is the length around a shape, and the area is the size of the region inside. Let's learn to tell the two apart, along with their units.",
+      "prompt": {
+        "default": "Answer the question",
+        "whichIsPerimeter": "Tap the picture where the perimeter is shown",
+        "whichIsArea": "Tap the picture where the area is shown",
+        "sideLengthVocab": "Tap the picture where one single side is highlighted (side length)",
+        "unitMatchPerimeter": "Which unit fits measuring perimeter?",
+        "unitMatchArea": "Which unit fits measuring area?",
+        "claim": {
+          "sameThing": "True or false: perimeter and area are the same thing.",
+          "unitsDiffer": "True or false: perimeter is measured in length units (like cm), and area in square units (like cm²).",
+          "areaNeedsSquareUnit": "True or false: measuring area requires square units, not just length units.",
+          "perimeterIsRegion": "True or false: the perimeter is the region inside the shape."
+        }
+      },
+      "feedback": {
+        "whichIsPerimeter": "The perimeter is the line that travels all the way around the shape.",
+        "whichIsArea": "The area is the shaded region inside the shape.",
+        "sideLengthVocab": "Side length refers to just one side — not the whole perimeter.",
+        "unitMatchPerimeter": "Length and perimeter are measured in length units, like cm.",
+        "unitMatchArea": "Area is measured in square units, like cm².",
+        "claim": {
+          "sameThing": "Perimeter and area are two different things: perimeter is the length around, and area is the size of the region inside.",
+          "unitsDiffer": "Correct! Perimeter is measured in length units, and area in square units.",
+          "areaNeedsSquareUnit": "Correct! Area measures a region, so it is always measured in square units.",
+          "perimeterIsRegion": "The perimeter is a line around the shape, not the region inside — that's called the area."
+        }
+      },
+      "boolLabel": {
+        "true": "True",
+        "false": "False"
+      },
+      "squareCmLabel": "cm²",
+      "difficulty": {
+        "basic": "Basic perimeter vs. area recognition, one unit at a time",
+        "intermediate": "Includes a single side's length, comparing three pictures",
+        "advanced": "Conceptual claims about how perimeter, area and units relate"
+      }
     }
   }
 }

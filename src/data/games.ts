@@ -144,6 +144,63 @@ export const coordinateSystemGames: Game[] = [
 
 export const divisionWithRemainderGames: Game[] = [];
 
+const GRADE4_GEOMETRY_PATH = '/grade/4/geometry-foundations';
+
+/**
+ * Grade 4 — "מכירים את שפת הגיאומטריה" (Learning the Language of Geometry).
+ * The mission brief's own curriculum text is the source here (no textbook
+ * PDF was available — see the final report); five learning groups, each a
+ * short guided lesson followed by varied practice, built on the Grade 7
+ * Angles unit's shared geometry engine (`src/geometry`, `src/components/geometry`)
+ * with the `grade4GeometryStyle` preset. Groups are ordered the way the
+ * brief itself presents them: basic objects, then angles, then relationships
+ * inside a polygon, then the polygon-family names, then measurement
+ * vocabulary (perimeter/area/units) — each group builds on the previous
+ * one's vocabulary.
+ */
+export const grade4GeometryFoundationsGames: Game[] = [
+  {
+    id: 'geo4Points',
+    enabled: true,
+    path: `${GRADE4_GEOMETRY_PATH}/points-segments-polygons`,
+    nameKey: 'grade4Geometry.points.gameName',
+    descriptionKey: 'grade4Geometry.points.gameDescription',
+    icon: '⬠',
+  },
+  {
+    id: 'geo4Angles',
+    enabled: true,
+    path: `${GRADE4_GEOMETRY_PATH}/angles`,
+    nameKey: 'grade4Geometry.angles.gameName',
+    descriptionKey: 'grade4Geometry.angles.gameDescription',
+    icon: '∠',
+  },
+  {
+    id: 'geo4Relations',
+    enabled: true,
+    path: `${GRADE4_GEOMETRY_PATH}/sides-vertices-diagonals`,
+    nameKey: 'grade4Geometry.relations.gameName',
+    descriptionKey: 'grade4Geometry.relations.gameDescription',
+    icon: '⟋',
+  },
+  {
+    id: 'geo4Family',
+    enabled: true,
+    path: `${GRADE4_GEOMETRY_PATH}/polygon-family`,
+    nameKey: 'grade4Geometry.family.gameName',
+    descriptionKey: 'grade4Geometry.family.gameDescription',
+    icon: '⬡',
+  },
+  {
+    id: 'geo4Measurement',
+    enabled: true,
+    path: `${GRADE4_GEOMETRY_PATH}/perimeter-area-units`,
+    nameKey: 'grade4Geometry.measurement.gameName',
+    descriptionKey: 'grade4Geometry.measurement.gameDescription',
+    icon: '▦',
+  },
+];
+
 const GEOMETRY_GRADE7_PATH = '/grade/7/geometry';
 
 /**
