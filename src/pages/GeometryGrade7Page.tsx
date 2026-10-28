@@ -36,18 +36,32 @@ export function GeometryGrade7Page() {
       backLabel={t('nav.grade7Topics')}
     >
       <div className="row-list">
-        {geometryGrade7Games.map((game) => (
-          <Card
-            layout="row"
-            key={game.id}
-            title={t(game.nameKey)}
-            description={t(game.descriptionKey)}
-            icon={game.icon}
-            to={game.enabled ? game.path : undefined}
-            disabled={!game.enabled}
-            statusBadge={game.enabled && completedGameIds.has(game.id) ? `✓ ${t('geometryGrade7Page.completedBadge')}` : undefined}
-          />
-        ))}
+        {geometryGrade7Games.map((game) => {
+          // The quick recap round is a lighter, lower-stakes companion to the
+          // five formal practice activities above — a distinct accent and a
+          // standing "quick" pill (not just a completion badge) signal that
+          // difference on the topic page itself, per the mission brief.
+          const isQuickRecap = game.id === 'anglesQuickRecap';
+          const completed = game.enabled && completedGameIds.has(game.id);
+          const statusBadge = completed
+            ? `✓ ${t('geometryGrade7Page.completedBadge')}`
+            : isQuickRecap
+              ? t('anglesGrade7.quickRecap.cardBadge')
+              : undefined;
+          return (
+            <Card
+              layout="row"
+              key={game.id}
+              title={t(game.nameKey)}
+              description={t(game.descriptionKey)}
+              icon={game.icon}
+              to={game.enabled ? game.path : undefined}
+              disabled={!game.enabled}
+              accent={isQuickRecap ? 'purple' : 'mint'}
+              statusBadge={statusBadge}
+            />
+          );
+        })}
       </div>
     </PageLayout>
   );

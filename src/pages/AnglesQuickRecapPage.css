@@ -1,0 +1,91 @@
+/* "Quick Recap" — a lighter, playful shell layered on the shared Grade 7 Angles look (see AnglesGrade7Shared.css). */
+
+.quick-recap-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 420px;
+}
+
+.quick-recap-progress-label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.quick-recap-progress-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.quick-recap-progress-fill {
+  height: 100%;
+  background: var(--secondary);
+  border-radius: var(--radius-pill);
+  transition: width 0.25s ease;
+}
+
+.quick-recap-scene {
+  margin-top: var(--space-2);
+}
+
+/* Same RTL fix `AnglesComparePage.css` documents: the compare row and the
+   <, =, > options must keep their literal left-to-right reading order even
+   on a Hebrew RTL page, or "left" angle vs the answer's left-hand side would
+   silently disagree with what the child actually sees on screen. */
+.quick-recap-compare-row {
+  direction: ltr;
+}
+
+.quick-recap-options-ltr {
+  direction: ltr;
+}
+
+.quick-recap-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+}
+
+.quick-recap-results-title {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--text-h);
+}
+
+.quick-recap-results-score {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.quick-recap-results-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.quick-recap-results-link {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--text-h);
+  text-decoration: none;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-6);
+}
+
+.quick-recap-results-link:hover {
+  border-color: var(--secondary);
+}
