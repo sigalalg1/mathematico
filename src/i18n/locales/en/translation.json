@@ -2031,6 +2031,78 @@
         "intermediate": "Any whole-degree measure, not just the major ticks.",
         "advanced": "Any whole-degree measure, with the whole diagram rotated too — the protractor still lines up correctly."
       }
+    },
+    "quickRecap": {
+      "gameName": "Quick Recap",
+      "gameDescription": "Ten snappy, light pop-quiz questions on everything you've learned about angles — with a real diagram for every question.",
+      "intro": "Ten quick-fire questions, one right answer each time — let's see what stuck from the whole unit!",
+      "cardBadge": "Light & quick ⚡",
+      "progressLabel": "Question {{current}} of {{total}}",
+      "vocab": {
+        "prompt": {
+          "vertex": "Pop quiz! What do we call the point where the angle's two rays meet?",
+          "arms": "Another quick one: what do we call the two rays that form the angle?"
+        },
+        "feedback": {
+          "vertex": "Nailed it! The shared starting point of the two rays is the vertex.",
+          "arms": "Those are the angle's arms — the two rays that form it."
+        }
+      },
+      "types": {
+        "prompt": "No overthinking — what type of angle is this?",
+        "feedback": {
+          "acute": "Acute — smaller than 90°, sharp like a thorn.",
+          "right": "Right angle — exactly 90°, square like a page corner.",
+          "obtuse": "Obtuse — between 90° and 180°, wide open.",
+          "straight": "Straight — exactly 180°, one straight line through the vertex."
+        }
+      },
+      "notation": {
+        "prompt": {
+          "selectNameGreek": "The highlighted angle here is shorthand-named {{letter}}. What's its correct three-letter name?",
+          "selectInvalid": "Quick round: which of these names is *not* valid for the highlighted angle?"
+        },
+        "feedback": {
+          "selectName": "The middle letter of a name is always the vertex — that's what decides the correct name.",
+          "selectInvalid": "In that name the vertex isn't in the middle — the classic angle-notation mistake."
+        }
+      },
+      "compare": {
+        "prompt": "No ruler allowed: which angle is bigger — or are they equal?",
+        "feedback": {
+          "less": "The left angle is the smaller one — how long the rays are drawn on screen never decides an angle's size.",
+          "greater": "The left angle is the bigger one — how long the rays are drawn on screen never decides an angle's size.",
+          "equal": "Surprise! Both angles are exactly the same size, even though the drawing looks completely different."
+        }
+      },
+      "measure": {
+        "prompt": {
+          "read": "Read the angle off the protractor — which answer is it closest to?",
+          "purpose": "And finally: what is a protractor actually for?"
+        },
+        "feedback": {
+          "read": "The protractor's baseline is already lined up with one ray — read the number where the other ray crosses it.",
+          "purpose": "A protractor measures an angle's size in degrees — not a length, not a distance."
+        }
+      },
+      "optionLabels": {
+        "vertex": "vertex",
+        "ray": "ray",
+        "angle": "angle",
+        "arms": "arms",
+        "arc": "arc",
+        "side": "side",
+        "measureDegrees": "measure the angle's size in degrees",
+        "measureLength": "measure the rays' length",
+        "drawLine": "draw a straight line",
+        "countVertices": "count vertices"
+      },
+      "results": {
+        "title": "Quick Recap complete!",
+        "scoreLine": "{{score}} out of {{total}} correct.",
+        "playAgain": "Play again",
+        "backToTopic": "Back to the Angles unit"
+      }
     }
   }
 }

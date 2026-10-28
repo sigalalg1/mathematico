@@ -207,6 +207,17 @@ export const geometryGrade7Games: Game[] = [
     descriptionKey: 'anglesGrade7.measure.gameDescription',
     icon: '∡',
   },
+  // A short, playful, no-setup-screen mixed-topic review of everything above
+  // (own build — see `anglesQuickRecapData`), deliberately last and visually
+  // lighter (see `GeometryGrade7Page`'s accent/badge handling for this id).
+  {
+    id: 'anglesQuickRecap',
+    enabled: true,
+    path: `${GEOMETRY_GRADE7_PATH}/quick-recap`,
+    nameKey: 'anglesGrade7.quickRecap.gameName',
+    descriptionKey: 'anglesGrade7.quickRecap.gameDescription',
+    icon: '⚡',
+  },
 ];
 
 /** Grade 7 — Signed Numbers, in teaching order: the line, then order, then distance, then the four operations. */

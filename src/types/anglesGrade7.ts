@@ -167,3 +167,43 @@ export interface AngleMeasureChallenge {
   promptKey: string;
   feedbackKey: string;
 }
+
+// --- 7. Quick Recap — a short, playful, mixed-topic review round (own build, not textbook-sourced; see report) ----
+//
+// Not a seventh textbook skill: a light remix of the five skills above (1, 2,
+// 3, 4, 6) into one short, fixed-length, fun round. Every question still
+// reuses this unit's own math (classification, notation, comparison,
+// measurement) — nothing here invents a new mathematical primitive.
+
+export type QuickRecapTopic = 'vocab' | 'types' | 'notation' | 'compare' | 'measure';
+
+/** How a question's `options` should be rendered — the underlying value stays a plain string either way. */
+export type QuickRecapOptionRender =
+  | 'label' // looked up via an i18n key (vocab terms, protractor-purpose choices)
+  | 'angleType' // looked up via the existing anglesGrade7.types.typeLabel.* keys
+  | 'angleName' // shown as `∠XYZ` via MathText
+  | 'compareSymbol' // shown as `<` / `=` / `>` via MathText
+  | 'degrees'; // shown as `NN°`
+
+export interface QuickRecapQuestion {
+  id: string;
+  topic: QuickRecapTopic;
+  promptKey: string;
+  promptValues?: Record<string, string>;
+  /** Single-scene diagram — every topic except `compare`. */
+  scene?: VertexScene;
+  highlightedRef?: AngleRef;
+  /** Set only for the two `measure` questions that overlay a protractor. */
+  protractorBaselineRayId?: string;
+  /** Two-scene diagram — `compare` only. */
+  compare?: {
+    left: { scene: VertexScene; ref: AngleRef };
+    right: { scene: VertexScene; ref: AngleRef };
+  };
+  /** Set only for `notation` questions — which validity direction the answer tests, used by the soundness check. */
+  notationMode?: 'selectValid' | 'selectInvalid';
+  optionRender: QuickRecapOptionRender;
+  answer: string;
+  options: string[];
+  feedbackKey: string;
+}
